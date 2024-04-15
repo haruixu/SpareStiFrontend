@@ -35,7 +35,7 @@ unit-tests:
 e2e-tests:
   stage: test
   script:
-    - npm run test:e2e
+    - npm run test:e2e:dev
 
 test-coverage:
   stage: test
