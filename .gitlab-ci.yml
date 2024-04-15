@@ -35,10 +35,7 @@ unit-tests:
 e2e-tests:
   stage: test
   script:
-    - apt-get update && apt-get install -y xvfb  # Install Xvfb
-    - export DISPLAY=':99.0'  # Set up a display number
-    - Xvfb :99 -screen 0 1280x1024x24 &  # Start Xvfb in the background
-    - npm run test:e2e:dev
+    - npm run test:e2e
 
 test-coverage:
   stage: test
