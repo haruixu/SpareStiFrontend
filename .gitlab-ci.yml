@@ -49,6 +49,3 @@ sast:
   stage: security_scan
   script:
     - echo "Running SAST..."
-  only:
-    - main
-    - develop
