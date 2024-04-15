@@ -3,6 +3,7 @@ stages:
   - lint_and_format
   - build
   - test
+  - security_scan
 
 default:
   image: node:20
@@ -40,3 +41,14 @@ test-coverage:
   stage: test
   script:
     - npm run test:coverage
+
+include:
+  - template: SAST.gitlab-ci.yml
+
+sast:
+  stage: security_scan
+  script:
+    - echo "Running SAST..."
+  only:
+    - main
+    - develop
