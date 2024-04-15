@@ -1,0 +1,33 @@
+# Dependency directories
+/node_modules
+
+# Distribution directories
+/dist
+/build
+
+# Environment files
+.env.*
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Cache directories
+/.cache
+
+# Test directories
+/coverage
+/cypress/videos/
+/cypress/screenshots/
+
+# Temporary files
+*.temp
+
+# System files
+.DS_Store
+Thumbs.db
