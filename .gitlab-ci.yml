@@ -34,6 +34,9 @@ unit-tests:
 
 e2e-tests:
   stage: test
+  image: cypress/browsers:latest
+  variables:
+    CYPRESS_BASE_URL: "http://localhost:4173"
   script:
     - npm run test:e2e
 
