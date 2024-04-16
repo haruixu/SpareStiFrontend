@@ -32,13 +32,9 @@ unit-tests:
   script:
     - npm run test:unit
 
-e2e-tests:
-  stage: test
-  image: cypress/browsers:latest
-  variables:
-    CYPRESS_BASE_URL: "http://localhost:4173"
-  script:
-    - npm run test:e2e
+test:e2e:
+  image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+  stage: npm run test:e2e
 
 test-coverage:
   stage: test
