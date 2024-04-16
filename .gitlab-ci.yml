@@ -11,7 +11,6 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
-    - /root/.cache/Cypress
 
 install:
   stage: install
@@ -46,9 +45,12 @@ test:e2e:
   image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
   stage: test
   script:
+    - npm ci --cache .npm --prefer-offline
+    - npx cypress verify
     - npm run test:e2e
   dependencies:
     - install
+
 
 test-coverage:
   stage: test
