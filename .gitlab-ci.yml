@@ -11,6 +11,7 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
+    - /root/.cache/Cypress
 
 install:
   stage: install
