@@ -1,12 +1,24 @@
+image: node:latest
+
 stages:
-  - setup
+  - install
   - lint_and_format
   - build
   - test
   - security_scan
 
-default:
-  image: node:20
+cache:
+  paths:
+    - node_modules
+
+install:
+  stage: install
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - node_modules/
+      - dist/
 
 before_script:
   - npm install
@@ -21,11 +33,10 @@ lint-code:
   script:
     - npm run lint
 
-build-and-test:
+type-check:
   stage: build
   script:
     - npm run type-check
-    - npm run build
 
 unit-tests:
   stage: test
