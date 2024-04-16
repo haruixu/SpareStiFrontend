@@ -34,7 +34,10 @@ unit-tests:
 
 test:e2e:
   image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
-  stage: npm run test:e2e
+  stage: test:e2e
+  script:
+    - npm install cypress
+    - npm run test:e2e
 
 test-coverage:
   stage: test
