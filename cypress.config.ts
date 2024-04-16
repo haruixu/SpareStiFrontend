@@ -1,8 +1,11 @@
-import { defineConfig } from 'cypress';
+import { defineConfig } from 'cypress'
 
 export default defineConfig({
   e2e: {
     specPattern: 'cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}',
-    baseUrl: process.env.CYPRESS_BASE_URL || 'http://localhost:4173'
-  }
+    baseUrl: 'http://localhost:4173',
+    setupNodeEvents(on, config) {
+      return config;
+    },
+  },
 });
