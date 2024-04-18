@@ -22,25 +22,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .continue-button {
-    padding: 0.7rem 5rem;
-    font-size: 1.125rem;
-    border-radius: 0.7rem;
-    cursor: pointer;
-    transition:
-        background-color 0.3s,
-        filter 0.3s;
-    font-weight: bold;
-    color: var(--black);
-    background-color: var(--green);
-}
-
-.continue-button:hover {
-    filter: brightness(90%);
-}
-
-.continue-button:active {
-    filter: brightness(75%);
+    @apply p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold
+    text-black bg-[var(--green)] hover:brightness-90 active:brightness-75;
 }
 </style>
