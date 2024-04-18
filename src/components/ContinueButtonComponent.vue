@@ -1,11 +1,9 @@
 <template>
-    <button class="continue-button" @click="onClick">
-        Fortsett
-    </button>
+    <button class="continue-button" @click="onClick">Fortsett</button>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: 'ContinueButtonComponent',
@@ -14,14 +12,14 @@ export default defineComponent({
     },
     setup(props, { emit }) {
         const onClick = (event: Event) => {
-            emit('click', event);
-        };
+            emit('click', event)
+        }
 
         return {
             onClick
-        };
+        }
     }
-});
+})
 </script>
 
 <style scoped>
@@ -30,7 +28,9 @@ export default defineComponent({
     font-size: 1.125rem;
     border-radius: 0.7rem;
     cursor: pointer;
-    transition: background-color 0.3s, filter 0.3s;
+    transition:
+        background-color 0.3s,
+        filter 0.3s;
     font-weight: bold;
     color: var(--black);
     background-color: var(--green);

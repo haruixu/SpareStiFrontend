@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
     <h1>Heading 1</h1>
@@ -9,7 +8,7 @@
     <p>Paragraph</p>
 
     <button>Button</button>
-    <br>
+    <br />
     <a href="#">Link</a>
     <div>Div</div>
     <section>Section</section>
