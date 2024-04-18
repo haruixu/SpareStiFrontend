@@ -46,7 +46,13 @@ watch(
             </div>
         </div>
         <div class="flex flex-row gap-5">
-            <button class="grow-0" @click="submitForm">Registrer deg</button>
+            <button
+                :disabled="'' == username.valueOf() || '' == password.valueOf()"
+                class="grow-0"
+                @click="submitForm"
+            >
+                Registrer deg
+            </button>
             <p>{{ errorMessage }}</p>
         </div>
     </div>

@@ -39,11 +39,16 @@ h3 {
 button {
     background-color: var(--color-button);
     color: var(--color-text);
-    border: none;
+    border-color: transparent;
     padding: 0.2rem 1rem;
     border-radius: 1rem;
     cursor: pointer;
     transition: 0.4s;
+}
+
+button:disabled {
+    background-color: var(--color-button-disabled);
+    cursor: not-allowed;
 }
 
 a {
