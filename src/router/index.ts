@@ -23,7 +23,6 @@ const router = createRouter({
             path: '/sparemaal',
             name: 'goals',
             component: () => import('../views/GoalView.vue')
-
         },
         {
             path: '/spareutfordringer',
