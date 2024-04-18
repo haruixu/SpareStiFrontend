@@ -1,19 +1,28 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useUserStore } from '@/stores/userStore'
 
 const username = ref<string>('')
 const password = ref<string>('')
 const showPassword = ref<boolean>(false)
+const errorMessage = ref<string>('')
 
-const emit = defineEmits(['submit'])
+const userStore = useUserStore()
 
 const submitForm = () => {
-    emit('submit', username.value, password.value)
+    userStore.login(username.value, password.value)
 }
 
 const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
+
+watch(
+    () => userStore.errorMessage,
+    (newValue: string) => {
+        errorMessage.value = newValue
+    }
+)
 </script>
 
 <template>
@@ -36,7 +45,10 @@ const toggleShowPassword = () => {
                 </button>
             </div>
         </div>
-        <button @click="submitForm">Logg inn</button>
+        <div class="flex flex-row gap-5">
+            <button class="grow-0" @click="submitForm">Logg inn</button>
+            <p>{{ errorMessage }}</p>
+        </div>
     </div>
 </template>
 
