@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-defineProps<{
-    error: string | undefined
-}>()
-
 const username = ref<string>('')
 const password = ref<string>('')
 
@@ -24,7 +20,6 @@ const submitForm = () => {
         <div class="flex flex-col">
             <p class="mx-5">Passord</p>
             <input v-model="password" placeholder="Skriv inn passord" type="text" />
-            <p>{{ error }}</p>
         </div>
         <button @click="submitForm">Registrer deg</button>
     </div>
