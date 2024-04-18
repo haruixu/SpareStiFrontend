@@ -33,6 +33,26 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: () => import('../views/NotFoundView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg1',
+            name: 'configurations1',
+            component: () => import('../views/ConfigHabitChangeView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg2',
+            name: 'configurations2',
+            component: () => import('../views/ConfigFamiliarWithSavingsView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg3',
+            name: 'configurations3',
+            component: () => import('../views/ConfigSpendingItemsView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg4',
+            name: 'configurations4',
+            component: () => import('../views/ConfigSpendingItemsAmountView.vue')
         }
     ]
 })
