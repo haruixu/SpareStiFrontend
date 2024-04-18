@@ -17,6 +17,7 @@
     --color-text: var(--black);
     --color-button: var(--bright);
     --color-link: var(--accent3);
+    --color-border: var(--black);
 
     --section-gap: 160px;
 }
