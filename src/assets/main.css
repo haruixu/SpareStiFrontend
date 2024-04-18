@@ -54,7 +54,7 @@ a {
 
 input {
     border: 1px solid var(--color-border);
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 2rem;
 }
 
