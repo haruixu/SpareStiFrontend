@@ -33,7 +33,7 @@ const onButtonClick = () => {
         </div>
         <ContinueButtonComponent
             @click="onButtonClick"
-            class="px-10 py-3 text-2xl font-bold self-end"
+            class="px-10 py-3 text-2xl self-end"
         ></ContinueButtonComponent>
     </div>
 </template>
