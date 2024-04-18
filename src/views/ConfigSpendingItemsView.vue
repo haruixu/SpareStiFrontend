@@ -1,22 +1,32 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
-import '@/assets/base.css'
-import router from '@/router'
+import { ref } from 'vue';
+import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue';
+import '@/assets/base.css';
+import router from '@/router';
 
-const selectedOption = ref<string | null>(null)
-
-const selectOption = (option: string) => {
-    selectedOption.value = option
+interface Option {
+    name: string;
+    selected: boolean;
 }
 
+const options = ref<Option[]>([
+    { name: 'Snus', selected: false },
+    { name: 'Kaffe', selected: false },
+    { name: 'Kantina', selected: false }
+]);
+
+const toggleOption = (index: number) => {
+    options.value[index].selected = !options.value[index].selected;
+};
+
 const onButtonClick = () => {
-    if (selectedOption.value) {
-        console.log(`Proceeding with the selected option: ${selectedOption.value}`)
+    const selectedOptions = options.value.filter(option => option.selected);
+    if (selectedOptions.length >= 1 && selectedOptions.length <= 3) {
+        const selectedOptionNames = selectedOptions.map(option => option.name);
+        router.push('/konfigurasjonSteg4');
     } else {
-        console.log('No option selected.')
+        console.error('Please select between 1 and 3 options.');
     }
-    router.push('/konfigurasjonSteg3');
 }
 </script>
 
@@ -24,33 +34,15 @@ const onButtonClick = () => {
     <div class="flex flex-col items-center justify-center min-h-screen text-center px-4">
         <h1 class="text-4xl font-bold mb-16 lg:mb-20">Hva bruker du mye penger på?</h1>
         <div class="flex flex-col gap-4 mb-6">
-            <div
-                class="box"
-                :class="{ active: selectedOption === 'snus' }"
-                @click="selectOption('snus')"
-            >
-                <p class="text-lg font-bold mt-2">Snus</p>
-            </div>
-            <div
-                class="box"
-                :class="{ active: selectedOption === 'kaffe' }"
-                @click="selectOption('kaffe')"
-            >
-                <p class="text-lg font-bold mt-2">Kaffe</p>
-            </div>
-            <div
-                class="box"
-                :class="{ active: selectedOption === 'Kantina' }"
-                @click="selectOption('Kantina')"
-            >
-                <p class="text-lg font-bold mt-2">Kantina</p>
+            <div v-for="(option, index) in options" :key="index" class="box" @click="toggleOption(index)" :class="{ 'active': option.selected }">
+                <p class="text-lg font-bold mt-2">{{ option.name }}</p>
+                <input type="checkbox" v-model="option.selected" class="hidden">
             </div>
         </div>
         <ContinueButtonComponent
             @click="onButtonClick"
-            class="px-10 py-3 text-2xl font-bold self-end"
-        ></ContinueButtonComponent
-        >
+            class="px-10 py-3 text-2xl self-end"
+        ></ContinueButtonComponent>
     </div>
 </template>
 
@@ -77,5 +69,9 @@ const onButtonClick = () => {
 
 .box.active {
     border: 3px solid var(--green);
+}
+
+.box input[type="checkbox"] {
+    display: none;
 }
 </style>
