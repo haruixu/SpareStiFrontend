@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { RouterLink, RouterView, useRoute} from 'vue-router'
 
 const route = useRoute()
 
-const showRouterView = 
-    computed(() => route.path !== '/')
+const showRouterView = computed(() => 
+route.path !== '/'
+)
+
 </script>
 
 <template>
@@ -23,7 +25,7 @@ const showRouterView =
     </main>
 </template>
 
-<style scoped>
+<style>
 nav {
     display: flex;
     justify-content: center;

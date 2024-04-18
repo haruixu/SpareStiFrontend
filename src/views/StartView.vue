@@ -1,21 +1,22 @@
-<script setup lang="ts">
-import startPageFirst from '@/assets/background/startpage_first.png';
-import startPageSecond from '@/assets/background/startpage_second.png';
-import startPageThird from '@/assets/background/startpage_third.png';
-</script>
-
 <template>
-    <div class="h-screen w-full bg-cover bg-center m-0 p-0" :style="{ backgroundImage: `url(${startPageFirst})` }"></div>
-    <div class="h-screen w-full bg-cover bg-center m-0 p-0" :style="{ backgroundImage: `url(${startPageSecond})` }"></div>
-    <div class="h-screen w-full bg-cover bg-center m-0 p-0" :style="{ backgroundImage: `url(${startPageThird})` }"></div>
+    <div class="background-container">
+
+      <div>
+        <img src="@/assets/start_page/sti.png" alt="Background" class="w-full">
+
+        <div class="absolute bottom-0 left-0 ml-2 w-60 pl-10">
+          <h2>Kom igang med målene dine! 🚀</h2>
+            <p>Sett deg et sparemål og utfordre deg selv til å spare mer.</p>
+        </div>
+        <div class="absolute bottom-0  0 right-0 mr-4 pr-10">
+          <h2>Sparetips 💡 Visste du at...</h2>
+          <p>...du kan spare penger på å lage matpakke til jobb?</p>
+          <p>...du kan spare penger på å bruke kollektivtransport?</p>
+          <p>...du kan spare penger på å kjøpe brukt?</p>
+        </div>
+      </div>
+    </div>
 </template>
 
-<style scoped>
-html, body {
-  @apply m-0;
-}
-.h-screen {
-  @apply p-0;
-}
-</style>
-
+<script setup lang="ts">
+</script>
