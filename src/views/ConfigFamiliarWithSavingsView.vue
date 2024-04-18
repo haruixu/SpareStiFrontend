@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import '@/assets/base.css'
+import router from '@/router'
 
 const selectedOption = ref<string | null>(null)
 
@@ -15,6 +16,7 @@ const onButtonClick = () => {
     } else {
         console.log('No option selected.')
     }
+    router.push('/konfigurasjonSteg2');
 }
 </script>
 
