@@ -6,7 +6,10 @@
                 v-for="(option, index) in options"
                 :key="index"
                 class="flex flex-col items-center justify-center w-72 h-18 p-2.5 cursor-pointer transition-colors bg-white rounded-lg"
-                :class="{ 'border-[var(--green)] border-4': option.selected, 'border-gray-300 border-2': !option.selected }"
+                :class="{
+                    'border-[var(--green)] border-4': option.selected,
+                    'border-gray-300 border-2': !option.selected
+                }"
                 @click="toggleOption(index)"
             >
                 <p class="text-lg font-bold mt-2">{{ option.name }}</p>

@@ -21,7 +21,10 @@ const onButtonClick = () => {
         </h1>
         <div class="grid grid-cols-1 gap-14 mb-20 md:grid-cols-3">
             <div
-                :class="{'border-[var(--green)] border-4': selectedOption === 'litt', 'border-gray-300 border-2': selectedOption !== 'litt'}"
+                :class="{
+                    'border-[var(--green)] border-4': selectedOption === 'litt',
+                    'border-gray-300 border-2': selectedOption !== 'litt'
+                }"
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('litt')"
             >
@@ -29,7 +32,10 @@ const onButtonClick = () => {
                 <p class="text-lg font-bold mt-2">Litt</p>
             </div>
             <div
-                :class="{'border-[var(--green)] border-4': selectedOption === 'passe', 'border-gray-300 border-2': selectedOption !== 'passe'}"
+                :class="{
+                    'border-[var(--green)] border-4': selectedOption === 'passe',
+                    'border-gray-300 border-2': selectedOption !== 'passe'
+                }"
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('passe')"
             >
@@ -37,7 +43,10 @@ const onButtonClick = () => {
                 <p class="text-lg font-bold mt-2">Passe</p>
             </div>
             <div
-                :class="{'border-[var(--green)] border-4': selectedOption === 'store', 'border-gray-300 border-2': selectedOption !== 'store'}"
+                :class="{
+                    'border-[var(--green)] border-4': selectedOption === 'store',
+                    'border-gray-300 border-2': selectedOption !== 'store'
+                }"
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('store')"
             >

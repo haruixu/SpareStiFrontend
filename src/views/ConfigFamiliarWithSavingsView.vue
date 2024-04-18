@@ -3,39 +3,36 @@
         <h1 class="mb-16 text-4xl font-bold lg:mb-20">Hvor kjent er du med sparing fra før?</h1>
         <div class="grid grid-cols-1 gap-14 mb-20 md:grid-cols-3">
             <div
-                :class="{'border-[var(--green)] border-4': selectedOption === 'litt', 'border-gray-300 border-2': selectedOption !== 'litt'}"
+                :class="{
+                    'border-[var(--green)] border-4': selectedOption === 'litt',
+                    'border-gray-300 border-2': selectedOption !== 'litt'
+                }"
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]-500"
                 @click="selectOption('litt')"
             >
-                <img
-                    src="@/assets/nose.png"
-                    alt="Litt kjent"
-                    class="h-16 md:h-20"
-                />
+                <img src="@/assets/nose.png" alt="Litt kjent" class="h-16 md:h-20" />
                 <p class="mt-2 text-lg font-bold">Litt kjent</p>
             </div>
             <div
-                :class="{'border-[var(--green)] border-4': selectedOption === 'noe', 'border-gray-300 border-2': selectedOption !== 'noe'}"
+                :class="{
+                    'border-[var(--green)] border-4': selectedOption === 'noe',
+                    'border-gray-300 border-2': selectedOption !== 'noe'
+                }"
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('noe')"
             >
-                <img
-                    src="@/assets/head.png"
-                    alt="Noe kjent"
-                    class="h-16 md:h-20"
-                />
+                <img src="@/assets/head.png" alt="Noe kjent" class="h-16 md:h-20" />
                 <p class="mt-2 text-lg font-bold">Noe kjent</p>
             </div>
             <div
-                :class="{'border-[var(--green)] border-4': selectedOption === 'godt', 'border-gray-300 border-2': selectedOption !== 'godt'}"
+                :class="{
+                    'border-[var(--green)] border-4': selectedOption === 'godt',
+                    'border-gray-300 border-2': selectedOption !== 'godt'
+                }"
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('godt')"
             >
-                <img
-                    src="@/assets/pig.png"
-                    alt="Godt kjent"
-                    class="h-16 md:h-20"
-                />
+                <img src="@/assets/pig.png" alt="Godt kjent" class="h-16 md:h-20" />
                 <p class="mt-2 text-lg font-bold">Godt kjent</p>
             </div>
         </div>
