@@ -51,7 +51,6 @@ test:e2e:
   dependencies:
     - install
 
-
 test-coverage:
   stage: test
   script:
