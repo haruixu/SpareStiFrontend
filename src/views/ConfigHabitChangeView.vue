@@ -16,24 +16,22 @@ const onButtonClick = () => {
     } else {
         console.log('No option selected.')
     }
-    router.push('/konfigurasjonSteg2');
+    router.push('/konfigurasjonSteg2')
 }
 </script>
 
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen text-center px-4">
-        <h1 class="text-4xl font-bold mb-16 lg:mb-20">Hvor store vaneedringer er du villig til å gjøre?</h1>
+        <h1 class="text-4xl font-bold mb-16 lg:mb-20">
+            Hvor store vaneedringer er du villig til å gjøre?
+        </h1>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-14 mb-20">
             <div
                 class="box"
                 :class="{ active: selectedOption === 'litt' }"
                 @click="selectOption('litt')"
             >
-                <img
-                    src="@/assets/litt.png"
-                    alt="litt"
-                    class="object-contain h-1/3 sm:h-1/3"
-                />
+                <img src="@/assets/litt.png" alt="litt" class="object-contain h-1/3 sm:h-1/3" />
                 <p class="text-lg font-bold mt-2">Litt</p>
             </div>
             <div
@@ -41,11 +39,7 @@ const onButtonClick = () => {
                 :class="{ active: selectedOption === 'passe' }"
                 @click="selectOption('passe')"
             >
-                <img
-                    src="@/assets/passe.png"
-                    alt="passe"
-                    class="object-contain h-1/3 sm:h-1/3"
-                />
+                <img src="@/assets/passe.png" alt="passe" class="object-contain h-1/3 sm:h-1/3" />
                 <p class="text-lg font-bold mt-2">Passe</p>
             </div>
             <div
@@ -53,19 +47,14 @@ const onButtonClick = () => {
                 :class="{ active: selectedOption === 'store' }"
                 @click="selectOption('store')"
             >
-                <img
-                    src="@/assets/store.png"
-                    alt="store"
-                    class="object-contain h-1/3 sm:h-1/3"
-                />
+                <img src="@/assets/store.png" alt="store" class="object-contain h-1/3 sm:h-1/3" />
                 <p class="text-lg font-bold mt-2">Store</p>
             </div>
         </div>
         <ContinueButtonComponent
             @click="onButtonClick"
             class="px-10 py-3 text-2xl self-end"
-        ></ContinueButtonComponent
-        >
+        ></ContinueButtonComponent>
     </div>
 </template>
 

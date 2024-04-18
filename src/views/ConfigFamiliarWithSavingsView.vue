@@ -16,7 +16,7 @@ const onButtonClick = () => {
     } else {
         console.log('No option selected.')
     }
-    router.push('/konfigurasjonSteg3');
+    router.push('/konfigurasjonSteg3')
 }
 </script>
 
@@ -64,8 +64,7 @@ const onButtonClick = () => {
         <ContinueButtonComponent
             @click="onButtonClick"
             class="px-10 py-3 text-2xl self-end"
-            ></ContinueButtonComponent
-        >
+        ></ContinueButtonComponent>
     </div>
 </template>
 

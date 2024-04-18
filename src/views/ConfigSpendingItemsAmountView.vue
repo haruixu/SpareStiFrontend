@@ -4,8 +4,8 @@ import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import '@/assets/base.css'
 
 interface Option {
-    name: string;
-    amount: number | null;
+    name: string
+    amount: number | null
 }
 
 const options: Option[] = [
@@ -15,7 +15,7 @@ const options: Option[] = [
 ]
 
 const onButtonClick = () => {
-    console.log('Options with amounts:', options);
+    console.log('Options with amounts:', options)
 }
 </script>
 
@@ -26,7 +26,13 @@ const onButtonClick = () => {
             <div class="option-container" v-for="(option, index) in options" :key="index">
                 <p class="option-text">{{ option.name }}</p>
                 <div class="flex items-center">
-                    <input type="number" v-model="option.amount" class="amount-input" placeholder="Beløp" min="0">
+                    <input
+                        type="number"
+                        v-model="option.amount"
+                        class="amount-input"
+                        placeholder="Beløp"
+                        min="0"
+                    />
                     <p class="currency">kr</p>
                 </div>
             </div>
@@ -37,7 +43,6 @@ const onButtonClick = () => {
         ></ContinueButtonComponent>
     </div>
 </template>
-
 
 <style scoped>
 .option-container {
