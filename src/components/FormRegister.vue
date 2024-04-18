@@ -29,12 +29,18 @@ watch(
     <div class="flex flex-col justify-center gap-5 mx-10">
         <div class="flex flex-col">
             <p class="mx-4">Brukernavn</p>
-            <input v-model="username" placeholder="Skriv inn brukernavn" type="text" />
+            <input
+                v-model="username"
+                name="username"
+                placeholder="Skriv inn brukernavn"
+                type="text"
+            />
         </div>
         <div class="flex flex-col">
             <p class="mx-4">Passord</p>
             <div class="relative">
                 <input
+                    name="password"
                     v-model="password"
                     :type="showPassword ? 'text' : 'password'"
                     class="w-full"
