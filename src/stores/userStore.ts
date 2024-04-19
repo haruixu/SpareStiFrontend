@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { User } from '@/types/user'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
+import router from '@/router'
 
 export const useUserStore = defineStore('user', () => {
     const defaultUser: User = {
@@ -9,6 +10,7 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const user = ref<User>(defaultUser)
+    const errorMessage = ref<string>('')
 
     async function register(username: string, password: string) {
         try {
@@ -17,13 +19,13 @@ export const useUserStore = defineStore('user', () => {
                 password: password
             })
 
-            if (response.status === 200) {
-                sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('refreshToken', response.data.refreshToken)
-                user.value.username = username
-            }
+            sessionStorage.setItem('accessToken', response.data.accessToken)
+            localStorage.setItem('refreshToken', response.data.refreshToken)
+            user.value.username = username
+            await router.push('/')
         } catch (error) {
-            console.error('Failed to register:', error)
+            const axiosError = error as AxiosError
+            errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
         }
     }
 
@@ -36,18 +38,19 @@ export const useUserStore = defineStore('user', () => {
 
             console.log(response)
 
-            if (response.status === 200) {
-                sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('refreshToken', response.data.refreshToken)
-                user.value.username = username
-            }
+            sessionStorage.setItem('accessToken', response.data.accessToken)
+            localStorage.setItem('refreshToken', response.data.refreshToken)
+            user.value.username = username
+            await router.push('/')
         } catch (error) {
-            console.error('Failed to login:', error)
+            const axiosError = error as AxiosError
+            errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
         }
     }
 
     return {
         login,
-        register
+        register,
+        errorMessage
     }
 })

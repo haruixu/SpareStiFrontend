@@ -3,6 +3,7 @@
 :root {
     --black: #363739;
     --white: #ffffff;
+    --grey: #cbcbcb;
     --green: #95e35d;
 
     --bright: #f7da7c;
@@ -16,6 +17,8 @@
     --color-background: var(--white);
     --color-text: var(--black);
     --color-button: var(--bright);
+    --color-button-disabled: var(--grey);
+
     --color-link: var(--accent3);
     --color-border: var(--black);
 
