@@ -10,7 +10,6 @@ const isLogin = ref<boolean>(true)
     <div class="flex flex-col items-center gap-5 justify-center sm:flex-row">
         <div class="border-2 border-black flex items-center">
             <h1>Dette er et bilde</h1>
-            <button class="border border-black">Test</button>
         </div>
         <div class="flex flex-col">
             <div class="flex flex-row gap-5 justify-center">
