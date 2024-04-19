@@ -23,11 +23,7 @@
                 class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('passe')"
             >
-                <img
-                    src="@/assets/passe.png"
-                    alt="A little bit emoji"
-                    class="h-12 sm:h-1/3"
-                />
+                <img src="@/assets/passe.png" alt="A little bit emoji" class="h-12 sm:h-1/3" />
                 <p class="mt-2 text-md sm:text-lg font-bold">Passe</p>
             </div>
             <div

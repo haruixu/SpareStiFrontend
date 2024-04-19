@@ -10,7 +10,7 @@
                 class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('litt')"
             >
-                <img src="@/assets/nose.png" alt="Pig nose" class="h-12 sm:h-1/3"/>
+                <img src="@/assets/nose.png" alt="Pig nose" class="h-12 sm:h-1/3" />
                 <p class="mt-2 text-lg font-bold">Litt kjent</p>
             </div>
             <div
