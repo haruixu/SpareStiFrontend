@@ -13,8 +13,24 @@ const isLogin = ref<boolean>(true)
         </div>
         <div class="flex flex-col">
             <div class="flex flex-row gap-5 justify-center">
-                <h3 :class="{ selected: isLogin }" @click="isLogin = true">Logg inn</h3>
-                <h3 :class="{ selected: !isLogin }" @click="isLogin = false">Registrer deg</h3>
+                <h3
+                    :class="{ selected: isLogin }"
+                    class="cursor-pointer"
+                    tabindex="0"
+                    @click="isLogin = true"
+                    @keydown.enter.prevent="isLogin = true"
+                >
+                    Logg inn
+                </h3>
+                <h3
+                    :class="{ selected: !isLogin }"
+                    class="cursor-pointer"
+                    tabindex="0"
+                    @click="isLogin = false"
+                    @keydown.enter.prevent="isLogin = false"
+                >
+                    Registrer deg
+                </h3>
             </div>
             <FormLogin v-if="isLogin" />
             <FormRegister v-else />
