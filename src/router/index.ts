@@ -64,7 +64,10 @@ const router = createRouter({
             name: 'firstSavingGoal',
             component: () => import('../views/FirstSavingGoalView.vue')
         }
-    ]
+    ],
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 }
+    },
 })
 
 export default router
