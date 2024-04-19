@@ -23,6 +23,15 @@ describe('FormRegister', () => {
         mock.restore()
     })
 
+    function successfulFormFill() {
+        wrapper.find('input[name="firstname"]').setValue('firstname')
+        wrapper.find('input[name="lastname"]').setValue('lastname')
+        wrapper.find('input[name="email"]').setValue('email@test.work')
+        wrapper.find('input[name="username"]').setValue('username')
+        wrapper.find('input[name="password"]').setValue('Password123!')
+        wrapper.find('input[name="confirm"]').setValue('Password123!')
+    }
+
     it('renders properly', () => {
         expect(wrapper.text()).toContain('Brukernavn')
         expect(wrapper.text()).toContain('Passord')
@@ -53,12 +62,7 @@ describe('FormRegister', () => {
     it('enables button when all inputs are filled', async () => {
         const button = wrapper.find('button[name="submit"]')
 
-        wrapper.find('input[name="firstname"]').setValue('firstname')
-        wrapper.find('input[name="lastname"]').setValue('lastname')
-        wrapper.find('input[name="email"]').setValue('email@test.work')
-        wrapper.find('input[name="username"]').setValue('username')
-        wrapper.find('input[name="password"]').setValue('password')
-        wrapper.find('input[name="confirm"]').setValue('password')
+        successfulFormFill()
 
         await wrapper.vm.$nextTick()
 
@@ -68,12 +72,8 @@ describe('FormRegister', () => {
     it('disables button when password and confirm password do not match', async () => {
         const button = wrapper.find('button[name="submit"]')
 
-        wrapper.find('input[name="firstname"]').setValue('firstname')
-        wrapper.find('input[name="lastname"]').setValue('lastname')
-        wrapper.find('input[name="email"]').setValue('email@test.work')
-        wrapper.find('input[name="username"]').setValue('username')
-        wrapper.find('input[name="password"]').setValue('password')
-        wrapper.find('input[name="confirm"]').setValue('password2')
+        successfulFormFill()
+        wrapper.find('input[name="confirm"]').setValue('Password123')
 
         await wrapper.vm.$nextTick()
 
@@ -83,12 +83,8 @@ describe('FormRegister', () => {
     it('disable button when email is invalid', async () => {
         const button = wrapper.find('button[name="submit"]')
 
-        wrapper.find('input[name="firstname"]').setValue('firstname')
-        wrapper.find('input[name="lastname"]').setValue('lastname')
+        successfulFormFill()
         wrapper.find('input[name="email"]').setValue('email')
-        wrapper.find('input[name="username"]').setValue('username')
-        wrapper.find('input[name="password"]').setValue('password')
-        wrapper.find('input[name="confirm"]').setValue('password')
 
         await wrapper.vm.$nextTick()
 

@@ -9,8 +9,8 @@ describe('Register', () => {
         cy.get('input[name="lastname"]').type('lastname')
         cy.get('input[name="email"]').type('email@test.work')
         cy.get('input[name="username"]').type('username')
-        cy.get('input[name="password"]').type('password')
-        cy.get('input[name="confirm"]').type('password')
+        cy.get('input[name="password"]').type('Password123!')
+        cy.get('input[name="confirm"]').type('Password123!')
     }
 
     it('visits the register page when clicked', () => {
