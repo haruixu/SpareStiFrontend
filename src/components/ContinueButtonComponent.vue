@@ -1,27 +1,22 @@
 <template>
-    <button class="continue-button" @click="onClick">Fortsett</button>
+    <button class="continue-button">Fortsett</button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-    name: 'ContinueButtonComponent',
-    setup(props, { emit }) {
-        const onClick = (event: Event) => {
-            emit('click', event)
-        }
-
-        return {
-            onClick
-        }
-    }
-})
+<script setup lang="ts">
 </script>
 
-<style>
+<style scoped>
 .continue-button {
-    @apply p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold
-    text-black bg-[var(--green)] hover:brightness-90 active:brightness-75;
+    @apply p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold;
+    color: black;
+    background-color: var(--green);
+}
+
+.continue-button:hover {
+    filter: brightness(90%);
+}
+
+.continue-button:active {
+    filter: brightness(75%);
 }
 </style>
