@@ -10,7 +10,7 @@
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]-500"
                 @click="selectOption('litt')"
             >
-                <img src="@/assets/nose.png" alt="Litt kjent" class="h-16 md:h-20" />
+                <img src="@/assets/nose.png" alt="Pig nose" class="h-16 md:h-20" />
                 <p class="mt-2 text-lg font-bold">Litt kjent</p>
             </div>
             <div
@@ -21,7 +21,7 @@
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('noe')"
             >
-                <img src="@/assets/head.png" alt="Noe kjent" class="h-16 md:h-20" />
+                <img src="@/assets/head.png" alt="Pig face" class="h-16 md:h-20" />
                 <p class="mt-2 text-lg font-bold">Noe kjent</p>
             </div>
             <div
@@ -32,7 +32,7 @@
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('godt')"
             >
-                <img src="@/assets/pig.png" alt="Godt kjent" class="h-16 md:h-20" />
+                <img src="@/assets/pig.png" alt="Whole pig" class="h-16 md:h-20" />
                 <p class="mt-2 text-lg font-bold">Godt kjent</p>
             </div>
         </div>

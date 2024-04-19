@@ -12,7 +12,7 @@
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('litt')"
             >
-                <img src="@/assets/litt.png" alt="litt" class="object-contain h-1/3" />
+                <img src="@/assets/litt.png" alt="Thumbs down emoji" class="object-contain h-1/3" />
                 <p class="text-lg font-bold mt-2">Litt</p>
             </div>
             <div
@@ -23,7 +23,7 @@
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('passe')"
             >
-                <img src="@/assets/passe.png" alt="passe" class="object-contain h-1/3" />
+                <img src="@/assets/passe.png" alt="A little bit emoji" class="object-contain h-1/3" />
                 <p class="text-lg font-bold mt-2">Passe</p>
             </div>
             <div
@@ -34,7 +34,7 @@
                 class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
                 @click="selectOption('store')"
             >
-                <img src="@/assets/store.png" alt="store" class="object-contain h-1/3" />
+                <img src="@/assets/store.png" alt="Thumbs up emoji" class="object-contain h-1/3" />
                 <p class="text-lg font-bold mt-2">Store</p>
             </div>
         </div>
@@ -65,3 +65,4 @@ const onButtonClick = () => {
     router.push('/konfigurasjonSteg2')
 }
 </script>
+
