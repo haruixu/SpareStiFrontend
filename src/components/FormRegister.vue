@@ -22,20 +22,36 @@ const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
 
+const nameRegex = /^[a-zA-Z-,.\s]+$/
+
+const isFirstNameValid = computed(() => {
+    return nameRegex.test(firstname.value) && firstname.value.length > 1
+})
+
+const isLastNameValid = computed(() => {
+    return nameRegex.test(lastname.value) && lastname.value.length > 1
+})
+
 const isEmailValid = computed(() => {
-    return /\S+@\S+\.\S+/.test(email.value)
+    return /\S+@\S+\.\S+/.test(email.value) && email.value.length > 1
+})
+
+const isUsernameValid = computed(() => {
+    return username.value.length > 1
+})
+
+const isPasswordValid = computed(() => {
+    return password.value.length > 7
 })
 
 const isFormInvalid = computed(() => {
     return (
-        '' == firstname.value ||
-        '' == lastname.value ||
-        '' == email.value ||
+        !isFirstNameValid.value ||
+        !isLastNameValid.value ||
         !isEmailValid.value ||
-        '' == username.value ||
-        '' == password.value ||
-        '' == confirm.value ||
-        password.value != confirm.value
+        !isUsernameValid.value ||
+        !isPasswordValid.value ||
+        password.value !== confirm.value
     )
 })
 
@@ -54,8 +70,8 @@ watch(
             <input
                 v-model="firstname"
                 name="firstname"
-                :class="{ 'bg-green-100': '' !== firstname.valueOf() }"
-                class="bg-red-100"
+                :class="{ 'bg-transparent': isFirstNameValid }"
+                class="bg-red-200"
                 placeholder="Skriv inn fornavn"
                 type="text"
             />
@@ -65,8 +81,8 @@ watch(
             <input
                 v-model="lastname"
                 name="lastname"
-                :class="{ 'bg-green-100': '' !== lastname.valueOf() }"
-                class="bg-red-100"
+                :class="{ 'bg-transparent': isLastNameValid }"
+                class="bg-red-200"
                 placeholder="Skriv inn etternavn"
                 type="text"
             />
@@ -76,8 +92,8 @@ watch(
             <input
                 v-model="email"
                 name="email"
-                :class="{ 'bg-green-100': isEmailValid }"
-                class="bg-red-100"
+                :class="{ 'bg-transparent': isEmailValid }"
+                class="bg-red-200"
                 placeholder="Skriv inn e-post"
                 type="text"
             />
@@ -89,8 +105,8 @@ watch(
                 name="username"
                 placeholder="Skriv inn brukernavn"
                 type="text"
-                :class="{ 'bg-green-100': '' !== username.valueOf() }"
-                class="bg-red-100"
+                :class="{ 'bg-transparent': '' !== username.valueOf() }"
+                class="bg-red-200"
             />
         </div>
         <div class="flex flex-col">

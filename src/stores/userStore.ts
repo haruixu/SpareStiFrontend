@@ -23,8 +23,8 @@ export const useUserStore = defineStore('user', () => {
     ) {
         try {
             const response = await axios.post(`http://localhost:8080/auth/register`, {
-                firstname: firstname,
-                lastname: lastname,
+                firstName: firstname, //TODO rename all instances of firstname to firstName
+                lastName: lastname,
                 email: email,
                 username: username,
                 password: password
