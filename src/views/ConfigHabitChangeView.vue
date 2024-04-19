@@ -1,19 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
-import router from '@/router'
-
-const selectedOption = ref<string | null>(null)
-
-const selectOption = (option: string) => {
-    selectedOption.value = option
-}
-
-const onButtonClick = () => {
-    router.push('/konfigurasjonSteg2')
-}
-</script>
-
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <h1 class="mb-16 text-4xl font-bold lg:mb-20">
@@ -60,3 +44,19 @@ const onButtonClick = () => {
         ></ContinueButtonComponent>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
+import router from '@/router'
+
+const selectedOption = ref<string | null>(null)
+
+const selectOption = (option: string) => {
+    selectedOption.value = option
+}
+
+const onButtonClick = () => {
+    router.push('/konfigurasjonSteg2')
+}
+</script>

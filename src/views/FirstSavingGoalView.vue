@@ -1,35 +1,3 @@
-<script setup lang="ts">
-import { ref, watch } from 'vue'
-import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
-import router from '@/router'
-
-const savingsGoal = ref('')
-const rawAmount = ref('')
-
-const validateAmount = () => {
-    const validPattern = /^(\d+)?(,\d*)?$/
-    if (!validPattern.test(rawAmount.value)) {
-        rawAmount.value = rawAmount.value.slice(0, -1)
-    } else if (rawAmount.value.includes(',')) {
-        rawAmount.value = rawAmount.value.replace(/,+/g, ',')
-    }
-}
-
-const checkNegative = () => {
-    const numericValue = parseFloat(rawAmount.value.replace(',', '.'))
-    if (numericValue < 0) {
-        rawAmount.value = ''
-    }
-}
-
-watch(rawAmount, validateAmount)
-watch(() => parseFloat(rawAmount.value.replace(',', '.')), checkNegative)
-
-const onButtonClick = () => {
-    router.push('/home')
-}
-</script>
-
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <div class="mb-20">
@@ -82,3 +50,35 @@ const onButtonClick = () => {
         ></ContinueButtonComponent>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
+import router from '@/router'
+
+const savingsGoal = ref('')
+const rawAmount = ref('')
+
+const validateAmount = () => {
+    const validPattern = /^(\d+)?(,\d*)?$/
+    if (!validPattern.test(rawAmount.value)) {
+        rawAmount.value = rawAmount.value.slice(0, -1)
+    } else if (rawAmount.value.includes(',')) {
+        rawAmount.value = rawAmount.value.replace(/,+/g, ',')
+    }
+}
+
+const checkNegative = () => {
+    const numericValue = parseFloat(rawAmount.value.replace(',', '.'))
+    if (numericValue < 0) {
+        rawAmount.value = ''
+    }
+}
+
+watch(rawAmount, validateAmount)
+watch(() => parseFloat(rawAmount.value.replace(',', '.')), checkNegative)
+
+const onButtonClick = () => {
+    router.push('/home')
+}
+</script>

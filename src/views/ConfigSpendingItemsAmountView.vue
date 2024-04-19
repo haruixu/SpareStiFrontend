@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
-
-interface Option {
-    name: string
-    amount: number | null
-}
-
-const options = ref<Option[]>([
-    { name: 'Snus', amount: null },
-    { name: 'Kaffe', amount: null },
-    { name: 'Kantina', amount: null }
-])
-
-const onButtonClick = () => {}
-</script>
-
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye penger per kjøp bruker du på ...</h1>
@@ -48,3 +30,21 @@ const onButtonClick = () => {}
         ></ContinueButtonComponent>
     </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
+
+interface Option {
+    name: string
+    amount: number | null
+}
+
+const options = ref<Option[]>([
+    { name: 'Snus', amount: null },
+    { name: 'Kaffe', amount: null },
+    { name: 'Kantina', amount: null }
+])
+
+const onButtonClick = () => {}
+</script>
