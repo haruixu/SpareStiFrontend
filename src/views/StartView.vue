@@ -6,18 +6,18 @@
           <div class="flex flex-col items-center pt-40 absolute top-0 left-0 right-0 z-10">
               <img src="@/assets/start_page/Spare.png" alt="Spare" class="w-1/6 h-auto" />
               <img src="@/assets/SPARESTI.png" alt="SPARESTI" class="w-5/12 h-auto mt-2" />
-              <p class="mt-2 text-2xl font-bold">GJØR SPARING TIL EN LEK!</p>
+              <p class="mt-2 lg:text-2xl md:text-lg text-sm font-bold">GJØR SPARING TIL EN LEK!</p>
           </div>
           
           <div class="flex flex-col -translate-y-1/2 items-end space-y-6 z-20 absolute sm:top-1/4 sm:left-3/4 sm:w-1/6 top:1/2 w-2/3 right-1/2">
               <button
-                  class="md:py-3 md:px-16 py-2 px-12 border border-[#95E35D] shadow-lg rounded-lg transition-all duration-500 bg-[#95E35D] hover:bg-white text-xs sm:text-base"
+                  class="md:py-3 md:px-0 md:w-3/4 py-2 px-12 border border-[#95E35D] shadow-lg rounded-lg transition-all duration-500 bg-[#95E35D] hover:bg-white text-xs sm:text-base"
                   @click=""
               >
                   Start her!
               </button>
               <button
-                  class="md:py-3 md:px-16 py-2 px-12  border border-[#95E35D] shadow-lg rounded-lg transition-all duration-500 bg-white hover:bg-[#95E35D] text-xs sm:text-base"
+                  class="md:py-3 md:px-0 md:w-3/4 py-2 px-12  border border-[#95E35D] shadow-lg rounded-lg transition-all duration-500 bg-white hover:bg-[#95E35D] text-xs sm:text-base"
                   @click=""
               >
                   Logg inn
