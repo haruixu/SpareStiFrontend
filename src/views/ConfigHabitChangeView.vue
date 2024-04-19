@@ -40,7 +40,12 @@
         </div>
         <ContinueButtonComponent
             @click="onButtonClick"
-            class="px-10 py-3 text-2xl font-bold self-end"
+            :disabled="selectedOption === null"
+            :style="{
+                opacity: selectedOption === null ? '0.6' : '1',
+                cursor: selectedOption === null ? 'not-allowed' : 'pointer'
+            }"
+            class="px-10 py-3 text-2xl self-end"
         ></ContinueButtonComponent>
     </div>
 </template>

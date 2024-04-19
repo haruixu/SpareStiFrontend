@@ -2,8 +2,7 @@
     <button class="continue-button">Fortsett</button>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .continue-button {
