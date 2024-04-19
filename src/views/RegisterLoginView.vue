@@ -7,7 +7,7 @@ const isLogin = ref<boolean>(true)
 </script>
 
 <template>
-    <div class="grid grid-cols-2 gap-10">
+    <div class="flex flex-col items-center gap-5 justify-center sm:flex-row">
         <div class="border-2 border-black flex items-center">
             <h1>Dette er et bilde</h1>
             <button class="border border-black">Test</button>

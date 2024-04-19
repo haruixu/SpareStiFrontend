@@ -26,7 +26,7 @@ watch(
 </script>
 
 <template>
-    <div class="flex flex-col justify-center gap-5 mx-10">
+    <div class="flex flex-col justify-center gap-5 w-full">
         <div class="flex flex-col">
             <p class="mx-4">Brukernavn</p>
             <input
