@@ -28,44 +28,70 @@ describe('FormRegister', () => {
         expect(wrapper.text()).toContain('Passord')
         expect(wrapper.text()).toContain('Registrer deg')
 
-        expect(wrapper.find('input[type="text"]').exists()).toBe(true)
-        expect(wrapper.find('input[type="password"]').exists()).toBe(true)
-        expect(wrapper.find('button').exists()).toBe(true)
+        expect(wrapper.find('input[name="firstname"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="lastname"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="email"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="username"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="password"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="confirm"]').exists()).toBe(true)
 
-        expect((wrapper.find('input[type="text"]').element as HTMLInputElement).value).toBe('')
-        expect((wrapper.find('input[type="password"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="firstname"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="lastname"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="email"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="username"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="password"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="confirm"]').element as HTMLInputElement).value).toBe('')
+
+        expect(wrapper.find('button[name="submit"]').exists()).toBe(true)
     })
 
     it('disables button when none inputs are filled', () => {
-        const button = wrapper.findAll('button').find((b: any) => b.text() === 'Registrer deg')
+        const button = wrapper.find('button[name="submit"]')
         expect(button.attributes('disabled')).toBeDefined()
     })
 
-    it('disables button when only username is filled', () => {
-        const button = wrapper.findAll('button').find((b: any) => b.text() === 'Registrer deg')
+    it('enables button when all inputs are filled', async () => {
+        const button = wrapper.find('button[name="submit"]')
 
-        const inputUsername = wrapper.find('input[type="text"]')
-        inputUsername.setValue('username')
-        expect(button.attributes('disabled')).toBeDefined()
-    })
+        wrapper.find('input[name="firstname"]').setValue('firstname')
+        wrapper.find('input[name="lastname"]').setValue('lastname')
+        wrapper.find('input[name="email"]').setValue('email@test.work')
+        wrapper.find('input[name="username"]').setValue('username')
+        wrapper.find('input[name="password"]').setValue('password')
+        wrapper.find('input[name="confirm"]').setValue('password')
 
-    it('disables button when only password is filled', () => {
-        const button = wrapper.findAll('button').find((b: any) => b.text() === 'Registrer deg')
-
-        const inputPassword = wrapper.find('input[type="password"]')
-        inputPassword.setValue('password')
-        expect(button.attributes('disabled')).toBeDefined()
-    })
-
-    it('enables button when input', async () => {
-        const button = wrapper.findAll('button').find((b: any) => b.text() === 'Registrer deg')
-        const inputUsername = wrapper.find('input[type="text"]')
-        const inputPassword = wrapper.find('input[type="password"]')
-
-        inputUsername.setValue('username')
-        inputPassword.setValue('password')
         await wrapper.vm.$nextTick()
 
         expect(button.attributes('disabled')).toBeUndefined()
+    })
+
+    it('disables button when password and confirm password do not match', async () => {
+        const button = wrapper.find('button[name="submit"]')
+
+        wrapper.find('input[name="firstname"]').setValue('firstname')
+        wrapper.find('input[name="lastname"]').setValue('lastname')
+        wrapper.find('input[name="email"]').setValue('email@test.work')
+        wrapper.find('input[name="username"]').setValue('username')
+        wrapper.find('input[name="password"]').setValue('password')
+        wrapper.find('input[name="confirm"]').setValue('password2')
+
+        await wrapper.vm.$nextTick()
+
+        expect(button.attributes('disabled')).toBeDefined()
+    })
+
+    it('disable button when email is invalid', async () => {
+        const button = wrapper.find('button[name="submit"]')
+
+        wrapper.find('input[name="firstname"]').setValue('firstname')
+        wrapper.find('input[name="lastname"]').setValue('lastname')
+        wrapper.find('input[name="email"]').setValue('email')
+        wrapper.find('input[name="username"]').setValue('username')
+        wrapper.find('input[name="password"]').setValue('password')
+        wrapper.find('input[name="confirm"]').setValue('password')
+
+        await wrapper.vm.$nextTick()
+
+        expect(button.attributes('disabled')).toBeDefined()
     })
 })

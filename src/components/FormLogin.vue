@@ -53,6 +53,7 @@ watch(
         </div>
         <div class="flex flex-row gap-5">
             <button
+                name="submit"
                 :disabled="'' == username.valueOf() || '' == password.valueOf()"
                 class="grow-0"
                 @click="submitForm"

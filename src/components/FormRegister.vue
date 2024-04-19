@@ -53,9 +53,9 @@ watch(
             <p class="mx-4">Fornavn*</p>
             <input
                 v-model="firstname"
+                name="firstname"
                 :class="{ 'bg-green-100': '' !== firstname.valueOf() }"
                 class="bg-red-100"
-                name="firstname"
                 placeholder="Skriv inn fornavn"
                 type="text"
             />
@@ -64,9 +64,9 @@ watch(
             <p class="mx-4">Etternavn*</p>
             <input
                 v-model="lastname"
+                name="lastname"
                 :class="{ 'bg-green-100': '' !== lastname.valueOf() }"
                 class="bg-red-100"
-                name="lastname"
                 placeholder="Skriv inn etternavn"
                 type="text"
             />
@@ -75,9 +75,9 @@ watch(
             <p class="mx-4">E-post*</p>
             <input
                 v-model="email"
+                name="email"
                 :class="{ 'bg-green-100': isEmailValid }"
                 class="bg-red-100"
-                name="email"
                 placeholder="Skriv inn e-post"
                 type="text"
             />
@@ -117,7 +117,7 @@ watch(
             />
         </div>
         <div class="flex flex-row gap-5">
-            <button :disabled="isFormInvalid" class="grow-0" @click="submitForm">
+            <button :disabled="isFormInvalid" class="grow-0" name="submit" @click="submitForm">
                 Registrer deg
             </button>
             <p>{{ errorMessage }}</p>
