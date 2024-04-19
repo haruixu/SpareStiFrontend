@@ -7,10 +7,10 @@
                     'border-[var(--green)] border-4': selectedOption === 'litt',
                     'border-gray-300 border-2': selectedOption !== 'litt'
                 }"
-                class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]-500"
+                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('litt')"
             >
-                <img src="@/assets/nose.png" alt="Pig nose" class="h-16 md:h-20" />
+                <img src="@/assets/nose.png" alt="Pig nose" class="h-12 sm:h-1/3"/>
                 <p class="mt-2 text-lg font-bold">Litt kjent</p>
             </div>
             <div
@@ -18,10 +18,10 @@
                     'border-[var(--green)] border-4': selectedOption === 'noe',
                     'border-gray-300 border-2': selectedOption !== 'noe'
                 }"
-                class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('noe')"
             >
-                <img src="@/assets/head.png" alt="Pig face" class="h-16 md:h-20" />
+                <img src="@/assets/head.png" alt="Pig face" class="h-12 sm:h-1/3" />
                 <p class="mt-2 text-lg font-bold">Noe kjent</p>
             </div>
             <div
@@ -29,10 +29,10 @@
                     'border-[var(--green)] border-4': selectedOption === 'godt',
                     'border-gray-300 border-2': selectedOption !== 'godt'
                 }"
-                class="flex flex-col items-center justify-center w-64 h-64 p-2.5 cursor-pointer transition-colors rounded-lg hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('godt')"
             >
-                <img src="@/assets/pig.png" alt="Whole pig" class="h-16 md:h-20" />
+                <img src="@/assets/pig.png" alt="Whole pig" class="h-12 sm:h-1/3" />
                 <p class="mt-2 text-lg font-bold">Godt kjent</p>
             </div>
         </div>
