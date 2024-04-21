@@ -12,7 +12,7 @@ const router = createRouter({
         {
             path: '/login',
             name: 'login',
-            component: () => import('../views/LoginView.vue')
+            component: () => import('../views/RegisterLoginView.vue')
         },
         {
             path: '/profil',
@@ -23,7 +23,6 @@ const router = createRouter({
             path: '/sparemaal',
             name: 'goals',
             component: () => import('../views/GoalView.vue')
-
         },
         {
             path: '/spareutfordringer',
@@ -34,6 +33,31 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: () => import('../views/NotFoundView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg1',
+            name: 'configurations1',
+            component: () => import('../views/ConfigHabitChangeView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg2',
+            name: 'configurations2',
+            component: () => import('../views/ConfigFamiliarWithSavingsView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg3',
+            name: 'configurations3',
+            component: () => import('../views/ConfigSpendingItemsView.vue')
+        },
+        {
+            path: '/konfigurasjonSteg4',
+            name: 'configurations4',
+            component: () => import('../views/ConfigSpendingItemsAmountView.vue')
+        },
+        {
+            path: '/forsteSparemaal',
+            name: 'firstSavingGoal',
+            component: () => import('../views/FirstSavingGoalView.vue')
         }
     ]
 })

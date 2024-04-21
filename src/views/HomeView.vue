@@ -151,7 +151,7 @@ const challenges = ref([
   { title: 'Gaming',  challengeType: 'GAMING', saved: 20, target: 100, description: 'Morning boost', completion: 20 },
   // Other challenges...
 ])
-// Additional state to track if the animation has been played
+
 
 // Computed current goal
 const currentGoal = computed(() => {
@@ -278,8 +278,6 @@ function animateIcon() {
           targets: icon,
           translateX: 0, // Reset translation to original
           translateY: 0, // Reset translation to original
-          opacity: 0, // Fade out once it reaches the target
-          scale: 1,
           duration: 500,
         });
 }
@@ -296,6 +294,7 @@ function getPigStepsIcon() {
   return 'src/assets/pigSteps.png';
 }
 
+// TODO - Change when EditGoal view is created
 function goToEditGoal() {
   router.push({ name: 'EditGoal' });
 }
