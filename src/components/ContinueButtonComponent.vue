@@ -1,8 +1,29 @@
 <template>
-    <button class="continue-button">Fortsett</button>
+    <button
+        class="continue-button"
+        :class="{ 'opacity-60 cursor-not-allowed': disabled }"
+        :disabled="disabled"
+        @click="handleClick"
+    >
+        Fortsett
+    </button>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+    disabled: Boolean
+})
+
+const emit = defineEmits(['click'])
+
+const handleClick = () => {
+    if (!props.disabled) {
+        emit('click')
+    }
+}
+</script>
 
 <style scoped>
 .continue-button {
@@ -17,5 +38,10 @@
 
 .continue-button:active {
     filter: brightness(75%);
+}
+
+.continue-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 </style>

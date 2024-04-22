@@ -37,13 +37,9 @@
             </div>
         </div>
         <ContinueButtonComponent
-            @click="onButtonClick"
             :disabled="selectedOption === null"
-            :style="{
-                opacity: selectedOption === null ? '0.6' : '1',
-                cursor: selectedOption === null ? 'not-allowed' : 'pointer'
-            }"
-            class="px-10 py-3 text-2xl self-end"
+            @click="onButtonClick"
+            class="px-10 py-3 text-2xl self-end mb-4 mt-0"
         ></ContinueButtonComponent>
     </div>
 </template>
