@@ -60,6 +60,11 @@ const router = createRouter({
             path: '/konfigurasjonSteg4',
             name: 'configurations4',
             component: () => import('@/views/ConfigSpendingItemsAmountView.vue')
+        },
+        {
+            path: '/forsteSparemaal',
+            name: 'firstSavingGoal',
+            component: () => import('@/views/FirstSavingGoalView.vue')
         }
     ]
 })
