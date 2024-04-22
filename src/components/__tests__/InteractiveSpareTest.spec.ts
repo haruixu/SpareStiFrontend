@@ -4,10 +4,11 @@ import SpeechBubbleComponent from '@/components/InteractiveSpare.vue' // Adjust 
 
 describe('SpeechBubbleComponent', () => {
     it('renders correctly with default props', () => {
-        const wrapper = mount(SpeechBubbleComponent, {
+        const wrapper:any = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'left',
-                speech: ['Hello', 'World']
+                speech: ['Hello', 'World'],
+                pngSize: 100
             }
         })
         expect(wrapper.exists()).toBeTruthy()
@@ -17,14 +18,16 @@ describe('SpeechBubbleComponent', () => {
         const wrapper = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'right',
-                speech: ['Hello', 'World']
+                speech: ['Hello', 'World'],
+                pngSize:100
             }
         })
         expect(wrapper.find('div').classes()).toContain('flex-row')
         const wrapperReverse = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'left',
-                speech: ['Hello', 'World']
+                speech: ['Hello', 'World'],
+                pngSize: 100,
             }
         })
         expect(wrapperReverse.find('div').classes()).toContain('flex-row-reverse')
@@ -34,7 +37,8 @@ describe('SpeechBubbleComponent', () => {
         const wrapper = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'right',
-                speech: ['Hello', 'World']
+                speech: ['Hello', 'World'],
+                pngSize:100,
             }
         })
         expect(wrapper.find('img').classes()).toContain('scale-x-[-1]')
@@ -44,7 +48,8 @@ describe('SpeechBubbleComponent', () => {
         const wrapper = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'left',
-                speech: ['First speech', 'Second speech']
+                speech: ['First speech', 'Second speech'],
+                pngSize: 100
             }
         })
         expect(wrapper.find('span').text()).toBe('First speech')

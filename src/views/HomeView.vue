@@ -51,7 +51,7 @@
                                 />
                                 <!-- Progress Bar, if the challenge is not complete -->
                                 <div
-                                    v-if="challenge.completion < 100"
+                                    v-if="challenge.completion !=undefined &&  challenge.completion< 100"
                                     class="flex-grow w-full mt-2"
                                 >
                                     <div class="flex flex-row">
@@ -88,8 +88,9 @@
                                 >
                             </div>
                             <!-- Check Icon -->
-                            <div v-if="challenge.completion >= 100" class="max-w-16 max-h-16">
-                                <img src="@/assets/completed.png" alt="" />️
+                          <div v-if="challenge.completion !== undefined && challenge.completion >= 100" class="max-w-16 max-h-16">
+
+                          <img src="@/assets/completed.png" alt="" />️
                             </div>
                             <div v-else class="max-w-16 max-h-16">
                                 <img src="@/assets/pending.png" alt="" />️
@@ -137,21 +138,21 @@
             <img src="@/assets/finishLine.png" class="w-1/2 max-h-4 mx-auto" alt="Finish Line" />
 
             <!-- Goal -->
-            <div v-if="currentGoal" class="flex flex-row gap-24 m-t-2 pt-6 mx-auto">
+            <div v-if="goal" class="flex flex-row gap-24 m-t-2 pt-6 mx-auto">
                 <div class="flex flex-col items-start">
                     <img
-                        :src="getGoalIcon(currentGoal)"
+                        :src="getGoalIcon(goal)"
                         class="w-12 h-12 mx-auto"
-                        :alt="currentGoal.title"
+                        :alt="goal.title"
                     />
-                    <div class="text-lg font-bold">{{ currentGoal.title }}</div>
+                    <div class="text-lg font-bold">{{ goal.title }}</div>
                 </div>
                 <div class="flex flex-col items-end">
                     <div @click="goToEditGoal" class="cursor-pointer">
                         <h3 class="text-blue-500 text-base">Endre mål</h3>
                     </div>
                     <div ref="targetRef" class="bg-yellow-400 px-4 py-1 rounded-full text-black">
-                        {{ currentGoal.saved }}kr / {{ currentGoal.target }}kr
+                        {{ goal.saved }}kr / {{ goal.target }}kr
                     </div>
                 </div>
             </div>
@@ -168,11 +169,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import anime from 'animejs'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallange.vue'
 import router from '@/router'
+import type {Challenge} from "@/types/challenge";
+import type {Goal} from "@/types/goal"
 
 // Define your speech array
 const speechArray = [
@@ -188,66 +191,44 @@ const iconRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 
-const goals = ref([
-    {
-        title: 'Gaming',
-        saved: 280,
-        target: 100,
-        description: 'Gaming console',
-        priority: 1,
-        completion: 0
-    }
-    // Other goals...
-])
-const challenges = ref([
-    {
-        title: 'Kaffe',
-        challengeType: 'COFFEE',
-        saved: 100,
-        target: 100,
-        description: 'Morning boost',
-        completion: 100
-    },
-    {
-        title: 'Mat og Drikke',
-        challengeType: 'SNACKS',
-        saved: 80,
-        target: 100,
-        description: 'Morning boost',
-        completion: 80
-    },
-    {
-        title: 'Gaming',
-        challengeType: 'GAMING',
-        saved: 20,
-        target: 100,
-        description: 'Morning boost',
-        completion: 20
-    },
-    {
-        title: 'Kaffe',
-        challengeType: 'COFFEE',
-        saved: 90,
-        target: 100,
-        description: 'Morning boost',
-        completion: 90
-    },
-    {
-        title: 'Mat og Drikke',
-        challengeType: 'SNACKS',
-        saved: 80,
-        target: 100,
-        description: 'Morning boost',
-        completion: 80
-    }
-    // Other challenges...
-])
 
-// Computed current goal
-const currentGoal = computed(() => {
-    // Logic to determine the current goal
-    return goals.value.find((goal) => goal.completion < 100)
-})
+const goal: Goal ={
+  id: 1,
+  title: "gaming",
+  saved: 200,
+  description: "none",
+  target: 400,
+  completion: 50,
+  priority: 0,
+  createdOn: new Date(),
+  due: new Date,
+}
+
+const challenge: Challenge = {
+  title: "Coffe",
+  saved: 1200.50,
+  target: 3000,
+  description: "Saving monthly for a year-end vacation to Bali",
+  createdOn: new Date('2023-01-01T00:00:00Z'),
+  dueDate: new Date('2023-12-31T23:59:59Z'),
+  type: "COFFE",
+  completion: 40,
+  completedOn: undefined // Not yet completed
+};
+const challenge1: Challenge = {
+  title: "Snacks",
+  saved: 200,
+  target: 400,
+  description: "Saving monthly for a year-end vacation to Bali",
+  createdOn: new Date('2023-01-01T00:00:00Z'),
+  dueDate: new Date('2023-12-31T23:59:59Z'),
+  type: "SNACKS",
+  completion: 50,
+  completedOn: undefined // Not yet completed
+};
+
+const challenges = ref([challenge, challenge1]);
+
 
 // AddSpareUtfordring
 function addSpareUtfordring() {
@@ -255,7 +236,7 @@ function addSpareUtfordring() {
 }
 
 // Increment saved amount
-function incrementSaved(challenge) {
+function incrementSaved(challenge: Challenge) {
     challenge.saved += 10
     if (challenge.saved >= challenge.target) {
         challenge.completion = 100
@@ -279,13 +260,13 @@ const loadAnimatedStates = () => {
     animatedChallenges.value = animated ? new Set(JSON.parse(animated)) : new Set()
 }
 
-const saveAnimatedState = (title) => {
+const saveAnimatedState = (title: String) => {
     animatedChallenges.value.add(title)
     localStorage.setItem('animatedChallenges', JSON.stringify([...animatedChallenges.value]))
 }
 
-const animateChallenge = (challenge) => {
-    if (challenge.completion >= 100 && !animatedChallenges.value.has(challenge.title)) {
+const animateChallenge = (challenge: Challenge) => {
+    if (challenge.completion !== undefined && challenge.completion >= 100 && !animatedChallenges.value.has(challenge.title)) {
         console.log('Animating for:', challenge.title)
         recalculateAndAnimate() // Assumes this function triggers the actual animation
         saveAnimatedState(challenge.title)
@@ -383,11 +364,14 @@ function animateIcon() {
 }
 
 // Helper methods to get icons
-function getChallengeIcon(challenge) {
-    return `src/assets/${challenge.challengeType.toLowerCase()}.png`
+function getChallengeIcon(challenge: Challenge): string {
+  if (challenge.type === undefined) {
+    throw new Error("Challenge type is undefined");
+  }
+  return `src/assets/${challenge.type.toLowerCase()}.png`
 }
 
-function getGoalIcon(goal) {
+function getGoalIcon(goal: Goal): string {
     return `src/assets/${goal.title.toLowerCase()}.png`
 }
 function getPigStepsIcon() {

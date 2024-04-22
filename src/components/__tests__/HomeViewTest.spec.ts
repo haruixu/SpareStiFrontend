@@ -2,27 +2,37 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import HomeView from '@/views/HomeView.vue' // Adjust the import path as needed.
 import anime from 'animejs'
+import type {Challenge} from "../../types/challenge";
 
 // Setup localStorage mock
 const localStorageMock = (function () {
-    let store = {}
+    let store = {} as { [key: string]: string };
     return {
-        getItem: vi.fn((key) => store[key] || null),
-        setItem: vi.fn((key, value) => {
-            store[key] = value.toString()
+        getItem: vi.fn((key: string) => store[key] || null),
+        setItem: vi.fn((key: string, value: any) => {
+            store[key] = value.toString();
         }),
         clear: vi.fn(() => {
-            store = {}
+            store = {};
         }),
-        removeItem: vi.fn((key) => {
-            delete store[key]
+        removeItem: vi.fn((key: string) => {
+            delete store[key];
+        }),
+        get length() {
+            return Object.keys(store).length;
+        },
+        key: vi.fn((index: number): string | null => {
+            const keys = Object.keys(store);
+            return keys[index] || null;
         }),
         __store: store // expose store for assertions
-    }
-})()
+    };
+})();
+Object.defineProperty(global, 'localStorage', {
+    value: localStorageMock,
+    writable: true
+});
 
-// Apply the mock
-global.localStorage = localStorageMock
 
 // Mocking animejs with a default export
 vi.mock('animejs', () => ({
@@ -35,7 +45,7 @@ vi.mock('animejs', () => ({
 }))
 
 describe('HomeView', () => {
-    let wrapper
+    let wrapper: any
 
     beforeEach(() => {
         // Clear localStorage and reset all mocks
@@ -58,16 +68,20 @@ describe('HomeView', () => {
     })
 
     it('handles incrementSaved correctly', async () => {
-        const challenge = { title: 'Kaffe', saved: 90, target: 100, completion: 90 }
+        const challenge: Challenge = {
+            createdOn: new Date(),
+            description: "",
+            title: 'Kaffe', saved: 90, target: 100, completion: 90 }
         wrapper.vm.incrementSaved(challenge)
         expect(challenge.saved).toBe(100)
         expect(challenge.completion).toBe(100)
     })
 
     it('animates on challenge completion', async () => {
-        const challenge = {
+        const challenge: Challenge = {
+            createdOn: new Date(), description: "",
             title: 'Mat og Drikke',
-            challengeType: 'SNACKS',
+            type: 'SNACKS',
             saved: 100,
             target: 100,
             completion: 100

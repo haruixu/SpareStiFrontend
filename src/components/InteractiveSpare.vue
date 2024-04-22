@@ -25,21 +25,14 @@ import { ref, defineProps, computed } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 
 interface Props {
-    speech?: Array<String>
-    // direction string should be either 'left' or 'right'
-    direction: {
-        type: String
-        required: true
-    }
-    pngSize: {
-        type: Number
-        default: 20
-    }
+    speech?: string[] // Using TypeScript's type for speech as an array of strings
+    direction: 'left' | 'right' // This restricts direction to either 'left' or 'right'
+    pngSize: number // Just declaring the type directly since it's simple
 }
 
 const props = defineProps<Props>()
 
-const speech = ref<string[]>(props.speech || [])
+const speech = ref<String[]>(props.speech || [])
 
 const currentSpeechIndex = ref(0)
 const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])
