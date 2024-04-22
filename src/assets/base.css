@@ -9,7 +9,7 @@
     --bright: #f7da7c;
 
     --accent1: #f4bab9;
-    --accent2: #b2c79f;
+    --accent2: #95e35d;
     --accent3: #ef9691;
 }
 
@@ -48,7 +48,6 @@ body {
         background-color 0.5s;
     line-height: 1.6;
     font-family: 'Karla', sans-serif;
-    font-size: 15px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
