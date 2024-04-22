@@ -5,10 +5,8 @@
 @tailwind utilities;
 
 #app {
-    max-width: 1280px;
     margin: 0 auto auto auto;
     width: 100%;
-    padding: 2rem;
     font-weight: normal;
 
     display: flex;
