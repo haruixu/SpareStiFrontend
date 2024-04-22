@@ -1,22 +1,21 @@
 <template>
-  <div class="flex flex-row max-h-[80vh]">
-    <div class="flex flex-col basis-1/2">
+  <div class="flex flex-col max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
+    <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/2">
       <InteractiveSpare :speech="speech"
                         :direction="'right'"
-                        :pngSize="60"
-                        class="w-80 h-80"
+                        :pngSize=60
+                        class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto md:mx-auto md:my-20"
       ></InteractiveSpare>
-      <div class="m-8 p-8">
+      <div class=" flex flex-row gap-12 items-center mx-auto p-8 md:flex-col md:gap-4 md:m-8">
         <ButtonAddGoalOrChallenge
             :buttonText="'Legg til sparemål'"
-            class="mb-4"
         />
         <ButtonAddGoalOrChallenge
             :buttonText="'Legg til spareutfordring'"
         />
       </div>
     </div>
-    <div class="flex flex-col basis-1/2">
+    <div class="flex flex-col basis-2/3 max-h-[70vh] mx-auto max-w-5/6 md:basis-1/2 md:max-h-full">
       <div class="flex justify-center align-center">
         <span class="
             w-full
@@ -32,10 +31,11 @@
           Din Sparesti
         </span>
       </div>
-      <div ref="containerRef" class="container mx-auto p-6 no-scrollbar max-h-[60vh] overflow-y-auto">
+      <div class="h-2 w-4/6 bg-black mx-auto my-2 opacity-10"></div>
+      <div ref="containerRef" class="container relative mx-auto p-6 no-scrollbar max-h-[60vh] overflow-y-auto">
         <div v-for="(challenge, index) in challenges" :key="challenge.title" class="flex flex-col items-center mx-8">
           <!-- Challenge Row -->
-          <div :class="{ 'justify-end ml-30': index % 2 === 1, 'justify-start': index % 2 === 0 }" class="flex flex-row w-2/3 ml-8">
+          <div :class="{ 'justify-end ml-40 md:ml-30': index % 2 === 1, 'justify-start': index % 2 === 0 }" class="flex flex-row w-2/3 ml-8">
             <!-- Challenge Icon and Details -->
             <div class="flex">
               <!-- Challenge Icon -->
@@ -60,10 +60,8 @@
                     <button
                         @click="incrementSaved(challenge)"
                         type="button"
-                        class="inline-block mb-2 ml-2 max-h-8 max-w-8 rounded-full bg-green-500 p-1 uppercase leading-normal text-white bg-color-green shadow-green-500 transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-green-200 focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                      </svg>
+                        class="inline-block mb-2 ml-2 h-8 w-8 rounded-full bg-green-500 p-1 uppercase leading-normal text-white bg-color-green shadow-green-500 transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-green-200 focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong">
+                      +
                     </button>
 
                   </div>
@@ -80,16 +78,30 @@
             </div>
           </div>
           <!-- Piggy Steps, centered -->
-          <div v-if="index !== challenges.length - 1" class="flex justify-center w-full">
+          <div v-if="index !== challenges.length" class="flex justify-center w-full">
             <img :src="getPigStepsIcon()" :class="{ 'transform scale-x-[-1]': (index) % 2 === 0 }" class="w-20 h-20" alt="Pig Steps">
           </div>
-        </div>
-      </div>
 
+          <div v-if="index === challenges.length - 1 && index % 2 === 0" class="ml-40 flex flex-row">
+            <button class="text-2xl mr-2 color-black bg-slate-400">+</button>
+            <span class="">Legg til <br/>Spareutfordring</span>
+          </div>
+          <div v-else-if="index === challenges.length - 1 && index % 2 !== 0" class="mr-40">
+            <button class="text-2xl mr-2 color-black bg-slate-400 rounded-full" @click="addSpareUtfordring">+</button>
+          </div>
+        </div>
+        <!-- Sparemannen -->
+        <InteractiveSpare :speech="speech"
+                          :direction="'left'"
+                          :pngSize="20"
+                          class="fixed bottom-0 right-0 mb-40 mr-4 md:opacity-0 md:h-0 md:w-0"
+        ></InteractiveSpare>
+      </div>
       <!-- Finish line -->
-      <img src="@/assets/finishLine.png" class="w-full max-h-4 mx-auto" alt="Finish Line">
+      <img src="@/assets/finishLine.png" class="w-1/2 max-h-4 mx-auto" alt="Finish Line">
+
       <!-- Goal -->
-      <div v-if="currentGoal" class="flex items-center justify-between m-t-2 pt-6">
+      <div v-if="currentGoal" class="flex flex-row gap-24 m-t-2 pt-6 mx-auto">
         <div class="flex flex-col items-start">
           <img :src="getGoalIcon(currentGoal)" class="w-12 h-12 mx-auto" :alt="currentGoal.title">
           <div class="text-lg font-bold">{{ currentGoal.title }}</div>
@@ -148,7 +160,6 @@ const challenges = ref([
   { title: 'Gaming',  challengeType: 'GAMING', saved: 20, target: 100, description: 'Morning boost', completion: 20 },
   { title: 'Kaffe', challengeType: 'COFFEE', saved: 90, target: 100, description: 'Morning boost', completion: 90 },
   { title: 'Mat og Drikke',  challengeType: 'SNACKS', saved: 80, target: 100, description: 'Morning boost', completion: 80 },
-  { title: 'Gaming',  challengeType: 'GAMING', saved: 20, target: 100, description: 'Morning boost', completion: 20 },
   // Other challenges...
 ])
 
@@ -158,6 +169,11 @@ const currentGoal = computed(() => {
   // Logic to determine the current goal
   return goals.value.find(goal => goal.completion < 100)
 })
+
+// AddSpareUtfordring
+function addSpareUtfordring() {
+  console.log('Add Spare Utfordring');
+}
 
 
 
