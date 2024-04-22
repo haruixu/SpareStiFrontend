@@ -51,7 +51,10 @@
                                 />
                                 <!-- Progress Bar, if the challenge is not complete -->
                                 <div
-                                    v-if="challenge.completion !=undefined &&  challenge.completion< 100"
+                                    v-if="
+                                        challenge.completion != undefined &&
+                                        challenge.completion < 100
+                                    "
                                     class="flex-grow w-full mt-2"
                                 >
                                     <div class="flex flex-row">
@@ -88,9 +91,14 @@
                                 >
                             </div>
                             <!-- Check Icon -->
-                          <div v-if="challenge.completion !== undefined && challenge.completion >= 100" class="max-w-16 max-h-16">
-
-                          <img src="@/assets/completed.png" alt="" />️
+                            <div
+                                v-if="
+                                    challenge.completion !== undefined &&
+                                    challenge.completion >= 100
+                                "
+                                class="max-w-16 max-h-16"
+                            >
+                                <img src="@/assets/completed.png" alt="" />️
                             </div>
                             <div v-else class="max-w-16 max-h-16">
                                 <img src="@/assets/pending.png" alt="" />️
@@ -140,11 +148,7 @@
             <!-- Goal -->
             <div v-if="goal" class="flex flex-row gap-24 m-t-2 pt-6 mx-auto">
                 <div class="flex flex-col items-start">
-                    <img
-                        :src="getGoalIcon(goal)"
-                        class="w-12 h-12 mx-auto"
-                        :alt="goal.title"
-                    />
+                    <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
                     <div class="text-lg font-bold">{{ goal.title }}</div>
                 </div>
                 <div class="flex flex-col items-end">
@@ -174,8 +178,8 @@ import anime from 'animejs'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallange.vue'
 import router from '@/router'
-import type {Challenge} from "@/types/challenge";
-import type {Goal} from "@/types/goal"
+import type { Challenge } from '@/types/challenge'
+import type { Goal } from '@/types/goal'
 
 // Define your speech array
 const speechArray = [
@@ -191,44 +195,42 @@ const iconRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 
-
-const goal: Goal ={
-  id: 1,
-  title: "gaming",
-  saved: 200,
-  description: "none",
-  target: 400,
-  completion: 50,
-  priority: 0,
-  createdOn: new Date(),
-  due: new Date,
+const goal: Goal = {
+    id: 1,
+    title: 'gaming',
+    saved: 200,
+    description: 'none',
+    target: 400,
+    completion: 50,
+    priority: 0,
+    createdOn: new Date(),
+    due: new Date()
 }
 
 const challenge: Challenge = {
-  title: "Coffe",
-  saved: 1200.50,
-  target: 3000,
-  description: "Saving monthly for a year-end vacation to Bali",
-  createdOn: new Date('2023-01-01T00:00:00Z'),
-  dueDate: new Date('2023-12-31T23:59:59Z'),
-  type: "COFFE",
-  completion: 40,
-  completedOn: undefined // Not yet completed
-};
+    title: 'Coffe',
+    saved: 1200.5,
+    target: 3000,
+    description: 'Saving monthly for a year-end vacation to Bali',
+    createdOn: new Date('2023-01-01T00:00:00Z'),
+    dueDate: new Date('2023-12-31T23:59:59Z'),
+    type: 'COFFE',
+    completion: 40,
+    completedOn: undefined // Not yet completed
+}
 const challenge1: Challenge = {
-  title: "Snacks",
-  saved: 200,
-  target: 400,
-  description: "Saving monthly for a year-end vacation to Bali",
-  createdOn: new Date('2023-01-01T00:00:00Z'),
-  dueDate: new Date('2023-12-31T23:59:59Z'),
-  type: "SNACKS",
-  completion: 50,
-  completedOn: undefined // Not yet completed
-};
+    title: 'Snacks',
+    saved: 200,
+    target: 400,
+    description: 'Saving monthly for a year-end vacation to Bali',
+    createdOn: new Date('2023-01-01T00:00:00Z'),
+    dueDate: new Date('2023-12-31T23:59:59Z'),
+    type: 'SNACKS',
+    completion: 50,
+    completedOn: undefined // Not yet completed
+}
 
-const challenges = ref([challenge, challenge1]);
-
+const challenges = ref([challenge, challenge1])
 
 // AddSpareUtfordring
 function addSpareUtfordring() {
@@ -266,7 +268,11 @@ const saveAnimatedState = (title: String) => {
 }
 
 const animateChallenge = (challenge: Challenge) => {
-    if (challenge.completion !== undefined && challenge.completion >= 100 && !animatedChallenges.value.has(challenge.title)) {
+    if (
+        challenge.completion !== undefined &&
+        challenge.completion >= 100 &&
+        !animatedChallenges.value.has(challenge.title)
+    ) {
         console.log('Animating for:', challenge.title)
         recalculateAndAnimate() // Assumes this function triggers the actual animation
         saveAnimatedState(challenge.title)
@@ -365,10 +371,10 @@ function animateIcon() {
 
 // Helper methods to get icons
 function getChallengeIcon(challenge: Challenge): string {
-  if (challenge.type === undefined) {
-    throw new Error("Challenge type is undefined");
-  }
-  return `src/assets/${challenge.type.toLowerCase()}.png`
+    if (challenge.type === undefined) {
+        return 'src/assets/coins.png'
+    }
+    return `src/assets/${challenge.type.toLowerCase()}.png`
 }
 
 function getGoalIcon(goal: Goal): string {

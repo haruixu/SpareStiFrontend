@@ -4,7 +4,7 @@ import SpeechBubbleComponent from '@/components/InteractiveSpare.vue' // Adjust 
 
 describe('SpeechBubbleComponent', () => {
     it('renders correctly with default props', () => {
-        const wrapper:any = mount(SpeechBubbleComponent, {
+        const wrapper: any = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'left',
                 speech: ['Hello', 'World'],
@@ -19,7 +19,7 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'right',
                 speech: ['Hello', 'World'],
-                pngSize:100
+                pngSize: 100
             }
         })
         expect(wrapper.find('div').classes()).toContain('flex-row')
@@ -27,7 +27,7 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'left',
                 speech: ['Hello', 'World'],
-                pngSize: 100,
+                pngSize: 100
             }
         })
         expect(wrapperReverse.find('div').classes()).toContain('flex-row-reverse')
@@ -38,7 +38,7 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'right',
                 speech: ['Hello', 'World'],
-                pngSize:100,
+                pngSize: 100
             }
         })
         expect(wrapper.find('img').classes()).toContain('scale-x-[-1]')
