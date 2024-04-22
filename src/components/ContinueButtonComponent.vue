@@ -7,9 +7,6 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
     name: 'ContinueButtonComponent',
-    emits: {
-        click: (event: Event) => true
-    },
     setup(props, { emit }) {
         const onClick = (event: Event) => {
             emit('click', event)
