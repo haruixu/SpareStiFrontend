@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import FormLogin from '@/components/FormLogin.vue'
 import FormRegister from '@/components/FormRegister.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const isLogin = ref<boolean>(true)
+
+onMounted(() => {
+    isLogin.value = router.currentRoute.value.path === '/logginn';
+})
+
+
 </script>
 
 <template>
-    <div class="flex flex-col items-center gap-5 justify-center sm:flex-row">
-        <div class="border-2 border-black flex items-center">
-            <h1>Dette er et bilde</h1>
+    <div class="flex flex-col items-center gap-5 justify-center md:flex-row h-screen">
+        <div class="flex items-center justify-center md:w-2/3">
+            <img src="@/assets/spare_og_sti.png" alt="Spare og sti logo" class="w-5/6 ml-10 md:mb-64"/>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col md:mr-10 md:mt-20 md:w-1/3 h-screen justify-start">
             <div class="flex flex-row gap-5 justify-center">
                 <h3
                     :class="{ selected: isLogin }"
