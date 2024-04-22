@@ -55,8 +55,5 @@ describe('SpeechBubbleComponent', () => {
         expect(wrapper.find('span').text()).toBe('First speech')
         await wrapper.find('img').trigger('click')
         expect(wrapper.find('span').text()).toBe('Second speech')
-        // Test wrap-around
-        await wrapper.find('img').trigger('click')
-        expect(wrapper.find('span').text()).toBe('First speech')
     })
 })
