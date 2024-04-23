@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalComponent from '@/components/ModalComponent.vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -31,10 +32,11 @@ const openForgotPasswordModal = (event: MouseEvent) => {
     isModalOpen.value = true
 }
 
-const submitReset = () => {
+const submitReset = async () => {
+    await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', { email: resetEmail.value })
+
     resetEmail.value = ''
     isModalOpen.value = false
-    // TODO: Implement logic for sending reset email
 }
 
 watch(
@@ -104,5 +106,3 @@ watch(
         @update:inputValue="resetEmail = $event"
     />
 </template>
-
-<style scoped></style>
