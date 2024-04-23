@@ -2,12 +2,13 @@
     <div class="flex flex-col items-center justify-start min-h-screen px-4 text-center">
         <div class="mb-20">
             <div
-                class="flex flex-col items-center justify-start bg-white shadow-md rounded-lg p-16 min-h-[500px] min-w-[400px] max-w-[400px]"
+                class="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-16"
+                style="height: 530px; min-height: 500px; min-width: 400px; max-width: 400px"
             >
                 <template v-if="!skipped && !accepted">
                     <div class="mb-6 w-full text-left">
                         <label for="savings-goal" class="block text-xl font-bold mb-2"
-                            >Jeg vil spare til:</label
+                        >Jeg vil spare til:</label
                         >
                         <input
                             type="text"
@@ -23,7 +24,7 @@
                     </div>
                     <div class="mb-8 w-full flex items-center">
                         <label for="amount" class="shrink-0 text-xl font-bold mr-2"
-                            >Jeg vil spare:</label
+                        >Jeg vil spare:</label
                         >
                         <input
                             type="text"
@@ -75,7 +76,7 @@
         <ContinueButtonComponent
             :disabled="!skipped && !accepted"
             @click="onButtonClick"
-            class="px-10 py-3 text-2xl font-bold self-end mb-80 mt-[-7px]"
+            class="px-10 py-3 text-lg font-bold self-end mb-80 mt-[-10px]"
         ></ContinueButtonComponent>
     </div>
 </template>

@@ -1,9 +1,9 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+    <div class="flex flex-col items-center justify-start min-h-screen px-4 text-center">
         <div class="mb-20">
             <div
-                class="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-16"
-                style="height: 500px; min-height: 500px; min-width: 400px; max-width: 400px"
+                class="flex flex-col items-center justify-start bg-white shadow-md rounded-lg p-16"
+                style="height: 530px; min-height: 500px; min-width: 400px; max-width: 400px"
             >
                 <template v-if="!skipped && !accepted">
                     <div class="mb-6 w-full text-left">
@@ -26,30 +26,31 @@
                             {{ buttonText }}
                         </button>
                     </div>
-                    <div class="flex justify-between w-full mt-auto space-x-2">
+                    <div class="flex justify-between w-full mt-4 space-x-2">
                         <button
-                            class="bg-[var(--green)] border 4 border-[var(--green)] hover:brightness-90 active:brightness-75 font-bold rounded-lg py-2 px-10 text-lg"
+                            class="border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all bg-[var(--green)] hover:brightness-90 active:brightness-75"
                             @click="skip"
+                            style="margin-top: 29px;"
                         >
                             Skip
                         </button>
                         <button
                             :class="[
-                                'border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all',
-                                {
-                                    'bg-[var(--green)] hover:brightness-90 active:brightness-75':
-                                        selectedOptions.length > 0
-                                },
-                                {
-                                    'opacity-60 bg-[rgba(149,227,93,0.6)] cursor-not-allowed':
-                                        selectedOptions.length === 0
-                                }
-                            ]"
+        'border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all',
+        {
+            'bg-[var(--green)] hover:brightness-90 active:brightness-75': selectedOptions.length > 0
+        },
+        {
+            'opacity-60 bg-[rgba(149,227,93,0.6)] cursor-not-allowed': selectedOptions.length === 0
+        }
+    ]"
                             :disabled="selectedOptions.length === 0"
                             @click="accept"
+                            style="margin-top: 29px;"
                         >
                             Godta
                         </button>
+
                     </div>
                 </template>
                 <template v-else>
@@ -62,7 +63,7 @@
         <ContinueButtonComponent
             :disabled="!skipped && !accepted"
             @click="onButtonClick"
-            class="px-10 py-3 text-2xl font-bold self-end mb-32 mt-[-11px]"
+            class="px-10 py-3 text-2xl font-bold self-end mb-32 mt-[-10px]"
         ></ContinueButtonComponent>
     </div>
 </template>
