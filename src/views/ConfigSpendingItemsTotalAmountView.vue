@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye bruker du per kjøp på ...</h1>
+        <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye bruker du totalt per uke på ...</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
             <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-100">
                 <div
@@ -81,7 +81,7 @@ const options = ref<Option[]>([
 ])
 
 const onButtonClick = () => {
-    router.push('/konfigurasjonSteg5')
+    router.push('/')
 }
 
 const filterAmount = (index: number, event: Event) => {

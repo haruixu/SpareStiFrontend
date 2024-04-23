@@ -24,7 +24,7 @@
 
 
 <script setup lang="ts">
-import { ref, defineProps, computed } from 'vue'
+import { computed, defineProps, ref } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 
 interface Props {
