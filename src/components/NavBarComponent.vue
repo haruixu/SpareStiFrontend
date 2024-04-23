@@ -20,7 +20,7 @@
             <router-link to="/hjem" class="nav-link" active-class="border-b-2">🏠Hjem</router-link>
             <router-link to="/sparemaal" class="nav-link" active-class="border-b-2">🎯Sparemål</router-link>
             <router-link to="/spareutfordringer" class="nav-link" active-class="border-b-2">💰Spareutfordringer</router-link>
-            <router-link to="/profil" class="nav-link" active-class="border-b-2">🤭Profil"</router-link>
+            <router-link to="/profil" class="nav-link" active-class="border-b-2">🤭Profil</router-link>
             <router-link to="/konfigurasjonSteg1" class="nav-link" active-class="border-b-2">🛠️Konfigurasjon</router-link>
             <button
                 @click="logout"
