@@ -12,9 +12,7 @@
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til spareutfordring'" />
             </div>
         </div>
-        <div
-            class="flex flex-col basis-2/3 max-h-full mx-auto max-w-5/6 md:basis-1/2"
-        >
+        <div class="flex flex-col basis-2/3 max-h-full mx-auto max-w-5/6 md:basis-1/2">
             <div class="flex justify-center align-center">
                 <span
                     class="w-full max-w-60 max-h-12 bg-green-500 text-white font-bold py-2 rounded mt-8 text-center space-x-2 drop-shadow-lg"
@@ -40,10 +38,20 @@
                         }"
                         class="flex flex-row w-2/3 ml-8"
                     >
-                      <div class="mr-10">
-                        <img v-if="index===3" src="@/assets/sleepingSpare.gif" alt="could not load" class="w-32 h-32  border-2 border-black"/>
-                        <img v-else-if="index===1" src="@/assets/golfSpare.gif" alt="could not load" class="w-32 h-32 border-2 border-black"/>
-                      </div>
+                        <div class="mr-10">
+                            <img
+                                v-if="index === 3"
+                                src="@/assets/sleepingSpare.gif"
+                                alt="could not load"
+                                class="w-32 h-32 border-2 border-black"
+                            />
+                            <img
+                                v-else-if="index === 1"
+                                src="@/assets/golfSpare.gif"
+                                alt="could not load"
+                                class="w-32 h-32 border-2 border-black"
+                            />
+                        </div>
                         <!-- Challenge Icon and Details -->
                         <div class="flex">
                             <!-- Challenge Icon -->
@@ -108,10 +116,20 @@
                                 <img src="@/assets/pending.png" alt="" />️
                             </div>
                         </div>
-                      <div  class="">
-                        <img v-if="index===0" src="@/assets/cowboySpare.gif" alt="could not load" class="h-32 w-32 border-2 border-black">
-                        <img v-else-if="index===2" src="@/assets/hotAirBalloonSpare.gif" class="h-32 w-32 border-black border-2" alt="could not load"/>
-                      </div>
+                        <div class="">
+                            <img
+                                v-if="index === 0"
+                                src="@/assets/cowboySpare.gif"
+                                alt="could not load"
+                                class="h-32 w-32 border-2 border-black"
+                            />
+                            <img
+                                v-else-if="index === 2"
+                                src="@/assets/hotAirBalloonSpare.gif"
+                                class="h-32 w-32 border-black border-2"
+                                alt="could not load"
+                            />
+                        </div>
                     </div>
                     <!-- Piggy Steps, centered -->
                     <div v-if="index !== challenges.length" class="flex justify-center w-full">
@@ -141,9 +159,13 @@
                             +
                         </button>
                     </div>
-                  <!-- Finish line -->
+                    <!-- Finish line -->
                 </div>
-              <img src="@/assets/finishLine.png" class="w-full max-h-4 mx-auto mt-10" alt="Finish Line" />
+                <img
+                    src="@/assets/finishLine.png"
+                    class="w-full max-h-4 mx-auto mt-10"
+                    alt="Finish Line"
+                />
                 <!-- Sparemannen -->
                 <InteractiveSpare
                     :speech="speech"
