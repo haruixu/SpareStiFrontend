@@ -1,4 +1,18 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import authInterceptor from '@/services/authInterceptor'
+import { onMounted } from 'vue'
+
+onMounted(async () => {
+    await authInterceptor
+        .get('/users/me/config')
+        .then((response) => {
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+})
+</script>
 
 <template>
     <h1>Din profil</h1>

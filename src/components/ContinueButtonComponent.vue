@@ -1,27 +1,26 @@
 <template>
-    <button class="continue-button" @click="onClick">Fortsett</button>
+    <button
+        :class="{ 'opacity-60 cursor-not-allowed': disabled }"
+        :disabled="disabled"
+        @click="handleClick"
+        class="p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold bg-[var(--green)] hover:brightness-90 active:brightness-75"
+    >
+        Fortsett
+    </button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { defineProps, defineEmits } from 'vue'
 
-export default defineComponent({
-    name: 'ContinueButtonComponent',
-    setup(props, { emit }) {
-        const onClick = (event: Event) => {
-            emit('click', event)
-        }
-
-        return {
-            onClick
-        }
-    }
+const props = defineProps({
+    disabled: Boolean
 })
-</script>
 
-<style>
-.continue-button {
-    @apply p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold
-    text-black bg-[var(--green)] hover:brightness-90 active:brightness-75;
+const emit = defineEmits(['click'])
+
+const handleClick = () => {
+    if (!props.disabled) {
+        emit('click')
+    }
 }
-</style>
+</script>
