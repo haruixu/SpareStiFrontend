@@ -50,6 +50,7 @@ watch(
             selectedDate.value = newVal < minDate ? minDate : newVal
             goalInstance.value.due = selectedDate.value + ':00.000Z'
         }
+        console.log(selectedDate.value)
     }
 )
 
@@ -57,6 +58,14 @@ const isEdit = computed(() => router.currentRoute.value.name === 'edit-goal')
 const pageTitle = computed(() => (isEdit.value ? 'Rediger sparemål' : 'Nytt sparemål'))
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
 const completion = computed(() => (goalInstance.value.saved / goalInstance.value.target) * 100)
+
+const isInputValid = computed(() => {
+    return (
+        goalInstance.value.title !== '' &&
+        goalInstance.value.target > 0 &&
+        goalInstance.value.due !== ''
+    )
+})
 
 const submitAction = () => {
     if (
@@ -92,12 +101,9 @@ onMounted(async () => {
 })
 
 const createGoal = () => {
-    console.log('Creating goal', goalInstance.value)
-
     authInterceptor
         .post('/users/me/goals', goalInstance.value, {})
-        .then((response) => {
-            console.log(response.data)
+        .then(() => {
             return router.push({ name: 'goals' })
         })
         .catch((error) => {
@@ -106,12 +112,20 @@ const createGoal = () => {
 }
 
 const updateGoal = () => {
-    console.log('Updating goal', goalInstance.value)
-
     authInterceptor
         .put(`/users/me/goals/${goalInstance.value.id}`, goalInstance.value)
-        .then((response) => {
-            console.log(response.data)
+        .then(() => {
+            router.push({ name: 'goals' })
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
+
+const deleteGoal = () => {
+    authInterceptor
+        .delete(`/users/me/goals/${goalInstance.value.id}`)
+        .then(() => {
             router.push({ name: 'goals' })
         })
         .catch((error) => {
@@ -173,7 +187,21 @@ const updateGoal = () => {
                 />
             </div>
 
-            <button @click="submitAction" v-text="submitButton" />
+            <div class="flex flex-row justify-between w-full">
+                <button :disabled="!isInputValid" @click="submitAction" v-text="submitButton" />
+                <button
+                    v-if="isEdit"
+                    class="ml-2 bg-button-danger"
+                    @click="deleteGoal"
+                    v-text="'Slett'"
+                />
+                <button
+                    v-else
+                    class="ml-2 bg-button-other"
+                    @click="router.push({ name: 'goals' })"
+                    v-text="'Avbryt'"
+                />
+            </div>
         </div>
     </div>
 </template>
