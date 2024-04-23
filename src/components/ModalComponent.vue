@@ -14,17 +14,21 @@
                 <button v-if="showButton"
                         :disabled="!isInputValid"
                         @click="buttonAction && buttonAction!()"
-                        class="font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent">
+                        class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent">
                         {{ button1 }}
                 </button>
-                <button @click="closeModal" class="font-bold py-2 px-4 w-1/2 bg-white border-2 border-[#f7da7c] hover:bg-[#f7da7c]">Lukk</button>
+                <button @click="closeModal"
+                        class="font-bold py-2 px-4 w-1/2 bg-white border-2 border-[#f7da7c] hover:bg-[#f7da7c]"
+                        aria-label="close">
+                        Lukk
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 
 defineProps({
     title: String,
