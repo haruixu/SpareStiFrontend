@@ -30,27 +30,28 @@
                         <button
                             class="border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all bg-[var(--green)] hover:brightness-90 active:brightness-75"
                             @click="skip"
-                            style="margin-top: 29px;"
+                            style="margin-top: 29px"
                         >
                             Skip
                         </button>
                         <button
                             :class="[
-        'border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all',
-        {
-            'bg-[var(--green)] hover:brightness-90 active:brightness-75': selectedOptions.length > 0
-        },
-        {
-            'opacity-60 bg-[rgba(149,227,93,0.6)] cursor-not-allowed': selectedOptions.length === 0
-        }
-    ]"
+                                'border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all',
+                                {
+                                    'bg-[var(--green)] hover:brightness-90 active:brightness-75':
+                                        selectedOptions.length > 0
+                                },
+                                {
+                                    'opacity-60 bg-[rgba(149,227,93,0.6)] cursor-not-allowed':
+                                        selectedOptions.length === 0
+                                }
+                            ]"
                             :disabled="selectedOptions.length === 0"
                             @click="accept"
-                            style="margin-top: 29px;"
+                            style="margin-top: 29px"
                         >
                             Godta
                         </button>
-
                     </div>
                 </template>
                 <template v-else>

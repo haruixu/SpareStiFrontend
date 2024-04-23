@@ -8,7 +8,7 @@
                 <template v-if="!skipped && !accepted">
                     <div class="mb-6 w-full text-left">
                         <label for="savings-goal" class="block text-xl font-bold mb-2"
-                        >Jeg vil spare til:</label
+                            >Jeg vil spare til:</label
                         >
                         <input
                             type="text"
@@ -24,7 +24,7 @@
                     </div>
                     <div class="mb-8 w-full flex items-center">
                         <label for="amount" class="shrink-0 text-xl font-bold mr-2"
-                        >Jeg vil spare:</label
+                            >Jeg vil spare:</label
                         >
                         <input
                             type="text"
