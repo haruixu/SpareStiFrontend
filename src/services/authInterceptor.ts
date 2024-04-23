@@ -3,7 +3,10 @@ import axios, { AxiosError } from 'axios'
 import router from '@/router'
 
 const authInterceptor = axios.create({
-    baseURL: 'http://localhost:8080'
+    baseURL: 'http://localhost:8080',
+    headers: {
+        'Content-Type': 'application/json'
+    }
 })
 
 authInterceptor.interceptors.request.use(
@@ -25,7 +28,7 @@ authInterceptor.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config
-        if (error.response.status === 403 && !originalRequest._retry) {
+        if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true
             const refreshToken = localStorage.getItem('refreshToken')
             axios

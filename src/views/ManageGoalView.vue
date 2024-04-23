@@ -3,17 +3,18 @@ import { useRouter } from 'vue-router'
 import { computed, onMounted, ref, watch } from 'vue'
 import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
-import axios from 'axios'
+import authInterceptor from '@/services/authInterceptor'
 
 const router = useRouter()
 
 const oneWeekFromNow = new Date()
 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
-const minDate = oneWeekFromNow.toISOString()
+const minDate = oneWeekFromNow.toISOString().slice(0, 16)
+console.log(minDate)
 
 const thirtyDaysFromNow = new Date()
 thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
-const maxDate = thirtyDaysFromNow.toISOString()
+const maxDate = thirtyDaysFromNow.toISOString().slice(0, 16)
 
 const goalInstance = ref<Goal>({
     id: 0,
@@ -74,8 +75,6 @@ const submitAction = () => {
 }
 
 onMounted(() => {
-    console.log(minDate, maxDate)
-
     let id = null
 
     if (isEdit.value) {
@@ -92,12 +91,8 @@ onMounted(() => {
 const createGoal = () => {
     console.log('Creating goal', goalInstance.value)
 
-    axios
-        .post('http://localhost:8080/users/me/goals', goalInstance.value, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
-            }
-        })
+    authInterceptor
+        .post('/users/me/goals', goalInstance.value, {})
         .then((response) => {
             console.log(response.data)
             return router.push({ name: 'goals' })
@@ -110,7 +105,7 @@ const createGoal = () => {
 const updateGoal = () => {
     console.log('Updating goal', goalInstance.value)
 
-    axios
+    authInterceptor
         .put(`http://localhost:8080/users/me/goals/${goalInstance.value.id}`, goalInstance.value, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
