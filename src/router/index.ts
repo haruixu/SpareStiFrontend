@@ -63,6 +63,11 @@ const router = createRouter({
             path: '/forsteSparemaal',
             name: 'firstSavingGoal',
             component: () => import('../views/FirstSavingGoalView.vue')
+        },
+        {
+            path: '/forsteSpareutfordring',
+            name: 'firstSavingChallengde',
+            component: () => import('../views/FirstSavingChallengeView.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
