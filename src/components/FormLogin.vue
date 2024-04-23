@@ -17,7 +17,6 @@ const router = useRouter()
 
 const isEmailValid = computed(() => emailRegex.test(resetEmail.value))
 
-
 const submitForm = () => {
     userStore.login(username.value, password.value)
     router.push('/hjem')
@@ -33,8 +32,8 @@ const openForgotPasswordModal = (event: MouseEvent) => {
 }
 
 const submitReset = () => {
-    resetEmail.value = '';
-    isModalOpen.value = false;
+    resetEmail.value = ''
+    isModalOpen.value = false
     // TODO: Implement logic for sending reset email
 }
 
@@ -70,7 +69,11 @@ watch(
                 <button class="absolute right-0 top-1 bg-transparent" @click="toggleShowPassword">
                     {{ showPassword ? '🔓' : '🔒' }}
                 </button>
-                <a @click="openForgotPasswordModal" class=" absolute right-3 top-10 hover:underline hover:bg-transparent cursor-pointer">Glemt passord?</a>
+                <a
+                    @click="openForgotPasswordModal"
+                    class="absolute right-3 top-10 hover:underline hover:bg-transparent cursor-pointer"
+                    >Glemt passord?</a
+                >
             </div>
         </div>
         <div class="flex flex-row gap-5">
@@ -100,7 +103,6 @@ watch(
         @update:isModalOpen="isModalOpen = $event"
         @update:inputValue="resetEmail = $event"
     />
-
 </template>
 
 <style scoped></style>
