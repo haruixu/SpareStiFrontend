@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Goal } from '@/types/goal'
-import type { PropType } from 'vue'
-import { reactive } from 'vue'
+import { computed, type PropType, reactive } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import router from '@/router'
 
@@ -17,27 +16,26 @@ const props = defineProps({
             description: 'Goal Description',
             priority: 0,
             createdOn: '2021-01-01',
-            dueDate: '2021-12-31'
+            due: '2021-12-31'
         })
     }
 })
 
 const goalInstance = reactive(props.goalInstance)
 
-const editGoal = () => {
-    router.push({ name: 'edit-goal', params: { id: goalInstance.id } })
-}
+const editGoal = () => router.push({ name: 'edit-goal', params: { id: goalInstance.id } })
+const displayDate = computed(() => goalInstance.due?.slice(0, 16).split('T').join(' '))
 </script>
 
 <template>
     <div
-        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2"
+        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer"
         @click="editGoal"
     >
         <h2 class="m-0">{{ goalInstance.title }}</h2>
         <p>{{ goalInstance.saved }}kr / {{ goalInstance.target }}kr</p>
         <ProgressBar :completion="goalInstance.completion" />
-        <p>{{ goalInstance.dueDate }}</p>
+        <p>{{ displayDate }}</p>
     </div>
 </template>
 
