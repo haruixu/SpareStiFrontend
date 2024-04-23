@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import ToolTip from '@/components/ToolTip.vue'
+import { useRouter } from 'vue-router'
 
 const firstname = ref<string>('')
 const lastname = ref<string>('')
@@ -14,6 +15,7 @@ const showPassword = ref<boolean>(false)
 const errorMessage = ref<string>('')
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const nameRegex = /^[a-zA-Z ,.'-]+$/
 const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/
@@ -35,6 +37,7 @@ const isFormInvalid = computed(
 
 const submitForm = () => {
     userStore.register(firstname.value, lastname.value, email.value, username.value, password.value)
+    router.push('/konfigurasjonSteg1')
 }
 
 const toggleShowPassword = () => {

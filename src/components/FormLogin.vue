@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalComponent from '@/components/ModalComponent.vue'
+import { useRouter } from 'vue-router'
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -12,12 +13,14 @@ const resetEmail = ref<string>('')
 const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const isEmailValid = computed(() => emailRegex.test(resetEmail.value))
 
 
 const submitForm = () => {
     userStore.login(username.value, password.value)
+    router.push('/hjem')
 }
 
 const toggleShowPassword = () => {
