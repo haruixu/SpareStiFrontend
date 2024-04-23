@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import ToolTip from '@/components/ToolTip.vue'
+import ModalComponent from '@/components/ModalComponent.vue'
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -30,13 +30,9 @@ const openForgotPasswordModal = (event: MouseEvent) => {
 }
 
 const submitReset = () => {
-    // TODO: Implement logic for sending reset email
-    closeModal()
-}
-
-const closeModal = () => {
     resetEmail.value = '';
-    isModalOpen.value = false
+    isModalOpen.value = false;
+    // TODO: Implement logic for sending reset email
 }
 
 watch(
@@ -71,7 +67,7 @@ watch(
                 <button class="absolute right-0 top-1 bg-transparent" @click="toggleShowPassword">
                     {{ showPassword ? '🔓' : '🔒' }}
                 </button>
-                <a @click="openForgotPasswordModal" class=" absolute right-3 top-10 hover:underline hover:bg-transparent">Glemt passord?</a>
+                <a @click="openForgotPasswordModal" class=" absolute right-3 top-10 hover:underline hover:bg-transparent cursor-pointer">Glemt passord?</a>
             </div>
         </div>
         <div class="flex flex-row gap-5">
@@ -86,35 +82,22 @@ watch(
             <p>{{ errorMessage }}</p>
         </div>
     </div>
-    <div v-if="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h2 class="font-bold mb-4">Glemt passord</h2>
-            <p class="mb-4">Vennligst skriv inn e-posten din for å endre passordet.</p>
-            <ToolTip
-                :message="'Must include a valid format with \'@\' and a domain, only letters, numbers, and special characters (_ + & * -) allowed.'"
-                class="absolute top-0 left-80"
-            />
-            <div class="mb-4">
-                <input
-                    type="email"
-                    v-model="resetEmail"
-                    placeholder="Din e-post"
-                    class="border border-gray-300 p-2 w-full"
-                    :class="{ 'opacity-50': isEmailValid }">
-            </div>
-            <div class="flex flex-col justify-center items-center gap-3 pt-3">
-                <button
-                    @click="submitReset"
-                    class="font-bold py-2 px-4 w-1/2 hover:bg-white border-2 hover:border-[#f7da7c]"
-                    :disabled="!isEmailValid">
-                    Send mail
-                </button>
-                <button @click="closeModal" class="font-bold py-2 px-4 w-1/2 bg-white border-2 border-[#f7da7c] hover:bg-[#f7da7c]">
-                    Lukk
-                </button>
-            </div>
-        </div>
-    </div>
+    <ModalComponent
+        :title="'Glemt passord'"
+        :message="'Vennligst skriv inn e-posten din for å endre passordet.'"
+        :button1="'Send mail'"
+        :isModalOpen="isModalOpen"
+        :buttonAction="submitReset"
+        :showButton="true"
+        :showInput="true"
+        :typeValue="'email'"
+        :inputPlaceholder="'Skriv e-postadressen din her'"
+        :inputValue="resetEmail"
+        :isInputValid="isEmailValid"
+        @update:isModalOpen="isModalOpen = $event"
+        @update:inputValue="resetEmail = $event"
+    />
+
 </template>
 
 <style scoped></style>
