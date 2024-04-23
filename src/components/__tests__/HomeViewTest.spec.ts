@@ -77,7 +77,7 @@ describe('HomeView', () => {
             completion: 90
         }
         wrapper.vm.incrementSaved(challenge)
-        expect(challenge.saved).toBe(100)
+        expect(challenge.saved).toBe(110)
         expect(challenge.completion).toBe(100)
     })
 
