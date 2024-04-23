@@ -3,22 +3,24 @@
         <div class="mb-20">
             <div
                 class="flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-16"
-                style="height: 500px; min-height: 500px; min-width: 400px; max-width: 400px;"
+                style="height: 500px; min-height: 500px; min-width: 400px; max-width: 400px"
             >
                 <template v-if="!skipped && !accepted">
                     <div class="mb-6 w-full text-left">
-                        <label for="savings-goal" class="block text-4xl font-bold mb-2">Spareutfordring</label>
+                        <label for="savings-goal" class="block text-4xl font-bold mb-2"
+                            >Spareutfordring</label
+                        >
                     </div>
                     <div class="flex flex-col w-full mb-4">
                         <button
                             v-for="buttonText in buttonOptions"
                             :key="buttonText"
                             :class="[
-                            'mb-4 text-xl font-bold w-full rounded-lg py-3 px-4',
-                            selectedOptions.includes(buttonText)
-                                ? 'bg-transparent border-2 border-[var(--green)]'
-                                : 'bg-transparent border-2 border-gray-300'
-                        ]"
+                                'mb-4 text-xl font-bold w-full rounded-lg py-3 px-4',
+                                selectedOptions.includes(buttonText)
+                                    ? 'bg-transparent border-2 border-[var(--green)]'
+                                    : 'bg-transparent border-2 border-gray-300'
+                            ]"
                             @click="toggleOption(buttonText)"
                         >
                             {{ buttonText }}
@@ -33,10 +35,16 @@
                         </button>
                         <button
                             :class="[
-        'border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all',
-        { 'bg-[var(--green)] hover:brightness-90 active:brightness-75': selectedOptions.length > 0 },
-        { 'opacity-60 bg-[rgba(149,227,93,0.6)] cursor-not-allowed': selectedOptions.length === 0 }
-    ]"
+                                'border-4 font-bold rounded-lg py-2 px-10 text-lg transition-all',
+                                {
+                                    'bg-[var(--green)] hover:brightness-90 active:brightness-75':
+                                        selectedOptions.length > 0
+                                },
+                                {
+                                    'opacity-60 bg-[rgba(149,227,93,0.6)] cursor-not-allowed':
+                                        selectedOptions.length === 0
+                                }
+                            ]"
                             :disabled="selectedOptions.length === 0"
                             @click="accept"
                         >
@@ -90,13 +98,13 @@ const accept = () => {
     accepted.value = true
 }
 
-const acceptedMessage = ref("Du kan opprette spareutfordringer senere")
+const acceptedMessage = ref('Du kan opprette spareutfordringer senere')
 
 watchEffect(() => {
     if (accepted.value) {
-        acceptedMessage.value = "Du har fått din første spareutfordring!"
+        acceptedMessage.value = 'Du har fått din første spareutfordring!'
     } else if (skipped.value) {
-        acceptedMessage.value = "Du kan opprette spareutfordringer senere"
+        acceptedMessage.value = 'Du kan opprette spareutfordringer senere'
     }
 })
 </script>
