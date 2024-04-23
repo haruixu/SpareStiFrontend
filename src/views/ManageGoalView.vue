@@ -10,7 +10,6 @@ const router = useRouter()
 const oneWeekFromNow = new Date()
 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
 const minDate = oneWeekFromNow.toISOString().slice(0, 16)
-console.log(minDate)
 
 const thirtyDaysFromNow = new Date()
 thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
@@ -25,7 +24,7 @@ const goalInstance = ref<Goal>({
     description: '',
     priority: 0,
     createdOn: undefined,
-    due: minDate,
+    due: minDate + ':00.000Z',
     completedOn: null
 })
 
@@ -43,14 +42,17 @@ watch(
     }
 )
 
+const selectedDate = ref(minDate)
 watch(
-    () => goalInstance.value.due,
+    () => selectedDate.value,
     (newVal) => {
         if (newVal) {
-            goalInstance.value.due = newVal < minDate ? minDate : newVal
+            selectedDate.value = newVal < minDate ? minDate : newVal
+            goalInstance.value.due = selectedDate.value + ':00.000Z'
         }
     }
 )
+
 const isEdit = computed(() => router.currentRoute.value.name === 'edit-goal')
 const pageTitle = computed(() => (isEdit.value ? 'Rediger sparemål' : 'Nytt sparemål'))
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
@@ -65,8 +67,6 @@ const submitAction = () => {
         return () => alert('Fyll ut alle feltene')
     }
 
-    goalInstance.value.due += ':00.000Z'
-
     if (isEdit.value) {
         updateGoal()
     } else {
@@ -74,17 +74,20 @@ const submitAction = () => {
     }
 }
 
-onMounted(() => {
-    let id = null
-
+onMounted(async () => {
     if (isEdit.value) {
-        id = Number(router.currentRoute.value.params.id)
+        const goalId = router.currentRoute.value.params.id
+        if (!goalId) return router.push({ name: 'goals' })
 
-        if (!id) {
-            router.push('/')
-        }
-
-        goalInstance.value.id = id
+        await authInterceptor(`/users/me/goals/${goalId}`)
+            .then((response) => {
+                goalInstance.value = response.data
+                selectedDate.value = response.data.due.slice(0, 16)
+            })
+            .catch((error) => {
+                console.error(error)
+                router.push({ name: 'goals' })
+            })
     }
 })
 
@@ -106,11 +109,7 @@ const updateGoal = () => {
     console.log('Updating goal', goalInstance.value)
 
     authInterceptor
-        .put(`http://localhost:8080/users/me/goals/${goalInstance.value.id}`, goalInstance.value, {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`
-            }
-        })
+        .put(`/users/me/goals/${goalInstance.value.id}`, goalInstance.value)
         .then((response) => {
             console.log(response.data)
             router.push({ name: 'goals' })
@@ -166,7 +165,7 @@ const updateGoal = () => {
             <div class="flex flex-col">
                 <p class="mx-4">Forfallsdato*</p>
                 <input
-                    v-model="goalInstance.due"
+                    v-model="selectedDate"
                     :max="maxDate"
                     :min="minDate"
                     placeholder="Forfallsdato"

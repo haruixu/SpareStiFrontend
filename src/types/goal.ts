@@ -7,6 +7,6 @@ export interface Goal {
     description: string
     priority: number
     createdOn: string | null | undefined
-    due: string | null | undefined
+    due: string
     completedOn: string | null | undefined
 }
