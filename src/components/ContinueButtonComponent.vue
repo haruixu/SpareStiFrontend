@@ -1,9 +1,9 @@
 <template>
     <button
-        class="continue-button"
         :class="{ 'opacity-60 cursor-not-allowed': disabled }"
         :disabled="disabled"
         @click="handleClick"
+        class="p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold bg-[var(--green)] hover:brightness-90 active:brightness-75"
     >
         Fortsett
     </button>
@@ -24,24 +24,3 @@ const handleClick = () => {
     }
 }
 </script>
-
-<style scoped>
-.continue-button {
-    @apply p-3 px-20 text-lg rounded-lg cursor-pointer transition-all font-bold;
-    color: black;
-    background-color: var(--green);
-}
-
-.continue-button:hover {
-    filter: brightness(90%);
-}
-
-.continue-button:active {
-    filter: brightness(75%);
-}
-
-.continue-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-</style>
