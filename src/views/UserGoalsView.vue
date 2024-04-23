@@ -3,8 +3,25 @@ import CardGoal from '@/components/CardGoal.vue'
 import PageControl from '@/components/PageControl.vue'
 
 import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
 
 const router = useRouter()
+
+const currentPage = ref(1)
+const totalPages = ref(1)
+
+onMounted(() => {
+    try {
+        const response = axios.get('http://localhost:8080/users/me/goals', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        })
+    } catch (error) {
+        console.error(error)
+    }
+})
 </script>
 
 <template>
