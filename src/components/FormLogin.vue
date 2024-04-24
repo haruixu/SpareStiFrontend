@@ -75,7 +75,10 @@ watch(
                     class="w-full"
                     placeholder="Skriv inn passord"
                 />
-                <button class="absolute right-0 top-1 bg-transparent hover:bg-transparent" @click="toggleShowPassword">
+                <button
+                    class="absolute right-0 top-1 bg-transparent hover:bg-transparent"
+                    @click="toggleShowPassword"
+                >
                     {{ showPassword ? '🔓' : '🔒' }}
                 </button>
                 <a
