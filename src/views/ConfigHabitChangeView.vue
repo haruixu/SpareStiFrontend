@@ -50,14 +50,37 @@
 import { ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
+import { useUserConfigStore } from '@/stores/userConfigStore'
 
 const selectedOption = ref<string | null>(null)
+const userConfigStore = useUserConfigStore()
 
 const selectOption = (option: string) => {
     selectedOption.value = option
+    let motivationValue = ''
+
+    switch (option) {
+        case 'litt':
+            motivationValue = 'VERY_LOW'
+            break
+        case 'passe':
+            motivationValue = 'MEDIUM'
+            break
+        case 'store':
+            motivationValue = 'VERY_HIGH'
+            break
+        default:
+            motivationValue = 'VERY_LOW'
+    }
+
+    userConfigStore.setMotivation(motivationValue)
 }
 
 const onButtonClick = () => {
-    router.push('/konfigurasjonSteg2')
+    if (selectedOption.value) {
+        router.push('/konfigurasjonSteg2')
+    } else {
+        console.error('No option selected')
+    }
 }
 </script>
