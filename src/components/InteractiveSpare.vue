@@ -87,7 +87,7 @@ const bubbleDirection = computed(() => {
     position: absolute;
     width: 0;
     height: 0;
-    left: 2.30rem;
+    left: 2.3rem;
     right: auto;
     top: auto;
     bottom: -1.5rem;
@@ -114,9 +114,10 @@ const bubbleDirection = computed(() => {
     width: 0;
     height: 0;
     left: auto;
-    right: 1.875rem;
-    bottom: -2.5rem;
-    border: 1.25rem solid;
+    right: 2.3rem;
+    top: auto;
+    bottom: -1.5rem;
+    border: 0.7rem solid;
     border-color: black black transparent transparent;
 }
 .tri-right.btm-right-in:after {
