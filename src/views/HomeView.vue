@@ -213,19 +213,16 @@ const challenge: Challenge = {
     saved: 1200.5,
     target: 3000,
     description: 'Saving monthly for a year-end vacation to Bali',
-    createdOn: new Date('2023-01-01T00:00:00Z'),
-    dueDate: new Date('2023-12-31T23:59:59Z'),
+    due: '2023-12-31T23:59:59Z',
     type: 'COFFE',
-    completion: 40,
-    completedOn: undefined // Not yet completed
+    completion: 40
 }
 const challenge1: Challenge = {
     title: 'Snacks',
     saved: 200,
     target: 400,
     description: 'Saving monthly for a year-end vacation to Bali',
-    createdOn: new Date('2023-01-01T00:00:00Z'),
-    dueDate: new Date('2023-12-31T23:59:59Z'),
+    due: '2023-12-31T23:59:59Z',
     type: 'SNACKS',
     completion: 50,
     completedOn: undefined // Not yet completed
@@ -372,7 +369,7 @@ function animateIcon() {
 
 // Helper methods to get icons
 function getChallengeIcon(challenge: Challenge): string {
-    if (challenge.type === undefined) {
+    if (challenge.type !== '') {
         return 'src/assets/coins.png'
     }
     return `src/assets/${challenge.type.toLowerCase()}.png`

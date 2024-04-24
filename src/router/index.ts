@@ -41,12 +41,17 @@ const router = createRouter({
         {
             path: '/spareutfordringer',
             name: 'challenges',
-            component: () => import('@/views/ChallengeView.vue')
+            component: () => import('@/views/UserChallengesView.vue')
         },
         {
-            path: '/:pathMatch(.*)*',
-            name: 'not-found',
-            component: () => import('@/views/NotFoundView.vue')
+            path: '/spareutfordringer/ny',
+            name: 'new-challenge',
+            component: () => import('@/views/ManageChallengeView.vue')
+        },
+        {
+            path: '/spareutfordringer/:id',
+            name: 'edit-challenge',
+            component: () => import('@/views/ManageChallengeView.vue')
         },
         {
             path: '/konfigurasjonSteg1',
@@ -77,6 +82,11 @@ const router = createRouter({
             path: '/forsteSpareutfordring',
             name: 'firstSavingChallengde',
             component: () => import('../views/FirstSavingChallengeView.vue')
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: () => import('@/views/NotFoundView.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
