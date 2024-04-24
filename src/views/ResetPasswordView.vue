@@ -20,7 +20,7 @@
                         :class="{ 'bg-green-200': isPasswordValid }"
                     />
                     <button
-                        class="absolute right-0 top-1 bg-transparent"
+                        class="absolute right-0 top-1 bg-transparent hover:bg-transparent"
                         @click="toggleShowPassword"
                     >
                         {{ showPassword ? '🔓' : '🔒' }}
