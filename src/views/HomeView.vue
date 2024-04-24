@@ -199,12 +199,13 @@ const goal: Goal = {
     id: 1,
     title: 'gaming',
     saved: 200,
-    description: 'none',
     target: 400,
     completion: 50,
+    description: 'none',
     priority: 0,
-    createdOn: new Date(),
-    due: new Date()
+    due: new Date().toDateString(),
+    createdOn: undefined,
+    completedOn: undefined
 }
 
 const challenge: Challenge = {
