@@ -25,6 +25,11 @@ const router = createRouter({
             component: () => import('@/views/RegisterLoginView.vue')
         },
         {
+            path: '/forgotPassword',
+            name: 'resetPassword',
+            component: () => import('@/views/ResetPasswordView.vue')
+        },
+        {
             path: '/profil',
             name: 'profile',
             component: () => import('@/views/ProfileView.vue')
@@ -67,12 +72,12 @@ const router = createRouter({
         {
             path: '/forsteSparemaal',
             name: 'firstSavingGoal',
-            component: () => import('../views/FirstSavingGoalView.vue')
+            component: () => import('@/views/FirstSavingGoalView.vue')
         },
         {
             path: '/forsteSpareutfordring',
             name: 'firstSavingChallengde',
-            component: () => import('../views/FirstSavingChallengeView.vue')
+            component: () => import('@/views/FirstSavingChallengeView.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
