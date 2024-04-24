@@ -1,36 +1,37 @@
 <template>
-    <div class="flex flex-col max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
+    <div class="flex flex-col items-center max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
         <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/2">
             <InteractiveSpare
                 :speech="speech"
                 :direction="'right'"
-                :pngSize="60"
+                :pngSize="15"
                 class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto md:mx-auto md:my-20"
             ></InteractiveSpare>
-            <div class="flex flex-row gap-12 items-center mx-auto p-8 md:flex-col md:gap-4 md:m-8">
+            <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" />
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til spareutfordring'" />
             </div>
         </div>
-        <div
-            class="flex flex-col basis-2/3 max-h-[70vh] mx-auto max-w-5/6 md:basis-1/2 md:max-h-full"
-        >
+        <div class="flex flex-col basis-2/3 max-h-full mx-auto max-w-5/6 md:basis-1/2">
             <div class="flex justify-center align-center">
                 <span
-                    class="w-full max-w-60 max-h-12 bg-green-500 text-white font-bold py-2 rounded mt-8 text-center space-x-2"
+                    class="w-full max-w-60 max-h-12 text-black text-2xl font-bold py-2 rounded mt-8 text-center space-x-2 drop-shadow-lg"
                 >
                     Din Sparesti
                 </span>
             </div>
-            <div class="h-2 w-4/6 bg-black mx-auto my-2 opacity-10"></div>
+            <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
             <div
                 ref="containerRef"
-                class="container relative mx-auto p-6 no-scrollbar max-h-[60vh] overflow-y-auto"
+                class="container relative mx-auto pt-6 w-4/5 md:w-3/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
             >
+                <div>
+                    <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
+                </div>
                 <div
                     v-for="(challenge, index) in challenges"
                     :key="challenge.title"
-                    class="flex flex-col items-center mx-8"
+                    class="flex flex-col items-center"
                 >
                     <!-- Challenge Row -->
                     <div
@@ -40,6 +41,20 @@
                         }"
                         class="flex flex-row w-2/3 ml-8"
                     >
+                        <div class="mr-10">
+                            <img
+                                v-if="index === 3"
+                                src="@/assets/sleepingSpare.gif"
+                                alt="could not load"
+                                class="w-32 h-32 border-2 rounded-lg border-stale-400"
+                            />
+                            <img
+                                v-else-if="index === 1"
+                                src="@/assets/golfSpare.gif"
+                                alt="could not load"
+                                class="w-32 h-32 border-2 rounded-lg border-stale-400"
+                            />
+                        </div>
                         <!-- Challenge Icon and Details -->
                         <div class="flex">
                             <!-- Challenge Icon -->
@@ -80,7 +95,7 @@
                                         <button
                                             @click="incrementSaved(challenge)"
                                             type="button"
-                                            class="inline-block mb-2 ml-2 h-8 w-8 rounded-full bg-green-500 p-1 uppercase leading-normal text-white bg-color-green shadow-green-500 transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-green-200 focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                            class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                                         >
                                             +
                                         </button>
@@ -96,13 +111,27 @@
                                     challenge.completion !== undefined &&
                                     challenge.completion >= 100
                                 "
-                                class="max-w-16 max-h-16"
+                                class="max-w-10 max-h-10"
                             >
                                 <img src="@/assets/completed.png" alt="" />️
                             </div>
-                            <div v-else class="max-w-16 max-h-16">
+                            <div v-else class="max-w-6 max-h-6">
                                 <img src="@/assets/pending.png" alt="" />️
                             </div>
+                        </div>
+                        <div class="">
+                            <img
+                                v-if="index === 0"
+                                src="@/assets/cowboySpare.gif"
+                                alt="could not load"
+                                class="h-32 w-32 border-2 rounded-lg border-stale-400"
+                            />
+                            <img
+                                v-else-if="index === 2"
+                                src="@/assets/hotAirBalloonSpare.gif"
+                                class="h-32 w-32 border-stale-400 border-2 rounded-lg"
+                                alt="could not load"
+                            />
                         </div>
                     </div>
                     <!-- Piggy Steps, centered -->
@@ -133,18 +162,21 @@
                             +
                         </button>
                     </div>
+                    <!-- Finish line -->
                 </div>
+                <img
+                    src="@/assets/finishLine.png"
+                    class="w-full max-h-auto mx-auto mt-4"
+                    alt="Finish Line"
+                />
                 <!-- Sparemannen -->
                 <InteractiveSpare
                     :speech="speech"
                     :direction="'left'"
-                    :pngSize="20"
+                    :pngSize="6"
                     class="fixed bottom-0 right-0 mb-40 mr-4 md:opacity-0 md:h-0 md:w-0"
                 ></InteractiveSpare>
             </div>
-            <!-- Finish line -->
-            <img src="@/assets/finishLine.png" class="w-1/2 max-h-4 mx-auto" alt="Finish Line" />
-
             <!-- Goal -->
             <div v-if="goal" class="flex flex-row gap-24 m-t-2 pt-6 mx-auto">
                 <div class="flex flex-col items-start">
@@ -153,9 +185,12 @@
                 </div>
                 <div class="flex flex-col items-end">
                     <div @click="goToEditGoal" class="cursor-pointer">
-                        <h3 class="text-blue-500 text-base">Endre mål</h3>
+                        <h3 class="text-black text-base">Endre mål</h3>
                     </div>
-                    <div ref="targetRef" class="bg-yellow-400 px-4 py-1 rounded-full text-black">
+                    <div
+                        ref="targetRef"
+                        class="bg-yellow-400 px-4 py-1 rounded-full text-black font-bold"
+                    >
                         {{ goal.saved }}kr / {{ goal.target }}kr
                     </div>
                 </div>
@@ -163,8 +198,8 @@
         </div>
         <!-- Animation icon -->
         <img
-            src="@/assets/coins.png"
-            alt="Coins"
+            src="@/assets/penger.png"
+            alt="Penger"
             ref="iconRef"
             class="max-w-20 max-h-20 absolute opacity-0"
         />
@@ -176,10 +211,11 @@
 import { nextTick, onMounted, ref, watch } from 'vue'
 import anime from 'animejs'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
-import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallange.vue'
+import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallenge.vue'
 import router from '@/router'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
+import confetti from 'canvas-confetti'
 
 // Define your speech array
 const speechArray = [
@@ -208,24 +244,24 @@ const goal: Goal = {
 }
 
 const challenge: Challenge = {
-    title: 'Coffe',
-    saved: 1200.5,
-    target: 3000,
+    title: 'Coffee',
+    saved: 50,
+    target: 100,
     description: 'Saving monthly for a year-end vacation to Bali',
     createdOn: new Date('2023-01-01T00:00:00Z'),
     dueDate: new Date('2023-12-31T23:59:59Z'),
-    type: 'COFFE',
+    type: 'COFFEE',
     completion: 40,
     completedOn: undefined // Not yet completed
 }
 const challenge1: Challenge = {
-    title: 'Snacks',
+    title: 'Mat',
     saved: 200,
     target: 400,
     description: 'Saving monthly for a year-end vacation to Bali',
     createdOn: new Date('2023-01-01T00:00:00Z'),
     dueDate: new Date('2023-12-31T23:59:59Z'),
-    type: 'SNACKS',
+    type: 'MAT',
     completion: 50,
     completedOn: undefined // Not yet completed
 }
@@ -234,12 +270,23 @@ const challenges = ref([challenge, challenge1])
 
 // AddSpareUtfordring
 function addSpareUtfordring() {
-    console.log('Add Spare Utfordring')
+    const newChallenge: Challenge = {
+        title: 'Coffee',
+        saved: 0,
+        target: 1000,
+        description: 'Saving monthly for a year-end vacation to Bali',
+        createdOn: new Date('2023-01-01T00:00:00Z'),
+        dueDate: new Date('2023-12-31T23:59:59Z'),
+        type: 'COFFEE',
+        completion: 0,
+        completedOn: undefined // Not yet completed
+    }
+    challenges.value.push(newChallenge)
 }
 
 // Increment saved amount
 function incrementSaved(challenge: Challenge) {
-    challenge.saved += 10
+    challenge.saved += 20
     if (challenge.saved >= challenge.target) {
         challenge.completion = 100
     }
@@ -274,9 +321,20 @@ const animateChallenge = (challenge: Challenge) => {
         !animatedChallenges.value.has(challenge.title)
     ) {
         console.log('Animating for:', challenge.title)
-        recalculateAndAnimate() // Assumes this function triggers the actual animation
+
+        triggerConfetti()
+
+        recalculateAndAnimate()
         saveAnimatedState(challenge.title)
     }
+}
+
+function triggerConfetti() {
+    confetti({
+        particleCount: 400,
+        spread: 80,
+        origin: { x: 0.8, y: 0.8 }
+    })
 }
 
 watch(
@@ -372,7 +430,7 @@ function animateIcon() {
 // Helper methods to get icons
 function getChallengeIcon(challenge: Challenge): string {
     if (challenge.type === undefined) {
-        return 'src/assets/coins.png'
+        return 'src/assets/penger.png'
     }
     return `src/assets/${challenge.type.toLowerCase()}.png`
 }

@@ -52,8 +52,8 @@ describe('SpeechBubbleComponent', () => {
                 pngSize: 100
             }
         })
-        expect(wrapper.find('span').text()).toBe('First speech')
+        expect(wrapper.find('p').text()).toBe('First speech')
         await wrapper.find('img').trigger('click')
-        expect(wrapper.find('span').text()).toBe('Second speech')
+        expect(wrapper.find('p').text()).toBe('Second speech')
     })
 })

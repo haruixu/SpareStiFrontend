@@ -1,20 +1,49 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
+import ModalComponent from '@/components/ModalComponent.vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const username = ref<string>('')
 const password = ref<string>('')
 const showPassword = ref<boolean>(false)
 const errorMessage = ref<string>('')
+const isModalOpen = ref<boolean>(false)
+const resetEmail = ref<string>('')
+const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/
 
 const userStore = useUserStore()
+const router = useRouter()
+
+const isEmailValid = computed(() => emailRegex.test(resetEmail.value))
 
 const submitForm = () => {
     userStore.login(username.value, password.value)
+    router.push('/hjem')
 }
 
 const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
+}
+
+const openForgotPasswordModal = (event: MouseEvent) => {
+    event.preventDefault()
+    isModalOpen.value = true
+}
+
+const submitReset = async () => {
+    await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', {
+        email: resetEmail.value
+    })
+
+    resetEmail.value = ''
+    isModalOpen.value = false
+}
+
+const closeModal = () => {
+    resetEmail.value = ''
+    isModalOpen.value = false
 }
 
 watch(
@@ -49,6 +78,11 @@ watch(
                 <button class="absolute right-0 top-1 bg-transparent" @click="toggleShowPassword">
                     {{ showPassword ? '🔓' : '🔒' }}
                 </button>
+                <a
+                    @click="openForgotPasswordModal"
+                    class="absolute right-3 top-10 hover:underline hover:bg-transparent cursor-pointer"
+                    >Glemt passord?</a
+                >
             </div>
         </div>
         <div class="flex flex-row gap-5">
@@ -63,6 +97,34 @@ watch(
             <p>{{ errorMessage }}</p>
         </div>
     </div>
+    <modal-component
+        :title="'Glemt passord'"
+        :message="'Vennligst skriv inn e-posten din for å endre passordet.'"
+        :is-modal-open="isModalOpen"
+        @close="isModalOpen = false"
+    >
+        <template v-slot:input>
+            <input
+                type="email"
+                v-model="resetEmail"
+                class="border border-gray-300 p-2 w-full mb-7"
+                placeholder="Skriv e-postadressen din her"
+            />
+        </template>
+        <template v-slot:buttons>
+            <button
+                :disabled="!isEmailValid"
+                @click="submitReset"
+                class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
+            >
+                Send mail
+            </button>
+            <button
+                @click="closeModal"
+                class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
+            >
+                Lukk
+            </button>
+        </template>
+    </modal-component>
 </template>
-
-<style scoped></style>

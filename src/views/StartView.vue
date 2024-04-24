@@ -8,9 +8,9 @@
             />
         </div>
         <div class="flex flex-col items-center pt-40 absolute top-0 left-0 right-0 z-10">
-            <img src="@/assets/start_page/Spare.png" alt="Spare" class="md:w-1/6 w-1/3 h-auto" />
+            <img src="@/assets/spare.png" alt="Spare" class="md:w-1/6 w-1/3 h-auto" />
             <img
-                src="@/assets/sparesti2.png"
+                src="@/assets/spareSti.png"
                 alt="Sparesti"
                 class="md:w-5/12 w-10/12 h-auto md:mt-4 mt-20"
             />
@@ -22,7 +22,7 @@
         >
             <button
                 class="md:py-3 md:px-0 md:w-3/4 py-2 px-12 w-1/2 border border-[#95E35D] shadow-lg rounded-lg transition-all duration-500 bg-[#95E35D] hover:bg-white text-sm md:text-base"
-                @click="goToLogin"
+                @click="goToRegister"
             >
                 Start her
             </button>
@@ -74,6 +74,10 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const goToLogin = () => {
-    router.push('/login')
+    router.push('/logginn')
+}
+
+const goToRegister = () => {
+    router.push('/registrer')
 }
 </script>

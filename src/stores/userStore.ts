@@ -1,8 +1,9 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { User } from '@/types/user'
-import axios, { AxiosError } from 'axios'
 import router from '@/router'
+import type { AxiosError } from 'axios'
+import axios from 'axios'
 
 export const useUserStore = defineStore('user', () => {
     const defaultUser: User = {
@@ -14,53 +15,57 @@ export const useUserStore = defineStore('user', () => {
     const user = ref<User>(defaultUser)
     const errorMessage = ref<string>('')
 
-    async function register(
+    const register = async (
         firstname: string,
         lastname: string,
         email: string,
         username: string,
         password: string
-    ) {
-        try {
-            const response = await axios.post(`http://localhost:8080/auth/register`, {
+    ) => {
+        await axios
+            .post(`http://localhost:8080/auth/register`, {
                 firstName: firstname, //TODO rename all instances of firstname to firstName
                 lastName: lastname,
                 email: email,
                 username: username,
                 password: password
             })
+            .then((response) => {
+                sessionStorage.setItem('accessToken', response.data.accessToken)
+                localStorage.setItem('refreshToken', response.data.refreshToken)
 
-            sessionStorage.setItem('accessToken', response.data.accessToken)
-            localStorage.setItem('refreshToken', response.data.refreshToken)
+                user.value.firstname = firstname
+                user.value.lastname = lastname
+                user.value.username = username
 
-            user.value.firstname = firstname
-            user.value.lastname = lastname
-            user.value.username = username
-
-            await router.push('/')
-        } catch (error) {
-            const axiosError = error as AxiosError
-            errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
-        }
+                router.push('/')
+            })
+            .catch((error) => {
+                const axiosError = error as AxiosError
+                errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
+            })
     }
 
-    async function login(username: string, password: string) {
-        try {
-            const response = await axios.post(`http://localhost:8080/auth/login`, {
+    const login = async (username: string, password: string) => {
+        await axios
+            .post(`http://localhost:8080/auth/login`, {
                 username: username,
                 password: password
             })
+            .then((response) => {
+                sessionStorage.setItem('accessToken', response.data.accessToken)
+                localStorage.setItem('refreshToken', response.data.refreshToken)
 
-            console.log(response)
+                user.value.firstname = response.data.firstName
+                user.value.lastname = response.data.lastName
+                user.value.username = response.data.username
 
-            sessionStorage.setItem('accessToken', response.data.accessToken)
-            localStorage.setItem('refreshToken', response.data.refreshToken)
-            user.value.username = username
-            await router.push('/konfigurasjonSteg1')
-        } catch (error) {
-            const axiosError = error as AxiosError
-            errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
-        }
+                router.push('/')
+            })
+            .catch((error) => {
+                const axiosError = error as AxiosError
+                errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
+            })
     }
 
     return {
