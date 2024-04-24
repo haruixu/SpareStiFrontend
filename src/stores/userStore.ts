@@ -56,7 +56,7 @@ export const useUserStore = defineStore('user', () => {
             sessionStorage.setItem('accessToken', response.data.accessToken)
             localStorage.setItem('refreshToken', response.data.refreshToken)
             user.value.username = username
-            await router.push('/')
+            await router.push('/konfigurasjonSteg1')
         } catch (error) {
             const axiosError = error as AxiosError
             errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
