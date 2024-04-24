@@ -72,7 +72,6 @@ const userConfigStore = useUserConfigStore()
 const options = ref(userConfigStore.challengeTypeConfigs)
 const amounts = ref(options.value.map(() => ''))
 
-
 const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
 const onButtonClick = async () => {

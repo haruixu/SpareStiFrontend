@@ -3,7 +3,11 @@
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye bruker du per kjøp på ...</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
             <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
-                <div v-for="(option, index) in options.slice(0, 6)" :key="`option-${index}`" class="w-full my-4">
+                <div
+                    v-for="(option, index) in options.slice(0, 6)"
+                    :key="`option-${index}`"
+                    class="w-full my-4"
+                >
                     <div class="flex justify-between items-center">
                         <p class="text-xl font-bold mr-4">{{ option.type }}</p>
                         <div class="flex items-center w-2/3">
@@ -12,9 +16,9 @@
                                 @input="filterAmount(index, $event)"
                                 class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
                                 :class="{
-                  'border-gray-300': !amounts[index],
-                  'border-[var(--green)]': amounts[index]
-                }"
+                                    'border-gray-300': !amounts[index],
+                                    'border-[var(--green)]': amounts[index]
+                                }"
                             />
                             <p class="text-xl font-bold ml-2">kr</p>
                         </div>
@@ -22,7 +26,11 @@
                 </div>
             </div>
             <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
-                <div v-for="(option, index) in options.slice(6, 12)" :key="`option-${index}`" class="w-full my-4">
+                <div
+                    v-for="(option, index) in options.slice(6, 12)"
+                    :key="`option-${index}`"
+                    class="w-full my-4"
+                >
                     <div class="flex justify-between items-center">
                         <p class="text-xl font-bold mr-4">{{ option.type }}</p>
                         <div class="flex items-center w-2/3">
@@ -31,9 +39,9 @@
                                 @input="filterAmount(index + 6, $event)"
                                 class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
                                 :class="{
-                  'border-gray-300': !amounts[index + 6],
-                  'border-[var(--green)]': amounts[index + 6]
-                }"
+                                    'border-gray-300': !amounts[index + 6],
+                                    'border-[var(--green)]': amounts[index + 6]
+                                }"
                             />
                             <p class="text-xl font-bold ml-2">kr</p>
                         </div>

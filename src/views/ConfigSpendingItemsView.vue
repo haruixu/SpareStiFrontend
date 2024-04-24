@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-full text-right mb-0 mt-0" style="position: relative; top: -92px; right: 8px;">
+        <div class="w-full text-right mb-0 mt-0" style="position: relative; top: -92px; right: 8px">
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isFormValid"
