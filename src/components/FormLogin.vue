@@ -39,6 +39,11 @@ const submitReset = async () => {
     isModalOpen.value = false
 }
 
+const closeModal = () => {
+    resetEmail.value = ''
+    isModalOpen.value = false
+}
+
 watch(
     () => userStore.errorMessage,
     (newValue: string) => {
@@ -100,7 +105,7 @@ watch(
             <input
                 type="email"
                 v-model="resetEmail"
-                class="border border-gray-300 p-2 w-full"
+                class="border border-gray-300 p-2 w-full mb-7"
                 placeholder="Skriv e-postadressen din her"
             />
         </template>
@@ -111,6 +116,12 @@ watch(
                 class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
             >
                 Send mail
+            </button>
+            <button
+                @click="closeModal"
+                class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
+            >
+                Lukk
             </button>
         </template>
     </modal-component>
