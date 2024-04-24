@@ -41,7 +41,7 @@
                         <span class="shrink-0 text-xl font-bold">kr</span>
                     </div>
                     <div class="w-full px-4 py-2">
-                        <img src="@/assets/coins.png" alt="Savings" class="mx-auto w-36 h-32" />
+                        <img src="@/assets/penger.png" alt="Savings" class="mx-auto w-36 h-32" />
                     </div>
                     <div class="flex justify-between w-full mt-4 space-x-2">
                         <button

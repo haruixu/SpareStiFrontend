@@ -48,10 +48,15 @@ button:disabled {
     background-color: var(--color-button-disabled);
     cursor: not-allowed;
 }
+button:hover {
+    background-color: var(--color-button-hover);
+    transition: 0.7s;
+}
 
 a {
     text-decoration: none;
-    color: var(--color-link);
+    color: var(--color-text);
+    font-weight: bold;
     transition: 0.4s;
 }
 
@@ -69,6 +74,10 @@ textarea {
 
 @media (hover: hover) {
     a:hover {
-        background-color: hsla(160, 100%, 37%, 0.2);
+        background-color: var(--color-nav-hover);
+        transition: 0.5s;
+        text-decoration: none;
+        padding: 3px 3px;
+        border-radius: 8px;
     }
 }
