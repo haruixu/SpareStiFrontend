@@ -90,19 +90,28 @@ watch(
             <p>{{ errorMessage }}</p>
         </div>
     </div>
-    <ModalComponent
+    <modal-component
         :title="'Glemt passord'"
         :message="'Vennligst skriv inn e-posten din for å endre passordet.'"
-        :button1="'Send mail'"
-        :isModalOpen="isModalOpen"
-        :buttonAction="submitReset"
-        :showButton="true"
-        :showInput="true"
-        :typeValue="'email'"
-        :inputPlaceholder="'Skriv e-postadressen din her'"
-        :inputValue="resetEmail"
-        :isInputValid="isEmailValid"
-        @update:isModalOpen="isModalOpen = $event"
-        @update:inputValue="resetEmail = $event"
-    />
+        :is-modal-open="isModalOpen"
+        @close="isModalOpen = false"
+    >
+        <template v-slot:input>
+            <input
+                type="email"
+                v-model="resetEmail"
+                class="border border-gray-300 p-2 w-full"
+                placeholder="Skriv e-postadressen din her"
+            />
+        </template>
+        <template v-slot:buttons>
+            <button
+                :disabled="!isEmailValid"
+                @click="submitReset"
+                class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
+            >
+                Send mail
+            </button>
+        </template>
+    </modal-component>
 </template>
