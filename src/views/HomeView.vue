@@ -1,36 +1,34 @@
 <template>
-    <div class="flex flex-col max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
+    <div class="flex flex-col items-center max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
         <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/2">
             <InteractiveSpare
                 :speech="speech"
                 :direction="'right'"
-                :pngSize="60"
+                :pngSize="15"
                 class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto md:mx-auto md:my-20"
             ></InteractiveSpare>
-            <div class="flex flex-row gap-12 items-center mx-auto p-8 md:flex-col md:gap-4 md:m-8">
+            <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" />
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til spareutfordring'" />
             </div>
         </div>
-        <div
-            class="flex flex-col basis-2/3 max-h-[70vh] mx-auto max-w-5/6 md:basis-1/2 md:max-h-full"
-        >
+        <div class="flex flex-col basis-2/3 max-h-full mx-auto max-w-5/6 md:basis-1/2">
             <div class="flex justify-center align-center">
                 <span
-                    class="w-full max-w-60 max-h-12 bg-green-500 text-white font-bold py-2 rounded mt-8 text-center space-x-2"
+                    class="w-full max-w-60 max-h-12 bg-green-500 text-white font-bold py-2 rounded mt-8 text-center space-x-2 drop-shadow-lg"
                 >
                     Din Sparesti
                 </span>
             </div>
-            <div class="h-2 w-4/6 bg-black mx-auto my-2 opacity-10"></div>
+            <div class="h-1 w-4/6 bg-black mx-auto my-2 opacity-10"></div>
             <div
                 ref="containerRef"
-                class="container relative mx-auto p-6 no-scrollbar max-h-[60vh] overflow-y-auto"
+                class="container relative mx-auto pt-6 w-4/5 md:w-3/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] overflow-y-auto border-2 border-black rounded-lg bg-white shadow-lg"
             >
                 <div
                     v-for="(challenge, index) in challenges"
                     :key="challenge.title"
-                    class="flex flex-col items-center mx-8"
+                    class="flex flex-col items-center"
                 >
                     <!-- Challenge Row -->
                     <div
@@ -40,6 +38,20 @@
                         }"
                         class="flex flex-row w-2/3 ml-8"
                     >
+                        <div class="mr-10">
+                            <img
+                                v-if="index === 3"
+                                src="@/assets/sleepingSpare.gif"
+                                alt="could not load"
+                                class="w-32 h-32 border-2 border-black"
+                            />
+                            <img
+                                v-else-if="index === 1"
+                                src="@/assets/golfSpare.gif"
+                                alt="could not load"
+                                class="w-32 h-32 border-2 border-black"
+                            />
+                        </div>
                         <!-- Challenge Icon and Details -->
                         <div class="flex">
                             <!-- Challenge Icon -->
@@ -104,6 +116,20 @@
                                 <img src="@/assets/pending.png" alt="" />️
                             </div>
                         </div>
+                        <div class="">
+                            <img
+                                v-if="index === 0"
+                                src="@/assets/cowboySpare.gif"
+                                alt="could not load"
+                                class="h-32 w-32 border-2 border-black"
+                            />
+                            <img
+                                v-else-if="index === 2"
+                                src="@/assets/hotAirBalloonSpare.gif"
+                                class="h-32 w-32 border-black border-2"
+                                alt="could not load"
+                            />
+                        </div>
                     </div>
                     <!-- Piggy Steps, centered -->
                     <div v-if="index !== challenges.length" class="flex justify-center w-full">
@@ -133,18 +159,21 @@
                             +
                         </button>
                     </div>
+                    <!-- Finish line -->
                 </div>
+                <img
+                    src="@/assets/finishLine.png"
+                    class="w-full max-h-4 mx-auto mt-10"
+                    alt="Finish Line"
+                />
                 <!-- Sparemannen -->
                 <InteractiveSpare
                     :speech="speech"
                     :direction="'left'"
-                    :pngSize="20"
+                    :pngSize="6"
                     class="fixed bottom-0 right-0 mb-40 mr-4 md:opacity-0 md:h-0 md:w-0"
                 ></InteractiveSpare>
             </div>
-            <!-- Finish line -->
-            <img src="@/assets/finishLine.png" class="w-1/2 max-h-4 mx-auto" alt="Finish Line" />
-
             <!-- Goal -->
             <div v-if="goal" class="flex flex-row gap-24 m-t-2 pt-6 mx-auto">
                 <div class="flex flex-col items-start">
@@ -199,30 +228,32 @@ const goal: Goal = {
     id: 1,
     title: 'gaming',
     saved: 200,
+    description: 'none',
     target: 400,
     completion: 50,
-    description: 'none',
     priority: 0,
-    due: new Date().toDateString(),
-    createdOn: undefined,
-    completedOn: undefined
+    createdOn: new Date(),
+    due: new Date()
 }
 
 const challenge: Challenge = {
-    title: 'Coffe',
-    saved: 1200.5,
-    target: 3000,
+    title: 'Coffee',
+    saved: 50,
+    target: 100,
     description: 'Saving monthly for a year-end vacation to Bali',
-    due: '2023-12-31T23:59:59Z',
-    type: 'COFFE',
-    completion: 40
+    createdOn: new Date('2023-01-01T00:00:00Z'),
+    dueDate: new Date('2023-12-31T23:59:59Z'),
+    type: 'COFFEE',
+    completion: 40,
+    completedOn: undefined // Not yet completed
 }
 const challenge1: Challenge = {
     title: 'Snacks',
     saved: 200,
     target: 400,
     description: 'Saving monthly for a year-end vacation to Bali',
-    due: '2023-12-31T23:59:59Z',
+    createdOn: new Date('2023-01-01T00:00:00Z'),
+    dueDate: new Date('2023-12-31T23:59:59Z'),
     type: 'SNACKS',
     completion: 50,
     completedOn: undefined // Not yet completed
@@ -232,12 +263,23 @@ const challenges = ref([challenge, challenge1])
 
 // AddSpareUtfordring
 function addSpareUtfordring() {
-    console.log('Add Spare Utfordring')
+    const newChallenge: Challenge = {
+        title: 'Coffee',
+        saved: 0,
+        target: 1000,
+        description: 'Saving monthly for a year-end vacation to Bali',
+        createdOn: new Date('2023-01-01T00:00:00Z'),
+        dueDate: new Date('2023-12-31T23:59:59Z'),
+        type: 'COFFEE',
+        completion: 0,
+        completedOn: undefined // Not yet completed
+    }
+    challenges.value.push(newChallenge)
 }
 
 // Increment saved amount
 function incrementSaved(challenge: Challenge) {
-    challenge.saved += 10
+    challenge.saved += 20
     if (challenge.saved >= challenge.target) {
         challenge.completion = 100
     }
@@ -369,7 +411,7 @@ function animateIcon() {
 
 // Helper methods to get icons
 function getChallengeIcon(challenge: Challenge): string {
-    if (challenge.type !== '') {
+    if (challenge.type === undefined) {
         return 'src/assets/coins.png'
     }
     return `src/assets/${challenge.type.toLowerCase()}.png`
