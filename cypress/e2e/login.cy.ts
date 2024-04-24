@@ -1,6 +1,6 @@
 describe('Login', () => {
     beforeEach(() => {
-        cy.visit('/login')
+        cy.visit('/logginn')
     })
 
     function fullInput() {
