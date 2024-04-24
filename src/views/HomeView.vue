@@ -25,9 +25,9 @@
                 ref="containerRef"
                 class="container relative mx-auto pt-6 w-4/5 md:w-3/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
             >
-            <div>
-        <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20 " />
-    </div>
+                <div>
+                    <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
+                </div>
                 <div
                     v-for="(challenge, index) in challenges"
                     :key="challenge.title"
@@ -187,7 +187,10 @@
                     <div @click="goToEditGoal" class="cursor-pointer">
                         <h3 class="text-black text-base">Endre mål</h3>
                     </div>
-                    <div ref="targetRef" class="bg-yellow-400 px-4 py-1 rounded-full text-black font-bold">
+                    <div
+                        ref="targetRef"
+                        class="bg-yellow-400 px-4 py-1 rounded-full text-black font-bold"
+                    >
                         {{ goal.saved }}kr / {{ goal.target }}kr
                     </div>
                 </div>
@@ -212,7 +215,7 @@ import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallenge.vue'
 import router from '@/router'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
-import confetti from 'canvas-confetti';
+import confetti from 'canvas-confetti'
 
 // Define your speech array
 const speechArray = [
@@ -319,7 +322,7 @@ const animateChallenge = (challenge: Challenge) => {
     ) {
         console.log('Animating for:', challenge.title)
 
-        triggerConfetti();
+        triggerConfetti()
 
         recalculateAndAnimate()
         saveAnimatedState(challenge.title)
@@ -327,11 +330,11 @@ const animateChallenge = (challenge: Challenge) => {
 }
 
 function triggerConfetti() {
-        confetti({
-            particleCount: 400,
-            spread: 80,
-            origin: { x: 0.8 , y: 0.8 }
-        });
+    confetti({
+        particleCount: 400,
+        spread: 80,
+        origin: { x: 0.8, y: 0.8 }
+    })
 }
 
 watch(

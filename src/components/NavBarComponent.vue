@@ -7,9 +7,7 @@
                 class="absolute left-0 top-8 w-48 h-15 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
                 @click="goToHome"
             />
-            <div
-                class="absolute left-6 top-24 flex-1 sm:flex justify-start items-center"
-            >
+            <div class="absolute left-6 top-24 flex-1 sm:flex justify-start items-center">
                 <div class="flex md:left-80 md:top-20 right-28 top-20 items-center">
                     <img src="../assets/streakFlame.png" alt="streak" class="w-8 h-8" />
                     <p class="font-bold">Streak</p>
@@ -18,10 +16,18 @@
         </div>
         <div class="navcontainer flex space-x-10 justify-center">
             <router-link to="/hjem" class="nav-link" active-class="border-b-2">🏠Hjem</router-link>
-            <router-link to="/sparemaal" class="nav-link" active-class="border-b-2">🎯Sparemål</router-link>
-            <router-link to="/spareutfordringer" class="nav-link" active-class="border-b-2">💰Spareutfordringer</router-link>
-            <router-link to="/profil" class="nav-link" active-class="border-b-2">🤭Profil</router-link>
-            <router-link to="/konfigurasjonSteg1" class="nav-link" active-class="border-b-2">🛠️Konfigurasjon</router-link>
+            <router-link to="/sparemaal" class="nav-link" active-class="border-b-2"
+                >🎯Sparemål</router-link
+            >
+            <router-link to="/spareutfordringer" class="nav-link" active-class="border-b-2"
+                >💰Spareutfordringer</router-link
+            >
+            <router-link to="/profil" class="nav-link" active-class="border-b-2"
+                >🤭Profil</router-link
+            >
+            <router-link to="/konfigurasjonSteg1" class="nav-link" active-class="border-b-2"
+                >🛠️Konfigurasjon</router-link
+            >
             <button
                 @click="logout"
                 class="hidden sm:flex absolute right-10 py-2 px-6 rounded-full focus:outline-none focus:ring focus:ring-black-300"
@@ -110,8 +116,5 @@ onMounted(() => {
     .navcontainer {
         display: none;
     }
-
 }
-
-
 </style>
