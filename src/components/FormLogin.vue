@@ -75,12 +75,12 @@ watch(
                     class="w-full"
                     placeholder="Skriv inn passord"
                 />
-                <button class="absolute right-0 top-1 bg-transparent" @click="toggleShowPassword">
+                <button class="absolute right-0 top-1 bg-transparent hover:bg-transparent" @click="toggleShowPassword">
                     {{ showPassword ? '🔓' : '🔒' }}
                 </button>
                 <a
                     @click="openForgotPasswordModal"
-                    class="absolute right-3 top-10 hover:underline hover:bg-transparent cursor-pointer"
+                    class="transition-none absolute right-3 top-10 hover:underline hover:bg-transparent text-[#ef9691] hover:transition-none hover:p-0 cursor-pointer"
                     >Glemt passord?</a
                 >
             </div>
@@ -115,13 +115,13 @@ watch(
             <button
                 :disabled="!isEmailValid"
                 @click="submitReset"
-                class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
+                class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
             >
                 Send mail
             </button>
             <button
                 @click="closeModal"
-                class="active-button font-bold py-2 px-4 w-1/2 hover:bg-[#f7da7c] border-2 border-[#f7da7c] disabled:border-transparent"
+                class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
             >
                 Lukk
             </button>
