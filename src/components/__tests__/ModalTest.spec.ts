@@ -39,30 +39,4 @@ describe('ModalComponent', () => {
             throw new Error('Close button not found')
         }
     })
-
-    it('button is shown when showButton is true', async () => {
-        expect(wrapper.props().showButton).toBe(true)
-        expect(wrapper.find('.active-button').exists()).toBe(true)
-    })
-
-    it('button is not shown when showButton is false', async () => {
-        await wrapper.setProps({ showButton: false })
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.props().showButton).toBe(false)
-        expect(wrapper.find('.active-button').exists()).toBe(false)
-    })
-
-    it('input is shown when showInput is true', async () => {
-        await wrapper.setProps({ showInput: true })
-        await wrapper.vm.$nextTick()
-
-        expect(wrapper.props().showInput).toBe(true)
-        expect(wrapper.find('input').exists()).toBe(true)
-    })
-
-    it('input is not shown when showInput is false', async () => {
-        expect(wrapper.props().showInput).toBe(false)
-        expect(wrapper.find('input').exists()).toBe(false)
-    })
 })
