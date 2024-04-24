@@ -51,10 +51,10 @@
                 </div>
             </div>
         </div>
-        <div class="w-full text-right mb-3 mt-16">
+        <div class="absolute bottom-24 right-4">
             <ContinueButtonComponent
                 @click="onButtonClick"
-                :disabled="!isAnyAmountFilled"
+                :disabled="!isAllAmountsFilled"
                 class="px-10 py-3 text-2xl font-bold mb-4"
             ></ContinueButtonComponent>
         </div>
@@ -72,7 +72,8 @@ const userConfigStore = useUserConfigStore()
 const options = ref(userConfigStore.challengeTypeConfigs)
 const amounts = ref(options.value.map(() => ''))
 
-const isAnyAmountFilled = computed(() => amounts.value.some((amount) => amount !== ''))
+
+const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
 const onButtonClick = async () => {
     options.value.forEach((option, index) => {

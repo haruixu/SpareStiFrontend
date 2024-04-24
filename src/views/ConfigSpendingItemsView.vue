@@ -43,12 +43,12 @@
                         v-model="customOptions[index]"
                         class="w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2 border-gray-300"
                         type="text"
-                        :placeholder="'Annet ' + (index + 1) + ' ...'"
+                        :placeholder="'Annet ' + ' ...'"
                     />
                 </div>
             </div>
         </div>
-        <div class="w-full text-right mb-3 mt-14">
+        <div class="w-full text-right mb-0 mt-0" style="position: relative; top: -92px; right: 8px;">
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isFormValid"
@@ -82,7 +82,7 @@ const toggleOption = (option: string, isCustom: boolean = false) => {
 const isFormValid = computed(() => {
     const predefinedSelected = selectedOptions.value.length > 0
     const customFilled = customOptions.value.some((option) => option.trim() !== '')
-    return predefinedSelected || customFilled
+    return predefinedSelected || (customFilled && predefinedSelected)
 })
 
 const onButtonClick = () => {
