@@ -2,14 +2,14 @@
     <nav v-if="showNavBar" class="flex justify-center items-center mt-10 text-xl w-full">
         <div>
             <img
-                src="../assets/sparesti.png"
+                src="@/assets/sparesti.png"
                 alt="logo"
                 class="absolute left-0 top-8 w-48 h-15 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
                 @click="goToHome"
             />
             <div class="absolute left-6 top-24 flex-1 sm:flex justify-start items-center">
                 <div class="flex md:left-80 md:top-20 right-28 top-20 items-center">
-                    <img src="../assets/streakFlame.png" alt="streak" class="w-8 h-8" />
+                    <img src="@/assets/streakFlame.png" alt="streak" class="w-8 h-8" />
                     <p class="font-bold">Streak</p>
                 </div>
             </div>
