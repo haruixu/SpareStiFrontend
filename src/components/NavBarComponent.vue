@@ -25,9 +25,6 @@
             <router-link to="/profil" class="nav-link" active-class="border-b-2"
                 >🤭Profil</router-link
             >
-            <router-link to="/konfigurasjonSteg1" class="nav-link" active-class="border-b-2"
-                >🛠️Konfigurasjon</router-link
-            >
             <button
                 @click="logout"
                 class="hidden sm:flex absolute right-10 py-2 px-6 rounded-full focus:outline-none focus:ring focus:ring-black-300"
@@ -50,9 +47,6 @@
             >💰Spareutfordringer</router-link
         >
         <router-link to="/profil" @click="menuOpen = false">🤭Profil</router-link>
-        <router-link to="/konfigurasjonSteg1" @click="menuOpen = false"
-            >🛠️Konfigurasjon</router-link
-        >
         <button
             @click="logout"
             class="py-2 px-6 mx-auto rounded-full focus:outline-none focus:ring focus:ring-black-300 bg-transparent"
@@ -68,7 +62,7 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const route = useRoute()
 const router = useRouter()

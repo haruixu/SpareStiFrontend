@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,7 +11,7 @@ const router = createRouter({
         {
             path: '/hjem',
             name: 'home',
-            component: HomeView
+            component: () => import('@/views/HomeView.vue')
         },
         {
             path: '/logginn',
@@ -37,17 +36,32 @@ const router = createRouter({
         {
             path: '/sparemaal',
             name: 'goals',
-            component: () => import('@/views/GoalView.vue')
+            component: () => import('@/views/UserGoalsView.vue')
+        },
+        {
+            path: '/sparemaal/ny',
+            name: 'new-goal',
+            component: () => import('@/views/ManageGoalView.vue')
+        },
+        {
+            path: '/sparemaal/:id',
+            name: 'edit-goal',
+            component: () => import('@/views/ManageGoalView.vue')
         },
         {
             path: '/spareutfordringer',
             name: 'challenges',
-            component: () => import('@/views/ChallengeView.vue')
+            component: () => import('@/views/UserChallengesView.vue')
         },
         {
-            path: '/:pathMatch(.*)*',
-            name: 'not-found',
-            component: () => import('@/views/NotFoundView.vue')
+            path: '/spareutfordringer/ny',
+            name: 'new-challenge',
+            component: () => import('@/views/ManageChallengeView.vue')
+        },
+        {
+            path: '/spareutfordringer/:id',
+            name: 'edit-challenge',
+            component: () => import('@/views/ManageChallengeView.vue')
         },
         {
             path: '/konfigurasjonSteg1',
@@ -70,6 +84,11 @@ const router = createRouter({
             component: () => import('@/views/ConfigSpendingItemsAmountView.vue')
         },
         {
+            path: '/konfigurasjonSteg5',
+            name: 'configurations5',
+            component: () => import('@/views/ConfigSpendingItemsTotalAmountView.vue')
+        },
+        {
             path: '/forsteSparemaal',
             name: 'firstSavingGoal',
             component: () => import('@/views/FirstSavingGoalView.vue')
@@ -78,6 +97,11 @@ const router = createRouter({
             path: '/forsteSpareutfordring',
             name: 'firstSavingChallengde',
             component: () => import('@/views/FirstSavingChallengeView.vue')
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: () => import('@/views/NotFoundView.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
