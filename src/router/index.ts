@@ -14,9 +14,19 @@ const router = createRouter({
             component: () => import('@/views/HomeView.vue')
         },
         {
-            path: '/login',
+            path: '/logginn',
             name: 'login',
             component: () => import('@/views/RegisterLoginView.vue')
+        },
+        {
+            path: '/registrer',
+            name: 'register',
+            component: () => import('@/views/RegisterLoginView.vue')
+        },
+        {
+            path: '/forgotPassword',
+            name: 'resetPassword',
+            component: () => import('@/views/ResetPasswordView.vue')
         },
         {
             path: '/profil',
@@ -76,12 +86,12 @@ const router = createRouter({
         {
             path: '/forsteSparemaal',
             name: 'firstSavingGoal',
-            component: () => import('../views/FirstSavingGoalView.vue')
+            component: () => import('@/views/FirstSavingGoalView.vue')
         },
         {
             path: '/forsteSpareutfordring',
             name: 'firstSavingChallengde',
-            component: () => import('../views/FirstSavingChallengeView.vue')
+            component: () => import('@/views/FirstSavingChallengeView.vue')
         },
         {
             path: '/:pathMatch(.*)*',

@@ -4,8 +4,10 @@
     --black: #363739;
     --white: #ffffff;
     --grey: #cbcbcb;
+    --light-grey: #f2f2f2;
     --green: #95e35d;
     --red: #ef9691;
+    --light-green: #b3f385;
 
     --bright: #f7da7c;
 
@@ -17,8 +19,10 @@
 :root {
     --color-background: var(--white);
     --color-text: var(--black);
-    --color-button: var(--bright);
+    --color-button: var(--green);
     --color-button-disabled: var(--grey);
+    --color-nav-hover: var(--light-grey);
+    --color-button-hover: var(--light-green);
 
     --color-link: var(--accent3);
     --color-border: var(--black);
