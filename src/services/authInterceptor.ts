@@ -32,7 +32,11 @@ authInterceptor.interceptors.response.use(
             originalRequest._retry = true
             const refreshToken = localStorage.getItem('refreshToken')
             axios
-                .post('/auth/renewToken', { refreshToken })
+                .post('/auth/renewToken', null, {
+                    headers: {
+                        Authorization: `Bearer ${refreshToken}`
+                    }
+                })
                 .then((response) => {
                     sessionStorage.setItem('accessToken', response.data.accessToken)
                     authInterceptor.defaults.headers['Authorization'] =
