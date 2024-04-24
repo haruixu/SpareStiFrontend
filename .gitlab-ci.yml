@@ -1,4 +1,4 @@
-image: node:latest
+image: node:20-slim
 
 stages:
   - install
@@ -6,6 +6,11 @@ stages:
   - build
   - test
   - security_scan
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
 
 install:
   stage: install
