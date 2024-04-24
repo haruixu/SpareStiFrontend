@@ -2,7 +2,7 @@
     <nav v-if="showNavBar" class="flex justify-center items-center mt-10 text-xl w-full">
         <div>
             <img
-                src="@/assets/sparesti.png"
+                src="@/assets/spareSti.png"
                 alt="logo"
                 class="absolute left-0 top-8 w-48 h-15 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
                 @click="goToHome"
