@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ButtonComponent from '@/components/ButtonAddGoalOrChallange.vue' // Adjust the import path as needed.
+import ButtonComponent from '@/components/ButtonAddGoalOrChallenge.vue'
 
 describe('ButtonComponent', () => {
     it('renders correctly', () => {
