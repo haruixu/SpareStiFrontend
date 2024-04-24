@@ -1,9 +1,11 @@
 // Assuming the use of classes from 'class-transformer' for date handling or plain TypeScript
 
 export interface Challenge {
+    id: number
     title: string
     saved: number // BigDecimal in Java, but TypeScript uses number for floating points
     target: number
+    perPurchase: number,
     description: string
     createdOn: Date // Mapping ZonedDateTime to Date
     dueDate?: Date // Mapping ZonedDateTime to Date, optional since Temporal annotation not always implies required
