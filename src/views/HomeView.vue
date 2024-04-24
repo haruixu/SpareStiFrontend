@@ -209,6 +209,27 @@ import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallange.vue'
 import router from '@/router'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
+import {useGoalStore} from "@/stores/goalStore";
+import {useChallengeStore} from "@/stores/challengeStore";
+
+
+const goalStore = useGoalStore();
+const challengeStore = useChallengeStore();
+
+const challenges = ref<Challenge[]>([]);
+const goals = ref<Goal[]>([]);
+
+const goal = ref<Goal | null | undefined>(null);
+
+
+onMounted(async () => {
+  await goalStore.getUserGoals();
+  await challengeStore.getUserChallenges();
+  challenges.value = challengeStore.challenges;
+  goals.value = goalStore.goals;
+  goal.value = goals.value[0];
+});
+
 
 // Define your speech array
 const speechArray = [
@@ -224,68 +245,27 @@ const iconRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 
-const goal: Goal = {
-    id: 1,
-    title: 'gaming',
-    saved: 200,
-    description: 'none',
-    target: 400,
-    completion: 50,
-    priority: 0,
-    createdOn: new Date(),
-    due: new Date()
-}
+// Define your goal
 
-const challenge: Challenge = {
-    title: 'Coffee',
-    saved: 50,
-    target: 100,
-    description: 'Saving monthly for a year-end vacation to Bali',
-    createdOn: new Date('2023-01-01T00:00:00Z'),
-    dueDate: new Date('2023-12-31T23:59:59Z'),
-    type: 'COFFEE',
-    completion: 40,
-    completedOn: undefined // Not yet completed
-}
-const challenge1: Challenge = {
-    title: 'Snacks',
-    saved: 200,
-    target: 400,
-    description: 'Saving monthly for a year-end vacation to Bali',
-    createdOn: new Date('2023-01-01T00:00:00Z'),
-    dueDate: new Date('2023-12-31T23:59:59Z'),
-    type: 'SNACKS',
-    completion: 50,
-    completedOn: undefined // Not yet completed
-}
-
-const challenges = ref([challenge, challenge1])
 
 // AddSpareUtfordring
-function addSpareUtfordring() {
-    const newChallenge: Challenge = {
-        title: 'Coffee',
-        saved: 0,
-        target: 1000,
-        description: 'Saving monthly for a year-end vacation to Bali',
-        createdOn: new Date('2023-01-01T00:00:00Z'),
-        dueDate: new Date('2023-12-31T23:59:59Z'),
-        type: 'COFFEE',
-        completion: 0,
-        completedOn: undefined // Not yet completed
-    }
-    challenges.value.push(newChallenge)
+const addSpareUtfordring =()=> {
+    console.log('Add Spare Utfordring')
 }
 
 // Increment saved amount
-function incrementSaved(challenge: Challenge) {
-    challenge.saved += 20
-    if (challenge.saved >= challenge.target) {
-        challenge.completion = 100
-    }
+const incrementSaved = async (challenge: Challenge) => {
+  challenge.perPurchase = 20;
+  challenge.saved += challenge.perPurchase;
+  if (challenge.saved >= challenge.target) {
+    challenge.completion = 100
+  }
+  console.log('Incrementing saved amount for:', challenge)
+
+  await challengeStore.editUserChallenge(challenge);
 }
 
-function recalculateAndAnimate() {
+const recalculateAndAnimate = () => {
     nextTick(() => {
         if (iconRef.value && containerRef.value && targetRef.value) {
             animateIcon()
@@ -347,7 +327,7 @@ onMounted(() => {
     loadAnimatedStates()
 })
 
-function animateIcon() {
+const animateIcon = () => {
     const icon = iconRef.value
     const container = containerRef.value
     const target = targetRef.value
@@ -410,22 +390,22 @@ function animateIcon() {
 }
 
 // Helper methods to get icons
-function getChallengeIcon(challenge: Challenge): string {
+const getChallengeIcon=(challenge: Challenge): string=> {
     if (challenge.type === undefined) {
         return 'src/assets/coins.png'
     }
     return `src/assets/${challenge.type.toLowerCase()}.png`
 }
 
-function getGoalIcon(goal: Goal): string {
+const getGoalIcon=(goal: Goal): string => {
     return `src/assets/${goal.title.toLowerCase()}.png`
 }
-function getPigStepsIcon() {
+const getPigStepsIcon= ()=> {
     return 'src/assets/pigSteps.png'
 }
 
 // TODO - Change when EditGoal view is created
-function goToEditGoal() {
+const goToEditGoal=()=> {
     router.push({ name: 'EditGoal' })
 }
 </script>
