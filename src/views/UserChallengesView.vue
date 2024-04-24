@@ -1,51 +1,52 @@
 <script lang="ts" setup>
-import CardGoal from '@/components/CardGoal.vue'
-
 import { useRouter } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
-import type { Goal } from '@/types/goal'
 import draggable from 'vuedraggable'
+import type { Challenge } from '@/types/challenge'
+import CardChallenge from '@/components/CardChallenge.vue'
 
 const router = useRouter()
 
 const currentPage = ref(1)
 const totalPages = ref(1)
 
-const goals = ref<Goal[]>([])
+const challenges = ref<Challenge[]>([])
 
 onMounted(async () => {
-    await authInterceptor('/users/me/goals')
+    await authInterceptor('/users/me/challenges')
         .then((response) => {
             currentPage.value = response.data.currentPage
             totalPages.value = response.data.totalPages
-            goals.value = response.data.content
+            challenges.value = response.data.content
         })
         .catch((error) => {
             console.error(error)
         })
 })
 
-watch(goals, (newGoals) => {
-    console.log(newGoals)
+watch(challenges, (newChallenges) => {
+    console.log(newChallenges)
 })
 </script>
 
 <template>
-    <h1 class="font-bold text-center">Dine sparemål</h1>
+    <h1 class="font-bold text-center">Dine utfordringer</h1>
     <div class="flex flex-col gap-5 items-center">
         <draggable
-            v-model="goals"
+            v-model="challenges"
             class="flex flex-col justify-center gap-10 sm:flex-row"
             item-key="id"
         >
             <template #item="{ element, index }">
-                <CardGoal :key="index" :goal-instance="element" />
+                <CardChallenge :key="index" :challenge-instance="element" />
             </template>
         </draggable>
         <div class="flex flex-row gap-5">
-            <button @click="router.push({ name: 'new-goal' })">Opprett et nytt sparemål</button>
-            <button @click="router.push({ name: 'edit-goal', params: { id: 1 } })">
+            <button @click="router.push({ name: 'new-challenge' })">
+                Opprett en ny utfordring
+            </button>
+            <button @click="router.push({ name: 'edit-challenge', params: { id: 1 } })">
                 Rediger rekkefølge
             </button>
         </div>

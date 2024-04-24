@@ -27,6 +27,7 @@ const challengeInstance = ref<Challenge>({
 
 const isAmountSaved = ref(false)
 const timesSaved = ref(challengeInstance.value.saved / challengeInstance.value.perPurchase)
+
 watch(
     () => timesSaved.value,
     (newVal) => {
@@ -34,6 +35,7 @@ watch(
         challengeInstance.value.saved = parseFloat(challengeInstance.value.saved.toFixed(2))
     }
 )
+
 watch(
     () => challengeInstance.value.saved,
     (newVal) => {
@@ -46,6 +48,7 @@ watch(
         timesSaved.value = parseFloat(timesSaved.value.toFixed(2))
     }
 )
+
 watch(
     () => challengeInstance.value.perPurchase,
     (newVal) => {
@@ -111,10 +114,10 @@ const submitAction = () => {
 
 onMounted(async () => {
     if (isEdit.value) {
-        const goalId = router.currentRoute.value.params.id
-        if (!goalId) return router.push({ name: 'challenges' })
+        const challengeId = router.currentRoute.value.params.id
+        if (!challengeId) return router.push({ name: 'challenges' })
 
-        await authInterceptor(`/users/me/challenges/${goalId}`)
+        await authInterceptor(`/users/me/challenges/${challengeId}`)
             .then((response) => {
                 challengeInstance.value = response.data
                 selectedDate.value = response.data.due.slice(0, 16)
@@ -148,7 +151,7 @@ const updateChallenge = () => {
         })
 }
 
-const deleteGoal = () => {
+const deleteChallenge = () => {
     authInterceptor
         .delete(`/users/me/challenges/${challengeInstance.value.id}`)
         .then(() => {
@@ -250,13 +253,13 @@ const deleteGoal = () => {
                 <button
                     v-if="isEdit"
                     class="ml-2 bg-button-danger"
-                    @click="deleteGoal"
+                    @click="deleteChallenge"
                     v-text="'Slett'"
                 />
                 <button
                     v-else
                     class="ml-2 bg-button-other"
-                    @click="router.push({ name: 'challenge' })"
+                    @click="router.push({ name: 'challenges' })"
                     v-text="'Avbryt'"
                 />
             </div>
