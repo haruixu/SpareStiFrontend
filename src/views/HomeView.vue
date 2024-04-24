@@ -215,7 +215,7 @@ import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallenge.vue'
 import router from '@/router'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
-import confetti from 'canvas-confetti';
+import confetti from 'canvas-confetti'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 
@@ -305,7 +305,7 @@ const animateChallenge = (challenge: Challenge) => {
     }
 }
 
-const  triggerConfetti =()=> {
+const triggerConfetti = () => {
     confetti({
         particleCount: 400,
         spread: 80,
