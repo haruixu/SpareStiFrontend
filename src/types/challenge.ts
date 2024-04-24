@@ -3,6 +3,7 @@
 export interface Challenge {
     id?: number
     title: string
+    perPurchase: number
     saved: number // BigDecimal in Java, but TypeScript uses number for floating points
     target: number
     description: string
