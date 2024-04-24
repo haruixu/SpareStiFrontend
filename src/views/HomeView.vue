@@ -209,27 +209,24 @@ import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallange.vue'
 import router from '@/router'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
-import {useGoalStore} from "@/stores/goalStore";
-import {useChallengeStore} from "@/stores/challengeStore";
+import { useGoalStore } from '@/stores/goalStore'
+import { useChallengeStore } from '@/stores/challengeStore'
 
+const goalStore = useGoalStore()
+const challengeStore = useChallengeStore()
 
-const goalStore = useGoalStore();
-const challengeStore = useChallengeStore();
+const challenges = ref<Challenge[]>([])
+const goals = ref<Goal[]>([])
 
-const challenges = ref<Challenge[]>([]);
-const goals = ref<Goal[]>([]);
-
-const goal = ref<Goal | null | undefined>(null);
-
+const goal = ref<Goal | null | undefined>(null)
 
 onMounted(async () => {
-  await goalStore.getUserGoals();
-  await challengeStore.getUserChallenges();
-  challenges.value = challengeStore.challenges;
-  goals.value = goalStore.goals;
-  goal.value = goals.value[0];
-});
-
+    await goalStore.getUserGoals()
+    await challengeStore.getUserChallenges()
+    challenges.value = challengeStore.challenges
+    goals.value = goalStore.goals
+    goal.value = goals.value[0]
+})
 
 // Define your speech array
 const speechArray = [
@@ -247,22 +244,21 @@ const targetRef = ref<HTMLElement | null>(null)
 
 // Define your goal
 
-
 // AddSpareUtfordring
-const addSpareUtfordring =()=> {
+const addSpareUtfordring = () => {
     console.log('Add Spare Utfordring')
 }
 
 // Increment saved amount
 const incrementSaved = async (challenge: Challenge) => {
-  challenge.perPurchase = 20;
-  challenge.saved += challenge.perPurchase;
-  if (challenge.saved >= challenge.target) {
-    challenge.completion = 100
-  }
-  console.log('Incrementing saved amount for:', challenge)
+    challenge.perPurchase = 20
+    challenge.saved += challenge.perPurchase
+    if (challenge.saved >= challenge.target) {
+        challenge.completion = 100
+    }
+    console.log('Incrementing saved amount for:', challenge)
 
-  await challengeStore.editUserChallenge(challenge);
+    await challengeStore.editUserChallenge(challenge)
 }
 
 const recalculateAndAnimate = () => {
@@ -390,22 +386,22 @@ const animateIcon = () => {
 }
 
 // Helper methods to get icons
-const getChallengeIcon=(challenge: Challenge): string=> {
+const getChallengeIcon = (challenge: Challenge): string => {
     if (challenge.type === undefined) {
         return 'src/assets/coins.png'
     }
     return `src/assets/${challenge.type.toLowerCase()}.png`
 }
 
-const getGoalIcon=(goal: Goal): string => {
+const getGoalIcon = (goal: Goal): string => {
     return `src/assets/${goal.title.toLowerCase()}.png`
 }
-const getPigStepsIcon= ()=> {
+const getPigStepsIcon = () => {
     return 'src/assets/pigSteps.png'
 }
 
 // TODO - Change when EditGoal view is created
-const goToEditGoal=()=> {
+const goToEditGoal = () => {
     router.push({ name: 'EditGoal' })
 }
 </script>
