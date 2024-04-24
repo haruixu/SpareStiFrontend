@@ -1,6 +1,6 @@
 describe('Register', () => {
     beforeEach(() => {
-        cy.visit('/login')
+        cy.visit('/registrer')
         cy.contains('h3', 'Registrer deg').click()
     })
 
