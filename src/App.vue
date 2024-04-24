@@ -13,7 +13,6 @@ const showRouterView = computed(() => route.path !== '/')
         <RouterLink to="/sparemaal">Sparemål</RouterLink>
         <RouterLink to="/spareutfordringer">Spareutfordringer</RouterLink>
         <RouterLink to="/profil">Profil</RouterLink>
-        <RouterLink to="/konfigurasjonSteg1">Konfigurasjon</RouterLink>
     </nav>
 
     <main>
