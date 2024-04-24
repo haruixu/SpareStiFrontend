@@ -33,7 +33,9 @@ const openForgotPasswordModal = (event: MouseEvent) => {
 }
 
 const submitReset = async () => {
-    await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', { email: resetEmail.value })
+    await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', {
+        email: resetEmail.value
+    })
 
     resetEmail.value = ''
     isModalOpen.value = false

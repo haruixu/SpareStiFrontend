@@ -16,13 +16,10 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
-
 defineProps({
     title: String,
     message: String,
-    isModalOpen: Boolean,
+    isModalOpen: Boolean
 })
-
 </script>

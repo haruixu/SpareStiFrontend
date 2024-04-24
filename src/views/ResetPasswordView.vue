@@ -19,7 +19,10 @@
                         class="w-full"
                         :class="{ 'bg-green-200': isPasswordValid }"
                     />
-                    <button class="absolute right-0 top-1 bg-transparent" @click="toggleShowPassword">
+                    <button
+                        class="absolute right-0 top-1 bg-transparent"
+                        @click="toggleShowPassword"
+                    >
                         {{ showPassword ? '🔓' : '🔒' }}
                     </button>
                 </div>
@@ -27,9 +30,9 @@
                     v-model="confirm"
                     :class="{ 'bg-green-200': newPassword == confirm && '' !== confirm.valueOf() }"
                     class="mt-2 w-full"
-                name="confirm"
-                placeholder="Bekreft passord"
-                type="password"
+                    name="confirm"
+                    placeholder="Bekreft passord"
+                    type="password"
                 />
                 <div class="flex justify-center mt-10">
                     <button
@@ -47,7 +50,7 @@
             :message="'Passordet ditt er nå oppdatert. Du kan nå logge inn med ditt nye passord.'"
             :is-modal-open="isModalOpen"
             @close="isModalOpen = false"
-            >
+        >
             <template v-slot:buttons>
                 <button
                     @click="goToLogin"
@@ -60,19 +63,18 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
-import ToolTip from '@/components/ToolTip.vue';
-import ModalComponent from '@/components/ModalComponent.vue';
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
+import ToolTip from '@/components/ToolTip.vue'
+import ModalComponent from '@/components/ModalComponent.vue'
 
-const route = useRoute();
+const route = useRoute()
 const router = useRouter()
 
-const resetID = ref(route.query.resetID);
-const userID = ref(route.query.userID);
+const resetID = ref(route.query.resetID)
+const userID = ref(route.query.userID)
 const newPassword = ref<string>('')
 const confirm = ref<string>('')
 const showPassword = ref<boolean>(false)
@@ -83,8 +85,8 @@ const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+
 const isPasswordValid = computed(() => passwordRegex.test(newPassword.value))
 
 const canResetPassword = computed(() => {
-    return isPasswordValid.value && newPassword.value === confirm.value && confirm.value !== '';
-});
+    return isPasswordValid.value && newPassword.value === confirm.value && confirm.value !== ''
+})
 
 const resetPassword = async () => {
     isModalOpen.value = true
@@ -95,17 +97,16 @@ const resetPassword = async () => {
         newPassword: newPassword.value
     }
     try {
-        await axios.post("http://localhost:8080/forgotPassword/resetPassword", {
+        await axios.post('http://localhost:8080/forgotPassword/resetPassword', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(resetPasswordDTO),
-        });
-
+            body: JSON.stringify(resetPasswordDTO)
+        })
     } catch (error) {
-        const err = error as Error;
-        console.error(err.message);
+        const err = error as Error
+        console.error(err.message)
     }
-};
+}
 
 const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
