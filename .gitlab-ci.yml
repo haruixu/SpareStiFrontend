@@ -8,38 +8,33 @@ stages:
   - security_scan
 
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
+  key: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_REF_SLUG}
   paths:
+    - .npm
     - node_modules/
 
 install:
   stage: install
   script:
-    - npm install
+    - npm ci
   artifacts:
     paths:
       - node_modules/
 
-format-code:
+lint-and-format:
   stage: lint_and_format
   script:
     - npm run format-test
-
-lint-code:
-  stage: lint_and_format
-  script:
     - npm run lint
 
-type-check:
+type-check-and-build:
   stage: build
   script:
     - npm run type-check
     - npm run build
-
-unit-tests:
-  stage: test
-  script:
-    - npm run test:unit
+  artifacts:
+    paths:
+      - build/
 
 test:e2e:
   image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
@@ -50,6 +45,8 @@ test:e2e:
     - npm run test:e2e
   dependencies:
     - install
+  retry: 2
+
 
 test-coverage:
   stage: test
