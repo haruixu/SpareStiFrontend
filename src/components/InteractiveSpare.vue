@@ -73,7 +73,7 @@ const bubbleDirection = computed(() => {
 /* CSS talk bubble */
 
 .border {
-    border: 0.375rem solid black;
+    border: 0.1rem solid black;
 }
 .round {
     border-radius: 1.875rem;
@@ -87,11 +87,11 @@ const bubbleDirection = computed(() => {
     position: absolute;
     width: 0;
     height: 0;
-    left: 1.875rem;
+    left: 2.30rem;
     right: auto;
     top: auto;
-    bottom: -2.5rem;
-    border: 1.25rem solid;
+    bottom: -1.5rem;
+    border: 0.7rem solid;
     border-color: black transparent transparent black;
 }
 .tri-right.btm-left-in:after {
