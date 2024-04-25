@@ -24,8 +24,7 @@ const goalInstance = ref<Goal>({
     description: '',
     priority: 0,
     createdOn: undefined,
-    due: minDate + ':00.000Z',
-    completedOn: null
+    due: minDate + ':00.000Z'
 })
 
 watch(
