@@ -10,7 +10,7 @@ describe('ModalComponent', () => {
             props: {
                 title: 'Test Title',
                 message: 'Test Message',
-                isModalOpen: true,
+                isModalOpen: true
             }
         })
     })
@@ -25,7 +25,6 @@ describe('ModalComponent', () => {
 
     it('title should not be: Wrong Title', () => {
         expect(wrapper.find('.title').text()).not.toBe('Wrong Title')
-
     })
 
     it('message should be: Test Message', () => {
