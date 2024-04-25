@@ -1,5 +1,5 @@
 <template>
-    <nav class="flex justify-between items-center min-h-32 text-xl w-full px-3">
+    <nav class="flex justify-between items-center min-h-32 text-xl w-full px-3 my-0">
         <div>
             <router-link to="/hjem" @click="hamburgerOpen = false">
                 <img
@@ -29,10 +29,7 @@
         <button v-if="isHamburger" @click="toggleMenu">☰</button>
     </nav>
 
-    <div
-        v-if="hamburgerOpen"
-        class="flex flex-col bg-white absolute border border-slate-300 top-10 w-full mt-10 z-50"
-    >
+    <div v-if="hamburgerOpen" class="flex flex-col bg-white border border-slate-300 z-50">
         <router-link to="/hjem" @click="hamburgerOpen = false">🏠Hjem</router-link>
         <router-link to="/sparemaal" @click="hamburgerOpen = false">🎯Sparemål</router-link>
         <router-link to="/spareutfordringer" @click="hamburgerOpen = false"
