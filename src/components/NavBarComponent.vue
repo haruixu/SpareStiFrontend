@@ -24,7 +24,7 @@
         </div>
 
         <div v-if="!isHamburger" class="flex justify-center w-40">
-            <button class="focus:ring focus:ring-black-300" @click="logout">Logg ut</button>
+            <button class="focus:ring focus:ring-black-300" @click="openModal">Logg ut</button>
         </div>
         <button v-if="isHamburger" @click="toggleMenu">☰</button>
     </nav>
@@ -36,22 +36,45 @@
             >💰Spareutfordringer</router-link
         >
         <router-link to="/profil" @click="hamburgerOpen = false">🤭Profil</router-link>
-        <button class="focus:ring focus:ring-black-300 bg-transparent" @click="logout">
+        <button class="focus:ring focus:ring-black-300 bg-transparent" @click="openModal">
             Logg ut
         </button>
     </div>
+    <ModalComponent
+        :title="'Vil du logge ut?'"
+        :message="'Er du sikker på at du vil logge ut av SpareSti? Du kan alltid logge inn igjen senere 🕺'"
+        :is-modal-open="isModalOpen"
+        @close="isModalOpen = false"
+    >
+        <template v-slot:buttons>
+            <button
+                @click="logout"
+                class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
+            >
+                Logg ut
+            </button>
+            <button
+                @click="closeModal"
+                class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent bg-red-400 hover:bg-red-300"
+            >
+                Avbryt
+            </button>
+        </template>
+    </ModalComponent>
 </template>
 
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
+import ModalComponent from '@/components/ModalComponent.vue'
 
 const userStore = useUserStore()
 
 const windowWidth = ref(window.innerWidth)
 const hamburgerOpen = ref(false)
 const isHamburger = ref(false)
+const isModalOpen = ref<boolean>(false)
 
 const logout = () => {
     userStore.logout()
@@ -75,6 +98,15 @@ onMounted(() => {
     window.addEventListener('resize', updateWindowWidth)
     updateWindowWidth()
 })
-</script>
 
-<style scoped></style>
+const openModal = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation(); // Stop the event from bubbling up
+    isModalOpen.value = true;
+}
+
+
+const closeModal = () => {
+    isModalOpen.value = false
+}
+</script>
