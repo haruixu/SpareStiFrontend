@@ -48,14 +48,37 @@
 import { ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
+import { useUserConfigStore } from '@/stores/userConfigStore'
 
 const selectedOption = ref<string | null>(null)
+const userConfigStore = useUserConfigStore()
 
 const selectOption = (option: string) => {
     selectedOption.value = option
+    let experienceValue = ''
+
+    switch (option) {
+        case 'litt':
+            experienceValue = 'VERY_LOW'
+            break
+        case 'noe':
+            experienceValue = 'MEDIUM'
+            break
+        case 'godt':
+            experienceValue = 'VERY_HIGH'
+            break
+        default:
+            experienceValue = 'VERY_LOW'
+    }
+
+    userConfigStore.setExperience(experienceValue)
 }
 
 const onButtonClick = () => {
-    router.push('/konfigurasjonSteg3')
+    if (selectedOption.value) {
+        router.push('/konfigurasjonSteg3')
+    } else {
+        console.error('No option selected')
+    }
 }
 </script>

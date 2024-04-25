@@ -1,16 +1,25 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 sm:px-2 text-center">
+    <div class="flex flex-col items-center justify-center min-h-screen text-center">
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hva bruker du mye penger på?</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg md:w-96">
+        <div class="flex flex-wrap justify-center gap-8 mb-8">
+            <div
+                class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
+            >
                 <div
-                    v-for="buttonText in ['Kaffe', 'Snus', 'Kantina']"
+                    v-for="buttonText in [
+                        'Kaffe',
+                        'Snus',
+                        'Kantina',
+                        'Sigaretter',
+                        'Transport',
+                        'Klær'
+                    ]"
                     :key="buttonText"
                     class="w-full my-4"
                 >
                     <button
                         :class="[
-                            'w-full h-11 rounded-md text-xl font-bold',
+                            'w-full md:w-64 h-11 rounded-md text-xl font-bold',
                             selectedOptions.includes(buttonText)
                                 ? 'border-2 border-[var(--green)]'
                                 : 'border-2 border-gray-300'
@@ -22,24 +31,24 @@
                     </button>
                 </div>
             </div>
-
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg md:w-96">
-                <div v-for="(option, index) in options" :key="`input-${index}`" class="w-full my-4">
+            <div
+                class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
+            >
+                <div
+                    v-for="(option, index) in customOptions"
+                    :key="`custom-${index}`"
+                    class="w-full my-4"
+                >
                     <input
-                        v-model="option.name"
-                        :class="[
-                            'w-full h-11 px-3 rounded-md text-xl focus:outline-none transition-colors',
-                            option.name
-                                ? 'border-2 border-[var(--green)]'
-                                : 'border-2 border-gray-300'
-                        ]"
+                        v-model="customOptions[index]"
+                        class="w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2 border-gray-300"
                         type="text"
-                        placeholder="Annet ..."
+                        :placeholder="'Annet ' + ' ...'"
                     />
                 </div>
             </div>
         </div>
-        <div class="w-full text-right mb-3 mt-14">
+        <div class="w-full text-right mb-0 mt-0" style="position: relative; top: -92px; right: 8px">
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isFormValid"
@@ -50,36 +59,49 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref, computed } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
+import { useUserConfigStore } from '@/stores/userConfigStore'
 
-interface Option {
-    name: string
-}
-
-const options = ref<Option[]>([{ name: '' }, { name: '' }, { name: '' }])
+const userConfigStore = useUserConfigStore()
 const selectedOptions = ref<string[]>([])
+const customOptions = ref(['', '', '', '', '', ''])
 
-const toggleOption = (option: string) => {
-    const index = selectedOptions.value.indexOf(option)
-    if (index === -1) {
-        selectedOptions.value.push(option)
-    } else {
-        selectedOptions.value.splice(index, 1)
+const toggleOption = (option: string, isCustom: boolean = false) => {
+    if (!isCustom) {
+        const index = selectedOptions.value.indexOf(option)
+        if (index === -1) {
+            selectedOptions.value.push(option)
+        } else {
+            selectedOptions.value.splice(index, 1)
+        }
     }
 }
 
 const isFormValid = computed(() => {
-    return (
-        selectedOptions.value.length > 0 ||
-        options.value.some((option) => option.name.trim() !== '')
-    )
+    const predefinedSelected = selectedOptions.value.length > 0
+    const customFilled = customOptions.value.some((option) => option.trim() !== '')
+    return predefinedSelected || (customFilled && predefinedSelected)
 })
 
 const onButtonClick = () => {
-    if (isFormValid.value) {
-        router.push('/konfigurasjonSteg4')
-    }
+    const predefinedChallengeTypes = selectedOptions.value.map((option) => ({
+        type: option,
+        specificAmount: 0,
+        generalAmount: 0
+    }))
+
+    const customChallengeTypes = customOptions.value
+        .filter((option) => option.trim() !== '')
+        .map((option) => ({
+            type: option,
+            specificAmount: 0,
+            generalAmount: 0
+        }))
+
+    userConfigStore.challengeTypeConfigs = [...predefinedChallengeTypes, ...customChallengeTypes]
+    console.log('Selected Challenge Types:', userConfigStore.challengeTypeConfigs)
+    router.push('/konfigurasjonSteg4')
 }
 </script>

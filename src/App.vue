@@ -22,3 +22,20 @@ const showNavBar = computed(() => {
         <RouterView />
     </main>
 </template>
+
+<style>
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+nav a.router-link-exact-active {
+    color: var(--color-text);
+}
+
+nav a.router-link-exact-active:hover {
+    background-color: transparent;
+}
+</style>
