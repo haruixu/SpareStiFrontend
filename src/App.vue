@@ -18,7 +18,7 @@ const showNavBar = computed(() => {
 <template>
     <NavBarComponent v-if="showNavBar" />
 
-    <main>
+    <main class="mb-10">
         <RouterView />
     </main>
 </template>

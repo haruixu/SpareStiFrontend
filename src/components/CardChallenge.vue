@@ -10,27 +10,37 @@ const props = defineProps({
         default: () => ({
             id: 0,
             title: 'Challenge title',
-            saved: 500,
+            saved: 0,
             target: 1000,
             description: 'challenge Description',
             due: '2021-12-31'
         })
+    },
+    isCompleted: {
+        type: Boolean,
+        default: false
     }
 })
 
 const challengeInstance = props.challengeInstance
 
-const editChallenge = () =>
-    router.push({ name: 'edit-challenge', params: { id: challengeInstance.id } })
+const editChallenge = () => {
+    if (props.isCompleted) {
+        router.push({ name: 'view-challenge', params: { id: challengeInstance.id } })
+    } else {
+        router.push({ name: 'edit-challenge', params: { id: challengeInstance.id } })
+    }
+}
 const displayDate = computed(() => challengeInstance.due?.slice(0, 16).split('T').join(' '))
 </script>
 
 <template>
     <div
-        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer"
+        :class="{ 'bg-green-200 cursor-default': props.isCompleted }"
+        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer w-52 overflow-hidden"
         @click="editChallenge"
     >
-        <h2 class="m-0">{{ challengeInstance.title }}</h2>
+        <h3 class="my-0 mx-6">{{ challengeInstance.title }}</h3>
         <p>{{ challengeInstance.saved }}kr / {{ challengeInstance.target }}kr</p>
         <ProgressBar :completion="challengeInstance.completion" />
         <p>{{ displayDate }}</p>
