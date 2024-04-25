@@ -43,18 +43,18 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { onMounted, ref } from 'vue'
+import { useUserStore } from '@/stores/userStore'
 
-const router = useRouter()
+const userStore = useUserStore()
 
 const windowWidth = ref(window.innerWidth)
 const hamburgerOpen = ref(false)
 const isHamburger = ref(false)
 
 const logout = () => {
-    router.push('/login')
-    hamburgerOpen.value = false
+    userStore.logout()
 }
 
 const toggleMenu = () => {
