@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import CardChallenge from '../CardChallenge.vue'
 import type { Challenge } from '../../types/challenge'
 
 describe('CardChallenge', () => {
-    let wrapper: any
+    let incompleteWrapper: any
+    let completeWrapper: any
 
     const incompleteChallenge: Challenge = {
         id: 1,
@@ -33,33 +34,38 @@ describe('CardChallenge', () => {
         completedOn: '2022-01-01T00:00:00Z'
     }
 
-    beforeEach(async () => {
-        wrapper = mount(CardChallenge, {
+    const mountIncompletedWrapper = async () => {
+        incompleteWrapper = mount(CardChallenge, {
             propsData: {
                 challengeInstance: incompleteChallenge
             }
         })
-        await wrapper.vm.$nextTick()
-    })
+        await incompleteWrapper.vm.$nextTick()
+    }
 
-    it('renders correctly', () => {
-        expect(wrapper.text()).toContain('Test title')
-        expect(wrapper.text()).toContain('100kr / 1000kr')
-        expect(wrapper.text()).toContain('2022-01-01 00:00')
-    })
-
-    it('sets isCompleted to false', () => {
-        expect(wrapper.vm.isCompleted).toBe(false)
-    })
-
-    it('sets isCompleted to true', async () => {
-        let completedWrapper = mount(CardChallenge, {
+    const mountCompleteWrapper = async () => {
+        completeWrapper = mount(CardChallenge, {
             propsData: {
                 challengeInstance: completeChallenge
             }
         })
-        await completedWrapper.vm.$nextTick()
+        await completeWrapper.vm.$nextTick()
+    }
 
-        expect(completedWrapper.vm.isCompleted).toBe(true)
+    it('renders correctly', () => {
+        mountIncompletedWrapper()
+        expect(incompleteWrapper.text()).toContain('Test title')
+        expect(incompleteWrapper.text()).toContain('100kr / 1000kr')
+        expect(incompleteWrapper.text()).toContain('2022-01-01 00:00')
+    })
+
+    it('sets isCompleted to false', () => {
+        mountIncompletedWrapper()
+        expect(incompleteWrapper.vm.isCompleted).toBe(false)
+    })
+
+    it('sets isCompleted to true', () => {
+        mountCompleteWrapper()
+        expect(completeWrapper.vm.isCompleted).toBe(true)
     })
 })
