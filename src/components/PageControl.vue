@@ -2,11 +2,11 @@
 defineProps({
     currentPage: {
         type: Number,
-        default: 1
+        required: true
     },
     totalPages: {
         type: Number,
-        default: 1
+        required: true
     },
     onPageChange: {
         type: Function,
@@ -18,11 +18,11 @@ defineProps({
 <template>
     <div class="flex justify-center gap-4">
         <button :disabled="currentPage === 0" @click="onPageChange(currentPage - 1)">
-            Previous
+            Forrige
         </button>
         <p>{{ currentPage + 1 }} / {{ totalPages }}</p>
         <button :disabled="currentPage === totalPages - 1" @click="onPageChange(currentPage + 1)">
-            Next
+            Neste
         </button>
     </div>
 </template>
