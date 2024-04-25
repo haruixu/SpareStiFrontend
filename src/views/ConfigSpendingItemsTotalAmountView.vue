@@ -81,7 +81,7 @@ const onButtonClick = async () => {
     })
 
     await userConfigStore.postUserConfig()
-    await router.push({ name: 'configurations6' });
+    await router.push({ name: 'configurations6' })
 }
 
 const filterAmount = (index: number, event: Event) => {

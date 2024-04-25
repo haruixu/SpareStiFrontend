@@ -83,7 +83,7 @@ const onButtonClick = () => {
         userConfigStore.challengeTypeConfigs[index].specificAmount =
             parseFloat(amounts.value[index]) || 0
     })
-    router.push({ name: 'configurations5' });
+    router.push({ name: 'configurations5' })
 }
 
 const filterAmount = (index: number, event: Event) => {
@@ -93,8 +93,8 @@ const filterAmount = (index: number, event: Event) => {
     amounts.value[index] = filteredValue
 }
 
-const showFirstBox = computed(() => options.value.length <= 6);
-const showSecondBox = computed(() => options.value.length > 6);
-const firstBoxOptions = computed(() => options.value.slice(0, Math.min(6, options.value.length)));
-const secondBoxOptions = computed(() => options.value.slice(6));
+const showFirstBox = computed(() => options.value.length <= 6)
+const showSecondBox = computed(() => options.value.length > 6)
+const firstBoxOptions = computed(() => options.value.slice(0, Math.min(6, options.value.length)))
+const secondBoxOptions = computed(() => options.value.slice(6))
 </script>

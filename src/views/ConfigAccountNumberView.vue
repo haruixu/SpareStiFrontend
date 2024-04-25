@@ -1,7 +1,11 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen text-center">
-        <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Legg til kontonummer for sparekonto og brukskonto</h1>
-        <div class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]">
+        <h1 class="mb-8 lg:mb-12 text-4xl font-bold">
+            Legg til kontonummer for sparekonto og brukskonto
+        </h1>
+        <div
+            class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
+        >
             <div class="w-full mb-4">
                 <label for="savingsAccount" class="block text-lg font-bold mb-2">Sparekonto</label>
                 <input
@@ -44,54 +48,56 @@ import { ref, computed } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 
-const MAX_DIGITS = 11;
+const MAX_DIGITS = 11
 
 const checkingAccount = ref('')
 const savingsAccount = ref('')
 
 const isFormValid = computed(() => {
-    return checkingAccount.value.replace(/\./g, '').length === MAX_DIGITS &&
-        savingsAccount.value.replace(/\./g, '').length === MAX_DIGITS;
+    return (
+        checkingAccount.value.replace(/\./g, '').length === MAX_DIGITS &&
+        savingsAccount.value.replace(/\./g, '').length === MAX_DIGITS
+    )
 })
 
 const onButtonClick = () => {
-    router.push({ name: 'home' });
+    router.push({ name: 'home' })
 }
 
 function restrictToNumbers(event: InputEvent, type: string) {
-    const inputValue = (event.target as HTMLInputElement)?.value; // Use optional chaining to access value
+    const inputValue = (event.target as HTMLInputElement)?.value // Use optional chaining to access value
     if (inputValue !== undefined) {
-        const sanitizedValue = inputValue.replace(/\D/g, ''); // Replace non-digit characters with empty string
-        const truncatedValue = sanitizedValue.slice(0, MAX_DIGITS); // Limit to MAX_DIGITS
+        const sanitizedValue = inputValue.replace(/\D/g, '') // Replace non-digit characters with empty string
+        const truncatedValue = sanitizedValue.slice(0, MAX_DIGITS) // Limit to MAX_DIGITS
         if (type === 'checking') {
-            checkingAccount.value = truncatedValue;
+            checkingAccount.value = truncatedValue
         } else {
-            savingsAccount.value = truncatedValue;
+            savingsAccount.value = truncatedValue
         }
     }
 }
 
 function applyFormatting(type: string) {
     if (type === 'checking') {
-        checkingAccount.value = formatAccount(checkingAccount.value);
+        checkingAccount.value = formatAccount(checkingAccount.value)
     } else {
-        savingsAccount.value = formatAccount(savingsAccount.value);
+        savingsAccount.value = formatAccount(savingsAccount.value)
     }
 }
 
 function removeFormatting(type: string) {
     if (type === 'checking') {
-        checkingAccount.value = removeFormat(checkingAccount.value);
+        checkingAccount.value = removeFormat(checkingAccount.value)
     } else {
-        savingsAccount.value = removeFormat(savingsAccount.value);
+        savingsAccount.value = removeFormat(savingsAccount.value)
     }
 }
 
 function formatAccount(value: string): string {
-    return value.replace(/\D/g, '').replace(/^(.{4})(.{2})(.*)$/, '$1.$2.$3');
+    return value.replace(/\D/g, '').replace(/^(.{4})(.{2})(.*)$/, '$1.$2.$3')
 }
 
 function removeFormat(value: string): string {
-    return value.replace(/\./g, '');
+    return value.replace(/\./g, '')
 }
 </script>
