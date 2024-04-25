@@ -23,22 +23,18 @@ const props = defineProps({
 })
 
 const challengeInstance = props.challengeInstance
-
-const editChallenge = () => {
-    if (props.isCompleted) {
-        router.push({ name: 'view-challenge', params: { id: challengeInstance.id } })
-    } else {
-        router.push({ name: 'edit-challenge', params: { id: challengeInstance.id } })
-    }
-}
 const displayDate = computed(() => challengeInstance.due?.slice(0, 16).split('T').join(' '))
+
+const handleCardClick = () => {
+    router.push({ name: 'view-challenge', params: { id: challengeInstance.id } })
+}
 </script>
 
 <template>
     <div
         :class="{ 'bg-green-200 cursor-default': props.isCompleted }"
         class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer w-52 overflow-hidden"
-        @click="editChallenge"
+        @click="handleCardClick"
     >
         <h3 class="my-0 mx-6">{{ challengeInstance.title }}</h3>
         <p>{{ challengeInstance.saved }}kr / {{ challengeInstance.target }}kr</p>
