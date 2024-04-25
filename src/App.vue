@@ -10,7 +10,8 @@ const showNavBar = computed(() => {
         route.path == '/' ||
         route.path == '/registrer' ||
         route.path == '/logginn' ||
-        route.path == '/forgotPassword'
+        route.path == '/forgotPassword' ||
+        route.path.startsWith('/konfigurasjon')
     )
 })
 </script>
