@@ -75,7 +75,6 @@ onMounted(async () => {
                 v-for="challenge in completedChallenges"
                 :key="challenge.id"
                 :challenge-instance="challenge"
-                :is-completed="true"
             />
         </div>
         <PageControl
