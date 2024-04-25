@@ -64,6 +64,17 @@ onMounted(() => {
         })
         .catch(() => router.push({ name: 'challenges' }))
 })
+
+const completeChallenge = () => {
+    authInterceptor
+        .put(`/users/me/challenges/${challengeInstance.value.id}/complete`)
+        .then(() => {
+            router.push({ name: 'challenges' })
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
 </script>
 
 <template>
@@ -109,6 +120,13 @@ onMounted(() => {
                 >
                     Rediger
                 </button>
+
+                <button
+                    v-if="!isCompleted"
+                    @click="completeChallenge"
+                    v-text="'Sett utfordring til ferdig'"
+                />
+
                 <button
                     class="bg-button-danger hover:bg-button-danger"
                     @click="
