@@ -102,6 +102,6 @@ const onButtonClick = () => {
 
     userConfigStore.challengeTypeConfigs = [...predefinedChallengeTypes, ...customChallengeTypes]
     console.log('Selected Challenge Types:', userConfigStore.challengeTypeConfigs)
-    router.push('/konfigurasjonSteg4')
+    router.push({ name: 'configurations4' });
 }
 </script>

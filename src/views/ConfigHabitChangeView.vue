@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 import { useUserConfigStore } from '@/stores/userConfigStore'
@@ -78,7 +78,7 @@ const selectOption = (option: string) => {
 
 const onButtonClick = () => {
     if (selectedOption.value) {
-        router.push('/konfigurasjonSteg2')
+        router.push({ name: 'configurations2' });
     } else {
         console.error('No option selected')
     }

@@ -2,9 +2,12 @@
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center relative">
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye bruker du per kjøp på ...</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
+            <div
+                v-if="showFirstBox"
+                class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full"
+            >
                 <div
-                    v-for="(option, index) in options.slice(0, 6)"
+                    v-for="(option, index) in firstBoxOptions"
                     :key="`option-${index}`"
                     class="w-full my-4"
                 >
@@ -25,9 +28,12 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
+            <div
+                v-if="showSecondBox"
+                class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full"
+            >
                 <div
-                    v-for="(option, index) in options.slice(6, 12)"
+                    v-for="(option, index) in secondBoxOptions"
                     :key="`option-${index}`"
                     class="w-full my-4"
                 >
@@ -77,7 +83,7 @@ const onButtonClick = () => {
         userConfigStore.challengeTypeConfigs[index].specificAmount =
             parseFloat(amounts.value[index]) || 0
     })
-    router.push('/konfigurasjonSteg5')
+    router.push({ name: 'configurations5' });
 }
 
 const filterAmount = (index: number, event: Event) => {
@@ -86,4 +92,9 @@ const filterAmount = (index: number, event: Event) => {
     filteredValue = filteredValue.replace(/(,.*?),/g, '$1').replace(/,+/g, ',')
     amounts.value[index] = filteredValue
 }
+
+const showFirstBox = computed(() => options.value.length <= 6);
+const showSecondBox = computed(() => options.value.length > 6);
+const firstBoxOptions = computed(() => options.value.slice(0, Math.min(6, options.value.length)));
+const secondBoxOptions = computed(() => options.value.slice(6));
 </script>

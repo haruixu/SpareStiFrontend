@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-24 right-4">
+        <div class="absolute bottom-36 right-4">
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isAllAmountsFilled"
@@ -81,7 +81,7 @@ const onButtonClick = async () => {
     })
 
     await userConfigStore.postUserConfig()
-    router.push('/hjem')
+    await router.push({ name: 'configurations6' });
 }
 
 const filterAmount = (index: number, event: Event) => {

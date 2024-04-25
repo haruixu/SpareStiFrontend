@@ -76,7 +76,7 @@ const selectOption = (option: string) => {
 
 const onButtonClick = () => {
     if (selectedOption.value) {
-        router.push('/konfigurasjonSteg3')
+        router.push({ name: 'configurations3' });
     } else {
         console.error('No option selected')
     }
