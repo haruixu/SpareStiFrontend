@@ -101,7 +101,6 @@ onMounted(() => {
 
 const openModal = (event: MouseEvent) => {
     event.preventDefault()
-    event.stopPropagation() // Stop the event from bubbling up
     isModalOpen.value = true
 }
 
