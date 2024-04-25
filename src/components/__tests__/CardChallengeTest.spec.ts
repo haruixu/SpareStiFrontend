@@ -53,7 +53,7 @@ describe('CardChallenge', () => {
     })
 
     it('sets isCompleted to true', async () => {
-        const completedWrapper = mount(CardChallenge, {
+        let completedWrapper = mount(CardChallenge, {
             propsData: {
                 challengeInstance: completeChallenge
             }
