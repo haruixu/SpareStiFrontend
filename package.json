@@ -18,6 +18,7 @@
     "format-test": "prettier --check src/"
   },
   "dependencies": {
+    "@corbado/webcomponent": "^1.0.104",
     "animejs": "^3.2.2",
     "canvas-confetti": "^1.9.2",
     "pinia": "^2.1.7",

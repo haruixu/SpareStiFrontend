@@ -102,6 +102,16 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: () => import('@/views/NotFoundView.vue')
+        },
+        {
+            path: '/bioAuthTest',
+            name: 'bioAuthTest',
+            component: () => import('@/views/BioAuthTest.vue')
+        },
+        {
+            path: '/bioAuthLoggedInTest',
+            name: 'bioAuthLoggedInTest',
+            component: () => import('@/views/BioAuthLoggedInTest.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
