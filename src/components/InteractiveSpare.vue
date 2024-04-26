@@ -1,12 +1,12 @@
 <template>
-    <ModalComponent
-        :is-modal-open="isModalOpen"
-        @close="isModalOpen = false"
-    >
+    <ModalComponent :is-modal-open="isModalOpen" @close="isModalOpen = false">
         <template v-slot:input>
             <div
                 class="spareDiv flex items-center mr-10 max-w-[60vh] cursor-pointer"
-                :class="{ 'flex-row': direction === 'right', 'flex-row-reverse': direction === 'left' }"
+                :class="{
+                    'flex-row': direction === 'right',
+                    'flex-row-reverse': direction === 'left'
+                }"
                 @click="nextSpeech"
             >
                 <!-- Image -->
@@ -28,11 +28,12 @@
                     </div>
                 </div>
             </div>
-            <div class=" -mb-5 mt-8 text-xs text-gray-500">
-                <p class="justify-center items-center">
-                    Trykk for å se hva Spare har å si!
-                </p>
-                <a @click="closeModal" class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0">
+            <div class="-mb-5 mt-8 text-xs text-gray-500">
+                <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
+                <a
+                    @click="closeModal"
+                    class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
+                >
                     Skip
                 </a>
             </div>
