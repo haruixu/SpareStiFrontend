@@ -6,7 +6,8 @@ describe('ButtonComponent', () => {
     it('renders correctly', () => {
         const wrapper = mount(ButtonComponent, {
             props: {
-                buttonText: 'Click me'
+                buttonText: 'Click me',
+                type: 'goal'
             }
         })
         expect(wrapper.exists()).toBe(true)
@@ -15,7 +16,8 @@ describe('ButtonComponent', () => {
     it('displays the correct button text', () => {
         const wrapper = mount(ButtonComponent, {
             props: {
-                buttonText: 'Submit'
+                buttonText: 'Submit',
+                type: 'goal'
             }
         })
         const buttonText = wrapper.find('span.truncate')

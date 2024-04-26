@@ -7,25 +7,15 @@ import authInterceptor from '@/services/authInterceptor'
 
 const router = useRouter()
 
-const oneWeekFromNow = new Date()
-oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
-const minDate = oneWeekFromNow.toISOString().slice(0, 16)
-
-const thirtyDaysFromNow = new Date()
-thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
-const maxDate = thirtyDaysFromNow.toISOString().slice(0, 16)
+const selectedDate = ref<string>('')
+const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 16)
 
 const goalInstance = ref<Goal>({
-    id: 0,
     title: '',
     saved: 0,
     target: 100,
-    completion: 0,
     description: '',
-    priority: 0,
-    createdOn: undefined,
-    due: minDate + ':00.000Z',
-    completedOn: null
+    due: ''
 })
 
 watch(
@@ -42,15 +32,11 @@ watch(
     }
 )
 
-const selectedDate = ref(minDate)
 watch(
     () => selectedDate.value,
     (newVal) => {
-        if (newVal) {
-            selectedDate.value = newVal < minDate ? minDate : newVal
-            goalInstance.value.due = selectedDate.value + ':00.000Z'
-        }
-        console.log(selectedDate.value)
+        if (newVal < minDate) selectedDate.value = minDate
+        goalInstance.value.due = newVal + ':00.000Z'
     }
 )
 
@@ -61,18 +47,16 @@ const completion = computed(() => (goalInstance.value.saved / goalInstance.value
 
 const isInputValid = computed(() => {
     return (
-        goalInstance.value.title !== '' &&
+        goalInstance.value.title.length > 0 &&
+        goalInstance.value.title.length <= 20 &&
+        goalInstance.value.description.length <= 280 &&
         goalInstance.value.target > 0 &&
         goalInstance.value.due !== ''
     )
 })
 
 const submitAction = () => {
-    if (
-        goalInstance.value.title === '' ||
-        goalInstance.value.target < 1 ||
-        goalInstance.value.due === ''
-    ) {
+    if (!isInputValid.value) {
         return () => alert('Fyll ut alle feltene')
     }
 
@@ -88,7 +72,7 @@ onMounted(async () => {
         const goalId = router.currentRoute.value.params.id
         if (!goalId) return router.push({ name: 'goals' })
 
-        await authInterceptor(`/users/me/goals/${goalId}`)
+        await authInterceptor(`/goals/${goalId}`)
             .then((response) => {
                 goalInstance.value = response.data
                 selectedDate.value = response.data.due.slice(0, 16)
@@ -102,7 +86,7 @@ onMounted(async () => {
 
 const createGoal = () => {
     authInterceptor
-        .post('/users/me/goals', goalInstance.value, {})
+        .post('/goals', goalInstance.value, {})
         .then(() => {
             return router.push({ name: 'goals' })
         })
@@ -113,7 +97,7 @@ const createGoal = () => {
 
 const updateGoal = () => {
     authInterceptor
-        .put(`/users/me/goals/${goalInstance.value.id}`, goalInstance.value)
+        .put(`/goals/${goalInstance.value.id}`, goalInstance.value)
         .then(() => {
             router.push({ name: 'goals' })
         })
@@ -124,7 +108,7 @@ const updateGoal = () => {
 
 const deleteGoal = () => {
     authInterceptor
-        .delete(`/users/me/goals/${goalInstance.value.id}`)
+        .delete(`/goals/${goalInstance.value.id}`)
         .then(() => {
             router.push({ name: 'goals' })
         })
@@ -179,9 +163,8 @@ const deleteGoal = () => {
             <div class="flex flex-col">
                 <p class="mx-4">Forfallsdato*</p>
                 <input
-                    v-model="selectedDate"
-                    :max="maxDate"
                     :min="minDate"
+                    v-model="selectedDate"
                     placeholder="Forfallsdato"
                     type="datetime-local"
                 />

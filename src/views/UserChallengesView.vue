@@ -1,55 +1,87 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
-import draggable from 'vuedraggable'
 import type { Challenge } from '@/types/challenge'
 import CardChallenge from '@/components/CardChallenge.vue'
+import PageControl from '@/components/PageControl.vue'
 
 const router = useRouter()
 
-const currentPage = ref(1)
-const totalPages = ref(1)
+const currentPageActive = ref(0)
+const totalPagesActive = ref(1)
+const currentPageCompleted = ref(0)
+const totalPagesCompleted = ref(1)
 
-const challenges = ref<Challenge[]>([])
+const activeChallenges = ref<Challenge[]>([])
+const completedChallenges = ref<Challenge[]>([])
 
-onMounted(async () => {
-    await authInterceptor('/users/me/challenges')
+const getActiveChallenges = async (newPage: number) => {
+    await authInterceptor(`/challenges/active?page=${newPage}&size=5`)
         .then((response) => {
-            currentPage.value = response.data.currentPage
-            totalPages.value = response.data.totalPages
-            challenges.value = response.data.content
+            currentPageActive.value = response.data.number
+            totalPagesActive.value = response.data.totalPages
+            activeChallenges.value = response.data.content
         })
         .catch((error) => {
             console.error(error)
         })
-})
+}
 
-watch(challenges, (newChallenges) => {
-    console.log(newChallenges)
+const getCompletedChallenges = async (newPage: number) => {
+    await authInterceptor(`/challenges/completed?page=${newPage}&size=5`)
+        .then((response) => {
+            currentPageCompleted.value = response.data.number
+            totalPagesCompleted.value = response.data.totalPages
+            completedChallenges.value = response.data.content
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
+
+onMounted(async () => {
+    await getActiveChallenges(currentPageActive.value)
+    await getCompletedChallenges(currentPageActive.value)
 })
 </script>
 
 <template>
     <h1 class="font-bold text-center">Dine utfordringer</h1>
     <div class="flex flex-col gap-5 items-center">
-        <draggable
-            v-model="challenges"
-            class="flex flex-col justify-center gap-10 sm:flex-row"
-            item-key="id"
-        >
-            <template #item="{ element, index }">
-                <CardChallenge :key="index" :challenge-instance="element" />
-            </template>
-        </draggable>
         <div class="flex flex-row gap-5">
             <button @click="router.push({ name: 'new-challenge' })">
                 Opprett en ny utfordring
             </button>
-            <button @click="router.push({ name: 'edit-challenge', params: { id: 1 } })">
-                Rediger rekkefølge
-            </button>
         </div>
+
+        <h2 class="font-bold">Aktive utfordringer</h2>
+        <div class="flex flex-row justify-center gap-10 flex-wrap">
+            <CardChallenge
+                v-for="challenge in activeChallenges"
+                :key="challenge.id"
+                :challenge-instance="challenge"
+            />
+        </div>
+        <PageControl
+            :currentPage="currentPageActive"
+            :on-page-change="getActiveChallenges"
+            :totalPages="totalPagesActive"
+        />
+
+        <h2 class="font-bold">Fullførte utfordringer</h2>
+        <div class="flex flex-row justify-center gap-10 flex-wrap">
+            <CardChallenge
+                v-for="challenge in completedChallenges"
+                :key="challenge.id"
+                :challenge-instance="challenge"
+            />
+        </div>
+        <PageControl
+            :currentPage="currentPageCompleted"
+            :on-page-change="getCompletedChallenges"
+            :totalPages="totalPagesCompleted"
+        />
     </div>
 </template>
 

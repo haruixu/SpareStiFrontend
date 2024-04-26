@@ -94,7 +94,9 @@ const completion = computed(
 
 const isInputValid = computed(() => {
     return (
-        challengeInstance.value.title !== '' &&
+        challengeInstance.value.title.length > 0 &&
+        challengeInstance.value.title.length <= 20 &&
+        challengeInstance.value.description.length <= 280 &&
         challengeInstance.value.target > 0 &&
         challengeInstance.value.due !== ''
     )
@@ -117,8 +119,12 @@ onMounted(async () => {
         const challengeId = router.currentRoute.value.params.id
         if (!challengeId) return router.push({ name: 'challenges' })
 
-        await authInterceptor(`/users/me/challenges/${challengeId}`)
+        await authInterceptor(`/challenges/${challengeId}`)
             .then((response) => {
+                if (response.data.completedOn) {
+                    router.push({ name: 'challenges' })
+                }
+
                 challengeInstance.value = response.data
                 selectedDate.value = response.data.due.slice(0, 16)
             })
@@ -131,7 +137,7 @@ onMounted(async () => {
 
 const createChallenge = () => {
     authInterceptor
-        .post('/users/me/challenges', challengeInstance.value, {})
+        .post('/challenges', challengeInstance.value, {})
         .then(() => {
             return router.push({ name: 'challenges' })
         })
@@ -142,18 +148,7 @@ const createChallenge = () => {
 
 const updateChallenge = () => {
     authInterceptor
-        .put(`/users/me/challenges/${challengeInstance.value.id}`, challengeInstance.value)
-        .then(() => {
-            router.push({ name: 'challenges' })
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-}
-
-const deleteChallenge = () => {
-    authInterceptor
-        .delete(`/users/me/challenges/${challengeInstance.value.id}`)
+        .put(`/challenges/${challengeInstance.value.id}`, challengeInstance.value)
         .then(() => {
             router.push({ name: 'challenges' })
         })
@@ -250,15 +245,9 @@ const deleteChallenge = () => {
 
             <div class="flex flex-row justify-between w-full">
                 <button :disabled="!isInputValid" @click="submitAction" v-text="submitButton" />
+
                 <button
-                    v-if="isEdit"
-                    class="ml-2 bg-button-danger"
-                    @click="deleteChallenge"
-                    v-text="'Slett'"
-                />
-                <button
-                    v-else
-                    class="ml-2 bg-button-other"
+                    class="bg-button-other"
                     @click="router.push({ name: 'challenges' })"
                     v-text="'Avbryt'"
                 />

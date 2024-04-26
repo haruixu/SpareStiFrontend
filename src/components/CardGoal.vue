@@ -1,38 +1,38 @@
 <script lang="ts" setup>
 import type { Goal } from '@/types/goal'
-import { computed, type PropType, reactive } from 'vue'
+import { computed, type PropType } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import router from '@/router'
 
 const props = defineProps({
     goalInstance: {
         type: Object as PropType<Goal>,
-        default: () => ({
-            id: 0,
-            title: 'Goal Title',
-            saved: 500,
-            target: 1000,
-            completion: 50,
-            description: 'Goal Description',
-            priority: 0,
-            createdOn: '2021-01-01',
-            due: '2021-12-31'
-        })
+        required: true
+    },
+    isClickable: {
+        type: Boolean,
+        default: true
     }
 })
 
-const goalInstance = reactive(props.goalInstance)
-
-const editGoal = () => router.push({ name: 'edit-goal', params: { id: goalInstance.id } })
+const goalInstance = props.goalInstance
 const displayDate = computed(() => goalInstance.due?.slice(0, 16).split('T').join(' '))
+const isCompleted = computed(() => goalInstance.completedOn != null)
+
+const handleCardClick = () => {
+    if (props.isClickable) {
+        router.push({ name: 'view-goal', params: { id: goalInstance.id } })
+    }
+}
 </script>
 
 <template>
     <div
-        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer"
-        @click="editGoal"
+        :class="{ 'bg-green-200 cursor-default': isCompleted }"
+        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer w-52 overflow-hidden"
+        @click="handleCardClick"
     >
-        <h2 class="m-0">{{ goalInstance.title }}</h2>
+        <h3 class="my-0 mx-6">{{ goalInstance.title }}</h3>
         <p>{{ goalInstance.saved }}kr / {{ goalInstance.target }}kr</p>
         <ProgressBar :completion="goalInstance.completion" />
         <p>{{ displayDate }}</p>

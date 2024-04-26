@@ -9,7 +9,7 @@ export const useChallengeStore = defineStore('challenge', () => {
 
     const getUserChallenges = async () => {
         try {
-            const response = await authInterceptor('/users/me/challenges')
+            const response = await authInterceptor('/challenges')
             if (response.data && response.data.content) {
                 challenges.value = response.data.content
                 console.log('Fetched Challenges:', challenges.value)
@@ -26,10 +26,7 @@ export const useChallengeStore = defineStore('challenge', () => {
     // Assuming 'challenges' is a reactive state in your store that holds the list of challenges
     const editUserChallenge = async (challenge: Challenge) => {
         try {
-            const response = await authInterceptor.put(
-                `/users/me/challenges/${challenge.id}`,
-                challenge
-            )
+            const response = await authInterceptor.put(`/challenges/${challenge.id}`, challenge)
             if (response.data) {
                 // Update local challenge state to reflect changes
                 const index = challenges.value.findIndex((c) => c.id === challenge.id)
