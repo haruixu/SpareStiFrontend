@@ -7,7 +7,7 @@
 
         <div
             v-if="displayStreakCard"
-            class="w-96 h-64 duration-500 group overflow-hidden relative rounded bg-white-800 text-neutral-50 p-4 flex flex-col justify-evenly"
+            class="w-96 h-64 duration-500 group overflow-hidden absolute top-32 rounded bg-white-800 text-neutral-50 p-4 flex flex-col justify-evenly"
         >
             <div
                 class="absolute blur opacity-40 duration-500 group-hover:blur-none w-72 h-72 rounded-full group-hover:translate-x-12 group-hover:translate-y-12 bg-green-100 right-1 -bottom-24"
@@ -34,7 +34,7 @@
                 </p>
                 <!-- Row component with horizontal padding and auto margins for centering -->
                 <div
-                    class="flex flex-row justify-content-center items-center h-20 w-full mx-auto bg-black-400 gap-4"
+                    class="flex flex-row justify-content-between items-center h-20 w-full mx-auto bg-black-400 gap-4"
                 >
                     <div class="flex flex-1 overflow-x-auto">
                         <div v-for="index in 6" :key="index" class="min-w-max mx-auto">
@@ -68,7 +68,7 @@
 import { ref } from 'vue'
 
 const displayStreakCard = ref(false)
-const currentStreak = ref(5)
+const currentStreak = ref(20)
 
 function toggleStreakCard() {
     displayStreakCard.value = !displayStreakCard.value
