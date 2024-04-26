@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex justify-center gap-4">
+    <div v-if="totalPages > 0" class="flex justify-center gap-4">
         <button :disabled="currentPage === 0" @click="onPageChange(currentPage - 1)">
             Forrige
         </button>
