@@ -24,25 +24,25 @@ export const useGoalStore = defineStore('goal', () => {
     // Assuming 'challenges' is a reactive state in your store that holds the list of challenges
     const editUserGoal = async (goal: Goal) => {
         if (!goal || goal.id === null) {
-            console.error('Invalid goal or goal ID.');
-            return;
+            console.error('Invalid goal or goal ID.')
+            return
         }
 
         try {
-            const response = await authInterceptor.put(`/users/me/goals/${goal.id}`, goal);
+            const response = await authInterceptor.put(`/users/me/goals/${goal.id}`, goal)
             if (response.data) {
-                const index = goals.value.findIndex(g => g.id === goal.id);
+                const index = goals.value.findIndex((g) => g.id === goal.id)
                 if (index !== -1) {
-                    goals.value[index] = { ...goals.value[index], ...response.data };
-                    console.log('Updated Goal:', response.data);
+                    goals.value[index] = { ...goals.value[index], ...response.data }
+                    console.log('Updated Goal:', response.data)
                 }
             } else {
-                console.error('No goal content found in response data');
+                console.error('No goal content found in response data')
             }
         } catch (error) {
-            console.error('Error updating goal:', error);
+            console.error('Error updating goal:', error)
         }
-    };
+    }
     return {
         goals,
         getUserGoals,

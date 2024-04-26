@@ -53,7 +53,7 @@ authInterceptor.interceptors.response.use(
         }
         // Specific handler for 404 errors
         if (error.response?.status === 404) {
-            console.error('Requested resource not found:', error.config.url);
+            console.error('Requested resource not found:', error.config.url)
             // Optionally redirect or inform the user, depending on the context
         }
         return Promise.reject(error)
