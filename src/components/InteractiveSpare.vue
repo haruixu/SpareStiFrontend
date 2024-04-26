@@ -1,33 +1,49 @@
 <template>
-    <div
-        class="flex items-center mr-10 max-w-[60vh]"
-        :class="{ 'flex-row': direction === 'right', 'flex-row-reverse': direction === 'left' }"
+    <ModalComponent
+        :is-modal-open="isModalOpen"
+        @close="isModalOpen = false"
     >
-        <!-- Image -->
-        <img
-            :src="spareImageSrc"
-            :style="{ width: pngSize + 'rem', height: pngSize + 'rem' }"
-            :class="['object-contain', ...imageClass]"
-            alt="Sparemannen"
-            class="w-dynamic h-dynamic object-contain"
-            @click="nextSpeech"
-        />
+        <template v-slot:input>
+            <div
+                class="spareDiv flex items-center mr-10 max-w-[60vh] cursor-pointer"
+                :class="{ 'flex-row': direction === 'right', 'flex-row-reverse': direction === 'left' }"
+                @click="nextSpeech"
+            >
+                <!-- Image -->
+                <img
+                    :src="spareImageSrc"
+                    :style="{ width: pngSize + 'rem', height: pngSize + 'rem' }"
+                    :class="['object-contain', ...imageClass]"
+                    alt="Spare"
+                    class="w-dynamic h-dynamic object-contain"
+                />
 
-        <!-- Speech Bubble -->
-        <div
-            v-if="currentSpeech"
-            :class="`mb-40 inline-block relative w-64 bg-white p-4 rounded-3xl border border-gray-600 tri-right round ${bubbleDirection}`"
-        >
-            <div class="text-left leading-6">
-                <p class="m-0">{{ currentSpeech }}</p>
+                <!-- Speech Bubble -->
+                <div
+                    v-if="currentSpeech"
+                    :class="`mb-40 inline-block relative w-64 bg-white p-4 rounded-3xl border border-gray-600 tri-right round ${bubbleDirection}`"
+                >
+                    <div class="text-left leading-6">
+                        <p class="speech m-0">{{ currentSpeech }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+            <div class=" -mb-5 mt-8 text-xs text-gray-500">
+                <p class="justify-center items-center">
+                    Trykk for å se hva Spare har å si!
+                </p>
+                <a @click="closeModal" class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0">
+                    Skip
+                </a>
+            </div>
+        </template>
+    </ModalComponent>
 </template>
 
 <script setup lang="ts">
 import { computed, defineProps, ref } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
+import ModalComponent from '@/components/ModalComponent.vue'
 
 interface Props {
     speech?: string[] // Using TypeScript's type for speech as an array of strings
@@ -36,11 +52,16 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const isModalOpen = ref<boolean>(true) // Open modal by default
 
 const speech = ref<String[]>(props.speech || [])
 
 const currentSpeechIndex = ref(0)
 const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])
+
+const closeModal = () => {
+    isModalOpen.value = false // Close modal
+}
 
 const nextSpeech = () => {
     if (speech.value.length > 0) {
@@ -54,6 +75,8 @@ const nextSpeech = () => {
         } else {
             // If no speeches left, reset index to indicate no available speech
             currentSpeechIndex.value = -1
+            // Close the modal if there are no speeches left
+            closeModal()
         }
     }
 }
