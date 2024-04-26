@@ -1,91 +1,105 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { flushPromises, mount } from '@vue/test-utils';
-import SavingsPath from '@/components/SavingsPath.vue';
-import { useGoalStore } from '@/stores/goalStore';
-import { useChallengeStore } from '@/stores/challengeStore';
-import { createRouter, createWebHistory } from 'vue-router';
-
-const routes = [{ path: '/', component: SavingsPath }]; // Define routes if necessary
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
+import SavingsPath from "@/components/SavingsPath.vue";
 
 
-
-// Mock the stores and any other external modules
-vi.mock('@/stores/goalStore', () => ({
-  useGoalStore: vi.fn(() => ({
-    getUserGoals: vi.fn(),
-    editUserGoal: vi.fn(),
-    goals: []
-  }))
-}));
-vi.mock('@/stores/challengeStore', () => ({
-  useChallengeStore: vi.fn(() => ({
-    getUserChallenges: vi.fn(),
-    editUserChallenge: vi.fn(),
-    challenges: []
+vi.mock('canvas-confetti', () => ({
+  default: vi.fn(() => ({
+    reset: vi.fn(),
+    addFettis: vi.fn(),
+    render: vi.fn(),
+    clear: vi.fn(),
   }))
 }));
 
-describe('SavingsPath.vue', () => {
+describe('SavingsPath Component', () => {
   let wrapper: any;
+  const pinia = createPinia();
 
-  beforeEach(async () => {
+  beforeEach(() => {
+    setActivePinia(pinia);
     wrapper = mount(SavingsPath, {
       global: {
-        plugins: [router],
-        mocks: {
-          $router: {
-            push: vi.fn()
+        plugins: [pinia]
+      },
+      props: {
+        challenges: [
+          {
+            id: 1,
+            title: 'Test challenge',
+            perPurchase: 20,
+            saved: 100,
+            target: 1000,
+            description: 'Test description',
+            due: '2022-01-01T00:00:00Z',
+            createdOn: '2021-01-01T00:00:00Z',
+            type: 'Challenge type',
+            completion: 10
           }
+        ],
+        goal: {
+          id: 1,
+          title: 'Test goal',
+          saved: 100,
+          target: 1000,
+          description: 'Test description',
+          due: '2022-01-01T00:00:00Z',
+          createdOn: '2021-01-01T00:00:00Z',
+          completion: 10
         }
       }
     });
-
-    const goalStore = useGoalStore();
-    const challengeStore = useChallengeStore();
-
-    goalStore.goals = [{
-      id: 1,
-      title: 'gaming',
-      saved: 100,
-      target: 500,
-      completion: 20,
-      description: 'ho ho',
-      priority: 1,
-      createdOn: '2022-01-01',
-      due: '2022-12-31',
-      completedOn: '2022-01-02'
-    }];
-
-
-    challengeStore.challenges = [{
-      id: 1,
-      title: 'Challenge Test',
-      type: 'coffee',
-      perPurchase: 20,
-      saved: 60,
-      target: 100,
-      completion: 60,
-      description: 'hoho',
-      completedOn: '2022-01-02',
-      due: '2022-12-31',
-      createdOn: '2022-01-01'
-    }];
-
   });
 
-  it('renders challenges and goals from the store', async () => {
-    await flushPromises();
-    expect(wrapper.find('[data-cy=goal-title]').text()).toContain('gaming');
-    expect(wrapper.find('[data-cy=challenge-title]').text()).toContain('Challenge Test');
+  describe('Initial Render', () => {
+
+
+    it('should render challenge and goal details correctly', async () => {
+      await wrapper.vm.$nextTick();
+      const challengeText = wrapper.text();
+      expect(challengeText).toContain('Test challenge');
+      expect(challengeText).toContain('100kr / 1000kr');
+      expect(challengeText).toContain('Test goal');
+      expect(challengeText).toContain('100kr / 1000kr');
+    });
+
+    it('should display the correct number of challenge elements', () => {
+      const challengeElements = wrapper.findAll('[data-cy="challenge-title"]');
+      expect(challengeElements.length).toBe(1);
+    });
   });
 
-  it('increments the saved amount when incrementSaved is called', async () => {
-    const challenge = { id: 1, title: 'Challenge Test', perPurchase: 20, saved: 30, target: 100 };
-    await wrapper.vm.incrementSaved(challenge);
-    expect(challenge.saved).toEqual(50);  // Checks if the saved amount is incremented correctly
+  describe('User Interactions', () => {
+    it('should update challenge progress when increment button is clicked', async () => {
+      await wrapper.vm.$nextTick();
+      const incrementButton = wrapper.find('[data-cy="increment-challenge1"]');
+      expect(incrementButton.exists()).toBe(true);
+      await incrementButton.trigger('click');
+      expect(wrapper.vm.challenges[0].saved).toBe(120);
+    });
+  });
+
+  describe('State Management', () => {
+    it('should react to changes in challenge completion status', async () => {
+      // Initially incomplete
+      let progressBar = wrapper.find('.bg-green-600');
+      expect(progressBar.element.style.width).toBe('10%');
+
+
+
+      // Update challenge to be almost complete
+      await wrapper.setProps({
+        challenges: [{
+          ...wrapper.props().challenges[0],
+          saved: 900,
+          completion: 90
+        }]
+      });
+      await wrapper.vm.$nextTick();
+
+      progressBar = wrapper.find('.bg-green-600');
+      expect(progressBar.element.style.width).toBe('90%');
+    });
   });
 });
