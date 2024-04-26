@@ -7,7 +7,7 @@ export const useGoalStore = defineStore('goal', () => {
     const goals = ref<Goal[]>([])
     const getUserGoals = async () => {
         try {
-            const response = await authInterceptor('/users/me/challenges')
+            const response = await authInterceptor('/challenges')
             if (response.data && response.data.content) {
                 goals.value = response.data.content
                 console.log(response.data.content)
