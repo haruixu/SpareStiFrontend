@@ -62,18 +62,16 @@ const isFormValid = computed(() => {
     )
 })
 
-
 async function onButtonClick() {
-    const savingAccountNumber = savingsAccount.value.replace(/\./g, '');
-    const spendingAccountNumber = spendingAccount.value.replace(/\./g, '');
+    const savingAccountNumber = savingsAccount.value.replace(/\./g, '')
+    const spendingAccountNumber = spendingAccount.value.replace(/\./g, '')
 
-    await accountStore.postAccount('SAVING', savingAccountNumber, 0);
+    await accountStore.postAccount('SAVING', savingAccountNumber, 0)
 
-    await accountStore.postAccount('SPENDING', spendingAccountNumber, 0);
+    await accountStore.postAccount('SPENDING', spendingAccountNumber, 0)
 
-    await router.push({ name: 'home' });
+    await router.push({ name: 'home' })
 }
-
 
 function restrictToNumbers(event: InputEvent, type: string) {
     const inputValue = (event.target as HTMLInputElement)?.value

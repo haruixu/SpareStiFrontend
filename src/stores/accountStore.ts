@@ -16,20 +16,20 @@ export const useAccountStore = defineStore('account', {
             }
 
             try {
-                const response = await authInterceptor.post('/accounts', payload);
-                console.log('Success:', response.data);
+                const response = await authInterceptor.post('/accounts', payload)
+                console.log('Success:', response.data)
             } catch (error) {
-                console.error('Error posting account:', error);
-                this.handleAxiosError(error);
+                console.error('Error posting account:', error)
+                this.handleAxiosError(error)
             }
         },
         handleAxiosError(error: any) {
-            const axiosError = error as AxiosError;
+            const axiosError = error as AxiosError
             if (axiosError.response && axiosError.response.data) {
-                const errorData = axiosError.response.data as { message: string };
+                const errorData = axiosError.response.data as { message: string }
             } else {
-                this.errorMessage = 'An unexpected error occurred';
+                this.errorMessage = 'An unexpected error occurred'
             }
         }
     }
-});
+})
