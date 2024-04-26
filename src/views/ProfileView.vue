@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 
 onMounted(async () => {
     await authInterceptor
-        .get('/users/me/config')
+        .get('/config')
         .then((response) => {
             console.log(response.data)
         })
