@@ -38,7 +38,7 @@ export const useUserStore = defineStore('user', () => {
                 user.value.lastname = lastname
                 user.value.username = username
 
-                router.push('/')
+                router.push({ name: 'configurations1' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -60,7 +60,7 @@ export const useUserStore = defineStore('user', () => {
                 user.value.lastname = response.data.lastName
                 user.value.username = response.data.username
 
-                router.push('/')
+                router.push({ name: 'home' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -68,9 +68,18 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
+    const logout = () => {
+        console.log('Logging out')
+        sessionStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
+        user.value = defaultUser
+        router.push({ name: 'login' })
+    }
+
     return {
-        login,
         register,
+        login,
+        logout,
         errorMessage
     }
 })

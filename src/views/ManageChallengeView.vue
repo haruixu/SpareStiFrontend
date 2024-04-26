@@ -119,6 +119,10 @@ onMounted(async () => {
 
         await authInterceptor(`/users/me/challenges/${challengeId}`)
             .then((response) => {
+                if (response.data.completedOn) {
+                    router.push({ name: 'challenges' })
+                }
+
                 challengeInstance.value = response.data
                 selectedDate.value = response.data.due.slice(0, 16)
             })
@@ -250,15 +254,9 @@ const deleteChallenge = () => {
 
             <div class="flex flex-row justify-between w-full">
                 <button :disabled="!isInputValid" @click="submitAction" v-text="submitButton" />
+
                 <button
-                    v-if="isEdit"
-                    class="ml-2 bg-button-danger"
-                    @click="deleteChallenge"
-                    v-text="'Slett'"
-                />
-                <button
-                    v-else
-                    class="ml-2 bg-button-other"
+                    class="bg-button-other"
                     @click="router.push({ name: 'challenges' })"
                     v-text="'Avbryt'"
                 />

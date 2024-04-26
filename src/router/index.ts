@@ -39,14 +39,19 @@ const router = createRouter({
             component: () => import('@/views/UserGoalsView.vue')
         },
         {
-            path: '/sparemaal/ny',
+            path: '/sparemaal/rediger/ny',
             name: 'new-goal',
             component: () => import('@/views/ManageGoalView.vue')
         },
         {
-            path: '/sparemaal/:id',
+            path: '/sparemaal/rediger/:id',
             name: 'edit-goal',
             component: () => import('@/views/ManageGoalView.vue')
+        },
+        {
+            path: '/sparemaal/oversikt/:id',
+            name: 'view-goal',
+            component: () => import('@/views/ViewGoalView.vue')
         },
         {
             path: '/spareutfordringer',
@@ -59,9 +64,14 @@ const router = createRouter({
             component: () => import('@/views/ManageChallengeView.vue')
         },
         {
-            path: '/spareutfordringer/:id',
+            path: '/spareutfordringer/rediger/:id',
             name: 'edit-challenge',
             component: () => import('@/views/ManageChallengeView.vue')
+        },
+        {
+            path: '/spareutfordringer/oversikt/:id',
+            name: 'view-challenge',
+            component: () => import('@/views/ViewChallengeView.vue')
         },
         {
             path: '/konfigurasjonSteg1',
@@ -104,7 +114,7 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         }
     ],
-    scrollBehavior(to, from, savedPosition) {
+    scrollBehavior() {
         return { top: 0 }
     }
 })

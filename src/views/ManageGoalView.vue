@@ -18,14 +18,13 @@ const maxDate = thirtyDaysFromNow.toISOString().slice(0, 16)
 const goalInstance = ref<Goal>({
     id: 0,
     title: '',
-    saved: 50,
+    saved: 0,
     target: 100,
     completion: 0,
     description: '',
     priority: 0,
     createdOn: undefined,
-    due: minDate + ':00.000Z',
-    completedOn: null
+    due: minDate + ':00.000Z'
 })
 
 watch(
