@@ -49,7 +49,7 @@ onMounted(() => {
     const goalId = router.currentRoute.value.params.id
     if (!goalId) return router.push({ name: 'goals' })
 
-    authInterceptor(`/users/me/goals/${goalId}`)
+    authInterceptor(`/goals/${goalId}`)
         .then((response) => {
             goalInstance.value = response.data
             calculateSpeech()
@@ -59,7 +59,7 @@ onMounted(() => {
 
 const completeGoal = () => {
     authInterceptor
-        .put(`/users/me/goals/${goalInstance.value.id}/complete`)
+        .put(`/goals/${goalInstance.value.id}/complete`)
         .then(() => {
             router.push({ name: 'goals' })
         })
@@ -117,7 +117,7 @@ const completeGoal = () => {
                     class="bg-button-danger hover:bg-button-danger"
                     @click="
                         authInterceptor
-                            .delete(`/users/me/goals/${goalInstance.id}`)
+                            .delete(`/goals/${goalInstance.id}`)
                             .then(() => router.push({ name: 'goals' }))
                             .catch((error) => console.error(error))
                     "

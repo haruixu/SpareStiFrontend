@@ -31,7 +31,7 @@ export const useUserConfigStore = defineStore('userConfig', {
             }
 
             try {
-                const response = await authInterceptor.post('/users/me/config/challenge', payload)
+                const response = await authInterceptor.post('/config/challenge', payload)
                 console.log('Success:', response.data)
             } catch (error: unknown) {
                 if (axios.isAxiosError(error)) {

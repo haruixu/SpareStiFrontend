@@ -57,7 +57,7 @@ onMounted(() => {
     const challengeId = router.currentRoute.value.params.id
     if (!challengeId) return router.push({ name: 'challenges' })
 
-    authInterceptor(`/users/me/challenges/${challengeId}`)
+    authInterceptor(`/challenges/${challengeId}`)
         .then((response) => {
             challengeInstance.value = response.data
             calculateSpeech()
@@ -67,7 +67,7 @@ onMounted(() => {
 
 const completeChallenge = () => {
     authInterceptor
-        .put(`/users/me/challenges/${challengeInstance.value.id}/complete`)
+        .put(`/challenges/${challengeInstance.value.id}/complete`)
         .then(() => {
             router.push({ name: 'challenges' })
         })
@@ -131,7 +131,7 @@ const completeChallenge = () => {
                     class="bg-button-danger hover:bg-button-danger"
                     @click="
                         authInterceptor
-                            .delete(`/users/me/challenges/${challengeInstance.id}`)
+                            .delete(`/challenges/${challengeInstance.id}`)
                             .then(() => router.push({ name: 'challenges' }))
                             .catch((error) => console.error(error))
                     "

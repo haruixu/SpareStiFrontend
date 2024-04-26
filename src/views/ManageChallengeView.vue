@@ -117,7 +117,7 @@ onMounted(async () => {
         const challengeId = router.currentRoute.value.params.id
         if (!challengeId) return router.push({ name: 'challenges' })
 
-        await authInterceptor(`/users/me/challenges/${challengeId}`)
+        await authInterceptor(`/challenges/${challengeId}`)
             .then((response) => {
                 if (response.data.completedOn) {
                     router.push({ name: 'challenges' })
@@ -135,7 +135,7 @@ onMounted(async () => {
 
 const createChallenge = () => {
     authInterceptor
-        .post('/users/me/challenges', challengeInstance.value, {})
+        .post('/challenges', challengeInstance.value, {})
         .then(() => {
             return router.push({ name: 'challenges' })
         })
@@ -146,18 +146,7 @@ const createChallenge = () => {
 
 const updateChallenge = () => {
     authInterceptor
-        .put(`/users/me/challenges/${challengeInstance.value.id}`, challengeInstance.value)
-        .then(() => {
-            router.push({ name: 'challenges' })
-        })
-        .catch((error) => {
-            console.error(error)
-        })
-}
-
-const deleteChallenge = () => {
-    authInterceptor
-        .delete(`/users/me/challenges/${challengeInstance.value.id}`)
+        .put(`/challenges/${challengeInstance.value.id}`, challengeInstance.value)
         .then(() => {
             router.push({ name: 'challenges' })
         })
