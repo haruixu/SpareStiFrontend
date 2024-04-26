@@ -2,7 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils'
 import NavBar from '@/components/NavBarComponent.vue'
 import router from '@/router'
 import { createPinia, setActivePinia } from 'pinia'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.stubGlobal('scrollTo', vi.fn())
 
