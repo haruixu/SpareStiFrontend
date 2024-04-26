@@ -22,7 +22,7 @@ describe('SpeechBubbleComponent', () => {
                 pngSize: 100
             }
         })
-        expect(wrapper.find('div').classes()).toContain('flex-row')
+        expect(wrapper.find('.spareDiv').classes()).toContain('flex-row')
         const wrapperReverse = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'left',
@@ -30,7 +30,7 @@ describe('SpeechBubbleComponent', () => {
                 pngSize: 100
             }
         })
-        expect(wrapperReverse.find('div').classes()).toContain('flex-row-reverse')
+        expect(wrapperReverse.find('.spareDiv').classes()).toContain('flex-row-reverse')
     })
 
     it('image class is computed based on direction', () => {
@@ -44,7 +44,7 @@ describe('SpeechBubbleComponent', () => {
         expect(wrapper.find('img').classes()).toContain('scale-x-[-1]')
     })
 
-    it('updates speech text on image click', async () => {
+    it('updates speech text on div click', async () => {
         const wrapper = mount(SpeechBubbleComponent, {
             props: {
                 direction: 'left',
@@ -52,8 +52,8 @@ describe('SpeechBubbleComponent', () => {
                 pngSize: 100
             }
         })
-        expect(wrapper.find('p').text()).toBe('First speech')
-        await wrapper.find('img').trigger('click')
-        expect(wrapper.find('p').text()).toBe('Second speech')
+        expect(wrapper.find('.speech').text()).toBe('First speech')
+        await wrapper.find('.spareDiv').trigger('click')
+        expect(wrapper.find('.speech').text()).toBe('Second speech')
     })
 })
