@@ -19,7 +19,7 @@ const completedGoals = ref<Goal[]>([])
 const isDraggable = ref(false)
 
 onMounted(async () => {
-    await authInterceptor('/users/me/goals/active')
+    await authInterceptor('/goals/active')
         .then((response) => {
             activeGoals.value = response.data
             activeGoals.value.sort((a, b) => (a.priority || 0) - (b.priority || 0))
@@ -32,7 +32,7 @@ onMounted(async () => {
 })
 
 const updatePage = async (page: number) => {
-    await authInterceptor(`/users/me/goals/completed?page=${page}&size=5`)
+    await authInterceptor(`/goals/completed?page=${page}&size=5`)
         .then((response) => {
             currentPage.value = response.data.number
             totalPages.value = response.data.totalPages
@@ -46,7 +46,7 @@ const updatePage = async (page: number) => {
 const changeOrder = async () => {
     if (isDraggable.value) {
         const priorities = activeGoals.value.map((goal) => goal.id)
-        await authInterceptor.put('/users/me/goals', priorities).catch((error) => {
+        await authInterceptor.put('/goals', priorities).catch((error) => {
             console.error(error)
         })
         isDraggable.value = false

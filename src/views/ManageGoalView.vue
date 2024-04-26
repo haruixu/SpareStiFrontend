@@ -47,18 +47,16 @@ const completion = computed(() => (goalInstance.value.saved / goalInstance.value
 
 const isInputValid = computed(() => {
     return (
-        goalInstance.value.title !== '' &&
+        goalInstance.value.title.length > 0 &&
+        goalInstance.value.title.length <= 20 &&
+        goalInstance.value.description.length <= 280 &&
         goalInstance.value.target > 0 &&
         goalInstance.value.due !== ''
     )
 })
 
 const submitAction = () => {
-    if (
-        goalInstance.value.title === '' ||
-        goalInstance.value.target < 1 ||
-        goalInstance.value.due === ''
-    ) {
+    if (!isInputValid.value) {
         return () => alert('Fyll ut alle feltene')
     }
 
@@ -74,7 +72,7 @@ onMounted(async () => {
         const goalId = router.currentRoute.value.params.id
         if (!goalId) return router.push({ name: 'goals' })
 
-        await authInterceptor(`/users/me/goals/${goalId}`)
+        await authInterceptor(`/goals/${goalId}`)
             .then((response) => {
                 goalInstance.value = response.data
                 selectedDate.value = response.data.due.slice(0, 16)
@@ -88,7 +86,7 @@ onMounted(async () => {
 
 const createGoal = () => {
     authInterceptor
-        .post('/users/me/goals', goalInstance.value, {})
+        .post('/goals', goalInstance.value, {})
         .then(() => {
             return router.push({ name: 'goals' })
         })
@@ -99,7 +97,7 @@ const createGoal = () => {
 
 const updateGoal = () => {
     authInterceptor
-        .put(`/users/me/goals/${goalInstance.value.id}`, goalInstance.value)
+        .put(`/goals/${goalInstance.value.id}`, goalInstance.value)
         .then(() => {
             router.push({ name: 'goals' })
         })
@@ -110,7 +108,7 @@ const updateGoal = () => {
 
 const deleteGoal = () => {
     authInterceptor
-        .delete(`/users/me/goals/${goalInstance.value.id}`)
+        .delete(`/goals/${goalInstance.value.id}`)
         .then(() => {
             router.push({ name: 'goals' })
         })

@@ -15,10 +15,11 @@ const errorMessage = ref<string>('')
 
 const userStore = useUserStore()
 
-const nameRegex = /^[a-zA-Z ,.'-]+$/
-const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/
-const usernameRegex = /^[A-Za-z][A-Za-z0-9_]{2,29}$/
-const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,}$/
+const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{1,29}$/
+const emailRegex =
+    /^[æÆøØåÅa-zA-Z0-9_+&*-]+(?:\.[æÆøØåÅa-zA-Z0-9_+&*-]+)*@(?:[æÆøØåÅa-zA-Z0-9-]+\.)+[æÆøØåÅa-zA-Z]{2,7}$/
+const usernameRegex = /^[ÆØÅæøåA-Za-z][æÆøØåÅA-Za-z0-9_]{2,29}$/
+const passwordRegex = /^(?=.*[0-9])(?=.*[a-zæøå])(?=.*[ÆØÅA-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,30}$/
 
 const isFirstNameValid = computed(() => nameRegex.test(firstname.value) && firstname.value)
 const isLastNameValid = computed(() => nameRegex.test(lastname.value) && lastname.value)
@@ -55,7 +56,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Fornavn*</p>
                 <ToolTip
-                    :message="'Must include only letters, spaces, commas, apostrophes, periods, and hyphens.'"
+                    :message="'Must include only letters, spaces, commas, apostrophes, periods, and hyphens. 1-30 characters long'"
                 />
             </div>
             <input
@@ -70,7 +71,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Etternavn*</p>
                 <ToolTip
-                    :message="'Must include only letters, spaces, commas, apostrophes, periods, and hyphens.'"
+                    :message="'Must include only letters, spaces, commas, apostrophes, periods, and hyphens. 1-30 characters long'"
                 />
             </div>
             <input
@@ -85,7 +86,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>E-post*</p>
                 <ToolTip
-                    :message="'Must include a valid format with \'@\' and a domain, only letters, numbers, and special characters (_ + & * -) allowed.'"
+                    :message="'Valid email: Starts with Norwegian letters, numbers, or special characters. Includes \@\ followed by a domain. Ends with 2-7 letters.'"
                 />
             </div>
             <input
@@ -100,7 +101,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Brukernavn*</p>
                 <ToolTip
-                    :message="'Must start with a letter and can include numbers and underscores, 3-30 characters long.'"
+                    :message="'Must start with a letter and can include numbers and underscores. 3-30 characters long.'"
                 />
             </div>
             <input

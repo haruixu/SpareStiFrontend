@@ -7,7 +7,7 @@ export const useGoalStore = defineStore('goal', () => {
     const goals = ref<Goal[]>([])
     const getUserGoals = async () => {
         try {
-            const response = await authInterceptor('/users/me/goals')
+            const response = await authInterceptor('/goals')
             if (response.data && response.data.content) {
                 goals.value = response.data.content
                 console.log(response.data.content)
@@ -29,7 +29,7 @@ export const useGoalStore = defineStore('goal', () => {
         }
 
         try {
-            const response = await authInterceptor.put(`/users/me/goals/${goal.id}`, goal)
+            const response = await authInterceptor.put(`/goals/${goal.id}`, goal)
             if (response.data) {
                 const index = goals.value.findIndex((g) => g.id === goal.id)
                 if (index !== -1) {
