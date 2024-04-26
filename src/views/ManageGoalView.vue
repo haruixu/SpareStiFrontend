@@ -7,24 +7,15 @@ import authInterceptor from '@/services/authInterceptor'
 
 const router = useRouter()
 
-const oneWeekFromNow = new Date()
-oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
-const minDate = oneWeekFromNow.toISOString().slice(0, 16)
-
-const thirtyDaysFromNow = new Date()
-thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
-const maxDate = thirtyDaysFromNow.toISOString().slice(0, 16)
+const selectedDate = ref<string>('')
+const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 16)
 
 const goalInstance = ref<Goal>({
-    id: 0,
     title: '',
     saved: 0,
     target: 100,
-    completion: 0,
     description: '',
-    priority: 0,
-    createdOn: undefined,
-    due: minDate + ':00.000Z'
+    due: ''
 })
 
 watch(
@@ -41,15 +32,11 @@ watch(
     }
 )
 
-const selectedDate = ref(minDate)
 watch(
     () => selectedDate.value,
     (newVal) => {
-        if (newVal) {
-            selectedDate.value = newVal < minDate ? minDate : newVal
-            goalInstance.value.due = selectedDate.value + ':00.000Z'
-        }
-        console.log(selectedDate.value)
+        if (newVal < minDate) selectedDate.value = minDate
+        goalInstance.value.due = newVal + ':00.000Z'
     }
 )
 
@@ -178,9 +165,8 @@ const deleteGoal = () => {
             <div class="flex flex-col">
                 <p class="mx-4">Forfallsdato*</p>
                 <input
-                    v-model="selectedDate"
-                    :max="maxDate"
                     :min="minDate"
+                    v-model="selectedDate"
                     placeholder="Forfallsdato"
                     type="datetime-local"
                 />
