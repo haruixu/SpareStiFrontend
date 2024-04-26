@@ -6,7 +6,7 @@ describe('Goals and Challenges Page Load', () => {
     });
 
     // Mock the API responses that are called on component mount
-    cy.intercept('GET', '/users/me/goals', {
+    cy.intercept('GET', '/goals', {
       statusCode: 200,
       body: {
         content: [
@@ -15,7 +15,7 @@ describe('Goals and Challenges Page Load', () => {
       },
     }).as('fetchGoals');
 
-    cy.intercept('GET', '/users/me/challenges', {
+    cy.intercept('GET', '/challenges', {
       statusCode: 200,
       body: {
         content: [
@@ -44,7 +44,7 @@ describe('Goals and Challenges Page Load', () => {
   it('Should increment a challenges progress when the increment button is clicked', () => {
   cy.wait('@fetchChallenges');
     // Separate aliases for clarity
-    cy.intercept('PUT', '/users/me/challenges/1', {
+    cy.intercept('PUT', '/challenges/1', {
       statusCode: 200,
       body: {
         id: 1,
@@ -58,7 +58,7 @@ describe('Goals and Challenges Page Load', () => {
     }).as('incrementChallenge1');
 
 
-    cy.intercept('PUT', '/users/me/goals/1', {
+    cy.intercept('PUT', '/goals/1', {
       statusCode: 200,
       body:  { id: 1, title: 'gaming', saved: 170, target: 1000, completion: 15 },
     }).as('incrementChallenge');
