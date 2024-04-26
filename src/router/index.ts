@@ -39,14 +39,19 @@ const router = createRouter({
             component: () => import('@/views/UserGoalsView.vue')
         },
         {
-            path: '/sparemaal/ny',
+            path: '/sparemaal/rediger/ny',
             name: 'new-goal',
             component: () => import('@/views/ManageGoalView.vue')
         },
         {
-            path: '/sparemaal/:id',
+            path: '/sparemaal/rediger/:id',
             name: 'edit-goal',
             component: () => import('@/views/ManageGoalView.vue')
+        },
+        {
+            path: '/sparemaal/oversikt/:id',
+            name: 'view-goal',
+            component: () => import('@/views/ViewGoalView.vue')
         },
         {
             path: '/spareutfordringer',
