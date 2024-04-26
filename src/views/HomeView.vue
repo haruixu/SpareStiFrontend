@@ -12,7 +12,7 @@
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til spareutfordring'" :type="'challenge'" />
             </div>
         </div>
-        <savings-path></savings-path>
+        <savings-path :challenges="challenges" :goal="goal"></savings-path>
     </div>
 </template>
 

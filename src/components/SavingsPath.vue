@@ -49,6 +49,7 @@
               <p class="text-center" data-cy="challenge-title">{{challenge.title}}</p>
               <img
                   @click="editChallenge(challenge)"
+                  :data-cy="'challenge-icon-'+challenge.id"
                   :src="getChallengeIcon(challenge)"
                   class="max-w-20 max-h-20 cursor-pointer"
                   :alt="challenge.title"
@@ -68,6 +69,7 @@
                     >
                       <div
                           class="bg-green-600 h-2.5 rounded-full"
+                          data-cy="challenge-progress"
                           :style="{
                                                         width:
                                                             (challenge.saved / challenge.target) *
@@ -83,6 +85,7 @@
 
                   <button
                       @click="incrementSaved(challenge)"
+                      :data-cy="'increment-challenge'+challenge.id"
                       type="button"
                       class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                   >
@@ -194,29 +197,38 @@ import anime from 'animejs'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
 import confetti from 'canvas-confetti'
-import { useGoalStore } from '@/stores/goalStore'
-import { useChallengeStore } from '@/stores/challengeStore'
 import {useRouter} from "vue-router";
+import {useGoalStore} from "@/stores/goalStore";
+import {useChallengeStore} from "@/stores/challengeStore";
 
 const router = useRouter()
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
 
-const challenges = ref<Challenge[]>([])
-const goals = ref<Goal[]>([])
-
-const goal = ref<Goal | null | undefined>(null)
-
-onMounted(async () => {
-  await goalStore.getUserGoals()
-  await challengeStore.getUserChallenges()
-  challenges.value = challengeStore.challenges
-  goals.value = goalStore.goals
-  goal.value = goals.value[0]
-  console.log('Goals:', goals.value)
-})
+interface Props {
+  challenges: Challenge[]
+  goal: Goal | null | undefined
+}
+const props = defineProps<Props>()
 
 
+const challenges = ref<Challenge[]>(props.challenges)
+const goal = ref<Goal | null | undefined>(props.goal)
+
+// Utilizing watch to specifically monitor for changes in the props
+watch(() => props.goal, (newGoal, oldGoal) => {
+  if (newGoal !== oldGoal) {
+    goal.value = newGoal;
+    console.log('Updated goal:', goal.value);
+  }
+}, { immediate: true });
+
+watch(() => props.challenges, (newChallenges, oldChallenges) => {
+  if (newChallenges !== oldChallenges) {
+    challenges.value = newChallenges;
+    console.log('Updated challenges:', challenges.value);
+  }
+}, { immediate: true });
 // Reactive references for DOM elements
 const iconRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
