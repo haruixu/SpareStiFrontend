@@ -307,7 +307,10 @@ const saveAnimatedState = (challenge: Challenge) => {
 }
 
 const animateChallenge = (challenge: Challenge) => {
-    if (challenge.completion === 100 && !animatedChallenges.value.includes(<number>challenge.id)) {
+    if (
+        challenge.completion === 100 &&
+        !animatedChallenges.value.includes(challenge.id as number)
+    ) {
         console.log('Animating for:', challenge.title)
         if (challenge.id != null) {
             animatedChallenges.value.push(challenge.id)
@@ -333,8 +336,8 @@ watch(
             //wait for 300ms before animating maybe?
             nextTick(() => {
                 if (challenge.completion === 100) {
-                    if (!animatedChallenges.value.includes(<number>challenge.id)) {
-                        console.log(!animatedChallenges.value.includes(<number>challenge.id))
+                    if (!animatedChallenges.value.includes(challenge.id as number)) {
+                        console.log(!animatedChallenges.value.includes(challenge.id as number))
                         console.log('Animating challenge in watcher:', challenge.id)
                         animateChallenge(challenge)
                         saveAnimatedState(challenge) // Refactor this to update localStorage correctly
