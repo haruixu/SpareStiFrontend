@@ -5,55 +5,31 @@ import axios, { AxiosError } from 'axios'
 
 export const useAccountStore = defineStore('account', {
     state: () => ({
-        accounts: [] as {
-            accountType: 'SAVING' | 'SPENDING'
-            accNumber: string
-            balance: number
-        }[],
         errorMessage: ref<string>('')
     }),
     actions: {
-        addAccount(accountType: 'SAVING' | 'SPENDING', accNumber: string) {
-            const account = {
+        async postAccount(accountType: 'SAVING' | 'SPENDING', accNumber: string, balance: number) {
+            const payload = {
                 accountType,
                 accNumber,
-                balance: 0
-            }
-            this.accounts.push(account)
-        },
-        async postAccount(account: {
-            accountType: 'SAVING' | 'SPENDING'
-            accNumber: string
-            balance: number
-        }) {
-            const payload = {
-                accountType: account.accountType,
-                accNumber: account.accNumber,
-                balance: account.balance
+                balance
             }
 
-            authInterceptor.post('/accounts', payload)
-                .then(response => {
-                    console.log('Success:', response.data)
-                })
-                .catch(error => {
-                    this.handleAxiosError(error)
-                })
-        },
-        async postAllAccounts() {
-            for (const account of this.accounts) {
-                await this.postAccount(account)
+            try {
+                const response = await authInterceptor.post('/accounts', payload);
+                console.log('Success:', response.data);
+            } catch (error) {
+                console.error('Error posting account:', error);
+                this.handleAxiosError(error);
             }
         },
         handleAxiosError(error: any) {
-            const axiosError = error as AxiosError
+            const axiosError = error as AxiosError;
             if (axiosError.response && axiosError.response.data) {
-                const errorData = axiosError.response.data as { message: string }
-                this.errorMessage = errorData.message || 'An error occurred'
+                const errorData = axiosError.response.data as { message: string };
             } else {
-                this.errorMessage = 'An unexpected error occurred'
+                this.errorMessage = 'An unexpected error occurred';
             }
-            console.error('Axios error:', this.errorMessage)
         }
     }
-})
+});

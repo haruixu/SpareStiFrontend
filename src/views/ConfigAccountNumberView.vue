@@ -62,19 +62,18 @@ const isFormValid = computed(() => {
     )
 })
 
-const onButtonClick = async () => {
-    if (!isFormValid.value) {
-        alert('Please ensure all fields are correctly filled.')
-        return
-    }
 
-    accountStore.addAccount('SAVING', savingsAccount.value.replace(/\./g, ''))
-    accountStore.addAccount('SPENDING', spendingAccount.value.replace(/\./g, ''))
+async function onButtonClick() {
+    const savingAccountNumber = savingsAccount.value.replace(/\./g, '');
+    const spendingAccountNumber = spendingAccount.value.replace(/\./g, '');
 
-    await accountStore.postAllAccounts()
+    await accountStore.postAccount('SAVING', savingAccountNumber, 0);
 
-    router.push({ name: 'home' })
+    await accountStore.postAccount('SPENDING', spendingAccountNumber, 0);
+
+    await router.push({ name: 'home' });
 }
+
 
 function restrictToNumbers(event: InputEvent, type: string) {
     const inputValue = (event.target as HTMLInputElement)?.value
