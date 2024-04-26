@@ -20,13 +20,13 @@
                 />
             </div>
             <div class="w-full mb-4">
-                <label for="checkingAccount" class="block text-lg font-bold mb-2">Brukskonto</label>
+                <label for="spendingAccount" class="block text-lg font-bold mb-2">Brukskonto</label>
                 <input
-                    id="checkingAccount"
-                    v-model="checkingAccount"
-                    @input="restrictToNumbers($event as InputEvent, 'checking')"
-                    @focus="removeFormatting('checking')"
-                    @blur="applyFormatting('checking')"
+                    id="spendingAccount"
+                    v-model="spendingAccount"
+                    @input="restrictToNumbers($event as InputEvent, 'spending')"
+                    @focus="removeFormatting('spending')"
+                    @blur="applyFormatting('spending')"
                     class="w-full h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2 border-gray-300"
                     type="text"
                     placeholder="Skriv inn ditt kontonummer..."
@@ -45,32 +45,44 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useAccountStore } from '@/stores/accountStore'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 
 const MAX_DIGITS = 11
+const accountStore = useAccountStore()
 
-const checkingAccount = ref('')
+const spendingAccount = ref('')
 const savingsAccount = ref('')
 
 const isFormValid = computed(() => {
     return (
-        checkingAccount.value.replace(/\./g, '').length === MAX_DIGITS &&
+        spendingAccount.value.replace(/\./g, '').length === MAX_DIGITS &&
         savingsAccount.value.replace(/\./g, '').length === MAX_DIGITS
     )
 })
 
-const onButtonClick = () => {
+const onButtonClick = async () => {
+    if (!isFormValid.value) {
+        alert('Please ensure all fields are correctly filled.')
+        return
+    }
+
+    accountStore.addAccount('SAVING', savingsAccount.value.replace(/\./g, ''))
+    accountStore.addAccount('SPENDING', spendingAccount.value.replace(/\./g, ''))
+
+    await accountStore.postAllAccounts()
+
     router.push({ name: 'home' })
 }
 
 function restrictToNumbers(event: InputEvent, type: string) {
-    const inputValue = (event.target as HTMLInputElement)?.value // Use optional chaining to access value
+    const inputValue = (event.target as HTMLInputElement)?.value
     if (inputValue !== undefined) {
-        const sanitizedValue = inputValue.replace(/\D/g, '') // Replace non-digit characters with empty string
-        const truncatedValue = sanitizedValue.slice(0, MAX_DIGITS) // Limit to MAX_DIGITS
-        if (type === 'checking') {
-            checkingAccount.value = truncatedValue
+        const sanitizedValue = inputValue.replace(/\D/g, '')
+        const truncatedValue = sanitizedValue.slice(0, MAX_DIGITS)
+        if (type === 'spending') {
+            spendingAccount.value = truncatedValue
         } else {
             savingsAccount.value = truncatedValue
         }
@@ -78,16 +90,16 @@ function restrictToNumbers(event: InputEvent, type: string) {
 }
 
 function applyFormatting(type: string) {
-    if (type === 'checking') {
-        checkingAccount.value = formatAccount(checkingAccount.value)
+    if (type === 'spending') {
+        spendingAccount.value = formatAccount(spendingAccount.value)
     } else {
         savingsAccount.value = formatAccount(savingsAccount.value)
     }
 }
 
 function removeFormatting(type: string) {
-    if (type === 'checking') {
-        checkingAccount.value = removeFormat(checkingAccount.value)
+    if (type === 'spending') {
+        spendingAccount.value = removeFormat(spendingAccount.value)
     } else {
         savingsAccount.value = removeFormat(savingsAccount.value)
     }

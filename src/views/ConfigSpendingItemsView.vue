@@ -41,7 +41,12 @@
                 >
                     <input
                         v-model="customOptions[index]"
-                        class="w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2 border-gray-300"
+                        :class="[
+                            'w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2',
+                            customOptions[index].trim() !== ''
+                                ? 'border-[var(--green)]'
+                                : 'border-gray-300'
+                        ]"
                         type="text"
                         :placeholder="'Annet ' + ' ...'"
                     />
@@ -68,24 +73,27 @@ const userConfigStore = useUserConfigStore()
 const selectedOptions = ref<string[]>([])
 const customOptions = ref(['', '', '', '', '', ''])
 
-const toggleOption = (option: string, isCustom: boolean = false) => {
-    if (!isCustom) {
-        const index = selectedOptions.value.indexOf(option)
-        if (index === -1) {
-            selectedOptions.value.push(option)
-        } else {
-            selectedOptions.value.splice(index, 1)
-        }
+const toggleOption = (option: string) => {
+    const index = selectedOptions.value.indexOf(option)
+    if (index === -1) {
+        selectedOptions.value.push(option)
+    } else {
+        selectedOptions.value.splice(index, 1)
     }
 }
 
 const isFormValid = computed(() => {
     const predefinedSelected = selectedOptions.value.length > 0
     const customFilled = customOptions.value.some((option) => option.trim() !== '')
-    return predefinedSelected || (customFilled && predefinedSelected)
+    return predefinedSelected || customFilled
 })
 
 const onButtonClick = () => {
+    if (!isFormValid.value) {
+        console.error('Form is not valid')
+        return
+    }
+
     const predefinedChallengeTypes = selectedOptions.value.map((option) => ({
         type: option,
         specificAmount: 0,
@@ -101,7 +109,6 @@ const onButtonClick = () => {
         }))
 
     userConfigStore.challengeTypeConfigs = [...predefinedChallengeTypes, ...customChallengeTypes]
-    console.log('Selected Challenge Types:', userConfigStore.challengeTypeConfigs)
     router.push({ name: 'configurations4' })
 }
 </script>

@@ -93,8 +93,9 @@ const filterAmount = (index: number, event: Event) => {
     amounts.value[index] = filteredValue
 }
 
-const showFirstBox = computed(() => options.value.length <= 6)
+const firstBoxOptions = computed(() => options.value.slice(0, 6))
+const secondBoxOptions = computed(() => (options.value.length > 6 ? options.value.slice(6) : []))
+
+const showFirstBox = computed(() => options.value.length > 0)
 const showSecondBox = computed(() => options.value.length > 6)
-const firstBoxOptions = computed(() => options.value.slice(0, Math.min(6, options.value.length)))
-const secondBoxOptions = computed(() => options.value.slice(6))
 </script>
