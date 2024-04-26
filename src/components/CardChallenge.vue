@@ -7,38 +7,24 @@ import type { Challenge } from '@/types/challenge'
 const props = defineProps({
     challengeInstance: {
         type: Object as PropType<Challenge>,
-        default: () => ({
-            id: 0,
-            title: 'Challenge title',
-            saved: 0,
-            target: 1000,
-            description: 'challenge Description',
-            due: '2021-12-31'
-        })
-    },
-    isCompleted: {
-        type: Boolean,
-        default: false
+        required: true
     }
 })
 
 const challengeInstance = props.challengeInstance
-
-const editChallenge = () => {
-    if (props.isCompleted) {
-        router.push({ name: 'view-challenge', params: { id: challengeInstance.id } })
-    } else {
-        router.push({ name: 'edit-challenge', params: { id: challengeInstance.id } })
-    }
-}
 const displayDate = computed(() => challengeInstance.due?.slice(0, 16).split('T').join(' '))
+const isCompleted = computed(() => challengeInstance.completedOn != null)
+
+const handleCardClick = () => {
+    router.push({ name: 'view-challenge', params: { id: challengeInstance.id } })
+}
 </script>
 
 <template>
     <div
-        :class="{ 'bg-green-200 cursor-default': props.isCompleted }"
+        :class="{ 'bg-green-200 cursor-default': isCompleted }"
         class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer w-52 overflow-hidden"
-        @click="editChallenge"
+        @click="handleCardClick"
     >
         <h3 class="my-0 mx-6">{{ challengeInstance.title }}</h3>
         <p>{{ challengeInstance.saved }}kr / {{ challengeInstance.target }}kr</p>

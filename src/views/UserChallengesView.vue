@@ -17,7 +17,7 @@ const activeChallenges = ref<Challenge[]>([])
 const completedChallenges = ref<Challenge[]>([])
 
 const getActiveChallenges = async (newPage: number) => {
-    await authInterceptor(`/users/me/challenges/active?page=${newPage}&size=5`)
+    await authInterceptor(`/challenges/active?page=${newPage}&size=5`)
         .then((response) => {
             currentPageActive.value = response.data.number
             totalPagesActive.value = response.data.totalPages
@@ -29,7 +29,7 @@ const getActiveChallenges = async (newPage: number) => {
 }
 
 const getCompletedChallenges = async (newPage: number) => {
-    await authInterceptor(`/users/me/challenges/completed?page=${newPage}&size=5`)
+    await authInterceptor(`/challenges/completed?page=${newPage}&size=5`)
         .then((response) => {
             currentPageCompleted.value = response.data.number
             totalPagesCompleted.value = response.data.totalPages
@@ -75,7 +75,6 @@ onMounted(async () => {
                 v-for="challenge in completedChallenges"
                 :key="challenge.id"
                 :challenge-instance="challenge"
-                :is-completed="true"
             />
         </div>
         <PageControl
