@@ -8,6 +8,10 @@ const props = defineProps({
     goalInstance: {
         type: Object as PropType<Goal>,
         required: true
+    },
+    isClickable: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -15,7 +19,11 @@ const goalInstance = props.goalInstance
 const displayDate = computed(() => goalInstance.due?.slice(0, 16).split('T').join(' '))
 const isCompleted = computed(() => goalInstance.completedOn != null)
 
-const handleCardClick = () => router.push({ name: 'view-goal', params: { id: goalInstance.id } })
+const handleCardClick = () => {
+    if (props.isClickable) {
+        router.push({ name: 'view-goal', params: { id: goalInstance.id } })
+    }
+}
 </script>
 
 <template>
