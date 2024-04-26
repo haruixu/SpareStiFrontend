@@ -69,8 +69,6 @@ const selectOption = (option: string) => {
         case 'store':
             motivationValue = 'VERY_HIGH'
             break
-        default:
-            motivationValue = 'VERY_LOW'
     }
 
     userConfigStore.setMotivation(motivationValue)
