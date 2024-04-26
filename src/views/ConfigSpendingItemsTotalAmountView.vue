@@ -1,10 +1,13 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center relative">
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye bruker du totalt per uke på ...</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
+            <div
+                v-if="showFirstBox"
+                class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full"
+            >
                 <div
-                    v-for="(option, index) in options.slice(0, 6)"
+                    v-for="(option, index) in firstBoxOptions"
                     :key="`option-${index}`"
                     class="w-full my-4"
                 >
@@ -12,9 +15,8 @@
                         <p class="text-xl font-bold mr-4">{{ option.type }}</p>
                         <div class="flex items-center w-2/3">
                             <input
-                                type="text"
                                 v-model="amounts[index]"
-                                @input="($event) => filterAmount(index, $event)"
+                                @input="filterAmount(index, $event)"
                                 class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
                                 :class="{
                                     'border-gray-300': !amounts[index],
@@ -26,9 +28,12 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
+            <div
+                v-if="showSecondBox"
+                class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full"
+            >
                 <div
-                    v-for="(option, index) in options.slice(6, 12)"
+                    v-for="(option, index) in secondBoxOptions"
                     :key="`option-${index}`"
                     class="w-full my-4"
                 >
@@ -36,9 +41,8 @@
                         <p class="text-xl font-bold mr-4">{{ option.type }}</p>
                         <div class="flex items-center w-2/3">
                             <input
-                                type="text"
                                 v-model="amounts[index + 6]"
-                                @input="($event) => filterAmount(index + 6, $event)"
+                                @input="filterAmount(index + 6, $event)"
                                 class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
                                 :class="{
                                     'border-gray-300': !amounts[index + 6],
@@ -80,7 +84,7 @@ const onButtonClick = async () => {
             parseFloat(amounts.value[index]) || 0
     })
 
-    await userConfigStore.postUserConfig()
+    userConfigStore.postUserConfig()
     await router.push({ name: 'configurations6' })
 }
 
@@ -90,4 +94,10 @@ const filterAmount = (index: number, event: Event) => {
     filteredValue = filteredValue.replace(/(,.*?),/g, '$1').replace(/,+/g, ',')
     amounts.value[index] = filteredValue
 }
+
+const firstBoxOptions = computed(() => options.value.slice(0, 6))
+const secondBoxOptions = computed(() => (options.value.length > 6 ? options.value.slice(6) : []))
+
+const showFirstBox = computed(() => options.value.length > 0)
+const showSecondBox = computed(() => options.value.length > 6)
 </script>
