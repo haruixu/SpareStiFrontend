@@ -68,6 +68,29 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
+    const loginWithBio = async (email: string, password: string) => {
+        await axios
+            .post(`http://localhost:8080/auth/loginWithBio`, {
+                email: email,
+                bioPassword: password
+            })
+            .then((response) => {
+                sessionStorage.setItem('accessToken', response.data.accessToken)
+                localStorage.setItem('refreshToken', response.data.refreshToken)
+
+                user.value.firstname = response.data.firstName
+                user.value.lastname = response.data.lastName
+                user.value.username = response.data.username
+
+                router.push({ name: 'home' })
+            })
+            .catch((error) => {
+                const axiosError = error as AxiosError
+                errorMessage.value = (axiosError.response?.data as string) || 'An error occurred'
+            })
+    }
+
+
     const logout = () => {
         console.log('Logging out')
         sessionStorage.removeItem('accessToken')
@@ -79,6 +102,7 @@ export const useUserStore = defineStore('user', () => {
     return {
         register,
         login,
+        loginWithBio,
         logout,
         errorMessage
     }

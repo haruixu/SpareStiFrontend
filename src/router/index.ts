@@ -104,14 +104,19 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/bioAuthTest',
-            name: 'bioAuthTest',
-            component: () => import('@/views/BioAuthTest.vue')
+            path: '/bioAuthLogin',
+            name: 'bioAuthLogin',
+            component: () => import('@/views/BioAuthLogin.vue')
         },
         {
-            path: '/bioAuthLoggedInTest',
-            name: 'bioAuthLoggedInTest',
-            component: () => import('@/views/BioAuthLoggedInTest.vue')
+            path: '/bioAuthLogin2',
+            name: 'bioAuthLogin2',
+            component: () => import('@/views/BioAuthLogin2.vue')
+        },
+        {
+            path: '/addAuthMethod',
+            name: 'addAuthMethod',
+            component: () => import('@/views/AddAuthMethod.vue')
         }
     ],
     scrollBehavior(to, from, savedPosition) {
