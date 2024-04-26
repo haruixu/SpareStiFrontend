@@ -94,7 +94,9 @@ const completion = computed(
 
 const isInputValid = computed(() => {
     return (
-        challengeInstance.value.title !== '' &&
+        challengeInstance.value.title.length > 0 &&
+        challengeInstance.value.title.length <= 20 &&
+        challengeInstance.value.description.length <= 280 &&
         challengeInstance.value.target > 0 &&
         challengeInstance.value.due !== ''
     )
