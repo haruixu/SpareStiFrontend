@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen text-center">
+    <div
+        class="flex flex-col items-center justify-center min-h-screen md:pt-10 pt-4 pb-24 text-center"
+    >
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">
             Legg til kontonummer for sparekonto og brukskonto
         </h1>
