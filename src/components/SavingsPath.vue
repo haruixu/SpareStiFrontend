@@ -1,6 +1,6 @@
 <template>
     <div
-        class="flex flex-col basis-2/3 max-h-full mx-auto max-w-5/6 md:basis-3/4 md:pr-20 md:max-mr-20"
+        class="flex flex-col basis-2/3 max-h-full mx-auto md:ml-20 md:mr-2 max-w-5/6 md:basis-3/4 md:max-pr-20 md:pr-10 md:max-mr-20"
     >
         <div class="flex justify-center align-center">
             <span
@@ -12,14 +12,14 @@
         <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
         <div
             ref="containerRef"
-            class="container relative mx-auto pt-6 w-4/5 md:w-3/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
+            class="container relative pt-6 w-4/5 mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
         >
             <div>
                 <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
             </div>
             <div
                 v-for="(challenge, index) in challenges"
-                :key="challenge.title"
+                :key="challenge.id"
                 class="flex flex-col items-center"
             >
                 <!-- Challenge Row -->
@@ -32,13 +32,13 @@
                 >
                     <div class="right-auto just">
                         <img
-                            v-if="index === 3"
+                            v-if="index === 3 || index%4 ===3"
                             src="@/assets/sleepingSpare.gif"
                             alt="could not load"
                             class="w-32 h-32 border-2 rounded-lg border-stale-400"
                         />
                         <img
-                            v-else-if="index === 1"
+                            v-else-if="index === 1 || index%4 === 1"
                             src="@/assets/golfSpare.gif"
                             alt="could not load"
                             class="w-32 h-32 border-2 rounded-lg border-stale-400"
@@ -48,9 +48,10 @@
                     <div class="flex">
                         <!-- Challenge Icon -->
                         <div class="flex flex-col items-center">
-                            <p class="text-center" data-cy="challenge-title">
+                            <p class="text-center text-wrap text-xs md:text-lg" data-cy="challenge-title">
                                 {{ challenge.title }}
                             </p>
+                            <Countdown v-if="screenSize > 768 && challenge.completion!==100" class="flex flex-row" countdownSize="1rem" labelSize=".5rem" mainColor="white" secondFlipColor="white" mainFlipBackgroundColor="#30ab0e" secondFlipBackgroundColor='#9af781' :labels="{ days: 'dager', hours: 'timer', minutes: 'min', seconds: 'sek', }" :deadlineISO="challenge.due"></Countdown>
                             <img
                                 @click="editChallenge(challenge)"
                                 :data-cy="'challenge-icon-' + challenge.id"
@@ -65,7 +66,7 @@
                                 "
                                 class="flex-grow w-full mt-2"
                             >
-                                <div class="flex flex-row">
+                                <div class="flex flex-row ml-5 md:ml-10 justify-center">
                                     <div class="flex flex-col">
                                         <div
                                             class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
@@ -80,7 +81,7 @@
                                                 }"
                                             ></div>
                                         </div>
-                                        <div class="text-center">
+                                        <div class="text-center text-xs md:text-base">
                                             {{ challenge.saved }}kr / {{ challenge.target }}kr
                                         </div>
                                     </div>
@@ -95,12 +96,12 @@
                                     </button>
                                 </div>
                             </div>
-                            <span v-else class="text-center">Ferdig: {{ challenge.saved }}</span>
+                            <span v-else class="text-center text-xs md:text-base">Ferdig: {{ challenge.saved }}</span>
                         </div>
                         <!-- Check Icon -->
                         <div
                             v-if="challenge.completion !== undefined && challenge.completion >= 100"
-                            class="max-w-10 max-h-10"
+                            class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
                         >
                             <img src="@/assets/completed.png" alt="" />️
                         </div>
@@ -110,13 +111,13 @@
                     </div>
                     <div class="">
                         <img
-                            v-if="index === 0"
+                            v-if="index === 0 || index%4===0"
                             src="@/assets/cowboySpare.gif"
                             alt="could not load"
                             class="h-32 w-32 border-2 rounded-lg border-stale-400"
                         />
                         <img
-                            v-else-if="index === 2"
+                            v-else-if="index === 2 || index%4 === 2"
                             src="@/assets/hotAirBalloonSpare.gif"
                             class="h-32 w-32 border-stale-400 border-2 rounded-lg"
                             alt="could not load"
@@ -182,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, type Ref, ref, watch } from 'vue'
+import {nextTick, onMounted, onUnmounted, type Ref, ref, watch} from 'vue'
 import anime from 'animejs'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
@@ -190,6 +191,7 @@ import confetti from 'canvas-confetti'
 import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
+import {Countdown} from 'vue3-flip-countdown'
 
 const router = useRouter()
 const goalStore = useGoalStore()
@@ -203,6 +205,37 @@ const props = defineProps<Props>()
 
 const challenges = ref<Challenge[]>(props.challenges)
 const goal = ref<Goal | null | undefined>(props.goal)
+
+onMounted(async () => {
+    await goalStore.getUserGoals()
+    window.addEventListener("resize", handleWindowSizeChange);
+    handleWindowSizeChange();
+    sortChallenges();
+});
+
+const sortChallenges = () => {
+  challenges.value.sort((a, b) => {
+    // First, sort by completion status: non-completed (less than 100) before completed (100)
+    if (a.completion !== 100 && b.completion === 100) {
+      return -1; // 'a' is not completed and 'b' is completed, 'a' should come first
+    } else if (a.completion === 100 && b.completion !== 100) {
+      return 1; // 'a' is completed and 'b' is not, 'b' should come first
+    } else {
+      // If both are completed or both are not completed, sort by the due date
+      return new Date(a.due) - new Date(b.due);
+    }
+  });
+}
+
+
+const screenSize = ref<number>(window.innerWidth)
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleWindowSizeChange);
+});
+const handleWindowSizeChange = () => {
+  screenSize.value = window.innerWidth;
+};
 
 // Utilizing watch to specifically monitor for changes in the props
 watch(
@@ -221,6 +254,7 @@ watch(
     (newChallenges, oldChallenges) => {
         if (newChallenges !== oldChallenges) {
             challenges.value = newChallenges
+            sortChallenges();
             console.log('Updated challenges:', challenges.value)
         }
     },
@@ -243,15 +277,13 @@ const addSpareUtfordring = () => {
 
 // Increment saved amount
 const incrementSaved = async (challenge: Challenge) => {
-    // Set a default increment amount per purchase
-    challenge.perPurchase = 20
-
     // Safely increment the saved amount, ensuring it exists
     challenge.saved += challenge.perPurchase
 
     // Check if the saved amount meets or exceeds the target
     if (challenge.saved >= challenge.target) {
         challenge.completion = 100
+        await challengeStore.completeUserChallenge(challenge)
     }
 
     console.log('Incrementing saved amount for:', challenge)
