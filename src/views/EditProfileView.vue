@@ -1,0 +1,94 @@
+<script lang="ts" setup>
+import authInterceptor from '@/services/authInterceptor'
+import { computed, onMounted, ref } from 'vue'
+import type { Profile } from '@/types/profile'
+import CardTemplate from '@/views/CardTemplate.vue'
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import CardGoal from '@/components/CardGoal.vue'
+
+const profile = ref<Profile>()
+
+onMounted(async () => {
+    await authInterceptor('/profile')
+        .then((response) => {
+            profile.value = response.data
+            console.log(profile.value)
+        })
+        .catch((error) => {
+            return console.log(error)
+        })
+})
+
+const welcome = computed(() => {
+    return [`Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`]
+})
+</script>
+
+<template>
+    <div class="w-full flex px-10 justify-center">
+        <div class="flex flex-row flex-wrap justify-center w-full max-w-screen-xl gap-20">
+            <div class="flex flex-col max-w-96 w-full gap-5">
+                <h1>Profile</h1>
+                <div class="flex flex-row gap-5">
+                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0"></div>
+                    <div class="w-full flex flex-col justify-between">
+                        <h3 class="font-thin my-0">{{ profile?.username }}</h3>
+                        <h3 class="font-thin my-0">
+                            {{ profile?.firstName + ' ' + profile?.lastName }}
+                        </h3>
+                        <h3 class="font-thin my-0">{{ profile?.email }}</h3>
+                    </div>
+                </div>
+
+                <h3 class="font-bold" v-text="'Du har spart ' + '< totalSaved >' + 'kr'" />
+
+                <CardTemplate>
+                    <div class="bg-red-300">
+                        <p class="font-bold mx-3" v-text="'Brukskonto'" />
+                    </div>
+                    <p
+                        class="mx-3"
+                        v-text="profile?.spendingAccount.accNumber || 'Ingen brukskonto oppkoblet'"
+                    />
+                </CardTemplate>
+
+                <CardTemplate>
+                    <div class="bg-red-300">
+                        <p class="font-bold mx-3" v-text="'Sparekonto'" />
+                    </div>
+                    <p
+                        class="mx-3"
+                        v-text="profile?.savingAccount.accNumber || 'Ingen sparekonto oppkoblet'"
+                    />
+                </CardTemplate>
+
+                <button v-text="'Rediger bruker'" />
+            </div>
+
+            <div class="flex flex-col">
+                <InteractiveSpare :png-size="10" :speech="welcome" direction="left" />
+                <div class="flex flex-row justify-between mx-4">
+                    <p class="font-bold">Fullførte sparemål</p>
+                    <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />
+                </div>
+                <CardTemplate class="p-4 flex flex-row flex-wrap justify-center gap-2 mb-4 mt-2">
+                    <CardGoal v-for="goal in completedGoals" :key="goal.id" :goal-instance="goal" />
+                </CardTemplate>
+
+                <div class="flex flex-row justify-between mx-4">
+                    <p class="font-bold">Fullførte utfordringer</p>
+                    <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />
+                </div>
+                <CardTemplate class="p-4 flex flex-row flex-wrap justify-center gap-2 mb-4 mt-2">
+                    <CardGoal
+                        v-for="challenge in completedChallenges"
+                        :key="challenge.id"
+                        :goal-instance="challenge"
+                    />
+                </CardTemplate>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style scoped></style>
