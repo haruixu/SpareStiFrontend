@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, toRefs } from 'vue'
+import { onMounted, ref } from 'vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallenge.vue'
 import type { Challenge } from '@/types/challenge'
@@ -50,6 +50,7 @@ import type { Goal } from '@/types/goal'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
+import router from "@/router";
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
@@ -63,34 +64,40 @@ const goals = ref<Goal[]>([])
 const goal = ref<Goal | null | undefined>(null)
 
 onMounted(async () => {
-    await goalStore.getUserGoals()
-    await challengeStore.getUserChallenges()
-    challenges.value = challengeStore.challenges
-    goals.value = goalStore.goals
-    goal.value = goals.value[0]
+  await goalStore.getUserGoals()
+  await challengeStore.getUserChallenges()
+  challenges.value = challengeStore.challenges
+  goals.value = goalStore.goals
+  goal.value = goals.value[0]
+  firstLoggedInSpeech()
 })
 
 const updateSpeech = (newSpeech: string[]) => {
     speech.value = newSpeech;
-    console.log('New speech available:', speech.value)
     newSpeechAvailable.value = true;
 }
 
-updateSpeech([
-    'Hei, jeg er Spare!',
-    'Jeg skal hjelpe deg med å spare penger.',
-    'Du får varsel når jeg har noe å si!'
-])
+// Check if the user is logging in for the first time, and display the first login speech
+const firstLoggedInSpeech = () => {
+  const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true';
+  if (isFirstLogin) {
+    updateSpeech([
+      'Hei, jeg er Spare!',
+      'Jeg skal hjelpe deg med å spare penger.',
+      'Du får varsel når jeg har noe å si!'
+    ]);
+    // reset the query parameter
+    router.replace({name: 'home', query: {firstLogin: 'false'}});
+
+    openInteractiveSpare()
+  }
+}
 
 const openInteractiveSpare = () => {
-    console.log('Opening interactive spare available', newSpeechAvailable.value)
     // Check if there's new speech available before opening the modal.
     if (newSpeechAvailable.value) {
         isModalOpen.value = true // Open the modal
         newSpeechAvailable.value = false // Reset the flag since the speech will now be displayed
-        console.log('Opening interactive spare')
-    } else {
-        console.log('No new speech available')
     }
 }
 const openHelp = () => {
