@@ -48,6 +48,8 @@ authInterceptor.interceptors.response.use(
                 .catch(() => {
                     localStorage.removeItem('loginToken')
                     router.push({ name: 'login' })
+
+                    Promise.reject(error)
                 })
         }
 

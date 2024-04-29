@@ -16,6 +16,7 @@ export const useUserStore = defineStore('user', () => {
         username: 'Username'
     }
 
+    const isUserConfigured = ref<boolean | null>(null)
     const user = ref<User>(defaultUser)
     const errorMessage = ref<string>('')
 
@@ -77,6 +78,8 @@ export const useUserStore = defineStore('user', () => {
         sessionStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
         user.value = defaultUser
+        isUserConfigured.value = null
+
         router.push({ name: 'login' })
     }
 
@@ -128,11 +131,11 @@ export const useUserStore = defineStore('user', () => {
 
             await authInterceptor
                 .post('/auth/finishBioRegistration', { credential: JSON.stringify(encodedResult) })
-                .then((response) => {
+                .then(() => {
                     router.push({ name: 'configurations1' })
                 })
         } catch (error) {
-            router.push({ name: 'configurations1' })
+            await router.push({ name: 'configurations1' })
             console.error(error)
         }
     }
@@ -219,6 +222,7 @@ export const useUserStore = defineStore('user', () => {
         logout,
         bioLogin,
         bioRegister,
+        isUserConfigured,
         errorMessage
     }
 })

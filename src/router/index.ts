@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import authInterceptor from '@/services/authInterceptor'
+import { useUserStore } from '@/stores/userStore'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -129,7 +131,7 @@ const router = createRouter({
     }
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const publicPages = [
         { name: 'login' },
         { name: 'register' },
@@ -143,9 +145,52 @@ router.beforeEach((to, from, next) => {
     const loginToken = localStorage.getItem('loginToken')
 
     if (authRequired && !loggedIn && !loginToken) {
+        console.log('Routing to login')
+        await router.replace({ name: 'login' })
         return next({ name: 'login' })
+    } else if (!authRequired && loggedIn) {
+        await router.replace({ name: 'home' })
+        return next({ name: 'home' })
     }
-    next()
+
+    const configPages = [
+        { name: 'configurations1' },
+        { name: 'configurations2' },
+        { name: 'configurations3' },
+        { name: 'configurations4' },
+        { name: 'configurations5' },
+        { name: 'configurations6' }
+    ]
+
+    const userStore = useUserStore()
+
+    if (userStore.isUserConfigured == null) {
+        console.log('Checking if user is configured')
+
+        await authInterceptor('/config')
+            .then((response) => {
+                console.log(response)
+
+                userStore.isUserConfigured = response.data.challengeConfig != null
+            })
+            .catch((response) => {
+                console.log(response)
+                userStore.isUserConfigured = false
+            })
+    }
+
+    const configRequired = !configPages.some((page) => page.name === to.name)
+
+    if (configRequired && !userStore.isUserConfigured) {
+        console.log('Routing to configurations1')
+        await router.replace({ name: 'configurations1' })
+        return next({ name: 'configurations1' })
+    } else if (!configRequired && userStore.isUserConfigured) {
+        await router.replace({ name: 'home' })
+        return next({ name: 'home' })
+    }
+
+    return next()
 })
 
 export default router
