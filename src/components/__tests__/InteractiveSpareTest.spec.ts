@@ -8,7 +8,8 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'left',
                 speech: ['Hello', 'World'],
-                pngSize: 100
+                pngSize: 100,
+                isModalOpen: true
             }
         })
         expect(wrapper.exists()).toBeTruthy()
@@ -19,7 +20,8 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'right',
                 speech: ['Hello', 'World'],
-                pngSize: 100
+                pngSize: 100,
+                isModalOpen: true
             }
         })
         expect(wrapper.find('.spareDiv').classes()).toContain('flex-row')
@@ -27,7 +29,8 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'left',
                 speech: ['Hello', 'World'],
-                pngSize: 100
+                pngSize: 100,
+                isModalOpen: true
             }
         })
         expect(wrapperReverse.find('.spareDiv').classes()).toContain('flex-row-reverse')
@@ -38,7 +41,8 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'right',
                 speech: ['Hello', 'World'],
-                pngSize: 100
+                pngSize: 100,
+                isModalOpen: true
             }
         })
         expect(wrapper.find('img').classes()).toContain('scale-x-[-1]')
@@ -49,7 +53,8 @@ describe('SpeechBubbleComponent', () => {
             props: {
                 direction: 'left',
                 speech: ['First speech', 'Second speech'],
-                pngSize: 100
+                pngSize: 100,
+                isModalOpen: true
             }
         })
         expect(wrapper.find('.speech').text()).toBe('First speech')
