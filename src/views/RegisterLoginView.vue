@@ -4,6 +4,7 @@ import FormRegister from '@/components/FormRegister.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+
 const router = useRouter()
 
 const isLogin = ref<boolean>(true)
@@ -46,6 +47,7 @@ onMounted(() => {
             <FormLogin v-if="isLogin" />
             <FormRegister v-else />
         </div>
+
     </div>
 </template>
 
