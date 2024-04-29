@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, defineProps, onMounted, ref, watch} from 'vue'
+import {computed, defineProps,ref, watch} from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 import ModalComponent from '@/components/ModalComponent.vue'
 
