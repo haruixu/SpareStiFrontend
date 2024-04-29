@@ -31,7 +31,7 @@
             <div class="-mb-5 mt-8 text-xs text-gray-500">
                 <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
                 <a
-                    @click="ModalClosed"
+                    @click="clearSpeeches"
                     class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
                 >
                     Skip
@@ -74,7 +74,7 @@ const nextSpeech = () => {
             // If no speeches left, reset index to indicate no available speech
             currentSpeechIndex.value = -1
             // Close the modal if there are no speeches left
-            ModalClosed()
+            modalClosed()
         }
     }
 }
@@ -90,7 +90,12 @@ const bubbleDirection = computed(() => {
     return props.direction === 'right' ? 'btm-left-in' : 'btm-right-in'
 })
 
-const ModalClosed = () => {
+const clearSpeeches = () => {
+    currentSpeechIndex.value = -1
+    modalClosed()
+}
+
+const modalClosed = () => {
     isModalOpen.value = false
 }
 
