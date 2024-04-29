@@ -188,7 +188,7 @@ export const useUserStore = defineStore('user', () => {
             console.log(encodedResult)
 
             await axios
-                .post('http://localhost:8080/auth/finishBioLogin/katanta1', {
+                .post(`http://localhost:8080/auth/finishBioLogin/${username}`, {
                     credential: JSON.stringify(encodedResult)
                 })
                 .then((response) => {
