@@ -13,6 +13,7 @@
         <div
             ref="containerRef"
             class="container relative pt-6 w-4/5 mx-auto md:w-4/5  no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
+        >
             <div>
                 <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
             </div>
