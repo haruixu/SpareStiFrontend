@@ -7,6 +7,7 @@ import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
+import router from '@/router'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
@@ -50,7 +51,7 @@ const welcome = computed(() => {
             <div class="flex flex-col max-w-96 w-full gap-5">
                 <h1>Profile</h1>
                 <div class="flex flex-row gap-5">
-                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0"></div>
+                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
                     <div class="w-full flex flex-col justify-between">
                         <h3 class="font-thin my-0">{{ profile?.username }}</h3>
                         <h3 class="font-thin my-0">
@@ -82,7 +83,7 @@ const welcome = computed(() => {
                     />
                 </CardTemplate>
 
-                <button v-text="'Rediger bruker'" />
+                <button @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
             </div>
 
             <div class="flex flex-col">

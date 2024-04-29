@@ -1,9 +1,10 @@
 export interface Profile {
-    id: string
+    id: number
     firstName: string
     lastName: string
     email: string
     username: string
+    password?: string
     spendingAccount: {
         accNumber?: number
         accountType?: string
