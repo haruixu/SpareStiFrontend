@@ -31,7 +31,7 @@ import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import GeneratedChallengesModal from '@/components/GeneratedChallengesModal.vue'
 
-const showModal = ref(true);
+const showModal = ref(true)
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()

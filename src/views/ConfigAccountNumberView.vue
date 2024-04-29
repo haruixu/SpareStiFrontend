@@ -47,12 +47,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useAccountStore } from '@/stores/accountStore'
+import { useUserConfigStore } from '@/stores/userConfigStore'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 
 const MAX_DIGITS = 11
-const accountStore = useAccountStore()
+const userConfig = useUserConfigStore()
 
 const spendingAccount = ref('')
 const savingsAccount = ref('')
@@ -68,9 +68,8 @@ async function onButtonClick() {
     const savingAccountNumber = savingsAccount.value.replace(/\./g, '')
     const spendingAccountNumber = spendingAccount.value.replace(/\./g, '')
 
-    await accountStore.postAccount('SAVING', savingAccountNumber, 0)
-
-    await accountStore.postAccount('SPENDING', spendingAccountNumber, 0)
+    await userConfig.postAccount('SAVING', savingAccountNumber, 0)
+    await userConfig.postAccount('SPENDING', spendingAccountNumber, 0)
 
     await router.push({ name: 'home' })
 }
