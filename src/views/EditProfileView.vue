@@ -104,9 +104,13 @@ const saveChanges = async () => {
             <div class="flex flex-col max-w-96 w-full gap-5">
                 <h1>Rediger profil</h1>
                 <div class="w-full flex flex-row gap-5 justify-between justify-items-end">
-                    <button class="h-min" v-text="'Forrige'" />
+                    <div class="flex flex-col justify-center">
+                        <button class="h-min bg-transparent text-4xl" v-text="'⬅️'" />
+                    </div>
                     <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
-                    <button class="h-min" v-text="'Neste'" />
+                    <div class="flex flex-col justify-center">
+                        <button class="h-min bg-transparent text-4xl" v-text="'➡️'" />
+                    </div>
                 </div>
 
                 <div class="flex flex-col">
