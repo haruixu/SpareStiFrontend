@@ -2,8 +2,8 @@
     <div class="alt-login-main">
         <h1>Alternativ innlogging</h1>
         <div class="img-div">
-            <img src="@/assets/bioAuthTouch.png" alt="bioAuthTouch">
-            <img src="@/assets/bioAuthFace.png" alt="bioAuthFace">
+            <img src="@/assets/bioAuthTouch.png" alt="bioAuthTouch" />
+            <img src="@/assets/bioAuthFace.png" alt="bioAuthFace" />
         </div>
         <h2>Vil du logge på med touch eller face id?</h2>
         <div class="btn-div">
