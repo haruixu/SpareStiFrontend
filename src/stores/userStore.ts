@@ -4,9 +4,10 @@ import type { User } from '@/types/user'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
-import type { CredentialGetJson } from '@/types/CredentialGetJson'
+import type { CredentialRequestOptions } from '@/types/CredentialRequestOptions'
 import { base64urlToUint8array, initialCheckStatus, uint8arrayToBase64url } from '@/util'
 import authInterceptor from '@/services/authInterceptor'
+import type { CredentialCreationOptions } from '@/types/CredentialCreationOptions'
 
 export const useUserStore = defineStore('user', () => {
     const defaultUser: User = {
@@ -79,48 +80,48 @@ export const useUserStore = defineStore('user', () => {
         router.push({ name: 'login' })
     }
 
-    //const registerPasskey = async () => {
-    //    await authInterceptor
-    //        .post("/auth/bioRegistration")
-    //        .then(response => {
-    //            initialCheckStatus(response)
-    //            return response.data
-    //        })
-    //        .then(credentialCreateJson => ({
-    //            publicKey: {
-    //                ...credentialCreateJson.publicKey,
-    //                challenge: base64urlToUint8array(credentialCreateJson.publicKey.challenge),
-    //                user: {
-    //                    ...credentialCreateJson.publicKey.user,
-    //                    id: base64urlToUint8array(credentialCreateJson.publicKey.user.id),
-    //                },
-    //                excludeCredentials: credentialCreateJson.publicKey.excludeCredentials.map(credential => ({
-    //                    ...credential,
-    //                    id: base64urlToUint8array(credential.id),
-    //                })),
-    //                extensions: credentialCreateJson.publicKey.extensions,
-    //            },
-    //        }))
-    //        .then(credentialCreateOptions => {
-    //            return navigator.credentials.create(credentialCreateOptions)
-    //        })
-    //        .then(publicKeyCredential => ({
-    //            type: publicKeyCredential.type,
-    //            id: publicKeyCredential.id,
-    //            response: {
-    //                attestationObject: uint8arrayToBase64url(publicKeyCredential.response.attestationObject),
-    //                clientDataJSON: uint8arrayToBase64url(publicKeyCredential.response.clientDataJSON),
-    //                transports: publicKeyCredential.response.getTransports && publicKeyCredential.response.getTransports() || [],
-    //            },
-    //            clientExtensionResults: publicKeyCredential.getClientExtensionResults(),
-    //        }))
-    //        .then((encodedResult) =>
-    //            authInterceptor.post("/auth/finishBioRegistration", { credential: JSON.stringify(encodedResult) }
-    //            ))
-    //        .catch((error) =>
-    //            console.log(error)
-    //        );
-    //}
+    const registerPasskey = async () => {
+        try {
+            const response = await authInterceptor.post("/auth/bioRegistration");
+            initialCheckStatus(response);
+
+            const credentialCreateJson: CredentialCreationOptions = response.data;
+
+            const credentialCreateOptions: CredentialCreationOptions = {
+                publicKey: {
+                    ...credentialCreateJson.publicKey,
+                    challenge: base64urlToUint8array(credentialCreateJson.publicKey.challenge as unknown as string),
+                    user: {
+                        ...credentialCreateJson.publicKey.user,
+                        id: base64urlToUint8array(credentialCreateJson.publicKey.user.id as unknown as string),
+                    },
+                    excludeCredentials: credentialCreateJson.publicKey.excludeCredentials?.map(credential => ({
+                        ...credential,
+                        id: base64urlToUint8array(credential.id as unknown as string),
+                    })),
+                    extensions: credentialCreateJson.publicKey.extensions,
+                },
+            };
+
+            const publicKeyCredential = await navigator.credentials.create(credentialCreateOptions) as PublicKeyCredential;
+
+            const publicKeyResponse = publicKeyCredential.response as AuthenticatorAttestationResponse;
+            const encodedResult = {
+                type: publicKeyCredential.type,
+                id: publicKeyCredential.id,
+                response: {
+                    attestationObject: uint8arrayToBase64url(publicKeyResponse.attestationObject),
+                    clientDataJSON: uint8arrayToBase64url(publicKeyResponse.clientDataJSON),
+                    transports: publicKeyResponse.getTransports?.() || [],
+                },
+                clientExtensionResults: publicKeyCredential.getClientExtensionResults(),
+            };
+
+            await authInterceptor.post("/auth/finishBioRegistration", { credential: JSON.stringify(encodedResult) });
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const bioLogin = async (username: string) => {
         try {
@@ -129,7 +130,7 @@ export const useUserStore = defineStore('user', () => {
             initialCheckStatus(request);
             console.log(request)
 
-            const credentialGetJson: CredentialGetJson = request.data;
+            const credentialGetJson: CredentialRequestOptions = request.data;
             console.log(credentialGetJson)
 
             const credentialGetOptions: CredentialRequestOptions = {
