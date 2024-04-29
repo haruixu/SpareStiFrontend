@@ -41,10 +41,28 @@ export const useChallengeStore = defineStore('challenge', () => {
             console.error('Error updating challenge:', error)
         }
     }
+    const completeUserChallenge = async (challenge: Challenge) => {
+        try {
+            const response = await authInterceptor.put(`/challenges/${challenge.id}/complete`, challenge)
+            if (response.data) {
+                // Update local challenge state to reflect changes
+                const index = challenges.value.findIndex((c) => c.id === challenge.id)
+                if (index !== -1) {
+                    challenges.value[index] = { ...challenges.value[index], ...response.data }
+                    console.log('Updated Challenge:', response.data)
+                }
+            } else {
+                console.error('No challenge content found in response data')
+            }
+        } catch (error) {
+            console.error('Error updating challenge:', error)
+        }
+    }
 
     return {
         challenges,
         getUserChallenges,
-        editUserChallenge
+        editUserChallenge,
+        completeUserChallenge
     }
 })
