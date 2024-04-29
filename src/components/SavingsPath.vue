@@ -31,111 +31,84 @@
                     class="flex flex-row w-4/5 gap-8"
                 >
                     <div class="right-auto just">
-                        <img
-                            v-if="index%6 ===3"
-                            src="@/assets/sleepingSpare.gif"
-                            alt="could not load"
-                            class="w-32 h-32 border-2 rounded-lg border-stale-400"
-                        />
-                        <img
-                            v-else-if="index%6 === 1"
-                            src="@/assets/golfSpare.gif"
-                            alt="could not load"
-                            class="w-32 h-32 border-2 rounded-lg border-stale-400"
-                        />
-                        <img
-                            v-else-if="index%6===5"
-                            src="@/assets/archerSpare.gif"
-                            alt="could not load"
-                            class="w-32 h-32 border-2 rounded-lg border-stale-400"
-                        />
+                        <img-gif-template :index="index" :mod-value="1" url="src/assets/golfSpare.gif"></img-gif-template>
+                        <img-gif-template :index="index" :mod-value="3" url="src/assets/sleepingSpare.gif"></img-gif-template>
+                        <img-gif-template :index="index" :mod-value="5" url="src/assets/archerSpare.gif"></img-gif-template>
                     </div>
                     <!-- Challenge Icon and Details -->
-                    <div class="flex">
-                        <!-- Challenge Icon -->
-                        <div class="flex flex-col items-center">
-                            <div class="flex flex-row flex-nowrap">
-                            <p class="text-center text-wrap text-xs md:text-lg" data-cy="challenge-title">
-                                {{ challenge.title }}
-                            </p>
-                            <display-info-for-challenge-or-goal :goal="goal" :challenge="challenge" :is-challenge="true"></display-info-for-challenge-or-goal>
-                            </div>
-                            <img
-                                @click="editChallenge(challenge)"
-                                :data-cy="'challenge-icon-' + challenge.id"
-                                :src="getChallengeIcon(challenge)"
-                                class="max-w-20 max-h-20 cursor-pointer"
-                                :alt="challenge.title"
-                            />
-                            <!-- Progress Bar, if the challenge is not complete -->
-                            <div
-                                v-if="
-                                    challenge.completion != undefined && challenge.completion < 100
-                                "
-                                class="flex-grow w-full mt-2"
-                            >
-                                <div class="flex flex-row ml-5 md:ml-10 justify-center">
-                                    <div class="flex flex-col">
-                                        <div
-                                            class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
-                                        >
-                                            <div
-                                                class="bg-green-600 h-2.5 rounded-full"
-                                                data-cy="challenge-progress"
-                                                :style="{
-                                                    width:
-                                                        (challenge.saved / challenge.target) * 100 +
-                                                        '%'
-                                                }"
-                                            ></div>
-                                        </div>
-                                        <div class="text-center text-xs md:text-base">
-                                            {{ challenge.saved }}kr / {{ challenge.target }}kr
-                                        </div>
-                                    </div>
+                    <card-template>
+                      <div class="flex">
+                          <!-- Challenge Icon -->
+                          <div class="flex flex-col items-center gap-4">
+                              <div class="flex flex-row flex-nowrap">
+                              <p class="text-center text-wrap text-xs md:text-lg" data-cy="challenge-title">
+                                  {{ challenge.title }}
+                              </p>
+                              <display-info-for-challenge-or-goal :goal="goal" :challenge="challenge" :is-challenge="true"></display-info-for-challenge-or-goal>
+                              </div>
+                              <img
+                                  @click="editChallenge(challenge)"
+                                  :data-cy="'challenge-icon-' + challenge.id"
+                                  :src="getChallengeIcon(challenge)"
+                                  class="max-w-20 max-h-20 cursor-pointer"
+                                  :alt="challenge.title"
+                              />
+                              <!-- Progress Bar, if the challenge is not complete -->
+                              <div
+                                  v-if="
+                                      challenge.completion != undefined && challenge.completion < 100
+                                  "
+                                  class="flex-grow w-full mt-2"
+                              >
+                                  <div class="flex flex-row ml-5 md:ml-10 justify-center">
+                                      <div class="flex flex-col">
+                                          <div
+                                              class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
+                                          >
+                                              <div
+                                                  class="bg-green-600 h-2.5 rounded-full"
+                                                  data-cy="challenge-progress"
+                                                  :style="{
+                                                      width:
+                                                          (challenge.saved / challenge.target) * 100 +
+                                                          '%'
+                                                  }"
+                                              ></div>
+                                          </div>
+                                          <div class="text-center text-xs md:text-base">
+                                              {{ challenge.saved }}kr / {{ challenge.target }}kr
+                                          </div>
+                                      </div>
 
-                                    <button
-                                        @click="incrementSaved(challenge)"
-                                        :data-cy="'increment-challenge' + challenge.id"
-                                        type="button"
-                                        class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-                            <span v-else class="text-center text-xs md:text-base">Ferdig: {{ challenge.saved }}</span>
-                        </div>
-                        <!-- Check Icon -->
-                        <div
-                            v-if="challenge.completion !== undefined && challenge.completion >= 100"
-                            class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
-                        >
-                            <img src="@/assets/completed.png" alt="" />️
-                        </div>
-                        <div v-else class="max-w-6 max-h-6">
-                            <img src="@/assets/pending.png" alt="" />️
-                        </div>
-                    </div>
+                                      <button
+                                          @click="incrementSaved(challenge)"
+                                          :data-cy="'increment-challenge' + challenge.id"
+                                          type="button"
+                                          class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                      >
+                                          +
+                                      </button>
+                                  </div>
+                              </div>
+                              <span v-else class="text-center text-xs md:text-base">Ferdig: {{ challenge.saved }}</span>
+                          </div>
+                          <!-- Check Icon -->
+                          <div
+                              v-if="challenge.completion !== undefined && challenge.completion >= 100"
+                              class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
+                          >
+                              <img src="@/assets/completed.png" alt="" />️
+                          </div>
+                          <div v-else class="max-w-6 max-h-6">
+                              <img src="@/assets/pending.png" alt="" />️
+                          </div>
+                      </div>
+                    </card-template>
                     <div class="">
-                        <img
-                            v-if="index%6===0"
-                            src="@/assets/cowboySpare.gif"
-                            alt="could not load"
-                            class="h-32 w-32 border-2 rounded-lg border-stale-400"
-                        />
-                        <img
-                            v-else-if="index%6 === 2"
-                            src="@/assets/hotAirBalloonSpare.gif"
-                            class="h-32 w-32 border-stale-400 border-2 rounded-lg"
-                            alt="could not load"
-                        />
-                        <img
-                            v-else-if="index %6===4"
-                            src="@/assets/farmerSpare.gif"
-                            alt="could not load"
-                            class="h-32 w-32 border-stale-400 border-2 rounded-lg"
-                        />
+                        <img-gif-template :index="index" :mod-value="0" url="src/assets/cowboySpare.gif"></img-gif-template>
+                        <img-gif-template :index="index" :mod-value="2" url="src/assets/hotAirBalloonSpare.gif"></img-gif-template>
+                        <img-gif-template :index="index" :mod-value="4" url="src/assets/farmerSpare.gif"></img-gif-template>
+
                     </div>
                 </div>
                 <!-- Piggy Steps, centered -->
@@ -209,6 +182,8 @@ import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import DisplayInfoForChallengeOrGoal from "@/components/DisplayInfoForChallengeOrGoal.vue";
+import CardTemplate from "@/views/CardTemplate.vue";
+import ImgGifTemplate from "@/components/ImgGifTemplate.vue";
 
 const router = useRouter()
 const goalStore = useGoalStore()

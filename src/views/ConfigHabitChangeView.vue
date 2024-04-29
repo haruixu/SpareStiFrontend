@@ -69,8 +69,6 @@ const selectOption = (option: string) => {
         case 'store':
             motivationValue = 'VERY_HIGH'
             break
-        default:
-            motivationValue = 'VERY_LOW'
     }
 
     userConfigStore.setMotivation(motivationValue)
@@ -78,7 +76,7 @@ const selectOption = (option: string) => {
 
 const onButtonClick = () => {
     if (selectedOption.value) {
-        router.push('/konfigurasjonSteg2')
+        router.push({ name: 'configurations2' })
     } else {
         console.error('No option selected')
     }
