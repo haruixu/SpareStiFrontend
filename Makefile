@@ -6,6 +6,10 @@ build-docker:
 run-docker:
 	docker run -p 5173:5173 sparesti_frontend
 
+run:
+	make build-docker
+	make run-docker
+
 run-dev:
 	npm run dev
 
