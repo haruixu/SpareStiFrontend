@@ -12,8 +12,7 @@
         <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
         <div
             ref="containerRef"
-            class="container relative pt-6 w-4/5 mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
-        >
+            class="container relative pt-6 w-4/5 mx-auto md:w-4/5  no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
             <div>
                 <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
             </div>
@@ -32,14 +31,20 @@
                 >
                     <div class="right-auto just">
                         <img
-                            v-if="index === 3 || index%4 ===3"
+                            v-if="index%6 ===3"
                             src="@/assets/sleepingSpare.gif"
                             alt="could not load"
                             class="w-32 h-32 border-2 rounded-lg border-stale-400"
                         />
                         <img
-                            v-else-if="index === 1 || index%4 === 1"
+                            v-else-if="index%6 === 1"
                             src="@/assets/golfSpare.gif"
+                            alt="could not load"
+                            class="w-32 h-32 border-2 rounded-lg border-stale-400"
+                        />
+                        <img
+                            v-else-if="index%6===5"
+                            src="@/assets/archerSpare.gif"
                             alt="could not load"
                             class="w-32 h-32 border-2 rounded-lg border-stale-400"
                         />
@@ -48,10 +53,12 @@
                     <div class="flex">
                         <!-- Challenge Icon -->
                         <div class="flex flex-col items-center">
+                            <div class="flex flex-row flex-nowrap">
                             <p class="text-center text-wrap text-xs md:text-lg" data-cy="challenge-title">
                                 {{ challenge.title }}
                             </p>
-                            <Countdown v-if="screenSize > 768 && challenge.completion!==100" class="flex flex-row" countdownSize="1rem" labelSize=".5rem" mainColor="white" secondFlipColor="white" mainFlipBackgroundColor="#30ab0e" secondFlipBackgroundColor='#9af781' :labels="{ days: 'dager', hours: 'timer', minutes: 'min', seconds: 'sek', }" :deadlineISO="challenge.due"></Countdown>
+                            <display-info-for-challenge-or-goal :goal="goal" :challenge="challenge" :is-challenge="true"></display-info-for-challenge-or-goal>
+                            </div>
                             <img
                                 @click="editChallenge(challenge)"
                                 :data-cy="'challenge-icon-' + challenge.id"
@@ -111,16 +118,22 @@
                     </div>
                     <div class="">
                         <img
-                            v-if="index === 0 || index%4===0"
+                            v-if="index%6===0"
                             src="@/assets/cowboySpare.gif"
                             alt="could not load"
                             class="h-32 w-32 border-2 rounded-lg border-stale-400"
                         />
                         <img
-                            v-else-if="index === 2 || index%4 === 2"
+                            v-else-if="index%6 === 2"
                             src="@/assets/hotAirBalloonSpare.gif"
                             class="h-32 w-32 border-stale-400 border-2 rounded-lg"
                             alt="could not load"
+                        />
+                        <img
+                            v-else-if="index %6===4"
+                            src="@/assets/farmerSpare.gif"
+                            alt="could not load"
+                            class="h-32 w-32 border-stale-400 border-2 rounded-lg"
                         />
                     </div>
                 </div>
@@ -156,9 +169,12 @@
         </div>
         <!-- Goal -->
         <div v-if="goal" class="flex flex-row justify-around m-t-2 pt-6 w-full mx-auto">
-            <div class="flex flex-col items-start cursor-pointer" @click="editGoal(goal)">
-                <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
-                <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
+            <div class="grid grid-rows-2 grid-flow-col gap 4">
+              <div class="row-span-3 cursor-pointer" @click="editGoal(goal)">
+                  <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
+                  <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
+              </div>
+              <display-info-for-challenge-or-goal class="col-span-2" :goal="goal" :challenge="null" :is-challenge="false"></display-info-for-challenge-or-goal>
             </div>
             <div class="flex flex-col items-end">
                 <div @click="goToEditGoal" class="cursor-pointer">
@@ -191,7 +207,7 @@ import confetti from 'canvas-confetti'
 import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
-import {Countdown} from 'vue3-flip-countdown'
+import DisplayInfoForChallengeOrGoal from "@/components/DisplayInfoForChallengeOrGoal.vue";
 
 const router = useRouter()
 const goalStore = useGoalStore()
@@ -217,9 +233,9 @@ const sortChallenges = () => {
   challenges.value.sort((a, b) => {
     // First, sort by completion status: non-completed (less than 100) before completed (100)
     if (a.completion !== 100 && b.completion === 100) {
-      return -1; // 'a' is not completed and 'b' is completed, 'a' should come first
+      return 1; // 'a' is not completed and 'b' is completed, 'a' should come first
     } else if (a.completion === 100 && b.completion !== 100) {
-      return 1; // 'a' is completed and 'b' is not, 'b' should come first
+      return -1; // 'a' is completed and 'b' is not, 'b' should come first
     } else {
       // If both are completed or both are not completed, sort by the due date
       return new Date(a.due) - new Date(b.due);
