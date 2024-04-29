@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', () => {
                 user.value.lastname = lastname
                 user.value.username = username
 
-                router.push({ name: 'configurations1' })
+                router.push({ name: 'addAlternativeLogin' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -80,7 +80,7 @@ export const useUserStore = defineStore('user', () => {
         router.push({ name: 'login' })
     }
 
-    const registerPasskey = async () => {
+    const bioRegister = async () => {
         try {
             const response = await authInterceptor.post("/auth/bioRegistration");
             initialCheckStatus(response);
@@ -117,8 +117,10 @@ export const useUserStore = defineStore('user', () => {
                 clientExtensionResults: publicKeyCredential.getClientExtensionResults(),
             };
 
-            await authInterceptor.post("/auth/finishBioRegistration", { credential: JSON.stringify(encodedResult) });
+            await authInterceptor.post("/auth/finishBioRegistration", { credential: JSON.stringify(encodedResult) })
+                .then(response => { router.push({ name: 'configurations1' }) });
         } catch (error) {
+            router.push({ name: 'configurations1' })
             console.error(error);
         }
     }
@@ -192,6 +194,7 @@ export const useUserStore = defineStore('user', () => {
         login,
         logout,
         bioLogin,
+        bioRegister,
         errorMessage
     }
 })
