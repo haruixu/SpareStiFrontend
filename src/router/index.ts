@@ -99,6 +99,11 @@ const router = createRouter({
             component: () => import('@/views/ConfigSpendingItemsTotalAmountView.vue')
         },
         {
+            path: '/konfigurasjonSteg6',
+            name: 'configurations6',
+            component: () => import('@/views/ConfigAccountNumberView.vue')
+        },
+        {
             path: '/forsteSparemaal',
             name: 'firstSavingGoal',
             component: () => import('@/views/FirstSavingGoalView.vue')
@@ -114,9 +119,9 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/bioAuthLogin',
-            name: 'bioAuthLogin',
-            component: () => import('@/views/BioAuthLogin.vue')
+            path: '/addAlternativeLogin',
+            name: 'addAlternativeLogin',
+            component: () => import('@/views/AddAlternativeLogin.vue')
         }
     ],
     scrollBehavior() {

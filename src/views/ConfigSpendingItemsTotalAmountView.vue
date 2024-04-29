@@ -1,61 +1,74 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hvor mye bruker du totalt per uke på ...</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center relative">
+        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
+            Hvor mye bruker du per uke på ...
+        </h1>
+        <div class="w-full flex justify-center">
+            <div :class="[showSecondBox ? 'md:grid md:grid-cols-2 md:gap-4 sm:gap-8 mb-6' : '']">
                 <div
-                    v-for="(option, index) in options.slice(0, 6)"
-                    :key="`option-${index}`"
-                    class="w-full my-4"
+                    v-if="showFirstBox"
+                    class="flex flex-col items-center bg-white rounded-lg p-4 sm:p-8 shadow-lg"
+                    :class="showSecondBox ? 'w-full' : 'w-full md:w-1/2 mx-auto'"
+                    :style="{ minWidth: '400px', maxWidth: '400px' }"
                 >
-                    <div class="flex justify-between items-center">
-                        <p class="text-xl font-bold mr-4">{{ option.type }}</p>
-                        <div class="flex items-center w-2/3">
-                            <input
-                                type="text"
-                                v-model="amounts[index]"
-                                @input="($event) => filterAmount(index, $event)"
-                                class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
-                                :class="{
-                                    'border-gray-300': !amounts[index],
-                                    'border-[var(--green)]': amounts[index]
-                                }"
-                            />
-                            <p class="text-xl font-bold ml-2">kr</p>
+                    <div
+                        v-for="(option, index) in firstBoxOptions"
+                        :key="`first-option-${index}`"
+                        class="w-full my-4"
+                    >
+                        <div class="flex justify-between items-center">
+                            <p class="text-xl font-bold mr-4">{{ option.type }}</p>
+                            <div class="flex items-center w-2/3">
+                                <input
+                                    v-model="amounts[index]"
+                                    @input="filterAmount(index, $event)"
+                                    class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
+                                    :class="{
+                                        'border-gray-300': !amounts[index],
+                                        'border-[var(--green)]': amounts[index]
+                                    }"
+                                />
+                                <p class="text-xl font-bold ml-2">kr</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex flex-col items-center bg-white rounded-lg p-8 shadow-lg w-full">
                 <div
-                    v-for="(option, index) in options.slice(6, 12)"
-                    :key="`option-${index}`"
-                    class="w-full my-4"
+                    v-if="showSecondBox"
+                    class="flex flex-col items-center bg-white rounded-lg p-4 sm:p-8 shadow-lg"
+                    :class="showSecondBox ? 'w-full' : 'w-full md:w-1/2 mx-auto'"
+                    :style="{ minWidth: '400px', maxWidth: '400px' }"
                 >
-                    <div class="flex justify-between items-center">
-                        <p class="text-xl font-bold mr-4">{{ option.type }}</p>
-                        <div class="flex items-center w-2/3">
-                            <input
-                                type="text"
-                                v-model="amounts[index + 6]"
-                                @input="($event) => filterAmount(index + 6, $event)"
-                                class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
-                                :class="{
-                                    'border-gray-300': !amounts[index + 6],
-                                    'border-[var(--green)]': amounts[index + 6]
-                                }"
-                            />
-                            <p class="text-xl font-bold ml-2">kr</p>
+                    <div
+                        v-for="(option, index) in secondBoxOptions"
+                        :key="`second-option-${index}`"
+                        class="w-full my-4"
+                    >
+                        <div class="flex justify-between items-center">
+                            <p class="text-xl font-bold mr-4">{{ option.type }}</p>
+                            <div class="flex items-center w-2/3">
+                                <input
+                                    v-model="amounts[index + firstBoxOptions.length]"
+                                    @input="filterAmount(index + firstBoxOptions.length, $event)"
+                                    class="h-11 px-3 rounded-md text-lg focus:outline-none border-2 w-full"
+                                    :class="{
+                                        'border-gray-300': !amounts[index + firstBoxOptions.length],
+                                        'border-[var(--green)]':
+                                            amounts[index + firstBoxOptions.length]
+                                    }"
+                                />
+                                <p class="text-xl font-bold ml-2">kr</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-24 right-4">
+        <div class="w-full text-right">
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isAllAmountsFilled"
-                class="px-10 py-3 text-2xl font-bold mb-4"
+                class="px-10 py-3 text-2xl font-bold mb-20 mt-10 sm:mb-12 sm:mt-10"
             ></ContinueButtonComponent>
         </div>
     </div>
@@ -80,8 +93,8 @@ const onButtonClick = async () => {
             parseFloat(amounts.value[index]) || 0
     })
 
-    await userConfigStore.postUserConfig()
-    router.push('/hjem')
+    userConfigStore.postUserConfig()
+    await router.push({ name: 'configurations6' })
 }
 
 const filterAmount = (index: number, event: Event) => {
@@ -90,4 +103,10 @@ const filterAmount = (index: number, event: Event) => {
     filteredValue = filteredValue.replace(/(,.*?),/g, '$1').replace(/,+/g, ',')
     amounts.value[index] = filteredValue
 }
+
+const firstBoxOptions = computed(() => options.value.slice(0, 6))
+const secondBoxOptions = computed(() => (options.value.length > 6 ? options.value.slice(6) : []))
+
+const showFirstBox = computed(() => options.value.length > 0)
+const showSecondBox = computed(() => options.value.length > 6)
 </script>

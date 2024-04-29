@@ -1,3 +1,3 @@
 export interface CredentialRequestOptions {
-        publicKey: PublicKeyCredentialRequestOptions;
+    publicKey: PublicKeyCredentialRequestOptions
 }
