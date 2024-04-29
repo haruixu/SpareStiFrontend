@@ -114,9 +114,9 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/bioAuthLogin',
-            name: 'bioAuthLogin',
-            component: () => import('@/views/BioAuthLogin.vue')
+            path: '/addAlternativeLogin',
+            name: 'addAlternativeLogin',
+            component: () => import('@/views/AddAlternativeLogin.vue')
         }
     ],
     scrollBehavior() {
