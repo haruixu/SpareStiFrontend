@@ -31,12 +31,12 @@ const router = createRouter({
         {
             path: '/profil',
             name: 'profile',
-            component: () => import('@/views/ProfileView.vue')
+            component: () => import('@/views/ViewProfileView.vue')
         },
         {
             path: '/profil/rediger',
             name: 'edit-profile',
-            component: () => import('@/views/EditProfileView.vue')
+            component: () => import('@/views/ManageProfileView.vue')
         },
         {
             path: '/sparemaal',
