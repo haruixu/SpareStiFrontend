@@ -37,15 +37,15 @@ const submitReset = async () => {
     modalErrorMessage.value = '';
     successMessage.value = '';
     try {
-        await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', {
+        const response = await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', {
             email: resetEmail.value
         });
-        successMessage.value = 'E-posten er sendt. Vennligst sjekk innboksen din for instrukser. OBS: E-posten kan havne i spam-mappen';
-        isSendingEmail.value = false;
-        setTimeout(() => {
-            isModalOpen.value = false;
-            successMessage.value = '';
-        }, 3000);
+            successMessage.value = 'E-posten er sendt. Vennligst sjekk innboksen din for instrukser. OBS: E-posten kan havne i spam-mappen';
+            isSendingEmail.value = false;
+            setTimeout(() => {
+                isModalOpen.value = false;
+                successMessage.value = '';
+            }, 5000);
     } catch (error) {
         console.error(error);
         modalErrorMessage.value = 'Noe gikk galt. Vennligst prøv igjen.';
@@ -130,12 +130,6 @@ watch(
             </div>
             <div v-else-if="successMessage">
                 <p class="text-green-500 text-center">{{ successMessage }}</p>
-                <button
-                    @click="closeModal"
-                    class="active-button font-bold py-2 px-4 w-1/2 mt-4 border-2 disabled:border-transparent"
-                >
-                    Lukk
-                </button>
             </div>
             <div v-else-if="modalErrorMessage">
                 <p class ="text-red-500 text-center">{{ modalErrorMessage }}</p>
@@ -170,7 +164,5 @@ watch(
                 </div>
             </div>
         </template>
-        <p v-if="successMessage" class="text-green-500">{{ successMessage }}</p>
     </modal-component>
 </template>
-
