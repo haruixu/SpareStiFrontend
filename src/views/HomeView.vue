@@ -1,15 +1,18 @@
 <template>
     <div class="flex flex-col items-center max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
         <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/4 md:pl-1 mt-10">
-            <img v-if="newSpeechAvailable" alt="Varsel"
-                 class="jump scale-x-[-1] w-1/12 h-1/12 ml-52 cursor-pointer z-10"
-                 src="@/assets/varsel.png"
+            <img
+                v-if="newSpeechAvailable"
+                alt="Varsel"
+                class="jump scale-x-[-1] w-1/12 h-1/12 ml-52 cursor-pointer z-10"
+                src="@/assets/varsel.png"
             />
             <div class="flex items-center">
                 <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
-                    <img alt="Spare"
-                         class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
-                         src="@/assets/spare.png"
+                    <img
+                        alt="Spare"
+                        class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
+                        src="@/assets/spare.png"
                     />
                 </a>
             </div>
@@ -33,10 +36,7 @@
     ></InteractiveSpare>
     <div class="fixed bottom-5 left-5">
         <div @click="openHelp" class="hover:cursor-pointer">
-            <img alt="Hjelp"
-                 class="w-1/12"
-                 src="@/assets/hjelp.png"
-            />
+            <img alt="Hjelp" class="w-1/12" src="@/assets/hjelp.png" />
         </div>
     </div>
 </template>
@@ -50,7 +50,7 @@ import type { Goal } from '@/types/goal'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
-import router from "@/router";
+import router from '@/router'
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
@@ -64,33 +64,33 @@ const goals = ref<Goal[]>([])
 const goal = ref<Goal | null | undefined>(null)
 
 onMounted(async () => {
-  await goalStore.getUserGoals()
-  await challengeStore.getUserChallenges()
-  challenges.value = challengeStore.challenges
-  goals.value = goalStore.goals
-  goal.value = goals.value[0]
-  firstLoggedInSpeech()
+    await goalStore.getUserGoals()
+    await challengeStore.getUserChallenges()
+    challenges.value = challengeStore.challenges
+    goals.value = goalStore.goals
+    goal.value = goals.value[0]
+    firstLoggedInSpeech()
 })
 
 const updateSpeech = (newSpeech: string[]) => {
-    speech.value = newSpeech;
-    newSpeechAvailable.value = true;
+    speech.value = newSpeech
+    newSpeechAvailable.value = true
 }
 
 // Check if the user is logging in for the first time, and display the first login speech
 const firstLoggedInSpeech = () => {
-  const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true';
-  if (isFirstLogin) {
-    updateSpeech([
-      'Hei, jeg er Spare!',
-      'Jeg skal hjelpe deg med å spare penger.',
-      'Du får varsel når jeg har noe å si!'
-    ]);
-    // reset the query parameter
-    router.replace({name: 'home', query: {firstLogin: 'false'}});
+    const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
+    if (isFirstLogin) {
+        updateSpeech([
+            'Hei, jeg er Spare!',
+            'Jeg skal hjelpe deg med å spare penger.',
+            'Du får varsel når jeg har noe å si!'
+        ])
+        // reset the query parameter
+        router.replace({ name: 'home', query: { firstLogin: 'false' } })
 
-    openInteractiveSpare()
-  }
+        openInteractiveSpare()
+    }
 }
 
 const openInteractiveSpare = () => {
@@ -105,18 +105,21 @@ const openHelp = () => {
         'Heisann, jeg er Spare!',
         'Jeg skal hjelpe deg med å spare penger.',
         'Du kan legge til sparemål og spareutfordringer!',
-        'Sammen kan vi spare penger og nå dine mål!',
+        'Sammen kan vi spare penger og nå dine mål!'
     ])
     openInteractiveSpare()
 }
-
-
 </script>
 
 <style>
 @keyframes jump {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .jump {
