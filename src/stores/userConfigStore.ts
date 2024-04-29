@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
 export const useUserConfigStore = defineStore('userConfig', {
     state: () => ({
