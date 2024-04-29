@@ -42,21 +42,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref, watch } from 'vue'
+import {computed, defineProps, onMounted, ref, watch} from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 import ModalComponent from '@/components/ModalComponent.vue'
 
 interface Props {
-    speech?: string[] // Using TypeScript's type for speech as an array of strings
-    direction: 'left' | 'right' // This restricts direction to either 'left' or 'right'
-    pngSize: number // Just declaring the type directly since it's simple
-    isModalOpen: boolean
+  speech: string[] | null;
+  direction: 'left' | 'right';
+  pngSize: number;
+  isModalOpen: boolean;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const speech = ref<String[]>(props.speech || [])
-const isModalOpen = ref(props.isModalOpen)
+const speech = ref<string[]>(props.speech || []);
+const isModalOpen = ref(props.isModalOpen);
+
+// Watch the speech prop for changes
+watch(() => props.speech, (newVal) => {
+  if (newVal) {  // Check if the new value is not null
+    speech.value = newVal;  // Update the reactive speech array
+    currentSpeechIndex.value = 0;  // Reset the speech index
+    isModalOpen.value = true;  // Open the modal if new speech is available
+  } else {
+    speech.value = [];  // Clear the speech array if null is received
+    isModalOpen.value = false;  // Close the modal if there's no speech
+  }
+});
 
 const currentSpeechIndex = ref(0)
 const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])

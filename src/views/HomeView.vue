@@ -32,12 +32,12 @@
         v-if="isModalOpen"
     ></InteractiveSpare>
     <div class="fixed bottom-5 left-5">
-        <a @click="openHelp" class="hover:cursor-pointer">
+        <div @click="openHelp" class="hover:cursor-pointer">
             <img alt="Hjelp"
                  class="w-1/12"
                  src="@/assets/hjelp.png"
             />
-        </a>
+        </div>
     </div>
 </template>
 
@@ -72,8 +72,8 @@ onMounted(async () => {
 
 const updateSpeech = (newSpeech: string[]) => {
     speech.value = newSpeech;
-    newSpeechAvailable.value = true;
     console.log('New speech available:', speech.value)
+    newSpeechAvailable.value = true;
 }
 
 updateSpeech([
