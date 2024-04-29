@@ -39,9 +39,9 @@
                     :class="{ 'bg-gray-100': index % 2 === 0 }"
                     class="grid grid-cols-7 gap-4 items-center border p-3 rounded"
                 >
-                <span class="break-words col-span-2 font-bold">{{ challenge.title }}</span>
-                <span class="col-span-1 font-bold">{{ challenge.target }}</span>
-                <span class="col-span-2 font-bold">{{ challenge.due }}</span>
+                    <span class="break-words col-span-2 font-bold">{{ challenge.title }}</span>
+                    <span class="col-span-1 font-bold">{{ challenge.target }}</span>
+                    <span class="col-span-2 font-bold">{{ challenge.due }}</span>
                     <div class="flex items-center justify-end space-x-2 col-span-2">
                         <button
                             @click="declineChallenge(challenge.id)"
@@ -51,7 +51,7 @@
                         </button>
                         <button
                             @click="acceptChallenge(challenge.id)"
-                            class=" text-white font-bold py-1 px-4"
+                            class="text-white font-bold py-1 px-4"
                         >
                             Godta
                         </button>
