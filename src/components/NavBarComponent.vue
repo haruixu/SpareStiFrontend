@@ -10,7 +10,7 @@
             </router-link>
 
             <div class="flex flex-row justify-center">
-               <ButtonDisplayStreak></ButtonDisplayStreak>
+                <ButtonDisplayStreak></ButtonDisplayStreak>
             </div>
         </div>
         <div v-if="!isHamburger" class="flex flex-row gap-10">
@@ -67,7 +67,7 @@ import { RouterLink } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalComponent from '@/components/ModalComponent.vue'
-import ButtonDisplayStreak from "@/components/ButtonDisplayStreak.vue";
+import ButtonDisplayStreak from '@/components/ButtonDisplayStreak.vue'
 
 const userStore = useUserStore()
 

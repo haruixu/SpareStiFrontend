@@ -1,4 +1,4 @@
 export interface Streak {
-  streakStart?: string,
-  streak?: number,
+    streakStart?: string
+    streak?: number
 }

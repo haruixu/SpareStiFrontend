@@ -43,7 +43,10 @@ export const useChallengeStore = defineStore('challenge', () => {
     }
     const completeUserChallenge = async (challenge: Challenge) => {
         try {
-            const response = await authInterceptor.put(`/challenges/${challenge.id}/complete`, challenge)
+            const response = await authInterceptor.put(
+                `/challenges/${challenge.id}/complete`,
+                challenge
+            )
             if (response.data) {
                 // Update local challenge state to reflect changes
                 const index = challenges.value.findIndex((c) => c.id === challenge.id)

@@ -12,7 +12,7 @@
         <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
         <div
             ref="containerRef"
-            class="container relative pt-6 w-4/5 mx-auto md:w-4/5  no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
+            class="container relative pt-6 w-4/5 mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
         >
             <div>
                 <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
@@ -31,84 +31,121 @@
                     class="flex flex-row w-4/5 gap-8"
                 >
                     <div class="right-auto just">
-                        <img-gif-template :index="index" :mod-value="1" url="src/assets/golfSpare.gif"></img-gif-template>
-                        <img-gif-template :index="index" :mod-value="3" url="src/assets/sleepingSpare.gif"></img-gif-template>
-                        <img-gif-template :index="index" :mod-value="5" url="src/assets/archerSpare.gif"></img-gif-template>
+                        <img-gif-template
+                            :index="index"
+                            :mod-value="1"
+                            url="src/assets/golfSpare.gif"
+                        ></img-gif-template>
+                        <img-gif-template
+                            :index="index"
+                            :mod-value="3"
+                            url="src/assets/sleepingSpare.gif"
+                        ></img-gif-template>
+                        <img-gif-template
+                            :index="index"
+                            :mod-value="5"
+                            url="src/assets/archerSpare.gif"
+                        ></img-gif-template>
                     </div>
                     <!-- Challenge Icon and Details -->
                     <card-template>
-                      <div class="flex">
-                          <!-- Challenge Icon -->
-                          <div class="flex flex-col items-center gap-4">
-                              <div class="flex flex-row flex-nowrap">
-                              <p class="text-center text-wrap text-xs md:text-lg" data-cy="challenge-title">
-                                  {{ challenge.title }}
-                              </p>
-                              <display-info-for-challenge-or-goal :goal="goal" :challenge="challenge" :is-challenge="true"></display-info-for-challenge-or-goal>
-                              </div>
-                              <img
-                                  @click="editChallenge(challenge)"
-                                  :data-cy="'challenge-icon-' + challenge.id"
-                                  :src="getChallengeIcon(challenge)"
-                                  class="max-w-20 max-h-20 cursor-pointer"
-                                  :alt="challenge.title"
-                              />
-                              <!-- Progress Bar, if the challenge is not complete -->
-                              <div
-                                  v-if="
-                                      challenge.completion != undefined && challenge.completion < 100
-                                  "
-                                  class="flex-grow w-full mt-2"
-                              >
-                                  <div class="flex flex-row ml-5 md:ml-10 justify-center">
-                                      <div class="flex flex-col">
-                                          <div
-                                              class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
-                                          >
-                                              <div
-                                                  class="bg-green-600 h-2.5 rounded-full"
-                                                  data-cy="challenge-progress"
-                                                  :style="{
-                                                      width:
-                                                          (challenge.saved / challenge.target) * 100 +
-                                                          '%'
-                                                  }"
-                                              ></div>
-                                          </div>
-                                          <div class="text-center text-xs md:text-base">
-                                              {{ challenge.saved }}kr / {{ challenge.target }}kr
-                                          </div>
-                                      </div>
+                        <div class="flex">
+                            <!-- Challenge Icon -->
+                            <div class="flex flex-col items-center gap-4">
+                                <div class="flex flex-row flex-nowrap">
+                                    <p
+                                        class="text-center text-wrap text-xs md:text-lg"
+                                        data-cy="challenge-title"
+                                    >
+                                        {{ challenge.title }}
+                                    </p>
+                                    <display-info-for-challenge-or-goal
+                                        :goal="goal"
+                                        :challenge="challenge"
+                                        :is-challenge="true"
+                                    ></display-info-for-challenge-or-goal>
+                                </div>
+                                <img
+                                    @click="editChallenge(challenge)"
+                                    :data-cy="'challenge-icon-' + challenge.id"
+                                    :src="getChallengeIcon(challenge)"
+                                    class="max-w-20 max-h-20 cursor-pointer"
+                                    :alt="challenge.title"
+                                />
+                                <!-- Progress Bar, if the challenge is not complete -->
+                                <div
+                                    v-if="
+                                        challenge.completion != undefined &&
+                                        challenge.completion < 100
+                                    "
+                                    class="flex-grow w-full mt-2"
+                                >
+                                    <div class="flex flex-row ml-5 md:ml-10 justify-center">
+                                        <div class="flex flex-col">
+                                            <div
+                                                class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
+                                            >
+                                                <div
+                                                    class="bg-green-600 h-2.5 rounded-full"
+                                                    data-cy="challenge-progress"
+                                                    :style="{
+                                                        width:
+                                                            (challenge.saved / challenge.target) *
+                                                                100 +
+                                                            '%'
+                                                    }"
+                                                ></div>
+                                            </div>
+                                            <div class="text-center text-xs md:text-base">
+                                                {{ challenge.saved }}kr / {{ challenge.target }}kr
+                                            </div>
+                                        </div>
 
-                                      <button
-                                          @click="incrementSaved(challenge)"
-                                          :data-cy="'increment-challenge' + challenge.id"
-                                          type="button"
-                                          class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                                      >
-                                          +
-                                      </button>
-                                  </div>
-                              </div>
-                              <span v-else class="text-center text-xs md:text-base">Ferdig: {{ challenge.saved }}</span>
-                          </div>
-                          <!-- Check Icon -->
-                          <div
-                              v-if="challenge.completion !== undefined && challenge.completion >= 100"
-                              class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
-                          >
-                              <img src="@/assets/completed.png" alt="" />️
-                          </div>
-                          <div v-else class="max-w-6 max-h-6">
-                              <img src="@/assets/pending.png" alt="" />️
-                          </div>
-                      </div>
+                                        <button
+                                            @click="incrementSaved(challenge)"
+                                            :data-cy="'increment-challenge' + challenge.id"
+                                            type="button"
+                                            class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
+                                <span v-else class="text-center text-xs md:text-base"
+                                    >Ferdig: {{ challenge.saved }}</span
+                                >
+                            </div>
+                            <!-- Check Icon -->
+                            <div
+                                v-if="
+                                    challenge.completion !== undefined &&
+                                    challenge.completion >= 100
+                                "
+                                class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
+                            >
+                                <img src="@/assets/completed.png" alt="" />️
+                            </div>
+                            <div v-else class="max-w-6 max-h-6">
+                                <img src="@/assets/pending.png" alt="" />️
+                            </div>
+                        </div>
                     </card-template>
                     <div class="">
-                        <img-gif-template :index="index" :mod-value="0" url="src/assets/cowboySpare.gif"></img-gif-template>
-                        <img-gif-template :index="index" :mod-value="2" url="src/assets/hotAirBalloonSpare.gif"></img-gif-template>
-                        <img-gif-template :index="index" :mod-value="4" url="src/assets/farmerSpare.gif"></img-gif-template>
-
+                        <img-gif-template
+                            :index="index"
+                            :mod-value="0"
+                            url="src/assets/cowboySpare.gif"
+                        ></img-gif-template>
+                        <img-gif-template
+                            :index="index"
+                            :mod-value="2"
+                            url="src/assets/hotAirBalloonSpare.gif"
+                        ></img-gif-template>
+                        <img-gif-template
+                            :index="index"
+                            :mod-value="4"
+                            url="src/assets/farmerSpare.gif"
+                        ></img-gif-template>
                     </div>
                 </div>
                 <!-- Piggy Steps, centered -->
@@ -144,11 +181,16 @@
         <!-- Goal -->
         <div v-if="goal" class="flex flex-row justify-around m-t-2 pt-6 w-full mx-auto">
             <div class="grid grid-rows-2 grid-flow-col gap 4">
-              <div class="row-span-3 cursor-pointer" @click="editGoal(goal)">
-                  <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
-                  <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
-              </div>
-              <display-info-for-challenge-or-goal class="col-span-2" :goal="goal" :challenge="null" :is-challenge="false"></display-info-for-challenge-or-goal>
+                <div class="row-span-3 cursor-pointer" @click="editGoal(goal)">
+                    <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
+                    <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
+                </div>
+                <display-info-for-challenge-or-goal
+                    class="col-span-2"
+                    :goal="goal"
+                    :challenge="null"
+                    :is-challenge="false"
+                ></display-info-for-challenge-or-goal>
             </div>
             <div class="flex flex-col items-end">
                 <div @click="goToEditGoal" class="cursor-pointer">
@@ -173,7 +215,7 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, onUnmounted, type Ref, ref, watch} from 'vue'
+import { nextTick, onMounted, onUnmounted, type Ref, ref, watch } from 'vue'
 import anime from 'animejs'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
@@ -181,9 +223,9 @@ import confetti from 'canvas-confetti'
 import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
-import DisplayInfoForChallengeOrGoal from "@/components/DisplayInfoForChallengeOrGoal.vue";
-import CardTemplate from "@/views/CardTemplate.vue";
-import ImgGifTemplate from "@/components/ImgGifTemplate.vue";
+import DisplayInfoForChallengeOrGoal from '@/components/DisplayInfoForChallengeOrGoal.vue'
+import CardTemplate from '@/views/CardTemplate.vue'
+import ImgGifTemplate from '@/components/ImgGifTemplate.vue'
 
 const router = useRouter()
 const goalStore = useGoalStore()
@@ -200,34 +242,35 @@ const goal = ref<Goal | null | undefined>(props.goal)
 
 onMounted(async () => {
     await goalStore.getUserGoals()
-    window.addEventListener("resize", handleWindowSizeChange);
-    handleWindowSizeChange();
-    sortChallenges();
-});
+    window.addEventListener('resize', handleWindowSizeChange)
+    handleWindowSizeChange()
+    sortChallenges()
+})
 
 const sortChallenges = () => {
-  challenges.value.sort((a, b) => {
-    // First, sort by completion status: non-completed (less than 100) before completed (100)
-    if (a.completion !== 100 && b.completion === 100) {
-      return 1; // 'a' is not completed and 'b' is completed, 'a' should come first
-    } else if (a.completion === 100 && b.completion !== 100) {
-      return -1; // 'a' is completed and 'b' is not, 'b' should come first
-    } else {
-      // If both are completed or both are not completed, sort by the due date
-      return new Date(a.due) - new Date(b.due);
-    }
-  });
+    challenges.value.sort((a, b) => {
+        // First, sort by completion status: non-completed (less than 100) before completed (100)
+        if (a.completion !== 100 && b.completion === 100) {
+            return 1 // 'a' is not completed and 'b' is completed, 'a' should come first
+        } else if (a.completion === 100 && b.completion !== 100) {
+            return -1 // 'a' is completed and 'b' is not, 'b' should come first
+        } else {
+            // Explicitly convert dates to numbers for subtraction
+            const dateA = new Date(a.due).getTime()
+            const dateB = new Date(b.due).getTime()
+            return dateA - dateB
+        }
+    })
 }
-
 
 const screenSize = ref<number>(window.innerWidth)
 
 onUnmounted(() => {
-  window.removeEventListener("resize", handleWindowSizeChange);
-});
+    window.removeEventListener('resize', handleWindowSizeChange)
+})
 const handleWindowSizeChange = () => {
-  screenSize.value = window.innerWidth;
-};
+    screenSize.value = window.innerWidth
+}
 
 // Utilizing watch to specifically monitor for changes in the props
 watch(
@@ -246,7 +289,7 @@ watch(
     (newChallenges, oldChallenges) => {
         if (newChallenges !== oldChallenges) {
             challenges.value = newChallenges
-            sortChallenges();
+            sortChallenges()
             console.log('Updated challenges:', challenges.value)
         }
     },

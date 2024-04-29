@@ -4,8 +4,8 @@ import type { User } from '@/types/user'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
-import authInterceptor from "@/services/authInterceptor";
-import type {Streak} from "@/types/streak";
+import authInterceptor from '@/services/authInterceptor'
+import type { Streak } from '@/types/streak'
 import type { CredentialRequestOptions } from '@/types/CredentialRequestOptions'
 import { base64urlToUint8array, initialCheckStatus, uint8arrayToBase64url } from '@/util'
 import type { CredentialCreationOptions } from '@/types/CredentialCreationOptions'
@@ -88,7 +88,7 @@ export const useUserStore = defineStore('user', () => {
                 streak.value = response.data
                 console.log('Fetched Challenges:', streak.value)
             } else {
-                streak.value = undefined;
+                streak.value = undefined
                 console.error('No challenge content found:', response.data)
             }
         } catch (error) {
@@ -238,6 +238,6 @@ export const useUserStore = defineStore('user', () => {
         bioRegister,
         errorMessage,
         getUserStreak,
-        streak,
+        streak
     }
 })
