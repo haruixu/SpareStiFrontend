@@ -33,29 +33,24 @@ authInterceptor.interceptors.response.use(
             !originalRequest._retry
         ) {
             originalRequest._retry = true
-            const refreshToken = localStorage.getItem('refreshToken')
+            sessionStorage.removeItem('accessToken')
+
+            const loginToken = localStorage.getItem('loginToken')
             axios
-                .post('/auth/renewToken', null, {
+                .post('/auth/loginToken', null, {
                     headers: {
-                        Authorization: `Bearer ${refreshToken}`
+                        Authorization: `Bearer ${loginToken}`
                     }
                 })
                 .then((response) => {
-                    sessionStorage.setItem('accessToken', response.data.accessToken)
-                    authInterceptor.defaults.headers['Authorization'] =
-                        `Bearer ${response.data.accessToken}`
-                    return authInterceptor(originalRequest)
+                    router.push({ name: 'login-bio', params: { username: response.data.username } })
                 })
-                .catch((err) => {
+                .catch(() => {
+                    localStorage.removeItem('loginToken')
                     router.push({ name: 'login' })
-                    return Promise.reject(err)
                 })
         }
-        // Specific handler for 404 errors
-        if (error.response?.status === 404) {
-            console.error('Requested resource not found:', error.config.url)
-            // Optionally redirect or inform the user, depending on the context
-        }
+
         return Promise.reject(error)
     }
 )

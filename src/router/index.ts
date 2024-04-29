@@ -19,6 +19,11 @@ const router = createRouter({
             component: () => import('@/views/RegisterLoginView.vue')
         },
         {
+            path: '/logginn/:username',
+            name: 'login-bio',
+            component: () => import('@/views/BiometricLoginView.vue')
+        },
+        {
             path: '/registrer',
             name: 'register',
             component: () => import('@/views/RegisterLoginView.vue')
@@ -109,16 +114,6 @@ const router = createRouter({
             component: () => import('@/views/ConfigAccountNumberView.vue')
         },
         {
-            path: '/forsteSparemaal',
-            name: 'firstSavingGoal',
-            component: () => import('@/views/FirstSavingGoalView.vue')
-        },
-        {
-            path: '/forsteSpareutfordring',
-            name: 'firstSavingChallengde',
-            component: () => import('@/views/FirstSavingChallengeView.vue')
-        },
-        {
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: () => import('@/views/NotFoundView.vue')
@@ -132,6 +127,25 @@ const router = createRouter({
     scrollBehavior() {
         return { top: 0 }
     }
+})
+
+router.beforeEach((to, from, next) => {
+    const publicPages = [
+        { name: 'login' },
+        { name: 'register' },
+        { name: 'login-bio' },
+        { name: 'resetPassword' },
+        { name: 'start' }
+    ]
+
+    const authRequired = !publicPages.some((page) => page.name === to.name)
+    const loggedIn = sessionStorage.getItem('accessToken')
+    const loginToken = localStorage.getItem('loginToken')
+
+    if (authRequired && !loggedIn && !loginToken) {
+        return next({ name: 'login' })
+    }
+    next()
 })
 
 export default router

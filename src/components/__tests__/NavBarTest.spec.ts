@@ -19,7 +19,7 @@ describe('NavBar Routing', () => {
             }
         })
 
-        await router.push('/')
+        await router.push({ name: 'start' })
         await router.isReady()
     })
 
