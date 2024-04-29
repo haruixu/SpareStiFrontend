@@ -31,7 +31,7 @@
             <div class="-mb-5 mt-8 text-xs text-gray-500">
                 <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
                 <a
-                    @click="closeModal"
+                    @click="ModalClosed"
                     class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
                 >
                     Skip
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref } from 'vue'
+import { computed, defineProps, ref, watch } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 import ModalComponent from '@/components/ModalComponent.vue'
 
@@ -50,19 +50,16 @@ interface Props {
     speech?: string[] // Using TypeScript's type for speech as an array of strings
     direction: 'left' | 'right' // This restricts direction to either 'left' or 'right'
     pngSize: number // Just declaring the type directly since it's simple
+    isModalOpen: boolean
 }
 
 const props = defineProps<Props>()
-const isModalOpen = ref<boolean>(true) // Open modal by default
 
 const speech = ref<String[]>(props.speech || [])
+const isModalOpen = ref(props.isModalOpen)
 
 const currentSpeechIndex = ref(0)
 const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])
-
-const closeModal = () => {
-    isModalOpen.value = false // Close modal
-}
 
 const nextSpeech = () => {
     if (speech.value.length > 0) {
@@ -77,7 +74,7 @@ const nextSpeech = () => {
             // If no speeches left, reset index to indicate no available speech
             currentSpeechIndex.value = -1
             // Close the modal if there are no speeches left
-            closeModal()
+            ModalClosed()
         }
     }
 }
@@ -92,6 +89,15 @@ const imageClass = computed(() => {
 const bubbleDirection = computed(() => {
     return props.direction === 'right' ? 'btm-left-in' : 'btm-right-in'
 })
+
+const ModalClosed = () => {
+    isModalOpen.value = false
+}
+
+watch(() => props.isModalOpen, (newVal) => {
+    isModalOpen.value = newVal;
+});
+
 </script>
 <style scoped>
 /* CSS talk bubble */
