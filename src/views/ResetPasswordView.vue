@@ -91,16 +91,11 @@ const canResetPassword = computed(() => {
 const resetPassword = async () => {
     isModalOpen.value = true
 
-    const resetPasswordDTO = {
-        resetID: resetID.value,
-        userID: userID.value,
-        newPassword: newPassword.value
-    }
     try {
         await axios.post('http://localhost:8080/forgotPassword/resetPassword', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(resetPasswordDTO)
+            resetID: resetID.value,
+            userID: userID.value,
+            newPassword: newPassword.value
         })
     } catch (error) {
         const err = error as Error
