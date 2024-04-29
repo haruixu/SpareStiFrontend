@@ -15,9 +15,9 @@ const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\
 const userStore = useUserStore()
 
 const isEmailValid = computed(() => emailRegex.test(resetEmail.value))
-const isSendingEmail = ref(false);
-const successMessage = ref<string>('');
-const modalErrorMessage = ref<string>('');
+const isSendingEmail = ref(false)
+const successMessage = ref<string>('')
+const modalErrorMessage = ref<string>('')
 
 const submitForm = () => {
     userStore.login(username.value, password.value)
@@ -37,32 +37,36 @@ const openForgotPasswordModal = (event: MouseEvent) => {
 }
 
 const submitReset = async () => {
-    isSendingEmail.value = true;
-    modalErrorMessage.value = '';
-    successMessage.value = '';
+    isSendingEmail.value = true
+    modalErrorMessage.value = ''
+    successMessage.value = ''
     try {
-        const response = await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', {
-            email: resetEmail.value
-        });
-            successMessage.value = 'E-posten er sendt. Vennligst sjekk innboksen din for instrukser. OBS: E-posten kan havne i spam-mappen';
-            isSendingEmail.value = false;
-            setTimeout(() => {
-                isModalOpen.value = false;
-                successMessage.value = '';
-            }, 5000);
+        const response = await axios.post(
+            'http://localhost:8080/forgotPassword/changePasswordRequest',
+            {
+                email: resetEmail.value
+            }
+        )
+        successMessage.value =
+            'E-posten er sendt. Vennligst sjekk innboksen din for instrukser. OBS: E-posten kan havne i spam-mappen'
+        isSendingEmail.value = false
+        setTimeout(() => {
+            isModalOpen.value = false
+            successMessage.value = ''
+        }, 5000)
     } catch (error) {
-        console.error(error);
-        modalErrorMessage.value = 'Noe gikk galt. Vennligst prøv igjen.';
-        isSendingEmail.value = false;
+        console.error(error)
+        modalErrorMessage.value = 'Noe gikk galt. Vennligst prøv igjen.'
+        isSendingEmail.value = false
     }
 }
 
 const closeModal = () => {
-    isModalOpen.value = false;
-    isSendingEmail.value = false;
-    modalErrorMessage.value = '';
-    resetEmail.value = '';
-    successMessage.value = '';
+    isModalOpen.value = false
+    isSendingEmail.value = false
+    modalErrorMessage.value = ''
+    resetEmail.value = ''
+    successMessage.value = ''
 }
 
 watch(
@@ -72,7 +76,6 @@ watch(
     }
 )
 </script>
-
 
 <template>
     <div class="flex flex-col justify-center gap-5 w-full">
@@ -129,7 +132,9 @@ watch(
     >
         <template v-slot:input>
             <div v-if="isSendingEmail" class="flex justify-center items-center">
-                <div class="p-3 animate-spin drop-shadow-2xl bg-gradient-to-r from-lime-500 from-30% to-green-600 to-90% md:w-18 md:h-20 h-20 w-20 aspect-square rounded-full">
+                <div
+                    class="p-3 animate-spin drop-shadow-2xl bg-gradient-to-r from-lime-500 from-30% to-green-600 to-90% md:w-18 md:h-20 h-20 w-20 aspect-square rounded-full"
+                >
                     <div class="rounded-full h-full w-full bg-slate-100 background-blur-md"></div>
                 </div>
             </div>
@@ -137,7 +142,7 @@ watch(
                 <p class="text-green-500 text-center">{{ successMessage }}</p>
             </div>
             <div v-else-if="modalErrorMessage">
-                <p class ="text-red-500 text-center">{{ modalErrorMessage }}</p>
+                <p class="text-red-500 text-center">{{ modalErrorMessage }}</p>
                 <button
                     @click="closeModal"
                     class="active-button font-bold py-2 px-4 w-1/2 mt-4 border-2 disabled:border-transparent"
