@@ -144,5 +144,7 @@ watch(
                 </div>
             </div>
         </template>
+        <p v-if="successMessage" class="text-green-500">{{ successMessage }}</p>
     </modal-component>
 </template>
+
