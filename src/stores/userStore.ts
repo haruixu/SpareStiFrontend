@@ -4,6 +4,8 @@ import type { User } from '@/types/user'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
+import authInterceptor from "@/services/authInterceptor";
+import type {Streak} from "@/types/streak";
 
 export const useUserStore = defineStore('user', () => {
     const defaultUser: User = {
@@ -14,6 +16,7 @@ export const useUserStore = defineStore('user', () => {
 
     const user = ref<User>(defaultUser)
     const errorMessage = ref<string>('')
+    const streak = ref<Streak>()
 
     const register = async (
         firstname: string,
@@ -75,11 +78,28 @@ export const useUserStore = defineStore('user', () => {
         user.value = defaultUser
         router.push({ name: 'login' })
     }
+    const getUserStreak = async () => {
+        try {
+            const response = await authInterceptor('/profile/streak')
+            if (response.data) {
+                streak.value = response.data
+                console.log('Fetched Challenges:', streak.value)
+            } else {
+                streak.value = undefined;
+                console.error('No challenge content found:', response.data)
+            }
+        } catch (error) {
+            console.error('Error fetching challenges:', error)
+            streak.value = undefined // Ensure challenges is always an array
+        }
+    }
 
     return {
         register,
         login,
         logout,
-        errorMessage
+        errorMessage,
+        getUserStreak,
+        streak,
     }
 })
