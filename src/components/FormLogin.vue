@@ -20,6 +20,10 @@ const submitForm = () => {
     userStore.login(username.value, password.value)
 }
 
+const bioLogin = () => {
+    userStore.bioLogin(username.value)
+}
+
 const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
@@ -95,6 +99,7 @@ watch(
                 Logg inn
             </button>
             <p>{{ errorMessage }}</p>
+            <button @click="bioLogin">biologin</button>
         </div>
     </div>
     <modal-component
