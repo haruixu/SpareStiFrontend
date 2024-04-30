@@ -111,7 +111,7 @@ describe('Goals and Challenges Page Load', () => {
     cy.get('[data-cy=challenge-icon-1]').click();
 
     // Assert that navigation has occurred
-    cy.url().should('include', '/spareutfordringer/1');
+    cy.url().should('include', '/spareutfordringer/rediger/1');
   });
 
 });
