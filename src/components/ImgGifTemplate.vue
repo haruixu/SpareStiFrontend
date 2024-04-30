@@ -3,7 +3,7 @@
         v-if="index % 6 === modValue"
         :src="url"
         alt="could not load"
-        class="h-32 w-32 border-2 rounded-lg border-stale-400"
+        class="h-32 w-32 border-2 rounded-lg border-stale-400 shadow-md shadow-black"
     />
 </template>
 

@@ -9,18 +9,25 @@
                 Din Sparesti
             </span>
         </div>
+        <button
+          class="h-auto w-auto absolute flex text-center self-end  mr-10 md:mr-20 text-wrap shadow-sm shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32   top-60 z-50 p-2 text-xs md:text-sm"
+          @click="scrollToFirstUncompleted"
+          v-show="!isAtFirstUncompleted">Ufullførte utfordringer<br>↓</button>
         <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
         <div
             ref="containerRef"
-            class="container relative pt-6 w-4/5 mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
+            class="container relative  pt-6 w-4/5 mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
         >
-            <div>
-                <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
-            </div>
-            <div
+              <div>
+                  <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
+              </div>
+
+
+          <div
                 v-for="(challenge, index) in challenges"
                 :key="challenge.id"
                 class="flex flex-col items-center"
+                :ref="el => assignRef(el, challenge, index)"
             >
                 <!-- Challenge Row -->
                 <div
@@ -48,7 +55,6 @@
                         ></img-gif-template>
                     </div>
                     <!-- Challenge Icon and Details -->
-                    <card-template>
                         <div class="flex">
                             <!-- Challenge Icon -->
                             <div class="flex flex-col items-center gap-4">
@@ -129,7 +135,6 @@
                                 <img src="@/assets/pending.png" alt="" />️
                             </div>
                         </div>
-                    </card-template>
                     <div class="">
                         <img-gif-template
                             :index="index"
@@ -215,7 +220,16 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, type Ref, ref, watch } from 'vue'
+import {
+  type ComponentPublicInstance,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  reactive,
+  type Ref,
+  ref,
+  watch
+} from 'vue'
 import anime from 'animejs'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
@@ -224,7 +238,6 @@ import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import DisplayInfoForChallengeOrGoal from '@/components/DisplayInfoForChallengeOrGoal.vue'
-import CardTemplate from '@/views/CardTemplate.vue'
 import ImgGifTemplate from '@/components/ImgGifTemplate.vue'
 
 const router = useRouter()
@@ -271,6 +284,76 @@ onUnmounted(() => {
 const handleWindowSizeChange = () => {
     screenSize.value = window.innerWidth
 }
+
+interface ElementRefs {
+  [key: string]: HTMLElement | undefined;
+}
+
+const elementRefs = reactive<ElementRefs>({});
+
+
+const isAtFirstUncompleted = ref(false); // This state tracks visibility of the button
+const firstUncompletedRef: Ref<HTMLElement | undefined> = ref();
+
+function scrollToFirstUncompleted() {
+  let found = false;
+  for (let i = 0; i < challenges.value.length; i++) {
+    if (challenges.value[i].completion! < 100) {
+      const refKey = `uncompleted-${i}`;
+      if (elementRefs[refKey]) {
+        elementRefs[refKey]!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        firstUncompletedRef.value = elementRefs[refKey]; // Store the reference
+        found = true;
+        isAtFirstUncompleted.value = true;
+        break;
+      }
+    }
+  }
+  if (!found) {
+    isAtFirstUncompleted.value = false;
+  }
+}
+
+onMounted(() => {
+  const container = containerRef.value;
+  if (container) {
+    container.addEventListener('scroll', () => {
+      if (!firstUncompletedRef.value) return;
+      const containerRect = container.getBoundingClientRect();
+      const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect();
+      isAtFirstUncompleted.value = !(firstUncompletedRect.top > containerRect.bottom || firstUncompletedRect.bottom < containerRect.top);
+    });
+  }
+  scrollToFirstUncompleted();
+});
+
+onUnmounted(() => {
+  const container = containerRef.value;
+  if (container) {
+    container.removeEventListener('scroll', () => {
+      // Clean up the scroll listener
+    });
+  }
+});
+
+
+
+const assignRef = (el: Element | ComponentPublicInstance | null, challenge: Challenge, index: number) => {
+  const refKey = `uncompleted-${index}`;
+  if (el instanceof HTMLElement) {  // Ensure that el is an HTMLElement
+    if (challenge.completion! < 100) {
+      elementRefs[refKey] = el;
+    }
+  } else {
+    // Cleanup if the element is unmounted or not an HTMLElement
+    if (elementRefs[refKey]) {
+      delete elementRefs[refKey];
+    }
+  }
+};
+
+
+
 
 // Utilizing watch to specifically monitor for changes in the props
 watch(
