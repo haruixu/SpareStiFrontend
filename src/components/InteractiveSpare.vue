@@ -113,14 +113,8 @@ const clearSpeeches = () => {
 
 const modalClosed = () => {
     isModalOpen.value = false
+    currentSpeechIndex.value = -1
 }
-
-watch(
-    () => props.isModalOpen,
-    (newVal) => {
-        isModalOpen.value = newVal
-    }
-)
 </script>
 <style scoped>
 /* CSS talk bubble */
