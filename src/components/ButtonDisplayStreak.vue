@@ -1,17 +1,17 @@
 <template>
     <div class="flex flex-col items-center absolute">
-        <Span class="text-sm text-bold">STREAK</Span>
+        <span class="text-sm text-bold">STREAK</span>
         <button
             @mouseover="display"
             @mouseleave="hide"
-            class="bg-transparent delay-200 cursor-pointer"
+            class="cursor-pointer bg-transparent hover:bg-transparent hover:scale-150"
         >
-            <img src="@/assets/streak.png" alt="streak" class="mx-auto w-6 h-6 md:w-12 md:h-12" />
+            <img src="@/assets/pengesekkStreak.png" alt="streak" class="mx-auto w-6 h-6 md:w-12 md:h-12" />
         </button>
 
         <div
             v-if="displayStreakCard"
-            class="w-[40vh] h-[20vh]md:w-96 md:h-64 group z-50 bg-opacity-50 overflow-hidden absolute left-0 top-14 md:top-20 flex flex-col justify-evenly text-wrap"
+            class="w-[30vh] h-[20vh] md:w-auto md:h-auto group z-50 bg-opacity-50 overflow-hidden absolute left-0 top-14 md:top-20 flex flex-col justify-evenly text-wrap"
         >
             <div
                 class="flex flex-col justify-evenly w-full h-full py-2 px-4 md:py-0 bg-white rounded-2xl border-4 border-green-300"
@@ -44,26 +44,26 @@
                 ></Countdown>
                 <!-- Row component with horizontal padding and auto margins for centering -->
                 <div
-                    class="flex flex-row justify-content-between items-center h-20 w-full mx-auto bg-black-400 gap-4"
+                    class="flex flex-row items-center mx-auto h-20 w-4/5 md:w-full bg-black-400 gap-4"
                 >
                     <div class="flex flex-1 overflow-x-auto">
                         <div v-for="index in 6" :key="index" class="min-w-max mx-auto">
-                            <div class="flex flex-col items-center">
+                            <div class="flex flex-col justify-around items-center">
                                 <span class="text-black text-xs md:text-1xl font-bold">{{
                                     currentStreak! - ((currentStreak! % 7) - index)
                                 }}</span>
                                 <!-- Conditional rendering for streak images -->
                                 <img
                                     v-if="index - 1 < currentStreak! % 7"
-                                    src="@/assets/streak.png"
+                                    src="@/assets/pengesekkStreak.png"
                                     alt="challenge completed"
-                                    class="max-h-8 max-w-8"
+                                    class="max-h-6 max-w-6 md:max-h-10 md:max-w-10"
                                 />
                                 <img
                                     v-else
-                                    src="@/assets/streak.png"
+                                    src="@/assets/pengesekkStreak.png"
                                     alt="challenge not completed"
-                                    class="max-h-8 max-w-8 grayscale"
+                                    class="max-h-6 max-w-6 md:max-h-10 md:max-w-10 grayscale"
                                 />
                             </div>
                         </div>
@@ -92,7 +92,9 @@ onMounted(async () => {
         deadline.value = userStore.streak?.streakStart
     }
     console.log('Streak:', currentStreak.value)
-    window.addEventListener('resize', handleWindowSizeChange)
+    if (typeof window !== 'undefined') {
+        window.addEventListener('resize', handleWindowSizeChange)
+    }
     handleWindowSizeChange()
 })
 

@@ -95,7 +95,9 @@ const updateWindowWidth = () => {
 }
 
 onMounted(() => {
-    window.addEventListener('resize', updateWindowWidth)
+    if (typeof window !== 'undefined') {
+        window.addEventListener('resize', updateWindowWidth)
+    }
     updateWindowWidth()
 })
 

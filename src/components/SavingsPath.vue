@@ -10,24 +10,29 @@
             </span>
         </div>
         <button
-          class="h-auto w-auto absolute flex text-center self-end  mr-10 md:mr-20 text-wrap shadow-sm shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32   top-60 z-50 p-2 text-xs md:text-sm"
-          @click="scrollToFirstUncompleted"
-          v-show="!isAtFirstUncompleted">Ufullførte utfordringer<br>↓</button>
+            class="h-auto w-auto absolute flex text-center self-end mr-10 md:mr-20 text-wrap shadow-sm shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32 top-60 z-50 p-2 text-xs md:text-sm"
+            @click="scrollToFirstUncompleted"
+            v-show="!isAtFirstUncompleted"
+        >
+            Ufullførte utfordringer<br />↓
+        </button>
         <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
         <div
             ref="containerRef"
-            class="container relative  pt-6 w-4/5 mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60v] md:min-w-2/5 overflow-y-auto border-2 border-slate-300 rounded-lg bg-white shadow-lg"
-        >
-              <div>
-                  <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
-              </div>
+            class="container relative pt-6 w-4/5 bg-cover bg-[center] md:[background-position: center;] mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60vh] md:min-w-2/5 overflow-y-auto border-2 border-transparent rounded-xl bg-white shadow-lg shadow-slate-400"
+            style="background-image: url('src/assets/backgroundSavingsPath.png');
+           ">
+
+            <div>
+                <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
+            </div>
 
 
-          <div
+            <div
                 v-for="(challenge, index) in challenges"
                 :key="challenge.id"
                 class="flex flex-col items-center"
-                :ref="el => assignRef(el, challenge, index)"
+                :ref="(el) => assignRef(el, challenge, index)"
             >
                 <!-- Challenge Row -->
                 <div
@@ -55,86 +60,81 @@
                         ></img-gif-template>
                     </div>
                     <!-- Challenge Icon and Details -->
-                        <div class="flex">
-                            <!-- Challenge Icon -->
-                            <div class="flex flex-col items-center gap-4">
-                                <div class="flex flex-row flex-nowrap">
-                                    <p
-                                        class="text-center text-wrap text-xs md:text-lg"
-                                        data-cy="challenge-title"
-                                    >
-                                        {{ challenge.title }}
-                                    </p>
-                                    <display-info-for-challenge-or-goal
-                                        :goal="goal"
-                                        :challenge="challenge"
-                                        :is-challenge="true"
-                                    ></display-info-for-challenge-or-goal>
-                                </div>
-                                <img
-                                    @click="editChallenge(challenge)"
-                                    :data-cy="'challenge-icon-' + challenge.id"
-                                    :src="getChallengeIcon(challenge)"
-                                    class="max-w-20 max-h-20 cursor-pointer"
-                                    :alt="challenge.title"
-                                />
-                                <!-- Progress Bar, if the challenge is not complete -->
-                                <div
-                                    v-if="
-                                        challenge.completion != undefined &&
-                                        challenge.completion < 100
-                                    "
-                                    class="flex-grow w-full mt-2"
+                    <div class="flex">
+                        <!-- Challenge Icon -->
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="flex flex-row flex-nowrap">
+                                <p
+                                    class="text-center text-wrap text-xs md:text-lg"
+                                    data-cy="challenge-title"
                                 >
-                                    <div class="flex flex-row ml-5 md:ml-10 justify-center">
-                                        <div class="flex flex-col">
-                                            <div
-                                                class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
-                                            >
-                                                <div
-                                                    class="bg-green-600 h-2.5 rounded-full"
-                                                    data-cy="challenge-progress"
-                                                    :style="{
-                                                        width:
-                                                            (challenge.saved / challenge.target) *
-                                                                100 +
-                                                            '%'
-                                                    }"
-                                                ></div>
-                                            </div>
-                                            <div class="text-center text-xs md:text-base">
-                                                {{ challenge.saved }}kr / {{ challenge.target }}kr
-                                            </div>
-                                        </div>
-
-                                        <button
-                                            @click="incrementSaved(challenge)"
-                                            :data-cy="'increment-challenge' + challenge.id"
-                                            type="button"
-                                            class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
-                                <span v-else class="text-center text-xs md:text-base"
-                                    >Ferdig: {{ challenge.saved }}</span
-                                >
+                                    {{ challenge.title }}
+                                </p>
+                                <display-info-for-challenge-or-goal
+                                    :goal="goal"
+                                    :challenge="challenge"
+                                    :is-challenge="true"
+                                ></display-info-for-challenge-or-goal>
                             </div>
-                            <!-- Check Icon -->
+                            <img
+                                @click="editChallenge(challenge)"
+                                :data-cy="'challenge-icon-' + challenge.id"
+                                :src="getChallengeIcon(challenge)"
+                                class="max-w-20 max-h-20 cursor-pointer hover:scale-125"
+                                :alt="challenge.title"
+                            />
+                            <!-- Progress Bar, if the challenge is not complete -->
                             <div
                                 v-if="
-                                    challenge.completion !== undefined &&
-                                    challenge.completion >= 100
+                                    challenge.completion != undefined && challenge.completion < 100
                                 "
-                                class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
+                                class="flex-grow w-full mt-2"
                             >
-                                <img src="@/assets/completed.png" alt="" />️
+                                <div class="flex flex-row ml-5 md:ml-10 justify-center">
+                                    <div class="flex flex-col">
+                                        <div
+                                            class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
+                                        >
+                                            <div
+                                                class="bg-green-600 h-2.5 rounded-full"
+                                                data-cy="challenge-progress"
+                                                :style="{
+                                                    width:
+                                                        (challenge.saved / challenge.target) * 100 +
+                                                        '%'
+                                                }"
+                                            ></div>
+                                        </div>
+                                        <div class="text-center text-xs md:text-base">
+                                            {{ challenge.saved }}kr / {{ challenge.target }}kr
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        @click="incrementSaved(challenge)"
+                                        :data-cy="'increment-challenge' + challenge.id"
+                                        type="button"
+                                        class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                                    >
+                                        +
+                                    </button>
+                                </div>
                             </div>
-                            <div v-else class="max-w-6 max-h-6">
-                                <img src="@/assets/pending.png" alt="" />️
-                            </div>
+                            <span v-else class="text-center text-xs md:text-base"
+                                >Ferdig: {{ challenge.saved }}</span
+                            >
                         </div>
+                        <!-- Check Icon -->
+                        <div
+                            v-if="challenge.completion !== undefined && challenge.completion >= 100"
+                            class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
+                        >
+                            <img src="@/assets/completed.png" alt="" />️
+                        </div>
+                        <div v-else class="max-w-6 max-h-6">
+                            <img src="@/assets/pending.png" alt="" />️
+                        </div>
+                    </div>
                     <div class="">
                         <img-gif-template
                             :index="index"
@@ -221,14 +221,14 @@
 
 <script setup lang="ts">
 import {
-  type ComponentPublicInstance,
-  nextTick,
-  onMounted,
-  onUnmounted,
-  reactive,
-  type Ref,
-  ref,
-  watch
+    type ComponentPublicInstance,
+    nextTick,
+    onMounted,
+    onUnmounted,
+    reactive,
+    type Ref,
+    ref,
+    watch
 } from 'vue'
 import anime from 'animejs'
 import type { Challenge } from '@/types/challenge'
@@ -286,74 +286,76 @@ const handleWindowSizeChange = () => {
 }
 
 interface ElementRefs {
-  [key: string]: HTMLElement | undefined;
+    [key: string]: HTMLElement | undefined
 }
 
-const elementRefs = reactive<ElementRefs>({});
+const elementRefs = reactive<ElementRefs>({})
 
-
-const isAtFirstUncompleted = ref(false); // This state tracks visibility of the button
-const firstUncompletedRef: Ref<HTMLElement | undefined> = ref();
+const isAtFirstUncompleted = ref(false) // This state tracks visibility of the button
+const firstUncompletedRef: Ref<HTMLElement | undefined> = ref()
 
 function scrollToFirstUncompleted() {
-  let found = false;
-  for (let i = 0; i < challenges.value.length; i++) {
-    if (challenges.value[i].completion! < 100) {
-      const refKey = `uncompleted-${i}`;
-      if (elementRefs[refKey]) {
-        elementRefs[refKey]!.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        firstUncompletedRef.value = elementRefs[refKey]; // Store the reference
-        found = true;
-        isAtFirstUncompleted.value = true;
-        break;
-      }
+    let found = false
+    for (let i = 0; i < challenges.value.length; i++) {
+        if (challenges.value[i].completion! < 100) {
+            const refKey = `uncompleted-${i}`
+            if (elementRefs[refKey]) {
+                elementRefs[refKey]!.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                firstUncompletedRef.value = elementRefs[refKey] // Store the reference
+                found = true
+                isAtFirstUncompleted.value = true
+                break
+            }
+        }
     }
-  }
-  if (!found) {
-    isAtFirstUncompleted.value = false;
-  }
+    if (!found) {
+        isAtFirstUncompleted.value = false
+    }
 }
 
 onMounted(() => {
-  const container = containerRef.value;
-  if (container) {
-    container.addEventListener('scroll', () => {
-      if (!firstUncompletedRef.value) return;
-      const containerRect = container.getBoundingClientRect();
-      const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect();
-      isAtFirstUncompleted.value = !(firstUncompletedRect.top > containerRect.bottom || firstUncompletedRect.bottom < containerRect.top);
-    });
-  }
-  scrollToFirstUncompleted();
-});
+    const container = containerRef.value
+    if (container) {
+        container.addEventListener('scroll', () => {
+            if (!firstUncompletedRef.value) return
+            const containerRect = container.getBoundingClientRect()
+            const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect()
+            isAtFirstUncompleted.value = !(
+                firstUncompletedRect.top > containerRect.bottom ||
+                firstUncompletedRect.bottom < containerRect.top
+            )
+        })
+    }
+    scrollToFirstUncompleted()
+})
 
 onUnmounted(() => {
-  const container = containerRef.value;
-  if (container) {
-    container.removeEventListener('scroll', () => {
-      // Clean up the scroll listener
-    });
-  }
-});
-
-
-
-const assignRef = (el: Element | ComponentPublicInstance | null, challenge: Challenge, index: number) => {
-  const refKey = `uncompleted-${index}`;
-  if (el instanceof HTMLElement) {  // Ensure that el is an HTMLElement
-    if (challenge.completion! < 100) {
-      elementRefs[refKey] = el;
+    const container = containerRef.value
+    if (container) {
+        container.removeEventListener('scroll', () => {
+            // Clean up the scroll listener
+        })
     }
-  } else {
-    // Cleanup if the element is unmounted or not an HTMLElement
-    if (elementRefs[refKey]) {
-      delete elementRefs[refKey];
+})
+
+const assignRef = (
+    el: Element | ComponentPublicInstance | null,
+    challenge: Challenge,
+    index: number
+) => {
+    const refKey = `uncompleted-${index}`
+    if (el instanceof HTMLElement) {
+        // Ensure that el is an HTMLElement
+        if (challenge.completion! < 100) {
+            elementRefs[refKey] = el
+        }
+    } else {
+        // Cleanup if the element is unmounted or not an HTMLElement
+        if (elementRefs[refKey]) {
+            delete elementRefs[refKey]
+        }
     }
-  }
-};
-
-
-
+}
 
 // Utilizing watch to specifically monitor for changes in the props
 watch(
