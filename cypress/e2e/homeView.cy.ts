@@ -14,6 +14,13 @@ describe('Goals and Challenges Page Load', () => {
         ],
       },
     }).as('fetchGoals');
+    // Mock the POST request for renewing the token if it's not implemented in the backend
+    cy.intercept('POST', '/auth/renewToken', {
+      statusCode: 200,
+      body: {
+        accessToken: 'newlyRenewedAccessToken'
+      }
+    }).as('renewToken');
 
     cy.intercept('GET', '/challenges', {
       statusCode: 200,
@@ -24,6 +31,14 @@ describe('Goals and Challenges Page Load', () => {
       },
     }).as('fetchChallenges');
 
+    cy.intercept('GET', '/profile/streak', {
+      statusCode: 200,
+      body: {
+        content: [
+          { streak: 1, startDate: "2026-04-29T12:10:38.308Z" },
+        ],
+      },
+    }).as('fetchChallenges');
     // Visit the component that triggers these requests in `onMounted`
     cy.visit('/hjem');
   });
@@ -31,6 +46,13 @@ describe('Goals and Challenges Page Load', () => {
   it('loads and displays goals and challenges after onMounted', () => {
     // Wait for API calls made during `onMounted` to complete
     cy.wait(['@fetchGoals', '@fetchChallenges']);
+    // Mock the POST request for renewing the token if it's not implemented in the backend
+    cy.intercept('POST', '/auth/renewToken', {
+      statusCode: 200,
+      body: {
+        accessToken: 'newlyRenewedAccessToken'
+      }
+    }).as('renewToken');
 
     // Check console logs for any errors or warnings that might indicate issues
     cy.window().then((win) => {
