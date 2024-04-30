@@ -22,14 +22,13 @@ const isModalOpen = ref(false);
 
 defineProps([
   'speech',
-  'isModalOpen'
 ])
 
 const emit = defineEmits(['openHelp']);
 
 function handleHelpClick() {
   emit('openHelp');
-  isModalOpen.value = true
+  isModalOpen.value = true;
 }
 
 </script>
