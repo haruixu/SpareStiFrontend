@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="generatedChallenges.length > 0"
-        class="fixed inset-0 bg-gray-300 bg-opacity-75 flex justify-center items-center"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
     >
         <div class="relative bg-white pt-10 p-4 rounded-lg shadow-xl" style="width: 40rem">
             <button @click="closeModal" class="absolute top-0 right-0 m-2 text-white">
@@ -57,9 +57,8 @@
                             Skip
                         </button>
                         <button
-                            @click="acceptChallenge(challenge.id)"
-                            class="text-white font-bold py-1 px-4 mt-[-14px] sm:mt-0"
-                        >
+                            @click="acceptChallenge(challenge)"
+                            class="text-white font-bold py-1 px-4 mt-[-14px] sm:mt-0">
                             Godta
                         </button>
                     </div>
@@ -72,70 +71,82 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
-import { useChallengeStore } from '@/stores/challengeStore'
 
 const generatedChallenges = ref([])
 
+
 const fetchGeneratedChallenges = async () => {
     try {
-        const response = await authInterceptor.get('/challenges/active')
-        if (response.status === 200 && response.data.content) {
-            console.log('Active challenges:', response.data.content)
-            generatedChallenges.value = response.data.content.map((challenge) => ({
-                id: challenge.id,
-                title: challenge.title,
-                target: challenge.target.toString(),
-                due: challenge.due.substring(0, 10)
-            }))
+        const response = await authInterceptor.get('/challenges/generate');
+        if (response.status === 200 && response.data.length > 0) {
+            generatedChallenges.value = response.data.map(challenge => ({
+                ...challenge,
+                due: new Date(challenge.due).toISOString().split('T')[0],
+                dueFull: challenge.due
+            }));
+            console.log('Generated challenges:', generatedChallenges.value);
         } else {
-            console.error('No challenges found for the user.')
-            generatedChallenges.value = []
+            console.log('No challenges found for the user.');
+            generatedChallenges.value = [];
         }
     } catch (error) {
-        console.error('Error fetching challenges:', error)
-        generatedChallenges.value = []
+        console.error('Error fetching challenges:', error);
+        generatedChallenges.value = [];
     }
 }
 
-onMounted(() => {
-    fetchGeneratedChallenges()
-})
+onMounted(fetchGeneratedChallenges)
+
+function acceptChallenge(challenge) {
+    if (!challenge) {
+        console.error('No challenge data provided to acceptChallenge function.');
+        return;
+    }
+
+    console.log('Accepting challenge:', challenge);
+
+    const postData = {
+        title: challenge.title,
+        saved: 0,
+        target: challenge.target,
+        perPurchase: challenge.perPurchase,
+        description: challenge.description,
+        due: challenge.dueFull,
+        type: challenge.type
+    };
+
+    console.log('Posting data:', postData);
+
+    authInterceptor.post('/challenges', postData)
+        .then(response => {
+            console.log('Challenge accepted and saved:', response.data);
+            removeChallenge(challenge.id);
+        })
+        .catch(error => {
+            console.error('Failed to save challenge:', error);
+            if (error.response && error.response.data) {
+                console.error('Error details:', error.response.data);
+            }
+        });
+}
+
+function declineChallenge(id) {
+    removeChallenge(id);
+}
 
 const removeChallenge = (id) => {
-    const index = generatedChallenges.value.findIndex((challenge) => challenge.id === id)
+    const index = generatedChallenges.value.findIndex(c => c.id === id);
     if (index !== -1) {
-        generatedChallenges.value.splice(index, 1)
-        generatedChallenges.value = [...generatedChallenges.value]
+        generatedChallenges.value.splice(index, 1);
+        generatedChallenges.value = [...generatedChallenges.value];
     }
     if (generatedChallenges.value.length === 0) {
-        closeModal()
-    }
-}
-
-function acceptChallenge(id) {
-    console.log('Accepted challenge:', id)
-    const acceptedChallenge = generatedChallenges.value.find((challenge) => challenge.id === id)
-    if (acceptedChallenge) {
-        useChallengeStore.editUserChallenge(acceptedChallenge)
-        removeChallenge(id)
-    }
-}
-
-const declineChallenge = async (id) => {
-    try {
-        const response = authInterceptor.delete(`/challenges/${id}`)
-        if (response.status === 200) {
-            console.log('Challenge declined and removed:', id)
-            removeChallenge(id)
-        } else {
-            console.error('Failed to decline challenge:', response.data)
-        }
-    } catch (error) {
-        console.error('Error declining challenge:', error)
+        closeModal();
     }
 }
 
 const closeModal = () => {
-    generatedChallenges.value = []
+    generatedChallenges.value = [];
 }
 </script>
+
