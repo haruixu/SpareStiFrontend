@@ -51,6 +51,8 @@ import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import router from '@/router'
 
+const showModal = ref(true)
+
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
 const isModalOpen = ref(false)

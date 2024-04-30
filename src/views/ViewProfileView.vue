@@ -2,7 +2,7 @@
 import authInterceptor from '@/services/authInterceptor'
 import { computed, onMounted, ref } from 'vue'
 import type { Profile } from '@/types/profile'
-import CardTemplate from '@/views/CardTemplate.vue'
+import CardTemplate from '@/components/CardTemplate.vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'

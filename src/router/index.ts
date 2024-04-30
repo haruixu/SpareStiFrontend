@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,11 @@ const router = createRouter({
             component: () => import('@/views/RegisterLoginView.vue')
         },
         {
+            path: '/logginn/:username',
+            name: 'login-bio',
+            component: () => import('@/views/BiometricLoginView.vue')
+        },
+        {
             path: '/registrer',
             name: 'register',
             component: () => import('@/views/RegisterLoginView.vue')
@@ -31,12 +37,12 @@ const router = createRouter({
         {
             path: '/profil',
             name: 'profile',
-            component: () => import('@/views/ProfileView.vue')
+            component: () => import('@/views/ViewProfileView.vue')
         },
         {
             path: '/profil/rediger',
             name: 'edit-profile',
-            component: () => import('@/views/EditProfileView.vue')
+            component: () => import('@/views/ManageProfileView.vue')
         },
         {
             path: '/sparemaal',
@@ -109,29 +115,75 @@ const router = createRouter({
             component: () => import('@/views/ConfigAccountNumberView.vue')
         },
         {
-            path: '/forsteSparemaal',
-            name: 'firstSavingGoal',
-            component: () => import('@/views/FirstSavingGoalView.vue')
-        },
-        {
-            path: '/forsteSpareutfordring',
-            name: 'firstSavingChallengde',
-            component: () => import('@/views/FirstSavingChallengeView.vue')
-        },
-        {
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/addAlternativeLogin',
-            name: 'addAlternativeLogin',
-            component: () => import('@/views/AddAlternativeLogin.vue')
+            path: '/konfigurerBiometri',
+            name: 'configure-biometric',
+            component: () => import('@/views/ConfigBiometricView.vue')
         }
     ],
     scrollBehavior() {
         return { top: 0 }
     }
+})
+
+router.beforeEach(async (to, from, next) => {
+    const publicPages = [
+        { name: 'login' },
+        { name: 'register' },
+        { name: 'login-bio' },
+        { name: 'resetPassword' },
+        { name: 'start' }
+    ]
+
+    const authRequired = !publicPages.some((page) => page.name === to.name)
+    const hasLoginCredentials =
+        sessionStorage.getItem('accessToken') !== null &&
+        localStorage.getItem('refreshToken') !== null
+
+    if (authRequired && !hasLoginCredentials) {
+        console.log('Routing to login')
+        await router.replace({ name: 'login' })
+        return next({ name: 'login' })
+    } else if (!authRequired && !hasLoginCredentials) {
+        return next()
+    }
+
+    const configPages = [
+        { name: 'configure-biometric' },
+        { name: 'configurations1' },
+        { name: 'configurations2' },
+        { name: 'configurations3' },
+        { name: 'configurations4' },
+        { name: 'configurations5' },
+        { name: 'configurations6' }
+    ]
+
+    const userStore = useUserStore()
+
+    if (userStore.user.isConfigured == false) {
+        await userStore.checkIfUserConfigured()
+    }
+
+    const configRequired = !configPages.some((page) => page.name === to.name)
+    const isConfigured = userStore.user.isConfigured
+
+    if (configRequired && !isConfigured) {
+        await router.replace({ name: 'configure-biometric' })
+        return next({ name: 'configure-biometric' })
+    } else if (!configRequired && isConfigured) {
+        await router.replace({ name: 'home' })
+        return next({ name: 'home' })
+    }
+
+    if (!authRequired) {
+        await router.replace({ name: 'home' })
+        return next({ name: 'home' })
+    }
+    return next()
 })
 
 export default router
