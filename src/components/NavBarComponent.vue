@@ -10,7 +10,7 @@
             </router-link>
 
             <div class="flex flex-row justify-center">
-                <ButtonDisplayStreak></ButtonDisplayStreak>
+                <ButtonDisplayStreak />
             </div>
         </div>
         <div v-if="!isHamburger" class="flex flex-row gap-10">

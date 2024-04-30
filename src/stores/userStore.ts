@@ -84,22 +84,19 @@ export const useUserStore = defineStore('user', () => {
         sessionStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
         user.value = defaultUser
+        console.log(user.value)
         router.push({ name: 'login' })
     }
-    const getUserStreak = async () => {
-        try {
-            const response = await authInterceptor('/profile/streak')
-            if (response.data) {
+
+    const getUserStreak = () => {
+        authInterceptor('/profile/streak')
+            .then((response) => {
                 streak.value = response.data
-                console.log('Fetched Challenges:', streak.value)
-            } else {
+            })
+            .catch((error) => {
+                console.error('Error fetching challenges:', error)
                 streak.value = undefined
-                console.error('No challenge content found:', response.data)
-            }
-        } catch (error) {
-            console.error('Error fetching challenges:', error)
-            streak.value = undefined // Ensure challenges is always an array
-        }
+            })
     }
 
     const bioRegister = async () => {

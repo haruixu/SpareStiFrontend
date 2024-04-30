@@ -179,6 +179,10 @@ router.beforeEach(async (to, from, next) => {
         return next({ name: 'home' })
     }
 
+    if (!authRequired) {
+        await router.replace({ name: 'home' })
+        return next({ name: 'home' })
+    }
     return next()
 })
 

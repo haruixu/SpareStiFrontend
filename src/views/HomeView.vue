@@ -17,7 +17,6 @@
         </div>
         <savings-path :challenges="challenges" :goal="goal"></savings-path>
     </div>
-    <GeneratedChallengesModal v-if="showModal" />
 </template>
 
 <script setup lang="ts">
@@ -29,7 +28,6 @@ import type { Goal } from '@/types/goal'
 import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
-import GeneratedChallengesModal from '@/components/GeneratedChallengesModal.vue'
 
 const showModal = ref(true)
 
