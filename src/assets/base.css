@@ -30,12 +30,6 @@
     --section-gap: 160px;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        /* TODO: add dark mode colors */
-    }
-}
-
 *,
 *::before,
 *::after {

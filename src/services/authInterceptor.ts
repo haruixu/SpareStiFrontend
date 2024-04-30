@@ -35,18 +35,18 @@ authInterceptor.interceptors.response.use(
             originalRequest._retry = true
             sessionStorage.removeItem('accessToken')
 
-            const loginToken = localStorage.getItem('loginToken')
+            const refreshToken = localStorage.getItem('refreshToken')
             axios
-                .post('/auth/loginToken', null, {
+                .post('/auth/renewToken', null, {
                     headers: {
-                        Authorization: `Bearer ${loginToken}`
+                        Authorization: `Bearer ${refreshToken}`
                     }
                 })
                 .then((response) => {
                     router.push({ name: 'login-bio', params: { username: response.data.username } })
                 })
                 .catch(() => {
-                    localStorage.removeItem('loginToken')
+                    localStorage.removeItem('refreshToken')
                     router.push({ name: 'login' })
 
                     Promise.reject(error)

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import authInterceptor from '@/services/authInterceptor'
 import { useUserStore } from '@/stores/userStore'
 
 const router = createRouter({
@@ -121,9 +120,9 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/addAlternativeLogin',
-            name: 'addAlternativeLogin',
-            component: () => import('@/views/AddAlternativeLogin.vue')
+            path: '/konfigurerBiometri',
+            name: 'configure-biometric',
+            component: () => import('@/views/ConfigBiometricView.vue')
         }
     ],
     scrollBehavior() {
@@ -141,19 +140,20 @@ router.beforeEach(async (to, from, next) => {
     ]
 
     const authRequired = !publicPages.some((page) => page.name === to.name)
-    const loggedIn = sessionStorage.getItem('accessToken')
-    const loginToken = localStorage.getItem('loginToken')
+    const hasLoginCredentials =
+        sessionStorage.getItem('accessToken') !== null &&
+        localStorage.getItem('refreshToken') !== null
 
-    if (authRequired && !loggedIn && !loginToken) {
+    if (authRequired && !hasLoginCredentials) {
         console.log('Routing to login')
         await router.replace({ name: 'login' })
         return next({ name: 'login' })
-    } else if (!authRequired && loggedIn) {
-        await router.replace({ name: 'home' })
-        return next({ name: 'home' })
+    } else if (!authRequired && !hasLoginCredentials) {
+        return next()
     }
 
     const configPages = [
+        { name: 'configure-biometric' },
         { name: 'configurations1' },
         { name: 'configurations2' },
         { name: 'configurations3' },
@@ -164,28 +164,17 @@ router.beforeEach(async (to, from, next) => {
 
     const userStore = useUserStore()
 
-    if (userStore.isUserConfigured == null) {
-        console.log('Checking if user is configured')
-
-        await authInterceptor('/config')
-            .then((response) => {
-                console.log(response)
-
-                userStore.isUserConfigured = response.data.challengeConfig != null
-            })
-            .catch((response) => {
-                console.log(response)
-                userStore.isUserConfigured = false
-            })
+    if (userStore.user.isConfigured == false) {
+        await userStore.checkIfUserConfigured()
     }
 
     const configRequired = !configPages.some((page) => page.name === to.name)
+    const isConfigured = userStore.user.isConfigured
 
-    if (configRequired && !userStore.isUserConfigured) {
-        console.log('Routing to configurations1')
-        await router.replace({ name: 'configurations1' })
-        return next({ name: 'configurations1' })
-    } else if (!configRequired && userStore.isUserConfigured) {
+    if (configRequired && !isConfigured) {
+        await router.replace({ name: 'configure-biometric' })
+        return next({ name: 'configure-biometric' })
+    } else if (!configRequired && isConfigured) {
         await router.replace({ name: 'home' })
         return next({ name: 'home' })
     }

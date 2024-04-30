@@ -13,10 +13,10 @@ export const useUserStore = defineStore('user', () => {
     const defaultUser: User = {
         firstname: 'Firstname',
         lastname: 'Lastname',
-        username: 'Username'
+        username: 'Username',
+        isConfigured: false
     }
 
-    const isUserConfigured = ref<boolean | null>(null)
     const user = ref<User>(defaultUser)
     const errorMessage = ref<string>('')
 
@@ -29,7 +29,7 @@ export const useUserStore = defineStore('user', () => {
     ) => {
         await axios
             .post(`http://localhost:8080/auth/register`, {
-                firstName: firstname, //TODO rename all instances of firstname to firstName
+                firstName: firstname,
                 lastName: lastname,
                 email: email,
                 username: username,
@@ -43,7 +43,7 @@ export const useUserStore = defineStore('user', () => {
                 user.value.lastname = lastname
                 user.value.username = username
 
-                router.push({ name: 'addAlternativeLogin' })
+                router.push({ name: 'configure-biometric' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -65,7 +65,11 @@ export const useUserStore = defineStore('user', () => {
                 user.value.lastname = response.data.lastName
                 user.value.username = response.data.username
 
-                router.push({ name: 'home' })
+                checkIfUserConfigured()
+
+                user.value.isConfigured
+                    ? router.push({ name: 'home' })
+                    : router.push({ name: 'configure-biometric' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -78,8 +82,6 @@ export const useUserStore = defineStore('user', () => {
         sessionStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
         user.value = defaultUser
-        isUserConfigured.value = null
-
         router.push({ name: 'login' })
     }
 
@@ -216,13 +218,25 @@ export const useUserStore = defineStore('user', () => {
         }
     }
 
+    const checkIfUserConfigured = async () => {
+        await authInterceptor('/config')
+            .then((response) => {
+                user.value.isConfigured = response.data.challengeConfig != null
+                console.log('User configured: ' + user.value.isConfigured)
+            })
+            .catch(() => {
+                user.value.isConfigured = false
+            })
+    }
+
     return {
+        user,
+        checkIfUserConfigured,
         register,
         login,
         logout,
         bioLogin,
         bioRegister,
-        isUserConfigured,
         errorMessage
     }
 })
