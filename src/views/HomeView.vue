@@ -74,16 +74,16 @@ onMounted(async () => {
 
 // Check if the user is logging in for the first time, and display the first login speech
 const firstLoggedInSpeech = () => {
-  const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
-  if (isFirstLogin) {
-    speech.value = [
-      'Hei, jeg er Spare!',
-      'Jeg skal hjelpe deg med å spare penger.',
-      'Du får varsel når jeg har noe å si!'
-    ]
-    isModalOpen.value = true
-    router.replace({ name: 'home', query: { firstLogin: 'false' } })
-  }
+    const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
+    if (isFirstLogin) {
+        speech.value = [
+            'Hei, jeg er Spare!',
+            'Jeg skal hjelpe deg med å spare penger.',
+            'Du får varsel når jeg har noe å si!'
+        ]
+        isModalOpen.value = true
+        router.replace({ name: 'home', query: { firstLogin: 'false' } })
+    }
 }
 
 const openInteractiveSpare = () => {
@@ -94,13 +94,13 @@ const openInteractiveSpare = () => {
     }
 }
 const openHelp = () => {
-  speech.value = [
-    'Heisann, jeg er Spare!',
-    'Jeg skal hjelpe deg med å spare penger.',
-    'Du kan legge til sparemål og spareutfordringer!',
-    'Sammen kan vi spare penger og nå dine mål!'
-  ]
-  isModalOpen.value = true
+    speech.value = [
+        'Heisann, jeg er Spare!',
+        'Jeg skal hjelpe deg med å spare penger.',
+        'Du kan legge til sparemål og spareutfordringer!',
+        'Sammen kan vi spare penger og nå dine mål!'
+    ]
+    isModalOpen.value = true
 }
 </script>
 
