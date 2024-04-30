@@ -3,8 +3,29 @@ import NavBar from '@/components/NavBarComponent.vue'
 import router from '@/router'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
 vi.stubGlobal('scrollTo', vi.fn())
+// Mocking Axios correctly using `importOriginal`
+const mocks = vi.hoisted(() => ({
+    get: vi.fn(),
+    post: vi.fn()
+}))
+
+vi.mock('axios', async (importActual) => {
+    const actual = await importActual<typeof import('axios')>()
+
+    return {
+        default: {
+            ...actual.default,
+            create: vi.fn(() => ({
+                ...actual.default.create(),
+                get: mocks.get,
+                post: mocks.post
+            }))
+        }
+    }
+})
 
 describe('NavBar Routing', () => {
     let wrapper: VueWrapper<any>
@@ -21,6 +42,7 @@ describe('NavBar Routing', () => {
 
         await router.push({ name: 'start' })
         await router.isReady()
+        await nextTick()
     })
 
     it('renders without errors', () => {

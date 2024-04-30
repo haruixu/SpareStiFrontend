@@ -23,6 +23,7 @@
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.1",
+    "vue3-flip-countdown": "^0.1.6",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
