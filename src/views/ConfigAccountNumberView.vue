@@ -72,7 +72,7 @@ async function onButtonClick() {
 
     await accountStore.postAccount('SPENDING', spendingAccountNumber, 0)
 
-    await router.push({name: 'home', query: {firstLogin: 'true'}})
+    await router.push({ name: 'home', query: { firstLogin: 'true' } })
 }
 
 function restrictToNumbers(event: InputEvent, type: string) {
