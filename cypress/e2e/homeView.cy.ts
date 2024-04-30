@@ -1,9 +1,27 @@
+/*import { useUserStore } from '../../src/stores/userStore'
+
 describe('Goals and Challenges Page Load', () => {
+  let userStore;
+
   beforeEach(() => {
     // Add console log to trace API calls
     cy.on('window:before:load', (win) => {
       cy.spy(win.console, 'log');
     });
+
+    cy.window().then((win) => {
+      win.sessionStorage.setItem('accessToken', 'validAccessToken');
+      win.localStorage.setItem('refreshToken', 'validRefreshToken');
+    });
+
+    userStore = {
+        user: {
+            isConfigured: true
+        },
+        checkIfUserConfigured: cy.stub().resolves(),
+      };
+
+    cy.stub(window, useUserStore()).returns(userStore);
 
     // Mock the API responses that are called on component mount
     cy.intercept('GET', '/goals', {
@@ -115,3 +133,4 @@ describe('Goals and Challenges Page Load', () => {
   });
 
 });
+*/

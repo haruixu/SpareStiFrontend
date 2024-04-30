@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 import { useChallengeStore } from '@/stores/challengeStore'
 
