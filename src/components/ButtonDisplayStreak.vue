@@ -6,7 +6,11 @@
             @mouseleave="hide"
             class="cursor-pointer bg-transparent hover:bg-transparent hover:scale-150"
         >
-            <img src="@/assets/pengesekkStreak.png" alt="streak" class="mx-auto w-6 h-6 md:w-12 md:h-12" />
+            <img
+                src="@/assets/pengesekkStreak.png"
+                alt="streak"
+                class="mx-auto w-6 h-6 md:w-12 md:h-12"
+            />
         </button>
 
         <div

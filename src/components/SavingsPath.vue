@@ -20,13 +20,11 @@
         <div
             ref="containerRef"
             class="container relative pt-6 w-4/5 bg-cover bg-[center] md:[background-position: center;] mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60vh] md:min-w-2/5 overflow-y-auto border-2 border-transparent rounded-xl bg-white shadow-lg shadow-slate-400"
-            style="background-image: url('src/assets/backgroundSavingsPath.png');
-           ">
-
+            style="background-image: url('src/assets/backgroundSavingsPath.png')"
+        >
             <div>
                 <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
             </div>
-
 
             <div
                 v-for="(challenge, index) in challenges"
