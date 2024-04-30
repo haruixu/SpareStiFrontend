@@ -27,6 +27,7 @@ const profile = ref<Profile>({
 const updatePassword = ref<boolean>(false)
 const confirmPassword = ref<string>('')
 const errorMessage = ref<string>('')
+const isModalOpen = ref(false)
 
 const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{1,29}$/
 const emailRegex =
@@ -50,6 +51,10 @@ const isSpendingAccountValid = computed(() =>
 const isSavingAccountValid = computed(() =>
     accountNumberRegex.test(profile.value.savingAccount.accNumber?.toString() || '')
 )
+
+const openInteractiveSpare = () => {
+  isModalOpen.value = true // Open the modalReset the flag since the speech will now be displayed
+}
 
 const isFormInvalid = computed(
     () =>
@@ -210,6 +215,7 @@ const saveChanges = async () => {
                     :png-size="10"
                     :speech="['Her kan du endre på profilen din!']"
                     direction="left"
+                    :isModalOpen="openInteractiveSpare"
                 />
 
                 <CardTemplate>

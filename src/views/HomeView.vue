@@ -30,9 +30,8 @@
         :speech="speech"
         :direction="'right'"
         :pngSize="15"
-        :is-modal-open="isModalOpen"
+        :isModalOpen="isModalOpen"
         class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto"
-        v-if="isModalOpen"
     ></InteractiveSpare>
     <div class="fixed bottom-5 left-5">
         <div @click="openHelp" class="hover:cursor-pointer">
