@@ -52,10 +52,6 @@ const isSavingAccountValid = computed(() =>
     accountNumberRegex.test(profile.value.savingAccount.accNumber?.toString() || '')
 )
 
-const openInteractiveSpare = () => {
-  isModalOpen.value = true // Open the modalReset the flag since the speech will now be displayed
-}
-
 const isFormInvalid = computed(
     () =>
         [
@@ -215,7 +211,7 @@ const saveChanges = async () => {
                     :png-size="10"
                     :speech="['Her kan du endre på profilen din!']"
                     direction="left"
-                    :isModalOpen="openInteractiveSpare"
+                    :isModalOpen="isModalOpen"
                 />
 
                 <CardTemplate>

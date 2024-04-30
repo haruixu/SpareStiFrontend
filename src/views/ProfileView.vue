@@ -48,7 +48,6 @@ const welcome = computed(() => {
 const openInteractiveSpare = () => {
     isModalOpen.value = true
 }
-
 </script>
 
 <template>
@@ -100,13 +99,13 @@ const openInteractiveSpare = () => {
                     :isModalOpen="isModalOpen"
                 />
                 <div class="flex items-center">
-                  <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
-                    <img
-                        alt="Spare"
-                        class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
-                        src="@/assets/spare.png"
-                    />
-                  </a>
+                    <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
+                        <img
+                            alt="Spare"
+                            class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
+                            src="@/assets/spare.png"
+                        />
+                    </a>
                 </div>
                 <div class="flex flex-row justify-between mx-4">
                     <p class="font-bold">Fullførte sparemål</p>
