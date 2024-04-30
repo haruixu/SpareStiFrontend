@@ -1,7 +1,9 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-16 text-4xl font-bold lg:mb-20">Hvor kjent er du med sparing fra før?</h1>
-        <div class="grid grid-cols-1 gap-14 mb-20 md:grid-cols-3">
+        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
+            Hvor kjent er du med sparing fra før?
+        </h1>
+        <div class="grid grid-cols-1 gap-8 mb-16 sm:gap-14 sm:mb-20 md:grid-cols-3">
             <div
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
@@ -39,7 +41,7 @@
         <ContinueButtonComponent
             :disabled="selectedOption === null"
             @click="onButtonClick"
-            class="px-10 py-3 text-2xl self-end mb-4 mt-0"
+            class="px-10 py-3 text-2xl self-end"
         ></ContinueButtonComponent>
     </div>
 </template>
@@ -67,8 +69,6 @@ const selectOption = (option: string) => {
         case 'godt':
             experienceValue = 'VERY_HIGH'
             break
-        default:
-            experienceValue = 'VERY_LOW'
     }
 
     userConfigStore.setExperience(experienceValue)
@@ -76,7 +76,7 @@ const selectOption = (option: string) => {
 
 const onButtonClick = () => {
     if (selectedOption.value) {
-        router.push('/konfigurasjonSteg3')
+        router.push({ name: 'configurations3' })
     } else {
         console.error('No option selected')
     }

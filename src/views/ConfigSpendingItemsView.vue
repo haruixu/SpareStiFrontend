@@ -1,9 +1,9 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen text-center">
-        <h1 class="mb-8 lg:mb-12 text-4xl font-bold">Hva bruker du mye penger på?</h1>
+        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">Hva bruker du mye penger på?</h1>
         <div class="flex flex-wrap justify-center gap-8 mb-8">
             <div
-                class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
+                class="flex flex-col items-center justify-center bg-white rounded-lg sm:p-8 shadow-lg sm:w-full md:w-[45%]"
             >
                 <div
                     v-for="buttonText in [
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div
-                class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
+                class="flex flex-col items-center justify-center bg-white rounded-lg sm:p-8 shadow-lg sm:w-full md:w-[45%]"
             >
                 <div
                     v-for="(option, index) in customOptions"
@@ -41,18 +41,23 @@
                 >
                     <input
                         v-model="customOptions[index]"
-                        class="w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2 border-gray-300"
+                        :class="[
+                            'w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2',
+                            customOptions[index].trim() !== ''
+                                ? 'border-[var(--green)]'
+                                : 'border-gray-300'
+                        ]"
                         type="text"
                         :placeholder="'Annet ' + ' ...'"
                     />
                 </div>
             </div>
         </div>
-        <div class="w-full text-right mb-0 mt-0" style="position: relative; top: -92px; right: 8px">
+        <div class="w-full text-right">
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isFormValid"
-                class="px-10 py-3 text-2xl font-bold mb-4 mr-2"
+                class="px-10 py-3 text-2xl font-bold mt-36 mr-4 sm:mb-12 sm:mt-10"
             ></ContinueButtonComponent>
         </div>
     </div>
@@ -68,24 +73,27 @@ const userConfigStore = useUserConfigStore()
 const selectedOptions = ref<string[]>([])
 const customOptions = ref(['', '', '', '', '', ''])
 
-const toggleOption = (option: string, isCustom: boolean = false) => {
-    if (!isCustom) {
-        const index = selectedOptions.value.indexOf(option)
-        if (index === -1) {
-            selectedOptions.value.push(option)
-        } else {
-            selectedOptions.value.splice(index, 1)
-        }
+const toggleOption = (option: string) => {
+    const index = selectedOptions.value.indexOf(option)
+    if (index === -1) {
+        selectedOptions.value.push(option)
+    } else {
+        selectedOptions.value.splice(index, 1)
     }
 }
 
 const isFormValid = computed(() => {
     const predefinedSelected = selectedOptions.value.length > 0
     const customFilled = customOptions.value.some((option) => option.trim() !== '')
-    return predefinedSelected || (customFilled && predefinedSelected)
+    return predefinedSelected || customFilled
 })
 
 const onButtonClick = () => {
+    if (!isFormValid.value) {
+        console.error('Form is not valid')
+        return
+    }
+
     const predefinedChallengeTypes = selectedOptions.value.map((option) => ({
         type: option,
         specificAmount: 0,
@@ -101,7 +109,6 @@ const onButtonClick = () => {
         }))
 
     userConfigStore.challengeTypeConfigs = [...predefinedChallengeTypes, ...customChallengeTypes]
-    console.log('Selected Challenge Types:', userConfigStore.challengeTypeConfigs)
-    router.push('/konfigurasjonSteg4')
+    router.push({ name: 'configurations4' })
 }
 </script>
