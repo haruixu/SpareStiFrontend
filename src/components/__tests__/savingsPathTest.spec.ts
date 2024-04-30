@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import SavingsPath from '@/components/SavingsPath.vue'
@@ -11,12 +11,32 @@ vi.mock('canvas-confetti', () => ({
         clear: vi.fn()
     }))
 }))
+const mocks = vi.hoisted(() => ({
+    get: vi.fn(),
+    post: vi.fn()
+}))
+
+vi.mock('axios', async (importActual) => {
+    const actual = await importActual<typeof import('axios')>()
+
+    return {
+        default: {
+            ...actual.default,
+            create: vi.fn(() => ({
+                ...actual.default.create(),
+                get: mocks.get,
+                post: mocks.post
+            }))
+        }
+    }
+})
 
 describe('SavingsPath Component', () => {
     let wrapper: any
     const pinia = createPinia()
 
     beforeEach(() => {
+        window.HTMLElement.prototype.scrollIntoView = function () {}
         setActivePinia(pinia)
         wrapper = mount(SavingsPath, {
             global: {
@@ -93,6 +113,7 @@ describe('SavingsPath Component', () => {
                     }
                 ]
             })
+            await wrapper.vm.$nextTick()
             await wrapper.vm.$nextTick()
 
             progressBar = wrapper.find('.bg-green-600')

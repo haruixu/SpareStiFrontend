@@ -15,9 +15,16 @@ const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\
 const userStore = useUserStore()
 
 const isEmailValid = computed(() => emailRegex.test(resetEmail.value))
+const isSendingEmail = ref(false)
+const successMessage = ref<string>('')
+const modalErrorMessage = ref<string>('')
 
 const submitForm = () => {
     userStore.login(username.value, password.value)
+}
+
+const bioLogin = () => {
+    userStore.bioLogin(username.value)
 }
 
 const toggleShowPassword = () => {
@@ -30,17 +37,36 @@ const openForgotPasswordModal = (event: MouseEvent) => {
 }
 
 const submitReset = async () => {
-    await axios.post('http://localhost:8080/forgotPassword/changePasswordRequest', {
-        email: resetEmail.value
-    })
-
-    resetEmail.value = ''
-    isModalOpen.value = false
+    isSendingEmail.value = true
+    modalErrorMessage.value = ''
+    successMessage.value = ''
+    try {
+        const response = await axios.post(
+            'http://localhost:8080/forgotPassword/changePasswordRequest',
+            {
+                email: resetEmail.value
+            }
+        )
+        successMessage.value =
+            'E-posten er sendt. Vennligst sjekk innboksen din for instrukser. OBS: E-posten kan havne i spam-mappen'
+        isSendingEmail.value = false
+        setTimeout(() => {
+            isModalOpen.value = false
+            successMessage.value = ''
+        }, 5000)
+    } catch (error) {
+        console.error(error)
+        modalErrorMessage.value = 'Noe gikk galt. Vennligst prøv igjen.'
+        isSendingEmail.value = false
+    }
 }
 
 const closeModal = () => {
-    resetEmail.value = ''
     isModalOpen.value = false
+    isSendingEmail.value = false
+    modalErrorMessage.value = ''
+    resetEmail.value = ''
+    successMessage.value = ''
 }
 
 watch(
@@ -95,36 +121,58 @@ watch(
                 Logg inn
             </button>
             <p>{{ errorMessage }}</p>
+            <button @click="bioLogin">biologin</button>
         </div>
     </div>
     <modal-component
         :title="'Glemt passord'"
         :message="'Vennligst skriv inn e-posten din for å endre passordet.'"
         :is-modal-open="isModalOpen"
-        @close="isModalOpen = false"
+        @close="closeModal"
     >
         <template v-slot:input>
-            <input
-                type="email"
-                v-model="resetEmail"
-                class="border border-gray-300 p-2 w-full mb-7"
-                placeholder="Skriv e-postadressen din her"
-            />
-        </template>
-        <template v-slot:buttons>
-            <button
-                :disabled="!isEmailValid"
-                @click="submitReset"
-                class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
-            >
-                Send mail
-            </button>
-            <button
-                @click="closeModal"
-                class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
-            >
-                Lukk
-            </button>
+            <div v-if="isSendingEmail" class="flex justify-center items-center">
+                <div
+                    class="p-3 animate-spin drop-shadow-2xl bg-gradient-to-r from-lime-500 from-30% to-green-600 to-90% md:w-18 md:h-20 h-20 w-20 aspect-square rounded-full"
+                >
+                    <div class="rounded-full h-full w-full bg-slate-100 background-blur-md"></div>
+                </div>
+            </div>
+            <div v-else-if="successMessage">
+                <p class="text-green-500 text-center">{{ successMessage }}</p>
+            </div>
+            <div v-else-if="modalErrorMessage">
+                <p class="text-red-500 text-center">{{ modalErrorMessage }}</p>
+                <button
+                    @click="closeModal"
+                    class="active-button font-bold py-2 px-4 w-1/2 mt-4 border-2 disabled:border-transparent"
+                >
+                    Lukk
+                </button>
+            </div>
+            <div v-else>
+                <input
+                    type="email"
+                    v-model="resetEmail"
+                    class="border border-gray-300 p-2 w-full mb-7"
+                    placeholder="Skriv e-postadressen din her"
+                />
+                <div class="flex gap-5 mt-4">
+                    <button
+                        :disabled="!isEmailValid"
+                        @click="submitReset"
+                        class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
+                    >
+                        Send mail
+                    </button>
+                    <button
+                        @click="closeModal"
+                        class="active-button font-bold py-2 px-4 w-1/2 border-2 disabled:border-transparent"
+                    >
+                        Lukk
+                    </button>
+                </div>
+            </div>
         </template>
     </modal-component>
 </template>

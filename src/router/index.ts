@@ -34,6 +34,11 @@ const router = createRouter({
             component: () => import('@/views/ProfileView.vue')
         },
         {
+            path: '/profil/rediger',
+            name: 'edit-profile',
+            component: () => import('@/views/EditProfileView.vue')
+        },
+        {
             path: '/sparemaal',
             name: 'goals',
             component: () => import('@/views/UserGoalsView.vue')
@@ -117,6 +122,11 @@ const router = createRouter({
             path: '/:pathMatch(.*)*',
             name: 'not-found',
             component: () => import('@/views/NotFoundView.vue')
+        },
+        {
+            path: '/addAlternativeLogin',
+            name: 'addAlternativeLogin',
+            component: () => import('@/views/AddAlternativeLogin.vue')
         }
     ],
     scrollBehavior() {
