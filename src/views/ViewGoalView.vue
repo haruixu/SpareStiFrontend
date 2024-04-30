@@ -20,6 +20,11 @@ const completion = computed(() => (goalInstance.value.saved / goalInstance.value
 const isCompleted = computed(() => goalInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
+const isModalOpen = ref(false)
+
+const openInteractiveSpare = () => {
+    isModalOpen.value = true
+}
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -126,7 +131,21 @@ const completeGoal = () => {
                 </button>
             </div>
         </div>
-        <InteractiveSpare :png-size="10" :speech="motivation" direction="left" />
+        <div class="flex items-center">
+            <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
+                <img
+                    alt="Spare"
+                    class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
+                    src="@/assets/spare.png"
+                />
+            </a>
+        </div>
+        <InteractiveSpare
+            :png-size="10"
+            :speech="motivation"
+            direction="left"
+            :isModalOpen="isModalOpen"
+        />
     </div>
 </template>
 

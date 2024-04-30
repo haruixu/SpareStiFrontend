@@ -27,6 +27,7 @@ const profile = ref<Profile>({
 const updatePassword = ref<boolean>(false)
 const confirmPassword = ref<string>('')
 const errorMessage = ref<string>('')
+const isModalOpen = ref(false)
 
 const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{1,29}$/
 const emailRegex =
@@ -210,6 +211,7 @@ const saveChanges = async () => {
                     :png-size="10"
                     :speech="['Her kan du endre på profilen din!']"
                     direction="left"
+                    :isModalOpen="isModalOpen"
                 />
 
                 <CardTemplate>
