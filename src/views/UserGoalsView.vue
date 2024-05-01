@@ -7,13 +7,11 @@ import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
 import draggable from 'vuedraggable'
 import PageControl from '@/components/PageControl.vue'
-import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
 const currentPage = ref(0)
 const totalPages = ref(1)
-const helpSpeech = ref<string[]>([])
 
 const activeGoals = ref<Goal[]>([])
 const completedGoals = ref<Goal[]>([])
@@ -57,17 +55,6 @@ const changeOrder = async () => {
         isDraggable.value = true
     }
 }
-
-const openHelp = () => {
-  helpSpeech.value = [
-    'Du har kommet til sparemålene dine 🎯',
-    'Et sparemål kan være noe du ønsker å spare penger til, for eksempel en ferie 🏖️ eller en ny sykkel 🚴🏻',
-    'Du kan lage nye sparemål ved å trykke på knappen "Opprett et nytt sparemål".',
-    'Du kan også endre rekkefølgen på sparemålene dine ved å trykke på "Endre rekkefølge".',
-    'Når du har fullført et sparemål, vil det dukke opp under "Fullførte sparemål".',
-    'Lykke til med målene dine! 🎀'
-  ]
-}
 </script>
 
 <template>
@@ -109,5 +96,4 @@ const openHelp = () => {
             :total-pages="totalPages"
         />
     </div>
-  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>

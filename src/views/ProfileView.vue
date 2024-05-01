@@ -8,13 +8,11 @@ import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
-import HelpComponent from "@/components/HelpComponent.vue";
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
 const completedChallenges = ref<Challenge[]>([])
 const speech = ref<string[]>([])
-const helpSpeech = ref<string[]>([])
 
 onMounted(async () => {
     await authInterceptor('/profile')
@@ -48,15 +46,6 @@ const openSpare = () => {
         `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
         'Her kan du finne en oversikt over dine profilinstillinger!',
         'Du kan også se dine fullførte sparemål og utfordringer!'
-    ]
-}
-
-const openHelp = () => {
-    helpSpeech.value = [
-      'Du har kommet til profilen din 🐷',
-      'Her kan du se en oversikt over dine profilinstillinger ⚙️',
-      'Du kan også se dine fullførte sparemål og utfordringer!',
-      'Du kan redigere profilen din ved å trykke på "Rediger bruker" 💎'
     ]
 }
 </script>
@@ -133,5 +122,4 @@ const openHelp = () => {
             </div>
         </div>
     </div>
-  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>

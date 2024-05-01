@@ -23,6 +23,7 @@
               :speech="speech"
               :png-size="pngSize"
               :direction="direction"
+              @emit:close="isModalOpen = false"
           />
 
           <div class="-mb-5 mt-8 text-xs text-gray-500">

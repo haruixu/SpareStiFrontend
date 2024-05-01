@@ -4,7 +4,6 @@ import { computed, onMounted, ref, watch } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
-import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
@@ -157,20 +156,6 @@ const updateChallenge = () => {
             console.error(error)
         })
 }
-
-const helpSpeech = ref<string[]>([])
-
-const openHelp = () => {
-  helpSpeech.value = [
-    'Her kan du opprette en ny utfordring ☕️',
-    'Tittel er navnet på utfordringen, og beskrivelse er en kort forklaring på hva utfordringen går ut på.',
-    'Pris per sparing er hvor mye du sparer hver gang du sparer, og antall sparinger er hvor mange ganger du har spart.',
-    'Av målbeløp er hvor mye du har spart til nå, og forfallsdato er når utfordringen skal være fullført.',
-    'Du kan selvsagt endre på dette senere!',
-    'Lykke til med utfordringen din! 🎉'
-
-  ]
-}
 </script>
 
 <template>
@@ -269,7 +254,6 @@ const openHelp = () => {
             </div>
         </div>
     </div>
-  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped>

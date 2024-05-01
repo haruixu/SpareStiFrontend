@@ -5,7 +5,6 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
 import SpareComponent from '@/components/SpareComponent.vue'
-import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
@@ -21,8 +20,6 @@ const completion = computed(() => (goalInstance.value.saved / goalInstance.value
 const isCompleted = computed(() => goalInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
-
-const helpSpeech = ref<string[]>([])
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -69,15 +66,6 @@ const completeGoal = () => {
         .catch((error) => {
             console.error(error)
         })
-}
-
-const openHelp = () => {
-  helpSpeech.value = [
-    `Her kan du se en oversikt over ditt sparemål: ${goalInstance.value.title}`,
-    'Du kan redigere målet, markere det som ferdig eller slette det',
-    'Du kan også se hvor mye du har spart av målet ditt, og hvor mye du har igjen',
-    `Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr, bra jobbet 🥂`
-  ]
 }
 </script>
 
@@ -146,7 +134,6 @@ const openHelp = () => {
             class="mb-5"
         ></SpareComponent>
     </div>
-  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped>

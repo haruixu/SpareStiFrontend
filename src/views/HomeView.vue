@@ -29,7 +29,6 @@ import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
-import HelpComponent from '@/components/HelpComponent.vue'
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
@@ -63,10 +62,5 @@ const firstLoggedInSpeech = () => {
         isModalOpen.value = true
         router.replace({ name: 'home', query: { firstLogin: 'false' } })
     }
-}
-const openHelp = () => {
-    helpSpeech.value = [
-
-    ]
 }
 </script>

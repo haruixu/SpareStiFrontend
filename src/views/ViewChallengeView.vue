@@ -4,9 +4,7 @@ import { computed, onMounted, ref } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import SpareComponent from '@/components/SpareComponent.vue'
-import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
@@ -30,7 +28,6 @@ const completion = computed(
 const isCompleted = computed(() => challengeInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
-const helpSpeech = ref<string[]>([])
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -81,15 +78,6 @@ const completeChallenge = () => {
         .catch((error) => {
             console.error(error)
         })
-}
-
-const openHelp = () => {
-  helpSpeech.value = [
-    `Her kan du se en oversikt over din spareutfordring: ${challengeInstance.value.title}`,
-    'Du kan se hvor mye du har spart, hvor mye du har igjen til målet, og hvor mange ganger du har spart.',
-    `Du kan også redigere utfordringen, slette den eller markere den som ferdig.`,
-    `Du har spart ${challengeInstance.value.saved}kr av ${challengeInstance.value.target}kr, som er ${timesSaved.value} ganger ⚡️`
-  ]
 }
 </script>
 
@@ -165,7 +153,6 @@ const openHelp = () => {
             class="mb-5"
         ></SpareComponent>
     </div>
-  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped>
