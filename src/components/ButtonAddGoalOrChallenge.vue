@@ -25,20 +25,26 @@
 import { defineProps, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-interface Props {
-    buttonText: string
-    type: 'goal' | 'challenge'
-}
+const props = defineProps({
+    buttonText: String,
+    type: String,
+    showModal: Boolean
+});
+
+const emit = defineEmits(['update:showModal']);
+
 const router = useRouter()
 
-const props = defineProps<Props>()
 const btnText = ref(props.buttonText)
 
 const routeToGoalOrChallenge = () => {
     if (props.type === 'goal') {
-        router.push('/sparemaal')
-    } else {
-        router.push('/spareutfordringer')
+        router.push('/sparemaal');
+    } else if (props.type === 'challenge') {
+        router.push('/spareutfordringer');
+    } else if (props.type === 'generatedChallenge') {
+        emit('update:showModal', true);
     }
-}
+};
+
 </script>
