@@ -120,7 +120,7 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/konfigurerBiometri',
+            path: '/konfigurasjonBiometri',
             name: 'configure-biometric',
             component: () => import('@/views/ConfigBiometricView.vue')
         }
