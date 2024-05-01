@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import SpareComponent from "@/components/SpareComponent.vue";
 
 const router = useRouter()
 
@@ -48,6 +49,10 @@ const calculateSpeech = () => {
             `Fantastisk! Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
         )
     }
+}
+
+const openSpare = () => {
+  calculateSpeech()
 }
 
 onMounted(() => {
@@ -140,12 +145,14 @@ const completeGoal = () => {
                 />
             </a>
         </div>
-        <InteractiveSpare
-            :png-size="10"
-            :speech="motivation"
-            direction="left"
-            :isModalOpen="isModalOpen"
-        />
+      <SpareComponent
+          :speech="motivation"
+          :png-size="15"
+          :imageDirection="'left'"
+          :direction="'right'"
+          @openSpare="openSpare"
+          class="mb-5"
+      ></SpareComponent>
     </div>
 </template>
 

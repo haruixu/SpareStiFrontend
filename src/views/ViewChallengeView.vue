@@ -5,11 +5,12 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import SpareComponent from "@/components/SpareComponent.vue";
 
 const router = useRouter()
 
 const challengeInstance = ref<Challenge>({
-    title: 'Test titel',
+    title: 'Tittel',
     perPurchase: 20,
     saved: 0,
     target: 100,
@@ -28,8 +29,6 @@ const completion = computed(
 const isCompleted = computed(() => challengeInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
-
-const isModalOpen = ref(false)
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -53,6 +52,10 @@ const calculateSpeech = () => {
             `Fantastisk! Du har nådd målet ditt! Du har spart ${challengeInstance.value.saved}kr av ${challengeInstance.value.target}kr, som er ${timesSaved.value} ganger.`
         )
     }
+}
+
+const openSpare = () => {
+    calculateSpeech()
 }
 
 onMounted(() => {
@@ -142,12 +145,14 @@ const completeChallenge = () => {
                 </button>
             </div>
         </div>
-        <InteractiveSpare
-            :png-size="10"
-            :speech="motivation"
-            direction="left"
-            :isModalOpen="isModalOpen"
-        />
+      <SpareComponent
+          :speech="motivation"
+          :png-size="15"
+          :imageDirection="'left'"
+          :direction="'right'"
+          @openSpare="openSpare"
+          class="mb-5"
+      ></SpareComponent>
     </div>
 </template>
 
