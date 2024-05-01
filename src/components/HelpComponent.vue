@@ -1,34 +1,30 @@
 <template>
-  <div class="fixed bottom-5 left-5">
-    <div @click="handleHelpClick" class="hover:cursor-pointer">
-      <img alt="Hjelp" class="w-1/12" src="@/assets/hjelp.png" />
+    <div class="fixed bottom-5 left-5">
+        <div @click="handleHelpClick" class="hover:cursor-pointer">
+            <img alt="Hjelp" class="w-1/12" src="@/assets/hjelp.png" />
+        </div>
     </div>
-  </div>
-  <InteractiveSpare
-      :speech="speech"
-      :direction="'right'"
-      :pngSize="15"
-      :isModalOpen="isModalOpen"
-      class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto"
-  ></InteractiveSpare>
+    <InteractiveSpare
+        :speech="speech"
+        :direction="'right'"
+        :pngSize="15"
+        :isModalOpen="isModalOpen"
+        class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto"
+    ></InteractiveSpare>
 </template>
 
 <script setup lang="ts">
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import { ref } from 'vue'
 
-import InteractiveSpare from "@/components/InteractiveSpare.vue";
-import {ref} from "vue";
+const isModalOpen = ref(false)
 
-const isModalOpen = ref(false);
+defineProps(['speech'])
 
-defineProps([
-  'speech',
-])
-
-const emit = defineEmits(['openHelp']);
+const emit = defineEmits(['openHelp'])
 
 function handleHelpClick() {
-  emit('openHelp');
-  isModalOpen.value = true;
+    emit('openHelp')
+    isModalOpen.value = true
 }
-
 </script>

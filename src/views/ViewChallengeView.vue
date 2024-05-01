@@ -5,7 +5,7 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
-import SpareComponent from "@/components/SpareComponent.vue";
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const router = useRouter()
 
@@ -145,14 +145,14 @@ const completeChallenge = () => {
                 </button>
             </div>
         </div>
-      <SpareComponent
-          :speech="motivation"
-          :png-size="15"
-          :imageDirection="'left'"
-          :direction="'right'"
-          @openSpare="openSpare"
-          class="mb-5"
-      ></SpareComponent>
+        <SpareComponent
+            :speech="motivation"
+            :png-size="15"
+            :imageDirection="'left'"
+            :direction="'right'"
+            @openSpare="openSpare"
+            class="mb-5"
+        ></SpareComponent>
     </div>
 </template>
 

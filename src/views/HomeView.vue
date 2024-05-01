@@ -17,10 +17,7 @@
         </div>
         <savings-path :challenges="challenges" :goal="goal"></savings-path>
     </div>
-    <HelpComponent
-        :speech="helpSpeech"
-        @openHelp="openHelp"
-    ></HelpComponent>
+    <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <script setup lang="ts">
@@ -32,8 +29,8 @@ import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import router from '@/router'
-import SpareComponent from "@/components/SpareComponent.vue";
-import HelpComponent from "@/components/HelpComponent.vue";
+import SpareComponent from '@/components/SpareComponent.vue'
+import HelpComponent from '@/components/HelpComponent.vue'
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
@@ -69,7 +66,7 @@ const firstLoggedInSpeech = () => {
     }
 }
 const openHelp = () => {
-  helpSpeech.value = [
+    helpSpeech.value = [
         'Heisann, jeg er Spare!',
         'Jeg skal hjelpe deg med å spare penger.',
         'Du kan legge til sparemål og spareutfordringer!',

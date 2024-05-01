@@ -7,7 +7,7 @@ import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
-import SpareComponent from "@/components/SpareComponent.vue";
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
@@ -43,14 +43,16 @@ onMounted(async () => {
 })
 
 const openSpare = () => {
-  let welcomeSpeechShown = localStorage.getItem('welcomeSpeechShown');
+    let welcomeSpeechShown = localStorage.getItem('welcomeSpeechShown')
 
-  if (welcomeSpeechShown !== 'true') {
-    speech.value = [`Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
-      'Her kan du finne en oversikt over dine profilinstillinger!',
-      'Du kan også se dine fullførte sparemål og utfordringer!']
-    localStorage.setItem('welcomeSpeechShown', 'true');
-  }
+    if (welcomeSpeechShown !== 'true') {
+        speech.value = [
+            `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
+            'Her kan du finne en oversikt over dine profilinstillinger!',
+            'Du kan også se dine fullførte sparemål og utfordringer!'
+        ]
+        localStorage.setItem('welcomeSpeechShown', 'true')
+    }
 }
 </script>
 
@@ -96,14 +98,14 @@ const openSpare = () => {
             </div>
 
             <div class="flex flex-col">
-              <SpareComponent
-                  :speech="speech"
-                  :png-size="15"
-                  :imageDirection="'left'"
-                  :direction="'right'"
-                  @openSpare="openSpare"
-                  class="mb-5"
-              ></SpareComponent>
+                <SpareComponent
+                    :speech="speech"
+                    :png-size="15"
+                    :imageDirection="'left'"
+                    :direction="'right'"
+                    @openSpare="openSpare"
+                    class="mb-5"
+                ></SpareComponent>
                 <div class="flex flex-row justify-between mx-4">
                     <p class="font-bold">Fullførte sparemål</p>
                     <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />
