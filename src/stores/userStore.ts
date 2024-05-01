@@ -39,7 +39,7 @@ export const useUserStore = defineStore('user', () => {
             })
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('refreshToken', response.data.refreshToken)
+                localStorage.setItem('spareStiUsername', username)
 
                 user.value.firstname = firstname
                 user.value.lastname = lastname
@@ -61,7 +61,7 @@ export const useUserStore = defineStore('user', () => {
             })
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('refreshToken', response.data.refreshToken)
+                localStorage.setItem('spareStiUsername', username)
 
                 user.value.firstname = response.data.firstName
                 user.value.lastname = response.data.lastName
@@ -82,7 +82,7 @@ export const useUserStore = defineStore('user', () => {
     const logout = () => {
         console.log('Logging out')
         sessionStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('spareStiUsername')
         user.value = defaultUser
         console.log(user.value)
         router.push({ name: 'login' })
@@ -212,7 +212,6 @@ export const useUserStore = defineStore('user', () => {
                 })
                 .then((response) => {
                     sessionStorage.setItem('accessToken', response.data.accessToken)
-                    localStorage.setItem('refreshToken', response.data.refreshToken)
 
                     user.value.firstname = response.data.firstName
                     user.value.lastname = response.data.lastName
