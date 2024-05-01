@@ -76,30 +76,40 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
+import type { AxiosResponse } from 'axios'
+
+interface Challenge {
+    title: string
+    target: number
+    due: string
+    dueFull: string
+    isAccepted: boolean
+    perPurchase?: number
+    description?: string
+    type?: string
+}
 
 const showModal = ref(true)
-const generatedChallenges = reactive([])
+const generatedChallenges = reactive<Challenge[]>([])
 
 async function fetchGeneratedChallenges() {
     try {
-        const response = await authInterceptor.get('/challenges/generate')
+        const response: AxiosResponse = await authInterceptor.get('/challenges/generate')
         if (response.status === 200) {
             generatedChallenges.splice(
                 0,
                 generatedChallenges.length,
-                ...response.data.map((ch) => ({
+                ...response.data.map((ch: any) => ({
                     ...ch,
                     due: new Date(ch.due).toISOString().split('T')[0],
                     dueFull: ch.due,
-                    accepted: false
+                    isAccepted: false
                 }))
             )
-            console.log('Generated challenges:', generatedChallenges)
         } else {
-            console.log('No challenges found for the user.')
             generatedChallenges.splice(0, generatedChallenges.length)
         }
     } catch (error) {
@@ -112,7 +122,7 @@ onMounted(() => {
     localStorage.setItem('lastModalShow', Date.now().toString())
 })
 
-function acceptChallenge(challenge) {
+function acceptChallenge(challenge: Challenge) {
     if (!challenge) {
         console.error('No challenge data provided to acceptChallenge function.')
         return
@@ -128,8 +138,7 @@ function acceptChallenge(challenge) {
     }
     authInterceptor
         .post('/challenges', postData)
-        .then((response) => {
-            console.log('Challenge accepted and saved:', response.data)
+        .then((response: AxiosResponse) => {
             challenge.isAccepted = true
         })
         .catch((error) => {
