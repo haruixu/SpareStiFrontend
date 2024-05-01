@@ -6,6 +6,7 @@ import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import SpareComponent from '@/components/SpareComponent.vue'
+import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
@@ -23,8 +24,11 @@ const isCompleted = computed(() => goalInstance.value.completedOn != null)
 const motivation = ref<string[]>([])
 const isModalOpen = ref(false)
 
+const helpSpeech = ref<string[]>([])
+
 const openInteractiveSpare = () => {
     isModalOpen.value = true
+    calculateSpeech()
 }
 
 const calculateSpeech = () => {
@@ -51,10 +55,6 @@ const calculateSpeech = () => {
     }
 }
 
-const openSpare = () => {
-    calculateSpeech()
-}
-
 onMounted(() => {
     const goalId = router.currentRoute.value.params.id
     if (!goalId) return router.push({ name: 'goals' })
@@ -76,6 +76,15 @@ const completeGoal = () => {
         .catch((error) => {
             console.error(error)
         })
+}
+
+const openHelp = () => {
+  helpSpeech.value = [
+    `Her kan du se en oversikt over ditt sparemål: ${goalInstance.value.title}`,
+    'Du kan redigere målet, markere det som ferdig eller slette det',
+    'Du kan også se hvor mye du har spart av målet ditt, og hvor mye du har igjen',
+    `Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr, bra jobbet 🥂`
+  ]
 }
 </script>
 
@@ -136,24 +145,16 @@ const completeGoal = () => {
                 </button>
             </div>
         </div>
-        <div class="flex items-center">
-            <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
-                <img
-                    alt="Spare"
-                    class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
-                    src="@/assets/spare.png"
-                />
-            </a>
-        </div>
         <SpareComponent
             :speech="motivation"
             :png-size="15"
             :imageDirection="'left'"
             :direction="'right'"
-            @openSpare="openSpare"
+            @openSpare="openInteractiveSpare"
             class="mb-5"
         ></SpareComponent>
     </div>
+  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped>
