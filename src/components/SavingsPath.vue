@@ -10,6 +10,7 @@
             </span>
         </div>
         <button
+            v-if="!allChallengesCompleted()"
             class="h-auto w-auto absolute flex text-center self-end mr-10 md:mr-20 text-wrap shadow-sm shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32 top-60 z-50 p-2 text-xs md:text-sm"
             @click="scrollToFirstUncompleted"
             v-show="!isAtFirstUncompleted"
@@ -35,12 +36,12 @@
                 <!-- Challenge Row -->
                 <div
                     :class="{
-                        'justify-end md:mx-auto md:justify-between': index % 2 === 1,
-                        'justify-start md:justify-between md:mx-auto': index % 2 === 0
+                        'justify-center mx-auto md:justify-between': index % 2 === 1,
+                        'justify-center md:justify-between mx-auto': index % 2 === 0
                     }"
-                    class="flex flex-row w-4/5 gap-8"
+                    class="flex flex-row w-full md:w-4/5 justify-start gap-4 md:gap-8 "
                 >
-                    <div class="right-auto just">
+                    <div class="flex">
                         <img-gif-template
                             :index="index"
                             :mod-value="1"
@@ -57,83 +58,8 @@
                             url="src/assets/archerSpare.gif"
                         ></img-gif-template>
                     </div>
-                    <!-- Challenge Icon and Details -->
+                    <card-challenge-savings-path :goal="goal!" :challenge="challenge"></card-challenge-savings-path>
                     <div class="flex">
-                        <!-- Challenge Icon -->
-                        <div class="flex flex-col items-center gap-4">
-                            <div class="flex flex-row flex-nowrap">
-                                <p
-                                    class="text-center text-wrap text-xs md:text-lg"
-                                    data-cy="challenge-title"
-                                >
-                                    {{ challenge.title }}
-                                </p>
-                                <display-info-for-challenge-or-goal
-                                    :goal="goal"
-                                    :challenge="challenge"
-                                    :is-challenge="true"
-                                ></display-info-for-challenge-or-goal>
-                            </div>
-                            <img
-                                @click="editChallenge(challenge)"
-                                :data-cy="'challenge-icon-' + challenge.id"
-                                :src="getChallengeIcon(challenge)"
-                                class="max-w-20 max-h-20 cursor-pointer hover:scale-125"
-                                :alt="challenge.title"
-                            />
-                            <!-- Progress Bar, if the challenge is not complete -->
-                            <div
-                                v-if="
-                                    challenge.completion != undefined && challenge.completion < 100
-                                "
-                                class="flex-grow w-full mt-2"
-                            >
-                                <div class="flex flex-row ml-5 md:ml-10 justify-center">
-                                    <div class="flex flex-col">
-                                        <div
-                                            class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700"
-                                        >
-                                            <div
-                                                class="bg-green-600 h-2.5 rounded-full"
-                                                data-cy="challenge-progress"
-                                                :style="{
-                                                    width:
-                                                        (challenge.saved / challenge.target) * 100 +
-                                                        '%'
-                                                }"
-                                            ></div>
-                                        </div>
-                                        <div class="text-center text-xs md:text-base">
-                                            {{ challenge.saved }}kr / {{ challenge.target }}kr
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        @click="incrementSaved(challenge)"
-                                        :data-cy="'increment-challenge' + challenge.id"
-                                        type="button"
-                                        class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                            </div>
-                            <span v-else class="text-center text-xs md:text-base"
-                                >Ferdig: {{ challenge.saved }}</span
-                            >
-                        </div>
-                        <!-- Check Icon -->
-                        <div
-                            v-if="challenge.completion !== undefined && challenge.completion >= 100"
-                            class="md:max-w-10 min-w-4 max-w-6 max-h-6 w-full h-auto md:max-h-10 min-h-4"
-                        >
-                            <img src="@/assets/completed.png" alt="" />️
-                        </div>
-                        <div v-else class="max-w-6 max-h-6">
-                            <img src="@/assets/pending.png" alt="" />️
-                        </div>
-                    </div>
-                    <div class="">
                         <img-gif-template
                             :index="index"
                             :mod-value="0"
@@ -156,7 +82,7 @@
                     <img
                         :src="getPigStepsIcon()"
                         :class="{ 'transform scale-x-[-1]': index % 2 === 0 }"
-                        class="w-20 h-20"
+                        class="w-20 md:w-24 lg:w-32 h-20 md:h-24 lg:h-32"
                         alt="Pig Steps"
                     />
                 </div>
@@ -172,6 +98,7 @@
                     <button class="text-2xl ml-10 rounded-full" @click="addSpareUtfordring">
                         +
                     </button>
+                    <span class="">Legg til <br />Spareutfordring</span>
                 </div>
                 <!-- Finish line -->
             </div>
@@ -188,12 +115,6 @@
                     <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
                     <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
                 </div>
-                <display-info-for-challenge-or-goal
-                    class="col-span-2"
-                    :goal="goal"
-                    :challenge="null"
-                    :is-challenge="false"
-                ></display-info-for-challenge-or-goal>
             </div>
             <div class="flex flex-col items-end">
                 <div @click="goToEditGoal" class="cursor-pointer">
@@ -234,13 +155,11 @@ import type { Goal } from '@/types/goal'
 import confetti from 'canvas-confetti'
 import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
-import { useChallengeStore } from '@/stores/challengeStore'
-import DisplayInfoForChallengeOrGoal from '@/components/DisplayInfoForChallengeOrGoal.vue'
 import ImgGifTemplate from '@/components/ImgGifTemplate.vue'
+import CardChallengeSavingsPath from "@/components/CardChallengeSavingsPath.vue";
 
 const router = useRouter()
 const goalStore = useGoalStore()
-const challengeStore = useChallengeStore()
 
 interface Props {
     challenges: Challenge[]
@@ -251,12 +170,25 @@ const props = defineProps<Props>()
 const challenges = ref<Challenge[]>(props.challenges)
 const goal = ref<Goal | null | undefined>(props.goal)
 
+
 onMounted(async () => {
     await goalStore.getUserGoals()
     window.addEventListener('resize', handleWindowSizeChange)
     handleWindowSizeChange()
     sortChallenges()
+    allChallengesCompleted()
 })
+
+const allChallengesCompleted = () => {
+  // Assuming challenges.value is an array of challenge objects
+  for (const challenge of challenges.value) {
+    if (challenge.completion !== 100) {
+      return false; // If any challenge is not completed, return false
+    }
+  }
+  return true; // If all challenges are completed, return true
+};
+
 
 const sortChallenges = () => {
     challenges.value.sort((a, b) => {
@@ -311,21 +243,25 @@ function scrollToFirstUncompleted() {
     }
 }
 
+
 onMounted(() => {
-    const container = containerRef.value
+  // Delay the execution of the following logic by 300ms
+  setTimeout(() => {
+    const container = containerRef.value;
     if (container) {
-        container.addEventListener('scroll', () => {
-            if (!firstUncompletedRef.value) return
-            const containerRect = container.getBoundingClientRect()
-            const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect()
-            isAtFirstUncompleted.value = !(
-                firstUncompletedRect.top > containerRect.bottom ||
-                firstUncompletedRect.bottom < containerRect.top
-            )
-        })
+      container.addEventListener('scroll', () => {
+        if (!firstUncompletedRef.value) return;
+        const containerRect = container.getBoundingClientRect();
+        const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect();
+        isAtFirstUncompleted.value = !(
+            firstUncompletedRect.top > containerRect.bottom ||
+            firstUncompletedRect.bottom < containerRect.top
+        );
+      });
     }
-    scrollToFirstUncompleted()
-})
+    scrollToFirstUncompleted();
+  }, 300); // Timeout set to 300 milliseconds
+});
 
 onUnmounted(() => {
     const container = containerRef.value
@@ -373,6 +309,7 @@ watch(
         if (newChallenges !== oldChallenges) {
             challenges.value = newChallenges
             sortChallenges()
+            allChallengesCompleted()
             console.log('Updated challenges:', challenges.value)
         }
     },
@@ -393,34 +330,6 @@ const addSpareUtfordring = () => {
     })
 }
 
-// Increment saved amount
-const incrementSaved = async (challenge: Challenge) => {
-    // Safely increment the saved amount, ensuring it exists
-    challenge.saved += challenge.perPurchase
-
-    // Check if the saved amount meets or exceeds the target
-    if (challenge.saved >= challenge.target) {
-        challenge.completion = 100
-        await challengeStore.completeUserChallenge(challenge)
-    }
-
-    console.log('Incrementing saved amount for:', challenge)
-
-    // Safely update the goal's saved value, ensuring goal.value exists and is not null
-    if (goal.value) {
-        goal.value.saved = (goal.value.saved || 0) + challenge.perPurchase
-        // Update the goal in the store, ensuring goal is not null or undefined
-        if (goal.value) {
-            await goalStore.editUserGoal(goal.value)
-        }
-    } else {
-        console.error('No goal selected for incrementing saved value.')
-    }
-
-    // Update the challenge in the store
-    await challengeStore.editUserChallenge(challenge)
-}
-
 const recalculateAndAnimate = () => {
     nextTick(() => {
         if (iconRef.value && containerRef.value && targetRef.value) {
@@ -429,10 +338,6 @@ const recalculateAndAnimate = () => {
             console.error('Element references are not ready.')
         }
     })
-}
-
-const editChallenge = (challenge: Challenge) => {
-    router.push(`/spareutfordringer/${challenge.id}`)
 }
 
 const editGoal = (goal: Goal) => {
@@ -577,10 +482,6 @@ const animateIcon = () => {
         })
 }
 
-// Helper methods to get icons
-const getChallengeIcon = (challenge: Challenge): string => {
-    return `src/assets/${challenge.type.toLowerCase()}.png`
-}
 
 const getGoalIcon = (goal: Goal): string => {
     return `src/assets/${goal.title.toLowerCase()}.png`

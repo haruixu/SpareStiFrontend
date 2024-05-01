@@ -51,26 +51,20 @@
                     class="flex flex-row items-center mx-auto h-20 w-4/5 md:w-full bg-black-400 gap-4"
                 >
                     <div class="flex flex-1 overflow-x-auto">
-                        <div v-for="index in 6" :key="index" class="min-w-max mx-auto">
-                            <div class="flex flex-col justify-around items-center">
-                                <span class="text-black text-xs md:text-1xl font-bold">{{
-                                    currentStreak! - ((currentStreak! % 7) - index)
-                                }}</span>
-                                <!-- Conditional rendering for streak images -->
-                                <img
-                                    v-if="index - 1 < currentStreak! % 7"
-                                    src="@/assets/pengesekkStreak.png"
-                                    alt="challenge completed"
-                                    class="max-h-6 max-w-6 md:max-h-10 md:max-w-10"
-                                />
-                                <img
-                                    v-else
-                                    src="@/assets/pengesekkStreak.png"
-                                    alt="challenge not completed"
-                                    class="max-h-6 max-w-6 md:max-h-10 md:max-w-10 grayscale"
-                                />
-                            </div>
+                      <div v-for="index in 7" :key="index" class="min-w-max mx-auto">
+                        <div class="flex flex-col justify-around items-center">
+                          <!-- Display the current streak day number adjusted by index -->
+                          <span class="text-black text-xs md:text-1xl font-bold">
+                {{ currentStreak! - ((currentStreak! % 7) + 1 - index) }}
+            </span>
+                          <!-- Display images based on completion -->
+                          <img
+                              src="@/assets/pengesekkStreak.png"
+                              :alt="index <= currentStreak! % 7 ? 'challenge completed' : 'challenge not completed'"
+                              :class="{'max-h-6 max-w-6 md:max-h-10 md:max-w-10': true, 'grayscale': index-1 > currentStreak! % 7}"
+                          />
                         </div>
+                      </div>
                     </div>
                 </div>
             </div>

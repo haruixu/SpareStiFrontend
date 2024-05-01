@@ -42,7 +42,11 @@ onMounted(async () => {
     await challengeStore.getUserChallenges()
     challenges.value = challengeStore.challenges
     goals.value = goalStore.goals
-    goal.value = goals.value[0]
+    for (const g of goals.value){
+      if (g.priority==1){
+        goal.value = g;
+      }
+    }
     console.log('Goals:', goals.value)
 })
 
