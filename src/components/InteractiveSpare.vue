@@ -51,14 +51,12 @@ interface Props {
     direction: 'left' | 'right'
     pngSize: number
     isModalOpen: boolean
-    notification: boolean
 }
 
 const props = defineProps<Props>()
 
 const speech = ref<string[]>(props.speech || [])
 const isModalOpen = ref(props.isModalOpen)
-const notification = ref(props.notification)
 
 // Watch the speech prop for changes
 watch(
@@ -69,7 +67,6 @@ watch(
             speech.value = newVal // Update the reactive speech array
             currentSpeechIndex.value = 0 // Reset the speech index
             isModalOpen.value = true // Open the modal if new speech is available
-            notification.value = true // Show the notification if a speech is available
         } else {
             speech.value = [] // Clear the speech array if null is received
             modalClosed() // Close the modal if no speech is available
@@ -92,7 +89,6 @@ const nextSpeech = () => {
         } else {
             // Close the modal if there are no speeches left
             modalClosed()
-            notification.value = false // Remove the notification if no speech is available
         }
     }
 }
