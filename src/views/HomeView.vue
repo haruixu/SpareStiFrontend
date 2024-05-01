@@ -1,7 +1,11 @@
 <template>
     <div class="flex flex-col items-center max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
         <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/4 md:pl-1 mt-10">
-            <SpareComponent></SpareComponent>
+            <SpareComponent
+                :speech="speech"
+                :png-size="15"
+                :direction="'left'"
+            ></SpareComponent>
             <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
@@ -13,7 +17,7 @@
         <savings-path :challenges="challenges" :goal="goal"></savings-path>
     </div>
     <HelpComponent
-        :speech="speech"
+        :speech="helpSpeech"
         @openHelp="openHelp"
     ></HelpComponent>
 </template>
@@ -34,6 +38,7 @@ const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
 const isModalOpen = ref(false)
 const speech = ref<string[]>([])
+const helpSpeech = ref<string[]>([])
 
 const challenges = ref<Challenge[]>([])
 const goals = ref<Goal[]>([])
@@ -63,7 +68,7 @@ const firstLoggedInSpeech = () => {
     }
 }
 const openHelp = () => {
-    speech.value = [
+  helpSpeech.value = [
         'Heisann, jeg er Spare!',
         'Jeg skal hjelpe deg med å spare penger.',
         'Du kan legge til sparemål og spareutfordringer!',
@@ -71,19 +76,3 @@ const openHelp = () => {
     ]
 }
 </script>
-
-<style>
-@keyframes jump {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.jump {
-    animation: jump 0.6s infinite ease-in-out;
-}
-</style>
