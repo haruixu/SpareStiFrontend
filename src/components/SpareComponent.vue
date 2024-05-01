@@ -2,16 +2,16 @@
   <div>
     <!-- This image shows only if new speech is available -->
     <img
-        v-if="notification"
+        v-if="false"
         alt="Varsel"
-        class="jump scale-x-[-1] w-1/12 h-1/12 ml-52 cursor-pointer z-10"
+        class="jump w-1/12 h-1/12 ml-52 cursor-pointer z-10"
         src="@/assets/varsel.png"
     />
 
     <!-- This is the clickable image that will trigger the modal to open -->
     <div class="flex items-center"
          :class="{
-                    'flex-row': imageDirection === 'right',
+                    'flex-row scale-x-[-1]': imageDirection === 'right',
                     'flex-row-reverse': imageDirection === 'left'
             }">
       <a @click="handleSpareClick" class="hover:bg-transparent z-20">
@@ -29,7 +29,6 @@
         :speech="speech"
         :png-size="pngSize"
         :direction="direction"
-        :notification="notification"
     ></InteractiveSpare>
   </div>
 </template>
@@ -45,14 +44,13 @@ defineProps([
   'pngSize',
   'direction',
   'imageDirection',
-  'notification'
 ])
 
-const emit = defineEmits(['openSpare']);
+const emit = defineEmits(['openSpare'])
 
 function handleSpareClick() {
-  emit('openSpare');
-  isModalOpen.value = true;
+  emit('openSpare')
+  isModalOpen.value = true
 }
 </script>
 
@@ -60,14 +58,14 @@ function handleSpareClick() {
 @keyframes jump {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0)
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-10px)
   }
 }
 
 .jump {
-  animation: jump 0.6s infinite ease-in-out;
+  animation: jump 0.6s infinite ease-in-out
 }
 </style>
