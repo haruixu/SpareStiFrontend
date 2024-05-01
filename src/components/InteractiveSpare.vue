@@ -31,7 +31,7 @@
             <div class="-mb-5 mt-8 text-xs text-gray-500">
                 <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
                 <a
-                    @click="clearSpeeches"
+                    @click="modalClosed"
                     class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
                 >
                     Skip
@@ -51,12 +51,14 @@ interface Props {
     direction: 'left' | 'right'
     pngSize: number
     isModalOpen: boolean
+    notification: boolean
 }
 
 const props = defineProps<Props>()
 
 const speech = ref<string[]>(props.speech || [])
 const isModalOpen = ref(props.isModalOpen)
+const notification = ref(props.notification)
 
 // Watch the speech prop for changes
 watch(
@@ -67,9 +69,10 @@ watch(
             speech.value = newVal // Update the reactive speech array
             currentSpeechIndex.value = 0 // Reset the speech index
             isModalOpen.value = true // Open the modal if new speech is available
+            notification.value = true // Show the notification if a speech is available
         } else {
             speech.value = [] // Clear the speech array if null is received
-            isModalOpen.value = false // Close the modal if there's no speech
+            modalClosed() // Close the modal if no speech is available
         }
     }
 )
@@ -87,10 +90,9 @@ const nextSpeech = () => {
             // Move to the next speech or reset to the beginning if the current index is out of range
             currentSpeechIndex.value = currentSpeechIndex.value % speech.value.length
         } else {
-            // If no speeches left, reset index to indicate no available speech
-            currentSpeechIndex.value = -1
             // Close the modal if there are no speeches left
             modalClosed()
+            notification.value = false // Remove the notification if no speech is available
         }
     }
 }
@@ -106,14 +108,9 @@ const bubbleDirection = computed(() => {
     return props.direction === 'right' ? 'btm-left-in' : 'btm-right-in'
 })
 
-const clearSpeeches = () => {
-    currentSpeechIndex.value = -1
-    modalClosed()
-}
-
 const modalClosed = () => {
-    isModalOpen.value = false
     currentSpeechIndex.value = -1
+    isModalOpen.value = false
 }
 </script>
 <style scoped>
