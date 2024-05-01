@@ -101,7 +101,6 @@ const openSpare = () => {
                   :png-size="15"
                   :imageDirection="'left'"
                   :direction="'right'"
-                  :notification="newSpeechAvailable"
                   @openSpare="openSpare"
                   class="mb-5"
               ></SpareComponent>
