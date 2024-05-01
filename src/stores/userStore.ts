@@ -39,7 +39,6 @@ export const useUserStore = defineStore('user', () => {
             })
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('spareStiUsername', username)
 
                 user.value.firstname = firstname
                 user.value.lastname = lastname
@@ -61,11 +60,16 @@ export const useUserStore = defineStore('user', () => {
             })
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('spareStiUsername', username)
 
                 user.value.firstname = response.data.firstName
                 user.value.lastname = response.data.lastName
                 user.value.username = response.data.username
+
+                authInterceptor('/profile').then((profileResponse) => {
+                    if (profileResponse.data.hasPasskey === true) {
+                        localStorage.setItem('spareStiUsername', username)
+                    }
+                })
 
                 checkIfUserConfigured()
 
@@ -84,7 +88,6 @@ export const useUserStore = defineStore('user', () => {
         sessionStorage.removeItem('accessToken')
         localStorage.removeItem('spareStiUsername')
         user.value = defaultUser
-        console.log(user.value)
         router.push({ name: 'login' })
     }
 
@@ -233,8 +236,8 @@ export const useUserStore = defineStore('user', () => {
     const checkIfUserConfigured = async () => {
         await authInterceptor('/config')
             .then((response) => {
-                user.value.isConfigured = response.data.challengeConfig != null
                 console.log('User configured: ' + user.value.isConfigured)
+                user.value.isConfigured = response.data.challengeConfig != null
             })
             .catch(() => {
                 user.value.isConfigured = false
