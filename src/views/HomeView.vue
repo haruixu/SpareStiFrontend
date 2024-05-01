@@ -58,6 +58,7 @@ import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import router from '@/router'
+import GeneratedChallengesModal from '@/components/GeneratedChallengesModal.vue'
 
 const showModal = ref(false)
 
