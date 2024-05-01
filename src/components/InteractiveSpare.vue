@@ -1,43 +1,78 @@
 <template>
-    <div
-        class="flex items-center mr-10 max-w-[60vh]"
-        :class="{ 'flex-row': direction === 'right', 'flex-row-reverse': direction === 'left' }"
-    >
-        <!-- Image -->
-        <img
-            :src="spareImageSrc"
-            :style="{ width: pngSize + 'rem', height: pngSize + 'rem' }"
-            :class="['object-contain', ...imageClass]"
-            alt="Sparemannen"
-            class="w-dynamic h-dynamic object-contain"
-            @click="nextSpeech"
-        />
+    <ModalComponent :is-modal-open="isModalOpen" @close="isModalOpen = false">
+        <template v-slot:input>
+            <div
+                class="spareDiv flex items-center mr-10 max-w-[60vh] cursor-pointer"
+                :class="{
+                    'flex-row': direction === 'right',
+                    'flex-row-reverse': direction === 'left'
+                }"
+                @click="nextSpeech"
+            >
+                <!-- Image -->
+                <img
+                    :src="spareImageSrc"
+                    :style="{ width: pngSize + 'rem', height: pngSize + 'rem' }"
+                    :class="['object-contain', ...imageClass]"
+                    alt="Spare"
+                    class="w-dynamic h-dynamic object-contain"
+                />
 
-        <!-- Speech Bubble -->
-        <div
-            v-if="currentSpeech"
-            :class="`mb-40 inline-block relative w-64 bg-white p-4 rounded-3xl border border-gray-600 tri-right round ${bubbleDirection}`"
-        >
-            <div class="text-left leading-6">
-                <p class="m-0">{{ currentSpeech }}</p>
+                <!-- Speech Bubble -->
+                <div
+                    v-if="currentSpeech"
+                    :class="`mb-40 inline-block relative w-64 bg-white p-4 rounded-3xl border border-gray-600 tri-right round ${bubbleDirection}`"
+                >
+                    <div class="text-left leading-6">
+                        <p class="speech m-0">{{ currentSpeech }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="-mb-5 mt-8 text-xs text-gray-500">
+                <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
+                <a
+                    @click="clearSpeeches"
+                    class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
+                >
+                    Skip
+                </a>
+            </div>
+        </template>
+    </ModalComponent>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref } from 'vue'
+import { computed, defineProps, ref, watch } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
+import ModalComponent from '@/components/ModalComponent.vue'
 
 interface Props {
-    speech?: string[] // Using TypeScript's type for speech as an array of strings
-    direction: 'left' | 'right' // This restricts direction to either 'left' or 'right'
-    pngSize: number // Just declaring the type directly since it's simple
+    speech: string[] | null
+    direction: 'left' | 'right'
+    pngSize: number
+    isModalOpen: boolean
 }
 
 const props = defineProps<Props>()
 
-const speech = ref<String[]>(props.speech || [])
+const speech = ref<string[]>(props.speech || [])
+const isModalOpen = ref(props.isModalOpen)
+
+// Watch the speech prop for changes
+watch(
+    () => props.speech,
+    (newVal) => {
+        if (newVal) {
+            // Check if the new value is not null
+            speech.value = newVal // Update the reactive speech array
+            currentSpeechIndex.value = 0 // Reset the speech index
+            isModalOpen.value = true // Open the modal if new speech is available
+        } else {
+            speech.value = [] // Clear the speech array if null is received
+            isModalOpen.value = false // Close the modal if there's no speech
+        }
+    }
+)
 
 const currentSpeechIndex = ref(0)
 const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])
@@ -54,6 +89,8 @@ const nextSpeech = () => {
         } else {
             // If no speeches left, reset index to indicate no available speech
             currentSpeechIndex.value = -1
+            // Close the modal if there are no speeches left
+            modalClosed()
         }
     }
 }
@@ -68,6 +105,16 @@ const imageClass = computed(() => {
 const bubbleDirection = computed(() => {
     return props.direction === 'right' ? 'btm-left-in' : 'btm-right-in'
 })
+
+const clearSpeeches = () => {
+    currentSpeechIndex.value = -1
+    modalClosed()
+}
+
+const modalClosed = () => {
+    isModalOpen.value = false
+    currentSpeechIndex.value = -1
+}
 </script>
 <style scoped>
 /* CSS talk bubble */

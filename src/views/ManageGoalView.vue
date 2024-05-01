@@ -99,7 +99,7 @@ const updateGoal = () => {
     authInterceptor
         .put(`/goals/${goalInstance.value.id}`, goalInstance.value)
         .then(() => {
-            router.push({ name: 'goals' })
+            router.back()
         })
         .catch((error) => {
             console.error(error)

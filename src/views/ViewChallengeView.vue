@@ -29,6 +29,8 @@ const isCompleted = computed(() => challengeInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
 
+const isModalOpen = ref(false)
+
 const calculateSpeech = () => {
     if (completion.value === 0) {
         return motivation.value.push(
@@ -140,7 +142,12 @@ const completeChallenge = () => {
                 </button>
             </div>
         </div>
-        <InteractiveSpare :png-size="10" :speech="motivation" direction="left" />
+        <InteractiveSpare
+            :png-size="10"
+            :speech="motivation"
+            direction="left"
+            :isModalOpen="isModalOpen"
+        />
     </div>
 </template>
 

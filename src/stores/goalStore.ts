@@ -5,13 +5,19 @@ import authInterceptor from '@/services/authInterceptor'
 
 export const useGoalStore = defineStore('goal', () => {
     const goals = ref<Goal[]>([])
+    const priorityGoal = ref<Goal | null>(null)
     const getUserGoals = async () => {
         try {
             const response = await authInterceptor('/goals')
             if (response.data && response.data.content) {
                 goals.value = response.data.content
+                for (const goal of goals.value) {
+                    if (goal.priority) {
+                        priorityGoal.value = goal
+                        break
+                    }
+                }
                 console.log(response.data.content)
-                console.log('Fetched Goals:', goals.value)
             } else {
                 goals.value = []
                 console.error('No goal content found:', response.data)
@@ -21,6 +27,7 @@ export const useGoalStore = defineStore('goal', () => {
             goals.value = [] // Ensure challenges is always an array
         }
     }
+
     // Assuming 'challenges' is a reactive state in your store that holds the list of challenges
     const editUserGoal = async (goal: Goal) => {
         if (!goal || goal.id === null) {
@@ -45,7 +52,8 @@ export const useGoalStore = defineStore('goal', () => {
     }
     return {
         goals,
+        priorityGoal,
         getUserGoals,
-        editUserGoal
+        editUserGoal,
     }
 })

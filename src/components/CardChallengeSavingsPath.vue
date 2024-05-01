@@ -102,8 +102,6 @@ const incrementSaved = async (challenge: Challenge) => {
     await challengeStore.completeUserChallenge(challenge)
   }
 
-  console.log('Incrementing saved amount for:', challenge)
-
   // Safely update the goal's saved value, ensuring goal.value exists and is not null
   if (props.goal) {
     props.goal.saved = (props.goal.saved || 0) + challenge.perPurchase
@@ -120,7 +118,7 @@ const incrementSaved = async (challenge: Challenge) => {
 }
 
 const editChallenge = (challenge: Challenge) => {
-  router.push(`/spareutfordringer/${challenge.id}`)
+  router.push(`/spareutfordringer/rediger/${challenge.id}`)
 }
 // Helper methods to get icons
 const getChallengeIcon = (challenge: Challenge): string => {

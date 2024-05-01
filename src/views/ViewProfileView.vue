@@ -2,7 +2,7 @@
 import authInterceptor from '@/services/authInterceptor'
 import { computed, onMounted, ref } from 'vue'
 import type { Profile } from '@/types/profile'
-import CardTemplate from '@/views/CardTemplate.vue'
+import CardTemplate from '@/components/CardTemplate.vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
@@ -12,6 +12,7 @@ import router from '@/router'
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
 const completedChallenges = ref<Challenge[]>([])
+const isModalOpen = ref(false)
 
 onMounted(async () => {
     await authInterceptor('/profile')
@@ -43,6 +44,10 @@ onMounted(async () => {
 const welcome = computed(() => {
     return [`Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`]
 })
+
+const openInteractiveSpare = () => {
+    isModalOpen.value = true
+}
 </script>
 
 <template>
@@ -87,7 +92,21 @@ const welcome = computed(() => {
             </div>
 
             <div class="flex flex-col">
-                <InteractiveSpare :png-size="10" :speech="welcome" direction="left" />
+                <InteractiveSpare
+                    :png-size="10"
+                    :speech="welcome"
+                    direction="left"
+                    :isModalOpen="isModalOpen"
+                />
+                <div class="flex items-center">
+                    <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
+                        <img
+                            alt="Spare"
+                            class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
+                            src="@/assets/spare.png"
+                        />
+                    </a>
+                </div>
                 <div class="flex flex-row justify-between mx-4">
                     <p class="font-bold">Fullførte sparemål</p>
                     <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />

@@ -13,7 +13,14 @@
 import { defineEmits, defineProps } from 'vue'
 
 const props = defineProps({
-    disabled: Boolean
+    disabled: {
+        type: Boolean,
+        default: false
+    },
+    text: {
+        type: String,
+        default: 'Fortsett'
+    }
 })
 
 const emit = defineEmits(['click'])

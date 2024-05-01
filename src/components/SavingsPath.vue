@@ -112,7 +112,8 @@
         <div v-if="goal" class="flex flex-row justify-around m-t-2 pt-6 w-full mx-auto">
             <div class="grid grid-rows-2 grid-flow-col gap 4">
                 <div class="row-span-3 cursor-pointer" @click="editGoal(goal)">
-                    <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
+                    <img ref="goalIconRef"
+                        :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
                     <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
                 </div>
             </div>
@@ -171,14 +172,9 @@ const challenges = ref<Challenge[]>(props.challenges)
 const goal = ref<Goal | null | undefined>(props.goal)
 
 
-onMounted(async () => {
-    await goalStore.getUserGoals()
-    window.addEventListener('resize', handleWindowSizeChange)
-    handleWindowSizeChange()
-    sortChallenges()
-    allChallengesCompleted()
-})
-
+/**
+ * Checks if all challenges are completed
+ */
 const allChallengesCompleted = () => {
   // Assuming challenges.value is an array of challenge objects
   for (const challenge of challenges.value) {
@@ -189,7 +185,10 @@ const allChallengesCompleted = () => {
   return true; // If all challenges are completed, return true
 };
 
+/**
+ * Sorts the challenges by completion status and due date
 
+ */
 const sortChallenges = () => {
     challenges.value.sort((a, b) => {
         // First, sort by completion status: non-completed (less than 100) before completed (100)
@@ -206,25 +205,28 @@ const sortChallenges = () => {
     })
 }
 
-const screenSize = ref<number>(window.innerWidth)
-
-onUnmounted(() => {
-    window.removeEventListener('resize', handleWindowSizeChange)
-})
-const handleWindowSizeChange = () => {
-    screenSize.value = window.innerWidth
-}
-
+// Interface for element references
 interface ElementRefs {
     [key: string]: HTMLElement | undefined
 }
 
 const elementRefs = reactive<ElementRefs>({})
-
-const isAtFirstUncompleted = ref(false) // This state tracks visibility of the button
+const isAtFirstUncompleted = ref(false)
 const firstUncompletedRef: Ref<HTMLElement | undefined> = ref()
+const screenSize = ref<number>(window.innerWidth)
 
-function scrollToFirstUncompleted() {
+/**
+ * Handles the window size change event
+ */
+const handleWindowSizeChange = () => {
+  screenSize.value = window.innerWidth
+}
+
+/**
+ * Scrolls to the first uncompleted challenge
+
+ */
+const scrollToFirstUncompleted= ()=> {
     let found = false
     for (let i = 0; i < challenges.value.length; i++) {
         if (challenges.value[i].completion! < 100) {
@@ -244,34 +246,12 @@ function scrollToFirstUncompleted() {
 }
 
 
-onMounted(() => {
-  // Delay the execution of the following logic by 300ms
-  setTimeout(() => {
-    const container = containerRef.value;
-    if (container) {
-      container.addEventListener('scroll', () => {
-        if (!firstUncompletedRef.value) return;
-        const containerRect = container.getBoundingClientRect();
-        const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect();
-        isAtFirstUncompleted.value = !(
-            firstUncompletedRect.top > containerRect.bottom ||
-            firstUncompletedRect.bottom < containerRect.top
-        );
-      });
-    }
-    scrollToFirstUncompleted();
-  }, 300); // Timeout set to 300 milliseconds
-});
-
-onUnmounted(() => {
-    const container = containerRef.value
-    if (container) {
-        container.removeEventListener('scroll', () => {
-            // Clean up the scroll listener
-        })
-    }
-})
-
+/**
+ * Assigns the reference to the element
+ * @param el
+ * @param challenge
+ * @param index
+ */
 const assignRef = (
     el: Element | ComponentPublicInstance | null,
     challenge: Challenge,
@@ -291,38 +271,19 @@ const assignRef = (
     }
 }
 
-// Utilizing watch to specifically monitor for changes in the props
-watch(
-    () => props.goal,
-    (newGoal, oldGoal) => {
-        if (newGoal !== oldGoal) {
-            goal.value = newGoal
-            console.log('Updated goal:', goal.value)
-        }
-    },
-    { immediate: true }
-)
 
-watch(
-    () => props.challenges,
-    (newChallenges, oldChallenges) => {
-        if (newChallenges !== oldChallenges) {
-            challenges.value = newChallenges
-            sortChallenges()
-            allChallengesCompleted()
-            console.log('Updated challenges:', challenges.value)
-        }
-    },
-    { immediate: true }
-)
+//-----------Animation for goal and challenge completion-----------------//
+
 // Reactive references for DOM elements
 const iconRef = ref<HTMLElement | null>(null)
+const goalIconRef = ref<HTMLElement |null>(null);
 const containerRef = ref<HTMLElement | null>(null)
 const targetRef = ref<HTMLElement | null>(null)
 
-// Define your goal
 
-// AddSpareUtfordring
+/**
+ * Navigates to the spareutfordringer page
+ */
 const addSpareUtfordring = () => {
     console.log('Attempting to navigate to /spareutfordringer')
     router.push('/spareutfordringer').catch((error) => {
@@ -330,37 +291,34 @@ const addSpareUtfordring = () => {
     })
 }
 
-const recalculateAndAnimate = () => {
-    nextTick(() => {
-        if (iconRef.value && containerRef.value && targetRef.value) {
-            animateIcon()
-        } else {
-            console.error('Element references are not ready.')
-        }
-    })
-}
 
-const editGoal = (goal: Goal) => {
-    router.push(`/sparemaal/${goal.id}`)
-}
+
+
+
 
 // Declare the ref with a type annotation for an array of strings
 const animatedChallenges: Ref<number[]> = ref([])
+const animatedGoals: Ref<number[]> =ref([])
 
+
+/**
+ * Loads the states for animated goals and challenges
+ */
 const loadAnimatedStates = () => {
     const animated = localStorage.getItem('animatedChallenges')
+    const animatedG = localStorage.getItem('animatedGoals')
     animatedChallenges.value = animated ? JSON.parse(animated) : []
+    animatedGoals.value =animatedG ? JSON.parse(animatedG):[]
 }
 
-const saveAnimatedState = (challenge: Challenge) => {
-    console.log('Saving animated state for 1:', challenge.id)
-    if (challenge.id != null) {
-        animatedChallenges.value.push(challenge.id)
-    }
-    console.log('Saving animated state for:', challenge.title)
-    localStorage.setItem('animatedChallenges', JSON.stringify(animatedChallenges.value))
-}
 
+
+/**
+ * Saves the animated state for challenge
+ * triggers the confetti method
+ * triggers the recalculation of dom positioning
+ * @param challenge
+ */
 const animateChallenge = (challenge: Challenge) => {
     if (
         challenge.completion === 100 &&
@@ -370,62 +328,86 @@ const animateChallenge = (challenge: Challenge) => {
         if (challenge.id != null) {
             animatedChallenges.value.push(challenge.id)
         } // Ensure no duplication
-        saveAnimatedState(challenge) // Refactor this to update localStorage correctly
+        saveAnimatedStateChallenge(challenge) // Refactor this to update localStorage correctly
         triggerConfetti()
-        recalculateAndAnimate()
+        recalculateAndAnimate(false)
     }
 }
 
-const triggerConfetti = () => {
-    confetti({
-        particleCount: 400,
-        spread: 80,
-        origin: { x: 0.8, y: 0.8 }
-    })
+
+/**
+ * Saves the animated state for goal
+ * triggers the confetti method
+ * triggers the recalculation of dom positioning
+ * @param goal
+ */
+const animateGoal = (goal: Goal) => {
+  if (
+      goal.completion === 100 &&
+      !animatedGoals.value.includes(goal.id as number)
+  ) {
+    console.log('Animating for goal:', goal.title)
+    if (goal.id != null) {
+      animatedGoals.value.push(goal.id)
+    } // Ensure no duplication
+    saveAnimatedStateGoal(goal) // Refactor this to update localStorage correctly
+    triggerConfetti()
+    recalculateAndAnimate(true)
+  }
 }
 
-watch(
-    challenges,
-    (newChallenges) => {
-        newChallenges.forEach((challenge) => {
-            //wait for 300ms before animating maybe?
-            nextTick(() => {
-                if (challenge.completion === 100) {
-                    if (!animatedChallenges.value.includes(challenge.id as number)) {
-                        console.log(!animatedChallenges.value.includes(challenge.id as number))
-                        console.log('Animating challenge in watcher:', challenge.id)
-                        animateChallenge(challenge)
-                        saveAnimatedState(challenge) // Refactor this to update localStorage correctly
-                    }
-                }
-            })
-        })
-    },
-    { deep: true }
-)
-onMounted(() => {
-    // Load existing animated states first
-    loadAnimatedStates()
+/**
+ * Recalculates the position of the dom elements
+ * @param isGoal
+ */
+const recalculateAndAnimate = (isGoal: boolean) => {
+  nextTick(() => {
+    if (iconRef.value && containerRef.value && targetRef.value && goalIconRef.value) {
+      animateIcon(isGoal)
+    } else {
+      console.error('Element references are not ready.')
+    }
+  })
+}
 
-    // Get completed challenge IDs, ensuring that only defined IDs are considered
-    const completedChallenges = challenges.value
-        .filter((challenge) => challenge.completion === 100 && challenge.id !== undefined)
-        .map((challenge) => challenge.id as number) // Use 'as number' to assert that ids are numbers after the check
+/**
+ * Saves the animated state for challenge
+ * @param challenge
+ */
+const saveAnimatedStateChallenge = (challenge: Challenge) => {
+  console.log('Saving animated state for 1:', challenge.id)
+  if (challenge.id != null) {
+    animatedChallenges.value.push(challenge.id)
+  }
+  console.log('Saving animated state for:', challenge.title)
+  localStorage.setItem('animatedChallenges', JSON.stringify(animatedChallenges.value))
+}
 
-    // Update only new completions that are not already in the animatedChallenges
-    const newAnimations = completedChallenges.filter((id) => !animatedChallenges.value.includes(id))
-    animatedChallenges.value = [...animatedChallenges.value, ...newAnimations]
+/**
+ * Saves the animated state for goal
+ * @param goal
+ */
+const saveAnimatedStateGoal = (goal: Goal) => {
+  console.log('Saving animated state for:', goal.id)
+  if (goal.id != null) {
+    animatedGoals.value.push(goal.id)
+  }
+  console.log('Saving animated state for:', goal.title)
+  localStorage.setItem('animatedGoals', JSON.stringify(animatedGoals.value))
+}
 
-    // Save the updated list back to localStorage
-    localStorage.setItem('animatedChallenges', JSON.stringify(animatedChallenges.value))
-})
 
-const animateIcon = () => {
+
+/**
+ * animates the icon images
+ * @param isGoal
+ */
+const animateIcon = (isGoal: boolean) => {
     const icon = iconRef.value
+    const goal = goalIconRef.value
     const container = containerRef.value
     const target = targetRef.value
-
-    if (!icon || !container || !target) {
+    if (!icon || !container || !target || !goal) {
         console.error('Required animation elements are not available.')
         return
     }
@@ -433,56 +415,103 @@ const animateIcon = () => {
     const containerRect = container.getBoundingClientRect()
     const targetRect = target.getBoundingClientRect()
     const iconRect = icon.getBoundingClientRect()
+    const goalRect = goal.getBoundingClientRect()
 
-    const translateX1 =
-        containerRect.left + containerRect.width / 2 - iconRect.width / 2 - iconRect.left
-    const translateY1 =
-        containerRect.top + containerRect.height / 2 - iconRect.height / 2 - iconRect.top
 
-    const translateX2 = targetRect.left + targetRect.width / 2 - iconRect.width / 2 - iconRect.left
-    const translateY2 = targetRect.top + targetRect.height / 2 - iconRect.height / 2 - iconRect.top
+  let translateX1: number, translateY1: number, translateX2: number, translateY2: number;
+
+  if (isGoal) {
+    translateX1 = containerRect.left + containerRect.width / 2 - goalRect.width / 2 - goalRect.left;
+    translateY1 = containerRect.top + containerRect.height / 2 - goalRect.height / 2 - goalRect.top;
+    anime
+    .timeline({
+      easing: 'easeInOutQuad',
+      duration: 1500
+    })
+    .add({
+      targets: icon,
+      translateX: translateX1,
+      translateY: translateY1,
+      opacity: 0, // Start invisible
+      duration: 1000
+    })
+    .add({
+      targets: icon,
+      opacity: 1, // Reveal the icon once it starts moving to the container
+      duration: 1000, // Make the opacity change almost instantaneously
+      scale: 3,
+      begin: function(anim) {
+        icon.classList.add('glow'); // Apply glow effect when this animation phase starts
+      }
+    })
+    .add({
+      targets: icon,
+      translateX: 0, // Reset translation to original
+      translateY: 0, // Reset translation to original
+      duration: 500,
+      complete: function(anim) {
+        icon.classList.remove('glow'); // Remove glow effect when completed
+      }
+    })
+  } else {
+    translateX1 = containerRect.left + containerRect.width / 2 - iconRect.width / 2 - iconRect.left;
+    translateY1 = containerRect.top + containerRect.height / 2 - goalRect.height / 2 - goalRect.top;
+    translateX2 = targetRect.left + targetRect.width / 2 - iconRect.width / 2 - iconRect.left;
+    translateY2 = targetRect.top + targetRect.height / 2 - iconRect.height / 2 - iconRect.top;
 
     anime
-        .timeline({
-            easing: 'easeInOutQuad',
-            duration: 1500
-        })
-        .add({
-            targets: icon,
-            translateX: translateX1,
-            translateY: translateY1,
-            opacity: 0, // Start invisible
-            duration: 1000
-        })
-        .add({
-            targets: icon,
-            opacity: 1, // Reveal the icon once it starts moving to the container
-            duration: 1000, // Make the opacity change almost instantaneously
-            scale: 3
-        })
-        .add({
-            targets: icon,
-            translateX: translateX2,
-            translateY: translateY2,
-            scale: 0.5,
-            opacity: 1, // Keep the icon visible while moving to the target
-            duration: 1500
-        })
-        .add({
-            targets: icon,
-            opacity: 0, // Fade out once it reaches the target
-            scale: 1,
-            duration: 500
-        })
-        .add({
-            targets: icon,
-            translateX: 0, // Reset translation to original
-            translateY: 0, // Reset translation to original
-            duration: 500
-        })
+    .timeline({
+      easing: 'easeInOutQuad',
+      duration: 1500
+    })
+    .add({
+      targets: icon,
+      translateX: translateX1,
+      translateY: translateY1,
+      opacity: 0, // Start invisible
+      duration: 1000
+    })
+    .add({
+      targets: icon,
+      opacity: 1, // Reveal the icon once it starts moving to the container
+      duration: 1000, // Make the opacity change almost instantaneously
+      scale: 3
+    })
+    .add({
+      targets: icon,
+      translateX: translateX2,
+      translateY: translateY2,
+      scale: 0.5,
+      opacity: 1, // Keep the icon visible while moving to the target
+      duration: 1500
+    })
+    .add({
+      targets: icon,
+      opacity: 0, // Fade out once it reaches the target
+      scale: 1,
+      duration: 500
+    })
+    .add({
+      targets: icon,
+      translateX: 0, // Reset translation to original
+      translateY: 0, // Reset translation to original
+      duration: 500
+    })
+  }
+}
+/**
+ * Triggers confeti animation
+ */
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 400,
+    spread: 80,
+    origin: { x: 0.8, y: 0.8 }
+  })
 }
 
 
+//fetching images
 const getGoalIcon = (goal: Goal): string => {
     return `src/assets/${goal.title.toLowerCase()}.png`
 }
@@ -490,10 +519,102 @@ const getPigStepsIcon = () => {
     return 'src/assets/pigSteps.png'
 }
 
-// TODO - Change when EditGoal view is created
 const goToEditGoal = () => {
-    router.push({ name: 'EditGoal' })
+    router.push({ name: 'edit-goal', params: { id: goal.value?.id } })
 }
+
+const editGoal = (goal: Goal) => {
+  router.push(`/sparemaal/rediger/${goal.id}`)
+}
+
+//Initialisation:
+
+onMounted(async () => {
+  await goalStore.getUserGoals()
+  window.addEventListener('resize', handleWindowSizeChange)
+  handleWindowSizeChange();
+  sortChallenges();
+  allChallengesCompleted();
+  // Delay the execution of the following logic by 300ms
+  setTimeout(() => {
+    const container = containerRef.value;
+    if (container) {
+      container.addEventListener('scroll', () => {
+        if (!firstUncompletedRef.value) return;
+        const containerRect = container.getBoundingClientRect();
+        const firstUncompletedRect = firstUncompletedRef.value.getBoundingClientRect();
+        isAtFirstUncompleted.value = !(
+            firstUncompletedRect.top > containerRect.bottom ||
+            firstUncompletedRect.bottom < containerRect.top
+        );
+      });
+    }
+    scrollToFirstUncompleted();
+  }, 300); // Timeout set to 300 milliseconds
+  // Load existing animated states first
+  loadAnimatedStates()
+
+  // Get completed challenge IDs, ensuring that only defined IDs are considered
+  const completedChallenges = challenges.value
+  .filter((challenge) => challenge.completion === 100 && challenge.id !== undefined)
+  .map((challenge) => challenge.id as number) // Use 'as number' to assert that ids are numbers after the check
+
+  // Update only new completions that are not already in the animatedChallenges
+  const newAnimations = completedChallenges.filter((id) => !animatedChallenges.value.includes(id))
+  animatedChallenges.value = [...animatedChallenges.value, ...newAnimations]
+
+  // Save the updated list back to localStorage
+  localStorage.setItem('animatedChallenges', JSON.stringify(animatedChallenges.value))
+})
+
+
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleWindowSizeChange)
+  const container = containerRef.value
+  if (container) {
+    container.removeEventListener('scroll', () => {
+      // Clean up the scroll listener
+    })
+  }
+})
+
+
+//watchers:
+
+
+watch(
+    () => props.challenges,
+    (newChallenges, oldChallenges) => {
+      if (newChallenges !== oldChallenges) {
+        challenges.value = newChallenges
+        goalStore.
+        sortChallenges()
+        allChallengesCompleted()
+      }
+    },
+    { immediate: true }
+)
+
+watch(
+    challenges,
+    (newChallenges) => {
+      newChallenges.forEach((challenge) => {
+        //wait for 300ms before animating maybe?
+        nextTick(() => {
+          if (challenge.completion === 100) {
+            if (!animatedChallenges.value.includes(challenge.id as number)) {
+              console.log(!animatedChallenges.value.includes(challenge.id as number))
+              console.log('Animating challenge in watcher:', challenge.id)
+              animateChallenge(challenge)
+              saveAnimatedStateChallenge(challenge) // Refactor this to update localStorage correctly
+            }
+          }
+        })
+      })
+    },
+    { deep: true }
+)
 </script>
 
 <style scoped>
@@ -504,4 +625,8 @@ const goToEditGoal = () => {
 .no-scrollbar {
     -ms-overflow-style: none; /* for Internet Explorer and Edge */
 }
+.glow {
+  box-shadow: 0 0 8px rgba(255, 242, 18, 0.8); /* Adjust color and size as needed */
+}
+
 </style>
