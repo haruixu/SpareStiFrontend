@@ -5,6 +5,7 @@
                 :speech="speech"
                 :png-size="15"
                 :direction="'left'"
+                :imageDirection="'right'"
             ></SpareComponent>
             <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
