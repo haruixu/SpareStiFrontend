@@ -49,18 +49,18 @@ const goals = ref<Goal[]>([])
 const goal = ref<Goal | null | undefined>(null)
 
 onMounted(async () => {
-    await goalStore.getUserGoals();
-    await challengeStore.getUserChallenges();
-    challenges.value = challengeStore.challenges;
-    goals.value = goalStore.goals;
-    goal.value = goals.value[0];
-    console.log('Goals:', goals.value);
+    await goalStore.getUserGoals()
+    await challengeStore.getUserChallenges()
+    challenges.value = challengeStore.challenges
+    goals.value = goalStore.goals
+    goal.value = goals.value[0]
+    console.log('Goals:', goals.value)
 
-    const lastModalShow = localStorage.getItem('lastModalShow');
+    const lastModalShow = localStorage.getItem('lastModalShow')
     if (!lastModalShow || Date.now() - Number(lastModalShow) >= 24 * 60 * 60 * 1000) {
-        showModal.value = true;
+        showModal.value = true
     }
-});
+})
 
 // Define your speech array
 const speechArray = [

@@ -29,9 +29,9 @@ const props = defineProps({
     buttonText: String,
     type: String,
     showModal: Boolean
-});
+})
 
-const emit = defineEmits(['update:showModal']);
+const emit = defineEmits(['update:showModal'])
 
 const router = useRouter()
 
@@ -39,12 +39,11 @@ const btnText = ref(props.buttonText)
 
 const routeToGoalOrChallenge = () => {
     if (props.type === 'goal') {
-        router.push('/sparemaal');
+        router.push('/sparemaal')
     } else if (props.type === 'challenge') {
-        router.push('/spareutfordringer');
+        router.push('/spareutfordringer')
     } else if (props.type === 'generatedChallenge') {
-        emit('update:showModal', true);
+        emit('update:showModal', true)
     }
-};
-
+}
 </script>
