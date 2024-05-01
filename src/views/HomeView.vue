@@ -87,6 +87,20 @@ onMounted(async () => {
     firstLoggedInSpeech()
 })
 
+const firstLoggedInSpeech = () => {
+    const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
+    if (isFirstLogin) {
+        speech.value = [
+            'Hei, jeg er Spare!',
+            'Jeg skal hjelpe deg med å spare penger.',
+            'Du får varsel når jeg har noe å si!'
+        ]
+        isModalOpen.value = true
+        router.replace({ name: 'home', query: { firstLogin: 'false' } })
+    }
+}
+
+
 // Define your speech array
 const speechArray = [
     'Hei! Jeg er Sparemannen.',
