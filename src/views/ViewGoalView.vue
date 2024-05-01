@@ -4,7 +4,6 @@ import { computed, onMounted, ref } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import SpareComponent from '@/components/SpareComponent.vue'
 import HelpComponent from "@/components/HelpComponent.vue";
 
@@ -22,14 +21,8 @@ const completion = computed(() => (goalInstance.value.saved / goalInstance.value
 const isCompleted = computed(() => goalInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
-const isModalOpen = ref(false)
 
 const helpSpeech = ref<string[]>([])
-
-const openInteractiveSpare = () => {
-    isModalOpen.value = true
-    calculateSpeech()
-}
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -50,7 +43,7 @@ const calculateSpeech = () => {
         )
     } else if (completion.value >= 100) {
         return motivation.value.push(
-            `Fantastisk! Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
+            `!Fantastisk Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
         )
     }
 }
@@ -150,7 +143,6 @@ const openHelp = () => {
             :png-size="15"
             :imageDirection="'left'"
             :direction="'right'"
-            @openSpare="openInteractiveSpare"
             class="mb-5"
         ></SpareComponent>
     </div>

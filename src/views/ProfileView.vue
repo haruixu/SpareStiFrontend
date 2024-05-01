@@ -44,25 +44,20 @@ onMounted(async () => {
 })
 
 const openSpare = () => {
-    let welcomeSpeechShown = localStorage.getItem('welcomeSpeechShown')
-
-    if (welcomeSpeechShown !== 'true') {
-        speech.value = [
-            `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
-            'Her kan du finne en oversikt over dine profilinstillinger!',
-            'Du kan også se dine fullførte sparemål og utfordringer!'
-        ]
-        localStorage.setItem('welcomeSpeechShown', 'true')
-    }
+    speech.value = [
+        `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
+        'Her kan du finne en oversikt over dine profilinstillinger!',
+        'Du kan også se dine fullførte sparemål og utfordringer!'
+    ]
 }
 
 const openHelp = () => {
-  helpSpeech.value = [
-    'Du har kommet til profilen din 🐷',
-    'Her kan du se en oversikt over dine profilinstillinger ⚙️',
-    'Du kan også se dine fullførte sparemål og utfordringer!',
-    'Du kan redigere profilen din ved å trykke på "Rediger bruker" 💎'
-  ]
+    helpSpeech.value = [
+      'Du har kommet til profilen din 🐷',
+      'Her kan du se en oversikt over dine profilinstillinger ⚙️',
+      'Du kan også se dine fullførte sparemål og utfordringer!',
+      'Du kan redigere profilen din ved å trykke på "Rediger bruker" 💎'
+    ]
 }
 </script>
 

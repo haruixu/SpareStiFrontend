@@ -1,6 +1,6 @@
 <template>
     <div class="fixed bottom-5 left-5">
-        <div @click="handleHelpClick" class="hover:cursor-pointer">
+        <div @click="isModalOpen = true" class="hover:cursor-pointer">
             <img
                  alt="Hjelp"
                  class="w-1/12 transition-transform duration-300 ease-in-out hover:scale-110"
@@ -8,27 +8,33 @@
             />
         </div>
     </div>
+  <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
     <InteractiveSpare
         :speech="speech"
-        :direction="'right'"
-        :pngSize="15"
-        :isModalOpen="isModalOpen"
-        class="opacity-0 h-0 w-0 md:opacity-100 md:h-auto md:w-auto"
-    ></InteractiveSpare>
+        :png-size="10"
+        direction="right"
+        @emit:close="isModalOpen = false"
+    />
+
+    <div class="-mb-5 mt-8 text-xs text-gray-500">
+      <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
+      <a
+          @click="isModalOpen = false"
+          class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
+      >
+        Skip
+      </a>
+    </div>
+  </ModalComponent>
 </template>
 
 <script setup lang="ts">
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import { ref } from 'vue'
+import ModalComponent from "@/components/ModalComponent.vue";
 
 const isModalOpen = ref(false)
 
 defineProps(['speech'])
 
-const emit = defineEmits(['openHelp'])
-
-function handleHelpClick() {
-    emit('openHelp')
-    isModalOpen.value = true
-}
 </script>

@@ -7,7 +7,7 @@
             <h2 class="title font-bold mb-4">{{ title }}</h2>
             <p class="message mb-4">{{ message }}</p>
 
-            <slot name="input"></slot>
+            <slot></slot>
 
             <div class="buttons flex flex-col justify-center items-center gap-3 mt-3 w-full">
                 <slot name="buttons"></slot>
@@ -17,9 +17,20 @@
 </template>
 
 <script setup lang="ts">
+import {onMounted} from "vue";
+
 defineProps({
     title: String,
     message: String,
-    isModalOpen: Boolean
+    isModalOpen: {
+        type: Boolean,
+        default: true,
+        required: false
+    }
+
+})
+
+onMounted(() => {
+    console.log('ModalComponent mounted')
 })
 </script>

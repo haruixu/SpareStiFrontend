@@ -17,7 +17,6 @@
         </div>
         <savings-path :challenges="challenges" :goal="goal"></savings-path>
     </div>
-    <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <script setup lang="ts">
@@ -67,10 +66,7 @@ const firstLoggedInSpeech = () => {
 }
 const openHelp = () => {
     helpSpeech.value = [
-        'Heisann, jeg er Spare!',
-        'Jeg skal hjelpe deg med å spare penger 💵',
-        'Du kan legge til sparemål og spareutfordringer!',
-        'Sammen kan vi spare penger og nå dine mål! 🚀'
+
     ]
 }
 </script>
