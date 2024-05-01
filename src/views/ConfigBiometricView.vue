@@ -1,14 +1,14 @@
 <template>
-    <div class="alt-login-main">
+    <div class="flex flex-col justify-center items-center w-full gap-5 m-5">
         <h1>Alternativ innlogging</h1>
-        <div class="img-div">
-            <img src="@/assets/bioAuthTouch.png" alt="bioAuthTouch" />
-            <img src="@/assets/bioAuthFace.png" alt="bioAuthFace" />
+        <h3>Vil du legge til alternativ innlogging som biometrisk autentisering?</h3>
+        <div class="flex flex-row justify-center gap-10">
+            <img alt="bioAuthTouch" class="w-40 h-40" src="@/assets/bioAuthTouch.png" />
+            <img alt="bioAuthFace" class="w-40 h-40" src="@/assets/bioAuthFace.png" />
         </div>
-        <h2>Vil du logge på med touch eller face id?</h2>
-        <div class="btn-div">
-            <button @click="router.push('konfigurasjonSteg1')">Senere</button>
-            <button @click="userStore.bioRegister()">OK</button>
+        <div class="flex flex-col gap-5">
+            <button @click="userStore.bioRegister()">Legg til nå!</button>
+            <button @click="router.push('konfigurasjonSteg1')">Jeg gjør det senere</button>
         </div>
     </div>
 </template>
@@ -19,30 +19,4 @@ import router from '@/router'
 const userStore = useUserStore()
 </script>
 
-<style scoped>
-.alt-login-main {
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.img-div {
-    display: flex;
-    justify-content: center;
-}
-
-img {
-    width: 30%;
-}
-
-img:first-child {
-    margin-right: 20px;
-}
-
-button {
-    margin: 10px;
-    width: 100px;
-    height: 40px;
-}
-</style>
+<style scoped></style>

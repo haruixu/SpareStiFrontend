@@ -32,7 +32,6 @@ const isModalOpen = ref(false)
 const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{0,29}$/
 const emailRegex =
     /^[æÆøØåÅa-zA-Z0-9_+&*-]+(?:\.[æÆøØåÅa-zA-Z0-9_+&*-]+)*@(?:[æÆøØåÅa-zA-Z0-9-]+\.)+[æÆøØåÅa-zA-Z]{2,7}$/
-const usernameRegex = /^[ÆØÅæøåA-Za-z][æÆøØåÅA-Za-z0-9_]{2,29}$/
 const passwordRegex = /^(?=.*[0-9])(?=.*[a-zæøå])(?=.*[ÆØÅA-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,30}$/
 const accountNumberRegex = /^\d{11}$/
 
@@ -58,7 +57,6 @@ const isLastNameValid = computed(
     () => nameRegex.test(profile.value.lastName) && profile.value.lastName
 )
 const isEmailValid = computed(() => emailRegex.test(profile.value.email))
-const isUsernameValid = computed(() => usernameRegex.test(profile.value.username))
 const isPasswordValid = computed(() => passwordRegex.test(profile.value.password || ''))
 const isSpendingAccountValid = computed(() =>
     accountNumberRegex.test(profile.value.spendingAccount.accNumber?.toString() || '')
@@ -73,7 +71,6 @@ const isFormInvalid = computed(
             isFirstNameValid,
             isLastNameValid,
             isEmailValid,
-            isUsernameValid,
             isSpendingAccountValid,
             isSavingAccountValid
         ].some((v) => !v.value) ||
@@ -171,21 +168,6 @@ const saveChanges = async () => {
                         :class="{ 'bg-green-200': isEmailValid }"
                         name="email"
                         placeholder="Skriv inn e-post"
-                        type="text"
-                    />
-                </div>
-                <div class="flex flex-col">
-                    <div class="flex flex-row justify-between mx-4">
-                        <p>Brukernavn*</p>
-                        <ToolTip
-                            :message="'Must start with a letter and can include numbers and underscores. 3-30 characters long.'"
-                        />
-                    </div>
-                    <input
-                        v-model="profile.username"
-                        :class="{ 'bg-green-200': isUsernameValid }"
-                        name="username"
-                        placeholder="Skriv inn brukernavn"
                         type="text"
                     />
                 </div>
