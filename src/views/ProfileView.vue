@@ -45,7 +45,7 @@ onMounted(async () => {
 const openSpare = () => {
   let welcomeSpeechShown = localStorage.getItem('welcomeSpeechShown');
 
-  if (!welcomeSpeechShown) {
+  if (welcomeSpeechShown !== 'true') {
     speech.value = [`Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
       'Her kan du finne en oversikt over dine profilinstillinger!',
       'Du kan også se dine fullførte sparemål og utfordringer!']
@@ -128,5 +128,3 @@ const openSpare = () => {
         </div>
     </div>
 </template>
-
-<style scoped></style>
