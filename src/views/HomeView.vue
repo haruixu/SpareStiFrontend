@@ -101,7 +101,6 @@ const firstLoggedInSpeech = () => {
     }
 }
 
-
 // Define your speech array
 const speechArray = [
     'Hei! Jeg er Sparemannen.',
