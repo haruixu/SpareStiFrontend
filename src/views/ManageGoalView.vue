@@ -4,11 +4,13 @@ import { computed, onMounted, ref, watch } from 'vue'
 import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
+import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
 const selectedDate = ref<string>('')
 const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 16)
+const helpSpeech = ref<string[]>([])
 
 const goalInstance = ref<Goal>({
     title: '',
@@ -116,6 +118,16 @@ const deleteGoal = () => {
             console.error(error)
         })
 }
+
+const openHelp = () => {
+  helpSpeech.value = [
+    'Her kan du opprette et nytt sparemål 🌸',
+    'Tittel er navnet på sparemålet, og beskrivelse er en kort forklaring på hva sparemålet går ut på.',
+    'Kroner spart er hvor mye du har spart til nå, og av målbeløp er hvor mye du ønsker å spare.',
+    'Forfallsdato er datoen du ønsker å ha nådd sparemålet ditt.',
+    'Lykke til med sparingen! 🌴'
+  ]
+}
 </script>
 
 <template>
@@ -187,6 +199,7 @@ const deleteGoal = () => {
             </div>
         </div>
     </div>
+  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped>

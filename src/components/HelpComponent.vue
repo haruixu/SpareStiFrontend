@@ -1,7 +1,11 @@
 <template>
     <div class="fixed bottom-5 left-5">
         <div @click="handleHelpClick" class="hover:cursor-pointer">
-            <img alt="Hjelp" class="w-1/12" src="@/assets/hjelp.png" />
+            <img
+                 alt="Hjelp"
+                 class="w-1/12 transition-transform duration-300 ease-in-out hover:scale-110"
+                 src="@/assets/hjelp.png"
+            />
         </div>
     </div>
     <InteractiveSpare

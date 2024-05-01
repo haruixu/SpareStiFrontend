@@ -8,12 +8,13 @@ import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
+import HelpComponent from "@/components/HelpComponent.vue";
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
 const completedChallenges = ref<Challenge[]>([])
 const speech = ref<string[]>([])
-const newSpeechAvailable = ref(false)
+const helpSpeech = ref<string[]>([])
 
 onMounted(async () => {
     await authInterceptor('/profile')
@@ -53,6 +54,15 @@ const openSpare = () => {
         ]
         localStorage.setItem('welcomeSpeechShown', 'true')
     }
+}
+
+const openHelp = () => {
+  helpSpeech.value = [
+    'Du har kommet til profilen din 🐷',
+    'Her kan du se en oversikt over dine profilinstillinger ⚙️',
+    'Du kan også se dine fullførte sparemål og utfordringer!',
+    'Du kan redigere profilen din ved å trykke på "Rediger bruker" 💎'
+  ]
 }
 </script>
 
@@ -128,4 +138,5 @@ const openSpare = () => {
             </div>
         </div>
     </div>
+  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>

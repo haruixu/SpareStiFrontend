@@ -5,6 +5,7 @@ import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 import CardChallenge from '@/components/CardChallenge.vue'
 import PageControl from '@/components/PageControl.vue'
+import HelpComponent from "@/components/HelpComponent.vue";
 
 const router = useRouter()
 
@@ -12,6 +13,7 @@ const currentPageActive = ref(0)
 const totalPagesActive = ref(1)
 const currentPageCompleted = ref(0)
 const totalPagesCompleted = ref(1)
+const helpSpeech = ref<string[]>([])
 
 const activeChallenges = ref<Challenge[]>([])
 const completedChallenges = ref<Challenge[]>([])
@@ -44,6 +46,17 @@ onMounted(async () => {
     await getActiveChallenges(currentPageActive.value)
     await getCompletedChallenges(currentPageActive.value)
 })
+
+const openHelp = () => {
+  helpSpeech.value = [
+    'Du har kommet til spareutfordringene dine 💰',
+    'En spareutfordring er en måte å bli kvitt dårlige vaner, samtidig spare penger for å nå dine mål ✨',
+    'Du kan opprette en ny utfordring ved å trykke på "Opprett en ny utfordring"',
+    'Du kan også endre rekkefølgen på utfordringene dine ved å trykke på "Endre rekkefølge".',
+    'Når du har fullført en utfordring, vil den dukke opp under "Fullførte utfordringer".',
+    'Lykke til med utfordringene dine 🏆'
+  ]
+}
 </script>
 
 <template>
@@ -83,6 +96,7 @@ onMounted(async () => {
             :totalPages="totalPagesCompleted"
         />
     </div>
+  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped></style>

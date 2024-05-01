@@ -6,6 +6,7 @@ import CardTemplate from '@/views/CardTemplate.vue'
 import router from '@/router'
 import ToolTip from '@/components/ToolTip.vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import HelpComponent from "@/components/HelpComponent.vue";
 
 const profile = ref<Profile>({
     id: 0,
@@ -96,6 +97,16 @@ const saveChanges = async () => {
         .catch((error) => {
             errorMessage.value = error.response.data.message
         })
+}
+
+const helpSpeech = ref<string[]>([])
+
+const openHelp = () => {
+  helpSpeech.value = [
+    '️Her kan du redigere dine profil-instillinger 🪄',
+    'For å lagre endringene dine, trykk på "Lagre endringer" i høyre hjørne',
+    'Husk at passordet ditt må være minst 8 tegn langt, og inneholde minst ett tall, en stor bokstav, en liten bokstav, og et spesialtegn'
+  ]
 }
 </script>
 
@@ -251,6 +262,7 @@ const saveChanges = async () => {
             </div>
         </div>
     </div>
+  <HelpComponent :speech="helpSpeech" @openHelp="openHelp"></HelpComponent>
 </template>
 
 <style scoped></style>
