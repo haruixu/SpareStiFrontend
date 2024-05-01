@@ -46,13 +46,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useUserConfigStore } from '@/stores/userConfigStore'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 
 const MAX_DIGITS = 11
-const userConfig = useUserConfigStore()
+const userConfigStore = useUserConfigStore()
 
 const spendingAccount = ref('')
 const savingsAccount = ref('')
@@ -68,10 +68,11 @@ async function onButtonClick() {
     const savingAccountNumber = savingsAccount.value.replace(/\./g, '')
     const spendingAccountNumber = spendingAccount.value.replace(/\./g, '')
 
-    await userConfig.postAccount('SAVING', savingAccountNumber, 0)
-    await userConfig.postAccount('SPENDING', spendingAccountNumber, 0)
+    await userConfigStore.postAccount('SAVING', savingAccountNumber, 0)
+    await userConfigStore.postAccount('SPENDING', spendingAccountNumber, 0)
+    await userConfigStore.postUserConfig()
 
-    await router.push({ name: 'home' })
+    await router.push({ name: 'home', query: { firstLogin: 'true' } })
 }
 
 function restrictToNumbers(event: InputEvent, type: string) {

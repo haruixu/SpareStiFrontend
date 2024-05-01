@@ -2,9 +2,7 @@
 import FormLogin from '@/components/FormLogin.vue'
 import FormRegister from '@/components/FormRegister.vue'
 import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
+import router from '@/router'
 
 const isLogin = ref<boolean>(true)
 

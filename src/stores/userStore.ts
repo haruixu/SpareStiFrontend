@@ -14,7 +14,8 @@ export const useUserStore = defineStore('user', () => {
     const defaultUser: User = {
         firstname: 'Firstname',
         lastname: 'Lastname',
-        username: 'Username'
+        username: 'Username',
+        isConfigured: false
     }
 
     const user = ref<User>(defaultUser)
@@ -30,7 +31,7 @@ export const useUserStore = defineStore('user', () => {
     ) => {
         await axios
             .post(`http://localhost:8080/auth/register`, {
-                firstName: firstname, //TODO rename all instances of firstname to firstName
+                firstName: firstname,
                 lastName: lastname,
                 email: email,
                 username: username,
@@ -38,13 +39,12 @@ export const useUserStore = defineStore('user', () => {
             })
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('refreshToken', response.data.refreshToken)
 
                 user.value.firstname = firstname
                 user.value.lastname = lastname
                 user.value.username = username
 
-                router.push({ name: 'addAlternativeLogin' })
+                router.push({ name: 'configure-biometric' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -60,13 +60,22 @@ export const useUserStore = defineStore('user', () => {
             })
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
-                localStorage.setItem('refreshToken', response.data.refreshToken)
 
                 user.value.firstname = response.data.firstName
                 user.value.lastname = response.data.lastName
                 user.value.username = response.data.username
 
-                router.push({ name: 'home' })
+                authInterceptor('/profile').then((profileResponse) => {
+                    if (profileResponse.data.hasPasskey === true) {
+                        localStorage.setItem('spareStiUsername', username)
+                    }
+                })
+
+                checkIfUserConfigured()
+
+                user.value.isConfigured
+                    ? router.push({ name: 'home' })
+                    : router.push({ name: 'configure-biometric' })
             })
             .catch((error) => {
                 const axiosError = error as AxiosError
@@ -77,160 +86,167 @@ export const useUserStore = defineStore('user', () => {
     const logout = () => {
         console.log('Logging out')
         sessionStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
+        localStorage.removeItem('spareStiUsername')
         user.value = defaultUser
         router.push({ name: 'login' })
     }
-    const getUserStreak = async () => {
-        try {
-            const response = await authInterceptor('/profile/streak')
-            if (response.data) {
+
+    const getUserStreak = () => {
+        authInterceptor('/profile/streak')
+            .then((response) => {
                 streak.value = response.data
-                console.log('Fetched Challenges:', streak.value)
-            } else {
+            })
+            .catch((error) => {
+                console.error('Error fetching challenges:', error)
                 streak.value = undefined
-                console.error('No challenge content found:', response.data)
-            }
-        } catch (error) {
-            console.error('Error fetching challenges:', error)
-            streak.value = undefined // Ensure challenges is always an array
-        }
+            })
     }
 
     const bioRegister = async () => {
-        try {
-            const response = await authInterceptor.post('/auth/bioRegistration')
-            initialCheckStatus(response)
+        authInterceptor
+            .post('/auth/bioRegistration')
+            .then((response) => {
+                initialCheckStatus(response)
 
-            const credentialCreateJson: CredentialCreationOptions = response.data
+                const credentialCreateJson: CredentialCreationOptions = response.data
 
-            const credentialCreateOptions: CredentialCreationOptions = {
-                publicKey: {
-                    ...credentialCreateJson.publicKey,
-                    challenge: base64urlToUint8array(
-                        credentialCreateJson.publicKey.challenge as unknown as string
-                    ),
-                    user: {
-                        ...credentialCreateJson.publicKey.user,
-                        id: base64urlToUint8array(
-                            credentialCreateJson.publicKey.user.id as unknown as string
-                        )
+                const credentialCreateOptions: CredentialCreationOptions = {
+                    publicKey: {
+                        ...credentialCreateJson.publicKey,
+                        challenge: base64urlToUint8array(
+                            credentialCreateJson.publicKey.challenge as unknown as string
+                        ),
+                        user: {
+                            ...credentialCreateJson.publicKey.user,
+                            id: base64urlToUint8array(
+                                credentialCreateJson.publicKey.user.id as unknown as string
+                            )
+                        },
+                        excludeCredentials: credentialCreateJson.publicKey.excludeCredentials?.map(
+                            (credential) => ({
+                                ...credential,
+                                id: base64urlToUint8array(credential.id as unknown as string)
+                            })
+                        ),
+                        extensions: credentialCreateJson.publicKey.extensions
+                    }
+                }
+
+                return navigator.credentials.create(
+                    credentialCreateOptions
+                ) as Promise<PublicKeyCredential>
+            })
+            .then((publicKeyCredential) => {
+                const publicKeyResponse =
+                    publicKeyCredential.response as AuthenticatorAttestationResponse
+                const encodedResult = {
+                    type: publicKeyCredential.type,
+                    id: publicKeyCredential.id,
+                    response: {
+                        attestationObject: uint8arrayToBase64url(
+                            publicKeyResponse.attestationObject
+                        ),
+                        clientDataJSON: uint8arrayToBase64url(publicKeyResponse.clientDataJSON),
+                        transports: publicKeyResponse.getTransports?.() || []
                     },
-                    excludeCredentials: credentialCreateJson.publicKey.excludeCredentials?.map(
-                        (credential) => ({
-                            ...credential,
-                            id: base64urlToUint8array(credential.id as unknown as string)
-                        })
-                    ),
-                    extensions: credentialCreateJson.publicKey.extensions
+                    clientExtensionResults: publicKeyCredential.getClientExtensionResults()
                 }
-            }
 
-            const publicKeyCredential = (await navigator.credentials.create(
-                credentialCreateOptions
-            )) as PublicKeyCredential
-
-            const publicKeyResponse =
-                publicKeyCredential.response as AuthenticatorAttestationResponse
-            const encodedResult = {
-                type: publicKeyCredential.type,
-                id: publicKeyCredential.id,
-                response: {
-                    attestationObject: uint8arrayToBase64url(publicKeyResponse.attestationObject),
-                    clientDataJSON: uint8arrayToBase64url(publicKeyResponse.clientDataJSON),
-                    transports: publicKeyResponse.getTransports?.() || []
-                },
-                clientExtensionResults: publicKeyCredential.getClientExtensionResults()
-            }
-
-            await authInterceptor
-                .post('/auth/finishBioRegistration', { credential: JSON.stringify(encodedResult) })
-                .then((response) => {
-                    router.push({ name: 'configurations1' })
-                })
-        } catch (error) {
-            router.push({ name: 'configurations1' })
-            console.error(error)
-        }
-    }
-
-    const bioLogin = async (username: string) => {
-        try {
-            const request = await axios.post(`http://localhost:8080/auth/bioLogin/${username}`)
-
-            initialCheckStatus(request)
-            console.log(request)
-
-            const credentialGetJson: CredentialRequestOptions = request.data
-            console.log(credentialGetJson)
-
-            const credentialGetOptions: CredentialRequestOptions = {
-                publicKey: {
-                    ...credentialGetJson.publicKey,
-                    allowCredentials:
-                        credentialGetJson.publicKey.allowCredentials &&
-                        credentialGetJson.publicKey.allowCredentials.map((credential) => ({
-                            ...credential,
-                            id: base64urlToUint8array(credential.id as unknown as string)
-                        })),
-                    challenge: base64urlToUint8array(
-                        credentialGetJson.publicKey.challenge as unknown as string
-                    ),
-                    extensions: credentialGetJson.publicKey.extensions
-                }
-            }
-
-            const publicKeyCredential = (await navigator.credentials.get(
-                credentialGetOptions
-            )) as PublicKeyCredential
-
-            // Extract response data based on the type of credential
-            const response = publicKeyCredential.response as AuthenticatorAssertionResponse
-
-            const encodedResult = {
-                type: publicKeyCredential.type,
-                id: publicKeyCredential.id,
-                response: {
-                    authenticatorData:
-                        response.authenticatorData &&
-                        uint8arrayToBase64url(response.authenticatorData),
-                    clientDataJSON:
-                        response.clientDataJSON && uint8arrayToBase64url(response.clientDataJSON),
-
-                    signature: response.signature && uint8arrayToBase64url(response.signature),
-                    userHandle: response.userHandle && uint8arrayToBase64url(response.userHandle)
-                },
-                clientExtensionResults: publicKeyCredential.getClientExtensionResults()
-            }
-            console.log(encodedResult)
-
-            await axios
-                .post(`http://localhost:8080/auth/finishBioLogin/${username}`, {
+                return authInterceptor.post('/auth/finishBioRegistration', {
                     credential: JSON.stringify(encodedResult)
                 })
-                .then((response) => {
-                    sessionStorage.setItem('accessToken', response.data.accessToken)
-                    localStorage.setItem('refreshToken', response.data.refreshToken)
+            })
+            .then(() => {
+                localStorage.setItem('spareStiUsername', user.value.username)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }
 
-                    user.value.firstname = response.data.firstName
-                    user.value.lastname = response.data.lastName
-                    user.value.username = response.data.username
+    const bioLogin = (username: string) => {
+        axios
+            .post(`http://localhost:8080/auth/bioLogin/${username}`)
+            .then((request) => {
+                initialCheckStatus(request)
+                console.log(request)
 
-                    router.push({ name: 'home' })
+                const credentialGetJson: CredentialRequestOptions = request.data
+                console.log(credentialGetJson)
+
+                const credentialGetOptions: CredentialRequestOptions = {
+                    publicKey: {
+                        ...credentialGetJson.publicKey,
+                        allowCredentials: credentialGetJson.publicKey.allowCredentials?.map(
+                            (credential) => ({
+                                ...credential,
+                                id: base64urlToUint8array(credential.id as unknown as string)
+                            })
+                        ),
+                        challenge: base64urlToUint8array(
+                            credentialGetJson.publicKey.challenge as unknown as string
+                        ),
+                        extensions: credentialGetJson.publicKey.extensions
+                    }
+                }
+
+                return navigator.credentials.get(
+                    credentialGetOptions
+                ) as Promise<PublicKeyCredential>
+            })
+            .then((publicKeyCredential) => {
+                const response = publicKeyCredential.response as AuthenticatorAssertionResponse
+
+                const encodedResult = {
+                    type: publicKeyCredential.type,
+                    id: publicKeyCredential.id,
+                    response: {
+                        authenticatorData:
+                            response.authenticatorData &&
+                            uint8arrayToBase64url(response.authenticatorData),
+                        clientDataJSON:
+                            response.clientDataJSON &&
+                            uint8arrayToBase64url(response.clientDataJSON),
+                        signature: response.signature && uint8arrayToBase64url(response.signature),
+                        userHandle:
+                            response.userHandle && uint8arrayToBase64url(response.userHandle)
+                    },
+                    clientExtensionResults: publicKeyCredential.getClientExtensionResults()
+                }
+                console.log(encodedResult)
+
+                return axios.post(`http://localhost:8080/auth/finishBioLogin/${username}`, {
+                    credential: JSON.stringify(encodedResult)
                 })
-                .catch((error) => {
-                    const axiosError = error as AxiosError
-                    errorMessage.value =
-                        (axiosError.response?.data as string) || 'An error occurred'
-                    console.log('hei :' + errorMessage.value)
-                })
-        } catch (error) {
-            // Handle errors
-            console.log(error)
-        }
+            })
+            .then((response) => {
+                sessionStorage.setItem('accessToken', response.data.accessToken)
+
+                user.value.firstname = response.data.firstName
+                user.value.lastname = response.data.lastName
+                user.value.username = response.data.username
+
+                router.push({ name: 'home' })
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }
+
+    const checkIfUserConfigured = async () => {
+        await authInterceptor('/config')
+            .then((response) => {
+                console.log('User configured: ' + user.value.isConfigured)
+                user.value.isConfigured = response.data.challengeConfig != null
+            })
+            .catch(() => {
+                user.value.isConfigured = false
+            })
     }
 
     return {
+        user,
+        checkIfUserConfigured,
         register,
         login,
         logout,

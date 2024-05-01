@@ -361,7 +361,6 @@ watch(
     (newGoal, oldGoal) => {
         if (newGoal !== oldGoal) {
             goal.value = newGoal
-            console.log('Updated goal:', goal.value)
         }
     },
     { immediate: true }
@@ -373,7 +372,6 @@ watch(
         if (newChallenges !== oldChallenges) {
             challenges.value = newChallenges
             sortChallenges()
-            console.log('Updated challenges:', challenges.value)
         }
     },
     { immediate: true }
@@ -404,8 +402,6 @@ const incrementSaved = async (challenge: Challenge) => {
         await challengeStore.completeUserChallenge(challenge)
     }
 
-    console.log('Incrementing saved amount for:', challenge)
-
     // Safely update the goal's saved value, ensuring goal.value exists and is not null
     if (goal.value) {
         goal.value.saved = (goal.value.saved || 0) + challenge.perPurchase
@@ -432,11 +428,11 @@ const recalculateAndAnimate = () => {
 }
 
 const editChallenge = (challenge: Challenge) => {
-    router.push(`/spareutfordringer/${challenge.id}`)
+    router.push(`/spareutfordringer/rediger/${challenge.id}`)
 }
 
 const editGoal = (goal: Goal) => {
-    router.push(`/sparemaal/${goal.id}`)
+    router.push(`/sparemaal/rediger/${goal.id}`)
 }
 
 // Declare the ref with a type annotation for an array of strings
@@ -589,9 +585,8 @@ const getPigStepsIcon = () => {
     return 'src/assets/pigSteps.png'
 }
 
-// TODO - Change when EditGoal view is created
 const goToEditGoal = () => {
-    router.push({ name: 'EditGoal' })
+    router.push({ name: 'edit-goal', params: { id: goal.value?.id } })
 }
 </script>
 

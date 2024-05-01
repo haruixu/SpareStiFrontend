@@ -60,13 +60,13 @@ export const useUserConfigStore = defineStore('userConfig', () => {
             })
     }
 
-    const postUserConfig = () => {
+    const postUserConfig = async () => {
         const payload = {
             experience: experience.value,
             motivation: motivation.value,
             challengeTypeConfigs: Array.from(challengeTypeConfigs.value)
         }
-        authInterceptor
+        await authInterceptor
             .post('/config/challenge', payload)
             .then((response) => {
                 console.log('Success:', response.data)
