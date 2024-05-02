@@ -41,12 +41,25 @@
 
 <script setup lang="ts">
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
-import { defineProps, ref } from 'vue'
+import { defineProps, ref, watchEffect } from 'vue'
 import ModalComponent from "@/components/ModalComponent.vue";
 
 const isModalOpen = ref(false)
 
-defineProps(['speech', 'pngSize', 'direction', 'imageDirection'])
+const props = defineProps({
+    speech: Array,
+    pngSize: Number,
+    direction: String,
+    imageDirection: String,
+    show: {
+        type: Boolean,
+        default: true,
+        required: false
+    }
+})
 
+watchEffect(() => {
+    isModalOpen.value = props.show
+})
 
 </script>
