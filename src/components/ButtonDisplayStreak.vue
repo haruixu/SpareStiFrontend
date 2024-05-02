@@ -23,7 +23,7 @@
                 <span class="text-xs md:text-2xl font-bold text-black"
                     >{{ currentStreak
                     }}{{
-                        currentStreak === 1 ? ' utfodring fullført' : ' utfodringer fullført'
+                        currentStreak === 1 ? ' utfordring fullført' : ' utfordringer fullført'
                     }}
                     streak</span
                 >
