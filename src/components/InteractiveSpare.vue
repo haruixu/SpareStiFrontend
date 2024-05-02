@@ -32,7 +32,7 @@ import { computed, defineProps, ref } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 
 interface Props {
-    speech: string[] | null
+    speech?: Array<string>
     direction: 'left' | 'right'
     pngSize: number
 }

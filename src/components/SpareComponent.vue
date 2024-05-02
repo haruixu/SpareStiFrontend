@@ -21,8 +21,8 @@
         <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
             <InteractiveSpare
                 :speech="speech"
-                :png-size="pngSize"
-                :direction="direction"
+                :png-size="pngSize!"
+                direction="left"
                 @emit:close="isModalOpen = false"
             />
 
@@ -47,7 +47,7 @@ import ModalComponent from '@/components/ModalComponent.vue'
 const isModalOpen = ref(false)
 
 const props = defineProps({
-    speech: Array,
+    speech: Array<string>,
     pngSize: Number,
     direction: String,
     imageDirection: String,
