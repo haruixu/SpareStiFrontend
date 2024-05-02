@@ -63,7 +63,6 @@
 import { computed, ref } from 'vue'
 import { useUserConfigStore } from '@/stores/userConfigStore'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
-import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
 
 const MAX_DIGITS = 11
@@ -80,14 +79,13 @@ const isFormValid = computed(() => {
 })
 
 async function onButtonClick() {
-    const savingAccountNumber = savingsAccount.value.replace(/\./g, '')
-    const spendingAccountNumber = spendingAccount.value.replace(/\./g, '')
+    const savingAccountNumber = parseInt(savingsAccount.value.replace(/\./g, ''))
+    const spendingAccountNumber = parseInt(spendingAccount.value.replace(/\./g, ''))
 
-    await userConfigStore.postAccount('SAVING', savingAccountNumber, 0)
-    await userConfigStore.postAccount('SPENDING', spendingAccountNumber, 0)
-    await userConfigStore.postUserConfig()
+    userConfigStore.setAccount('SAVING', savingAccountNumber)
+    userConfigStore.setAccount('SPENDING', spendingAccountNumber)
 
-    await router.push({ name: 'home', query: { firstLogin: 'true' } })
+    await userConfigStore.createConfig()
 }
 
 function restrictToNumbers(event: InputEvent, type: string) {

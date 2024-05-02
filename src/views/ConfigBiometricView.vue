@@ -7,7 +7,7 @@
             <img alt="bioAuthFace" class="w-40 h-40" src="@/assets/bioAuthFace.png" />
         </div>
         <div class="flex flex-col gap-5">
-            <button @click="userStore.bioRegister()">Legg til nå!</button>
+            <button @click="bioRegister">Legg til nå!</button>
             <button @click="router.push({ name: 'configurations1' })">Jeg gjør det senere</button>
         </div>
     </div>
@@ -17,6 +17,11 @@ import { useUserStore } from '@/stores/userStore'
 import router from '@/router'
 
 const userStore = useUserStore()
+
+const bioRegister = async () => {
+    await userStore.bioRegister()
+    await router.push({ name: 'configurations1' })
+}
 </script>
 
 <style scoped></style>
