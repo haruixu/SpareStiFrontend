@@ -163,23 +163,23 @@ router.beforeEach(async (to, from, next) => {
 
     if (!loginCredentials) {
         if (bioCredentials && to.name !== 'login-bio') {
-            console.log('Bio login')
             await router.replace({ name: 'login-bio', params: { username: bioCredentials } })
             return next({ name: 'login-bio', params: { username: bioCredentials } })
         } else if (authRequired && !bioCredentials && to.name !== 'login') {
-            console.log('Normal login')
             await router.replace({ name: 'login' })
             return next({ name: 'login' })
         } else if (!authRequired) {
-            console.log('Public page')
             next()
         }
     } else {
-        if (userStore.user.isConfigured == false) {
+        console.log('Logged in')
+
+        if (!userStore.user.isConfigured) {
             await userStore.checkIfUserConfigured()
         }
 
         const isConfigured = userStore.user.isConfigured
+        console.log('Is configured:', isConfigured)
 
         if (configRequired && !isConfigured) {
             await router.replace({ name: 'configure-biometric' })

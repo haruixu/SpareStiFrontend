@@ -85,10 +85,9 @@ onMounted(() => {
     authInterceptor('/config/challenge')
         .then((response) => {
             configuration.value = response.data
-            console.log(configuration.value)
         })
         .catch((error) => {
-            return console.log(error)
+            console.error(error)
         })
 })
 </script>

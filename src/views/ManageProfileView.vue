@@ -83,10 +83,9 @@ onMounted(async () => {
     await authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
-            console.log(profile.value)
         })
         .catch((error) => {
-            return console.log(error)
+            console.error(error)
         })
 })
 
@@ -136,7 +135,7 @@ const saveChanges = async () => {
                     <input
                         v-model="profile.firstName"
                         :class="{ 'bg-green-200': isFirstNameValid }"
-                        name="firstname"
+                        name="firstName"
                         placeholder="Skriv inn fornavn"
                         type="text"
                     />
@@ -151,7 +150,7 @@ const saveChanges = async () => {
                     <input
                         v-model="profile.lastName"
                         :class="{ 'bg-green-200': isLastNameValid }"
-                        name="lastname"
+                        name="lastName"
                         placeholder="Skriv inn etternavn"
                         type="text"
                     />

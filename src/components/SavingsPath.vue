@@ -385,7 +385,6 @@ const targetRef = ref<HTMLElement | null>(null)
 
 // AddSpareUtfordring
 const addSpareUtfordring = () => {
-    console.log('Attempting to navigate to /spareutfordringer')
     router.push('/spareutfordringer').catch((error) => {
         console.error('Routing error:', error)
     })
@@ -444,11 +443,9 @@ const loadAnimatedStates = () => {
 }
 
 const saveAnimatedState = (challenge: Challenge) => {
-    console.log('Saving animated state for 1:', challenge.id)
     if (challenge.id != null) {
         animatedChallenges.value.push(challenge.id)
     }
-    console.log('Saving animated state for:', challenge.title)
     localStorage.setItem('animatedChallenges', JSON.stringify(animatedChallenges.value))
 }
 
@@ -457,7 +454,6 @@ const animateChallenge = (challenge: Challenge) => {
         challenge.completion === 100 &&
         !animatedChallenges.value.includes(challenge.id as number)
     ) {
-        console.log('Animating for:', challenge.title)
         if (challenge.id != null) {
             animatedChallenges.value.push(challenge.id)
         } // Ensure no duplication
@@ -483,8 +479,6 @@ watch(
             nextTick(() => {
                 if (challenge.completion === 100) {
                     if (!animatedChallenges.value.includes(challenge.id as number)) {
-                        console.log(!animatedChallenges.value.includes(challenge.id as number))
-                        console.log('Animating challenge in watcher:', challenge.id)
                         animateChallenge(challenge)
                         saveAnimatedState(challenge) // Refactor this to update localStorage correctly
                     }

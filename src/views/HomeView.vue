@@ -79,7 +79,6 @@ onMounted(async () => {
     challenges.value = challengeStore.challenges
     goals.value = goalStore.goals
     goal.value = goals.value[0]
-    console.log('Goals:', goals.value)
 
     const lastModalShow = localStorage.getItem('lastModalShow')
     if (!lastModalShow || Date.now() - Number(lastModalShow) >= 24 * 60 * 60 * 1000) {

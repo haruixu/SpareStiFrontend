@@ -10,11 +10,8 @@ export const useGoalStore = defineStore('goal', () => {
             const response = await authInterceptor('/goals')
             if (response.data && response.data.content) {
                 goals.value = response.data.content
-                console.log(response.data.content)
-                console.log('Fetched Goals:', goals.value)
             } else {
                 goals.value = []
-                console.error('No goal content found:', response.data)
             }
         } catch (error) {
             console.error('Error fetching challenges:', error)
@@ -34,7 +31,6 @@ export const useGoalStore = defineStore('goal', () => {
                 const index = goals.value.findIndex((g) => g.id === goal.id)
                 if (index !== -1) {
                     goals.value[index] = { ...goals.value[index], ...response.data }
-                    console.log('Updated Goal:', response.data)
                 }
             } else {
                 console.error('No goal content found in response data')
