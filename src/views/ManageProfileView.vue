@@ -24,8 +24,6 @@ const profile = ref<Profile>({
     }
 })
 
-const image = ref<string | ArrayBuffer | null>('')
-
 const updatePassword = ref<boolean>(false)
 const confirmPassword = ref<string>('')
 const errorMessage = ref<string>('')
@@ -65,8 +63,8 @@ const isFormInvalid = computed(
             ? profile.value.password !== confirmPassword.value || profile.value.password === ''
             : false)
 )
-onMounted(async () => {
 
+onMounted(async () => {
     await authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
@@ -74,10 +72,6 @@ onMounted(async () => {
         })
         .catch((error) => {
             return console.log(error)
-        })
-    await authInterceptor('/profile/picture')
-        .then((response) => {
-            image.value = response.data
         })
 })
 
@@ -102,8 +96,6 @@ const uploadImage = (e : any) => {
 
     e.preventDefault;
 }
-
-
 
 const saveChanges = async () => {
     if (isFormInvalid.value) {
@@ -141,16 +133,14 @@ const saveChanges = async () => {
                     </div>
                 </div>
                 <div class="flex flex-row justify-center">
-                    <input
-                        id="fileInput"
-                        name="file"
-                        type="file"
-                        style="display: none"
-                        accept=".jpg, .jpeg, .png, .gif, .img"
+                    <input id="fileInput"
+                           type="file"
+                           style="display:none;"
+                           accept =".jpg, .jpeg, .png, .gif, .img" />
+                    <button
+                        v-text="'Last opp eget bilde!'"
+                        @click="selectImage()"
                     />
-                    <form enctype="multipart/form-data">
-                        <button v-text="'Last opp eget bilde!'" @click="selectImage" />
-                    </form>
                 </div>
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-between mx-4">
