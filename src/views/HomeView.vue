@@ -26,7 +26,7 @@
                 />
             </div>
         </div>
-        <savings-path :challenges="challenges" :goal="goal"></savings-path>
+        <savings-path v-if="isMounted" :challenges="challenges" :goal="goal"></savings-path>
     </div>
     <GeneratedChallengesModal v-show="showModal" @update:showModal="showModal = $event" />
 </template>
@@ -50,24 +50,23 @@ const challengeStore = useChallengeStore()
 const speech = ref<string[]>([])
 
 const challenges = ref<Challenge[]>([])
-const goals = ref<Goal[]>([])
 const showWelcome = ref<boolean>(false)
 
 const goal = ref<Goal | null | undefined>(null)
+const isMounted = ref(false)
 
 onMounted(async () => {
     await goalStore.getUserGoals()
     await challengeStore.getUserChallenges()
     challenges.value = challengeStore.challenges
-    goals.value = goalStore.goals
-    goal.value = goals.value[0]
-
+    goal.value = goalStore.priorityGoal
     const lastModalShow = localStorage.getItem('lastModalShow')
     if (!lastModalShow || Date.now() - Number(lastModalShow) >= 24 * 60 * 60 * 1000) {
         showModal.value = true
     }
     firstLoggedInSpeech()
     SpareSpeech()
+    isMounted.value = true
 })
 
 const firstLoggedInSpeech = () => {

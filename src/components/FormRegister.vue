@@ -62,7 +62,7 @@ watch(
             <input
                 v-model="firstName"
                 name="firstName"
-                :class="{ 'bg-green-200': isFirstNameValid }"
+                :class="{ 'border-2 border-lime-400': isFirstNameValid }"
                 placeholder="Skriv inn fornavn"
                 type="text"
             />
@@ -77,7 +77,7 @@ watch(
             <input
                 v-model="lastName"
                 name="lastName"
-                :class="{ 'bg-green-200': isLastNameValid }"
+                :class="{ 'border-2 border-lime-400': isLastNameValid }"
                 placeholder="Skriv inn etternavn"
                 type="text"
             />
@@ -92,7 +92,7 @@ watch(
             <input
                 v-model="email"
                 name="email"
-                :class="{ 'bg-green-200': isEmailValid }"
+                :class="{ 'border-2 border-lime-400': isEmailValid }"
                 placeholder="Skriv inn e-post"
                 type="text"
             />
@@ -109,7 +109,7 @@ watch(
                 name="username"
                 placeholder="Skriv inn brukernavn"
                 type="text"
-                :class="{ 'bg-green-200': isUsernameValid }"
+                :class="{ 'border-2 border-lime-400': isUsernameValid }"
             />
         </div>
         <div class="flex flex-col">
@@ -126,7 +126,7 @@ watch(
                     :type="showPassword ? 'text' : 'password'"
                     placeholder="Skriv inn passord"
                     class="w-full"
-                    :class="{ 'bg-green-200': isPasswordValid }"
+                    :class="{ 'border-2 border-lime-400': isPasswordValid }"
                 />
                 <button
                     class="absolute right-0 top-1 bg-transparent hover:bg-transparent"
@@ -137,7 +137,9 @@ watch(
             </div>
             <input
                 v-model="confirm"
-                :class="{ 'bg-green-200': password == confirm && '' !== confirm.valueOf() }"
+                :class="{
+                    'border-2 border-lime-400': password == confirm && '' !== confirm.valueOf()
+                }"
                 class="mt-2"
                 name="confirm"
                 placeholder="Bekreft passord"
@@ -145,7 +147,12 @@ watch(
             />
         </div>
         <div class="flex flex-row gap-5">
-            <button :disabled="isFormInvalid" class="grow-0" name="submit" @click="submitForm">
+            <button
+                :disabled="isFormInvalid"
+                class="grow-0 primary"
+                name="submit"
+                @click="submitForm"
+            >
                 Registrer deg
             </button>
             <p>{{ errorMessage }}</p>
