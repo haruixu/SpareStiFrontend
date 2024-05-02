@@ -82,7 +82,7 @@ import { onMounted, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 
 const challengeStore = useChallengeStore()
-const challengeImageUrl = ref('/assets/star.png') // Default or placeholder image
+const challengeImageUrl = ref('/src/assets/star.png') // Default or placeholder image
 const props = defineProps<{ challenge: Challenge }>()
 
 interface Props {
@@ -117,7 +117,7 @@ const getChallengeIcon = async (challengeId: number) => {
         challengeImageUrl.value = URL.createObjectURL(imageResponse.data)
     } catch (error) {
         console.error('Failed to load challenge icon:', error)
-        challengeImageUrl.value = '/assets/default-icon.png' // Fallback on error
+        challengeImageUrl.value = '/src/assets/star.png' // Fallback on error
     }
 }
 
