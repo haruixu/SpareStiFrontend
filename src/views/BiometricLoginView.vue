@@ -18,10 +18,12 @@ const bioLogin = () => {
 
 <template>
     <div class="flex flex-col items-center h-screen gap-5 my-10">
-        <h1>Hei {{ username }}, velkommen tilbake</h1>
-        <button @click="bioLogin">Biometrisk login</button>
+        <h1>Hei {{ username }}, velkommen tilbake!💥</h1>
+        <button class="primary" @click="bioLogin">Biometrisk login</button>
         <p>Ikke deg? Eller funker ikke biometrisk innlogging?</p>
-        <button @click="removeBioCredential">Logg inn med brukernavn og passord</button>
+        <button class="primary" @click="removeBioCredential">
+            Logg inn med brukernavn og passord
+        </button>
     </div>
 </template>
 

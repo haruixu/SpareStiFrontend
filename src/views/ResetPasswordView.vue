@@ -17,7 +17,6 @@
                         :type="showPassword ? 'text' : 'password'"
                         placeholder="Skriv inn passord"
                         class="w-full"
-                        :class="{ 'bg-green-200': isPasswordValid }"
                     />
                     <button
                         class="absolute right-0 top-1 bg-transparent hover:bg-transparent"

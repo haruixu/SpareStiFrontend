@@ -1,12 +1,10 @@
 <template>
-    <div class="fixed bottom-5 left-5">
-        <div @click="isModalOpen = true" class="hover:cursor-pointer">
-            <img
-                alt="Hjelp"
-                class="w-1/12 transition-transform duration-300 ease-in-out hover:scale-110"
-                src="@/assets/hjelp.png"
-            />
-        </div>
+    <div class="fixed bottom-5 right-5 hover:cursor-pointer z-50" @click="isModalOpen = true">
+        <img
+            alt="Hjelp"
+            class="h-10 transition-transform duration-300 ease-in-out hover:scale-110"
+            src="@/assets/hjelp.png"
+        />
     </div>
     <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
         <InteractiveSpare
