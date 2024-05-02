@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
 defineProps({
     title: String,
     message: String,
@@ -25,5 +27,9 @@ defineProps({
         default: true,
         required: false
     }
+})
+
+onMounted(() => {
+    console.log('ModalComponent mounted')
 })
 </script>

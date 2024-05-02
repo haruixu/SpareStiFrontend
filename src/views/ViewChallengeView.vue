@@ -4,12 +4,12 @@ import { computed, onMounted, ref } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const router = useRouter()
 
 const challengeInstance = ref<Challenge>({
-    title: 'Test titel',
+    title: 'Tittel',
     perPurchase: 20,
     saved: 0,
     target: 100,
@@ -28,8 +28,6 @@ const completion = computed(
 const isCompleted = computed(() => challengeInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
-
-const isModalOpen = ref(false)
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -142,12 +140,13 @@ const completeChallenge = () => {
                 </button>
             </div>
         </div>
-        <InteractiveSpare
-            :png-size="10"
+        <SpareComponent
             :speech="motivation"
-            direction="left"
-            :isModalOpen="isModalOpen"
-        />
+            :png-size="15"
+            :imageDirection="'left'"
+            :direction="'right'"
+            class="mb-5"
+        ></SpareComponent>
     </div>
 </template>
 
