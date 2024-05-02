@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios'
 import axios, { AxiosError } from 'axios'
 import router from '@/router'
+import { useUserStore } from '@/stores/userStore'
 
 const authInterceptor = axios.create({
     baseURL: 'http://localhost:8080',
@@ -38,7 +39,7 @@ authInterceptor.interceptors.response.use(
             const username = localStorage.getItem('spareStiUsername')
 
             if (!username) {
-                await router.push({ name: 'login' })
+                useUserStore().logout()
             } else {
                 await router.push({ name: 'login-bio', params: { username: username } })
             }

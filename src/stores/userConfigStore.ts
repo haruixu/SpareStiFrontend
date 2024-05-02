@@ -46,18 +46,12 @@ export const useUserConfigStore = defineStore('userConfig', () => {
             accNumber,
             balance
         }
-        await authInterceptor
-            .post('/accounts', payload)
-            .then((response) => {
-                console.log('Success:', response.data)
-            })
-            .catch((error) => {
-                const axiosError = error as AxiosError
-                errorMessage.value =
-                    (axiosError.response?.data as string) ||
-                    'An error occurred while posting account'
-                console.error('Error posting account:', errorMessage.value)
-            })
+        await authInterceptor.post('/accounts', payload).catch((error) => {
+            const axiosError = error as AxiosError
+            errorMessage.value =
+                (axiosError.response?.data as string) || 'An error occurred while posting account'
+            console.error('Error posting account:', errorMessage.value)
+        })
     }
 
     const postUserConfig = async () => {
@@ -66,18 +60,13 @@ export const useUserConfigStore = defineStore('userConfig', () => {
             motivation: motivation.value,
             challengeTypeConfigs: Array.from(challengeTypeConfigs.value)
         }
-        await authInterceptor
-            .post('/config/challenge', payload)
-            .then((response) => {
-                console.log('Success:', response.data)
-            })
-            .catch((error) => {
-                const axiosError = error as AxiosError
-                errorMessage.value =
-                    (axiosError.response?.data as string) ||
-                    'An error occurred while updating configuration'
-                console.error('Error updating configuration:', errorMessage.value)
-            })
+        await authInterceptor.post('/config/challenge', payload).catch((error) => {
+            const axiosError = error as AxiosError
+            errorMessage.value =
+                (axiosError.response?.data as string) ||
+                'An error occurred while updating configuration'
+            console.error('Error updating configuration:', errorMessage.value)
+        })
     }
 
     return {

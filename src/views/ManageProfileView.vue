@@ -83,10 +83,9 @@ onMounted(async () => {
     await authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
-            console.log(profile.value)
         })
         .catch((error) => {
-            return console.log(error)
+            console.error(error)
         })
 })
 
@@ -135,7 +134,7 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.firstName"
-                        name="firstname"
+                        name="firstName"
                         placeholder="Skriv inn fornavn"
                         type="text"
                     />
@@ -149,7 +148,7 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.lastName"
-                        name="lastname"
+                        name="lastName"
                         placeholder="Skriv inn etternavn"
                         type="text"
                     />
