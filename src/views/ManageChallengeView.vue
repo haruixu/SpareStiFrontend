@@ -5,6 +5,7 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 import ModalComponent from '@/components/ModalComponent.vue'
+import InteractiveSpare from "@/components/InteractiveSpare.vue";
 
 const router = useRouter()
 
@@ -154,7 +155,7 @@ const confirmCancel = () => {
 </script>
 
 <template>
-    <div class="flex flex-col justify-center items-center">
+  <div class="flex md:flex-row flex-col justify-center md:items-start items-center">
         <h1 class="font-bold" v-text="pageTitle" />
         <div class="flex flex-col gap-5 items-center justify-center">
             <div class="flex flex-col">
@@ -268,6 +269,13 @@ const confirmCancel = () => {
                     </div>
                 </template>
             </ModalComponent>
+        </div>
+        <div class="md:w-1/4 mt-10 p-5">
+          <InteractiveSpare
+              :png-size="10"
+              :speech="['Her kan du lage en utfordring!', `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
+              direction="left"
+          />
         </div>
     </div>
 </template>
