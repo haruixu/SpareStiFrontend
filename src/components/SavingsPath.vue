@@ -584,27 +584,27 @@ const triggerConfetti = () => {
     })
 }
 
-
-const goalImageUrl = ref('src/assets/pengesekkStreak.png');
-
+const goalImageUrl = ref('src/assets/pengesekkStreak.png')
 
 const getGoalIcon = async (goalId: number) => {
     try {
-        const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, { responseType: 'blob' });
-        goalImageUrl.value = URL.createObjectURL(imageResponse.data);
+        const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, {
+            responseType: 'blob'
+        })
+        goalImageUrl.value = URL.createObjectURL(imageResponse.data)
     } catch (error) {
-        console.error("Failed to load challenge icon:", error);
-        goalImageUrl.value = 'src/assets/pengesekkStreak.png';
+        console.error('Failed to load challenge icon:', error)
+        goalImageUrl.value = 'src/assets/pengesekkStreak.png'
     }
-};
+}
 
 onMounted(() => {
     if (props.goal?.id) {
-        getGoalIcon(props.goal.id);
+        getGoalIcon(props.goal.id)
     } else {
-        console.error("Goal id is undefined");
+        console.error('Goal id is undefined')
     }
-});
+})
 
 const getPigStepsIcon = () => {
     return 'src/assets/pigSteps.png'

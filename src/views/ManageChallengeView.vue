@@ -7,8 +7,7 @@ import type { Challenge } from '@/types/challenge'
 import ModalComponent from '@/components/ModalComponent.vue'
 
 const router = useRouter()
-const uploadedFile = ref<File | null>(null);
-
+const uploadedFile = ref<File | null>(null)
 
 const modalTitle = ref('')
 const modalMessage = ref('')
@@ -68,13 +67,13 @@ function validateInputs() {
 }
 
 const handleFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
-        uploadedFile.value = target.files[0];
+        uploadedFile.value = target.files[0]
     } else {
-        uploadedFile.value = null;
+        uploadedFile.value = null
     }
-};
+}
 
 const submitAction = async () => {
     const errors = validateInputs()
@@ -86,33 +85,33 @@ const submitAction = async () => {
         return
     }
     try {
-        let response;
+        let response
         if (isEdit.value) {
-            response = await updateChallenge();
+            response = await updateChallenge()
         } else {
-            response = await createChallenge();
+            response = await createChallenge()
         }
 
-        const challengeId = isEdit.value ? challengeInstance.value.id : response.id;
+        const challengeId = isEdit.value ? challengeInstance.value.id : response.id
 
         if (uploadedFile.value && challengeId) {
-            const formData = new FormData();
-            formData.append('file', uploadedFile.value);
-            formData.append('id', challengeId.toString());
+            const formData = new FormData()
+            formData.append('file', uploadedFile.value)
+            formData.append('id', challengeId.toString())
 
             await authInterceptor.post('/challenges/picture', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
         }
 
-        await router.push({ name: 'challenges' });
+        await router.push({ name: 'challenges' })
     } catch (error) {
-        console.error('Error during challenge submission:', error);
-        modalTitle.value = 'Systemfeil';
-        modalMessage.value = 'En feil oppstod under lagring av utfordringen.';
-        errorModalOpen.value = true;
+        console.error('Error during challenge submission:', error)
+        modalTitle.value = 'Systemfeil'
+        modalMessage.value = 'En feil oppstod under lagring av utfordringen.'
+        errorModalOpen.value = true
     }
-};
+}
 
 onMounted(async () => {
     if (isEdit.value) {
@@ -136,13 +135,16 @@ onMounted(async () => {
 })
 
 const createChallenge = async () => {
-    const response = await authInterceptor.post('/challenges', challengeInstance.value);
-    return response.data;
+    const response = await authInterceptor.post('/challenges', challengeInstance.value)
+    return response.data
 }
 
 const updateChallenge = async () => {
-    const response = await authInterceptor.put(`/challenges/${challengeInstance.value.id}`, challengeInstance.value);
-    return response.data;
+    const response = await authInterceptor.put(
+        `/challenges/${challengeInstance.value.id}`,
+        challengeInstance.value
+    )
+    return response.data
 }
 
 const cancelCreation = () => {
@@ -167,9 +169,8 @@ const confirmCancel = () => {
 }
 
 const removeUploadedFile = () => {
-    uploadedFile.value = null;
-};
-
+    uploadedFile.value = null
+}
 </script>
 
 <template>
@@ -243,13 +244,27 @@ const removeUploadedFile = () => {
 
                 <div class="flex flex-col items-center">
                     <p>Last opp ikon for utfordringen📸</p>
-                    <label for="fileUpload" class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none">
+                    <label
+                        for="fileUpload"
+                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
+                    >
                         💾
                     </label>
-                    <input id="fileUpload" type="file" accept=".jpg" hidden @change="handleFileChange" />
+                    <input
+                        id="fileUpload"
+                        type="file"
+                        accept=".jpg"
+                        hidden
+                        @change="handleFileChange"
+                    />
                     <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
                         <p class="text-sm">{{ uploadedFile.name }}</p>
-                        <button @click="removeUploadedFile" class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500">Fjern fil</button>
+                        <button
+                            @click="removeUploadedFile"
+                            class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                        >
+                            Fjern fil
+                        </button>
                     </div>
                 </div>
             </div>

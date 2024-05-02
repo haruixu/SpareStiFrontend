@@ -82,9 +82,8 @@ import { onMounted, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 
 const challengeStore = useChallengeStore()
-const challengeImageUrl = ref('/assets/star.png');  // Default or placeholder image
-const props = defineProps<{ challenge: Challenge }>();
-
+const challengeImageUrl = ref('/assets/star.png') // Default or placeholder image
+const props = defineProps<{ challenge: Challenge }>()
 
 interface Props {
     challenge: Challenge
@@ -112,20 +111,21 @@ const editChallenge = (challenge: Challenge) => {
 
 const getChallengeIcon = async (challengeId: number) => {
     try {
-        const imageResponse = await authInterceptor.get(`/challenges/picture?id=${challengeId}`, { responseType: 'blob' });
-        challengeImageUrl.value = URL.createObjectURL(imageResponse.data);
+        const imageResponse = await authInterceptor.get(`/challenges/picture?id=${challengeId}`, {
+            responseType: 'blob'
+        })
+        challengeImageUrl.value = URL.createObjectURL(imageResponse.data)
     } catch (error) {
-        console.error("Failed to load challenge icon:", error);
-        challengeImageUrl.value = '/assets/default-icon.png';  // Fallback on error
+        console.error('Failed to load challenge icon:', error)
+        challengeImageUrl.value = '/assets/default-icon.png' // Fallback on error
     }
-};
+}
 
 onMounted(() => {
     if (props.challenge?.id) {
-        getChallengeIcon(props.challenge.id);
+        getChallengeIcon(props.challenge.id)
     } else {
-        console.error("Challenge id is undefined");
+        console.error('Challenge id is undefined')
     }
-});
-
+})
 </script>

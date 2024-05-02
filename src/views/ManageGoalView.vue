@@ -7,8 +7,7 @@ import authInterceptor from '@/services/authInterceptor'
 import ModalComponent from '@/components/ModalComponent.vue'
 
 const router = useRouter()
-const uploadedFile: Ref<File | null> = ref(null);
-
+const uploadedFile: Ref<File | null> = ref(null)
 
 const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 10)
 const selectedDate = ref<string>(minDate)
@@ -66,45 +65,44 @@ function validateInputs() {
 }
 
 const submitAction = async () => {
-    const errors = validateInputs();
+    const errors = validateInputs()
     if (errors.length > 0) {
-        const formatErrors = errors.join('<br>');
-        modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨';
-        modalMessage.value = formatErrors;
-        errorModalOpen.value = true;
-        return;
+        const formatErrors = errors.join('<br>')
+        modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'
+        modalMessage.value = formatErrors
+        errorModalOpen.value = true
+        return
     }
 
     try {
-        let response;
+        let response
 
         if (isEdit.value) {
-            response = await updateGoal();
+            response = await updateGoal()
         } else {
-            response = await createGoal();
+            response = await createGoal()
         }
 
-        const goalId = isEdit.value ? goalInstance.value.id : response.id; // Adjusted to handle the returned data
+        const goalId = isEdit.value ? goalInstance.value.id : response.id // Adjusted to handle the returned data
 
         if (uploadedFile.value && goalId) {
-            const formData = new FormData();
-            formData.append('file', uploadedFile.value);
-            formData.append('id', goalId.toString());
+            const formData = new FormData()
+            formData.append('file', uploadedFile.value)
+            formData.append('id', goalId.toString())
 
             await authInterceptor.post('/goals/picture', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
         }
 
-        await router.push({ name: 'goals' });
+        await router.push({ name: 'goals' })
     } catch (error) {
-        console.error('Error during goal submission:', error);
-        modalTitle.value = 'Systemfeil';
-        modalMessage.value = 'En feil oppstod under lagring av utfordringen.';
-        errorModalOpen.value = true;
+        console.error('Error during goal submission:', error)
+        modalTitle.value = 'Systemfeil'
+        modalMessage.value = 'En feil oppstod under lagring av utfordringen.'
+        errorModalOpen.value = true
     }
-};
-
+}
 
 watch(selectedDate, (newDate) => {
     console.log(newDate)
@@ -131,23 +129,26 @@ onMounted(async () => {
 
 const createGoal = async (): Promise<any> => {
     try {
-        const response = await authInterceptor.post('/goals', goalInstance.value);
-        return response.data; // Ensure the response data is returned
+        const response = await authInterceptor.post('/goals', goalInstance.value)
+        return response.data // Ensure the response data is returned
     } catch (error) {
-        console.error('Failed to create goal:', error);
-        throw error; // Rethrow the error to handle it in the submitAction method
+        console.error('Failed to create goal:', error)
+        throw error // Rethrow the error to handle it in the submitAction method
     }
-};
+}
 
 const updateGoal = async (): Promise<any> => {
     try {
-        const response = await authInterceptor.put(`/goals/${goalInstance.value.id}`, goalInstance.value);
-        return response.data; // Ensure the response data is returned
+        const response = await authInterceptor.put(
+            `/goals/${goalInstance.value.id}`,
+            goalInstance.value
+        )
+        return response.data // Ensure the response data is returned
     } catch (error) {
-        console.error('Failed to update goal:', error);
-        throw error; // Rethrow the error to handle it in the submitAction method
+        console.error('Failed to update goal:', error)
+        throw error // Rethrow the error to handle it in the submitAction method
     }
-};
+}
 
 const deleteGoal = () => {
     authInterceptor
@@ -181,17 +182,17 @@ const confirmCancel = () => {
 }
 
 const handleFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
-        uploadedFile.value = target.files[0]; // Save the first selected file
+        uploadedFile.value = target.files[0] // Save the first selected file
     } else {
-        uploadedFile.value = null;
+        uploadedFile.value = null
     }
-};
+}
 
 const removeUploadedFile = () => {
-    uploadedFile.value = null;
-};
+    uploadedFile.value = null
+}
 
 onMounted(async () => {
     if (isEdit.value) {
@@ -264,13 +265,27 @@ onMounted(async () => {
                 </div>
                 <div class="flex flex-col items-center">
                     <p>Last opp ikon for utfordringen📸</p>
-                    <label for="fileUpload" class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none">
+                    <label
+                        for="fileUpload"
+                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
+                    >
                         💾
                     </label>
-                    <input id="fileUpload" type="file" accept=".jpg" hidden @change="handleFileChange" />
+                    <input
+                        id="fileUpload"
+                        type="file"
+                        accept=".jpg"
+                        hidden
+                        @change="handleFileChange"
+                    />
                     <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
                         <p class="text-sm">{{ uploadedFile.name }}</p>
-                        <button @click="removeUploadedFile" class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500">Fjern fil</button>
+                        <button
+                            @click="removeUploadedFile"
+                            class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                        >
+                            Fjern fil
+                        </button>
                     </div>
                 </div>
             </div>

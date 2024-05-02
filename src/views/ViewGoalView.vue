@@ -5,13 +5,11 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
 import SpareComponent from '@/components/SpareComponent.vue'
-import starImage from '@/assets/star.png';
-
+import starImage from '@/assets/star.png'
 
 const router = useRouter()
-const goalImageUrl = ref(starImage);
-const isImageLoaded = ref(false);
-
+const goalImageUrl = ref(starImage)
+const isImageLoaded = ref(false)
 
 const goalInstance = ref<Goal>({
     title: 'Test tittel',
@@ -51,27 +49,28 @@ const calculateSpeech = () => {
 }
 
 onMounted(async () => {
-    const goalId = router.currentRoute.value.params.id;
-    if (!goalId) return router.push({ name: 'goals' });
+    const goalId = router.currentRoute.value.params.id
+    if (!goalId) return router.push({ name: 'goals' })
 
     try {
-        const goalResponse = await authInterceptor.get(`/goals/${goalId}`);
-        goalInstance.value = goalResponse.data;
-        calculateSpeech();
+        const goalResponse = await authInterceptor.get(`/goals/${goalId}`)
+        goalInstance.value = goalResponse.data
+        calculateSpeech()
 
         try {
-            const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, { responseType: 'blob' });
-            goalImageUrl.value = URL.createObjectURL(imageResponse.data);
+            const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, {
+                responseType: 'blob'
+            })
+            goalImageUrl.value = URL.createObjectURL(imageResponse.data)
         } catch (imageError) {
-            console.error("Failed to load image:", imageError);
+            console.error('Failed to load image:', imageError)
         }
-        isImageLoaded.value = true;
+        isImageLoaded.value = true
     } catch (error) {
-        console.error("Failed to load goal details:", error);
-        await router.push({ name: 'goals' });
+        console.error('Failed to load goal details:', error)
+        await router.push({ name: 'goals' })
     }
-});
-
+})
 
 const completeGoal = () => {
     authInterceptor
@@ -105,7 +104,12 @@ const completeGoal = () => {
                 <div class="flex flex-row gap-4 justify-center">
                     <p class="text-wrap break-words">{{ goalInstance.description }}</p>
                     <div>
-                        <img v-if="isImageLoaded" :src="goalImageUrl || '@/assets/star.png'" alt="Goal Image" class="w-full h-40 object-cover rounded-lg">
+                        <img
+                            v-if="isImageLoaded"
+                            :src="goalImageUrl || '@/assets/star.png'"
+                            alt="Goal Image"
+                            class="w-full h-40 object-cover rounded-lg"
+                        />
                     </div>
                 </div>
                 <br />
