@@ -12,7 +12,7 @@
     <InteractiveSpare
         :speech="speech"
         :png-size="15"
-        direction="left"
+        direction="right"
         @emit:close="isModalOpen = false"
     />
 
