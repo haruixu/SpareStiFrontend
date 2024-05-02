@@ -172,14 +172,11 @@ router.beforeEach(async (to, from, next) => {
             next()
         }
     } else {
-        console.log('Logged in')
-
         if (!userStore.user.isConfigured) {
             await userStore.checkIfUserConfigured()
         }
 
         const isConfigured = userStore.user.isConfigured
-        console.log('Is configured:', isConfigured)
 
         if (configRequired && !isConfigured) {
             await router.replace({ name: 'configure-biometric' })
