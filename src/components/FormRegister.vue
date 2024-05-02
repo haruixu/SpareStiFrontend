@@ -137,7 +137,9 @@ watch(
             </div>
             <input
                 v-model="confirm"
-                :class="{ 'border-2 border-lime-400': password == confirm && '' !== confirm.valueOf() }"
+                :class="{
+                    'border-2 border-lime-400': password == confirm && '' !== confirm.valueOf()
+                }"
                 class="mt-2"
                 name="confirm"
                 placeholder="Bekreft passord"
@@ -145,7 +147,12 @@ watch(
             />
         </div>
         <div class="flex flex-row gap-5">
-            <button :disabled="isFormInvalid" class="grow-0 primary" name="submit" @click="submitForm">
+            <button
+                :disabled="isFormInvalid"
+                class="grow-0 primary"
+                name="submit"
+                @click="submitForm"
+            >
                 Registrer deg
             </button>
             <p>{{ errorMessage }}</p>

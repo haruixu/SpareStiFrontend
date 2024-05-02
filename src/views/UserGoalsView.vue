@@ -60,9 +60,9 @@ const changeOrder = async () => {
 <template>
     <div class="flex flex-col gap-5 items-center">
         <h1 class="font-bold m-0">Dine sparemål</h1>
-        <button
-            class="primary"
-            @click="router.push({ name: 'new-goal' })">Opprett et nytt sparemål</button>
+        <button class="primary" @click="router.push({ name: 'new-goal' })">
+            Opprett et nytt sparemål
+        </button>
         <h2 class="font-bold m-0">Aktive sparemål🚀</h2>
         <p v-if="activeGoals.length === 0">Du har ingen aktive sparemål</p>
         <draggable
@@ -87,18 +87,20 @@ const changeOrder = async () => {
         </draggable>
         <button
             class="primary secondary"
-            :disabled="activeGoals.length === 0" @click="changeOrder()">
+            :disabled="activeGoals.length === 0"
+            @click="changeOrder()"
+        >
             {{ isDraggable ? 'Lagre rekkefølge' : 'Endre rekkefølge' }}
         </button>
         <h2 class="font-bold m-0">Fullførte sparemål💯</h2>
         <p v-if="completedGoals.length === 0">Du har ingen fullførte sparemål😢</p>
         <div v-else class="flex flex-row flex-wrap justify-center gap-10">
-            <CardGoal 
+            <CardGoal
                 class="border-2 border-slate-200 hover:bg-slate-50"
-                v-for="goal in completedGoals" 
-                :key="goal.id" 
-                :goal-instance="goal" 
-                />
+                v-for="goal in completedGoals"
+                :key="goal.id"
+                :goal-instance="goal"
+            />
         </div>
         <PageControl
             :current-page="currentPage"

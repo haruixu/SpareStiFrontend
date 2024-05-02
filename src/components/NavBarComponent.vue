@@ -23,13 +23,14 @@
         </div>
 
         <div v-if="!isHamburger" class="flex justify-center w-40">
-            <button class="primary bg-[#95e35d] logout focus:ring focus:ring-black-300" @click="openModal">Logg ut</button>
+            <button
+                class="primary bg-[#95e35d] logout focus:ring focus:ring-black-300"
+                @click="openModal"
+            >
+                Logg ut
+            </button>
         </div>
-        <button
-            class="primary logout" 
-            v-if="isHamburger" 
-            @click="toggleMenu">☰
-        </button>
+        <button class="primary logout" v-if="isHamburger" @click="toggleMenu">☰</button>
     </nav>
 
     <div v-if="hamburgerOpen" class="flex flex-col bg-white border border-slate-300 z-50">
@@ -39,9 +40,7 @@
             >💰Spareutfordringer</router-link
         >
         <router-link to="/profil" @click="hamburgerOpen = false">🤭Profil</router-link>
-        <button class="focus:ring focus:ring-black-300" @click="openModal">
-            Logg ut
-        </button>
+        <button class="focus:ring focus:ring-black-300" @click="openModal">Logg ut</button>
     </div>
     <ModalComponent
         :title="'Vil du logge ut?'"
@@ -50,18 +49,8 @@
         @close="isModalOpen = false"
     >
         <template v-slot:buttons>
-            <button
-                @click="logout"
-                class="primary"
-            >
-                Logg ut
-            </button>
-            <button
-                @click="closeModal"
-                class="primary danger"
-            >
-                Avbryt
-            </button>
+            <button @click="logout" class="primary">Logg ut</button>
+            <button @click="closeModal" class="primary danger">Avbryt</button>
         </template>
     </ModalComponent>
 </template>

@@ -73,12 +73,11 @@ const completeGoal = () => {
     <div class="flex flex-row flex-wrap items-center justify-center gap-10">
         <div class="flex flex-col gap-5 max-w-96">
             <button
-            class="w-min bg-transparent rounded-lg font-bold left-10 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
-            @click="router.push({ name: 'goals', params: { id: goalInstance.id } })"
+                class="w-min bg-transparent rounded-lg font-bold left-10 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
+                @click="router.push({ name: 'goals', params: { id: goalInstance.id } })"
             >
-            👈Oversikt
+                👈Oversikt
             </button>
-
 
             <div
                 class="flex flex-col justify-center border-2 rounded-3xl align-middle p-5 card-shadow overflow-hidden w-full"
@@ -91,9 +90,9 @@ const completeGoal = () => {
                     <p class="text-wrap break-words">{{ goalInstance.description }}</p>
                     <div>
                         <img
-                        class="w-20 h-20"
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                        alt="Profilbilde"
+                            class="w-20 h-20"
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                            alt="Profilbilde"
                         />
                     </div>
                 </div>
@@ -102,7 +101,8 @@ const completeGoal = () => {
                     Du har spart {{ goalInstance.saved }}kr av {{ goalInstance.target }}kr
                 </p>
                 <ProgressBar :completion="completion" />
-                <button class="primary secondary mt-6"
+                <button
+                    class="primary secondary mt-6"
                     v-if="!isCompleted"
                     @click="
                         router.push({
@@ -124,7 +124,8 @@ const completeGoal = () => {
                 >
                     Slett
                 </button>
-                <button class="primary mt-4"
+                <button
+                    class="primary mt-4"
                     v-if="!isCompleted"
                     @click="completeGoal"
                     v-text="'Marker målet som ferdig'"
