@@ -9,7 +9,7 @@ export interface Challenge {
     description: string
     due: string // Mapping ZonedDateTime to Date, optional since Temporal annotation not always implies required
     createdOn?: string // Mapping ZonedDateTime to Date
-    type: string // Not specified as @NotNull, so it's optional
+    type?: string // Not specified as @NotNull, so it's optional
     completion?: number // Assuming BigDecimal maps to number, optional due to @Transient
     completedOn?: string // Adding the new variable as optional
 }
