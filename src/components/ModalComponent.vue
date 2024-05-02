@@ -27,7 +27,6 @@ defineProps({
         default: true,
         required: false
     }
-
 })
 
 onMounted(() => {
