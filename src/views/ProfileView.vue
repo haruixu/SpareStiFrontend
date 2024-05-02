@@ -39,6 +39,8 @@ onMounted(async () => {
         .catch((error) => {
             return console.log(error)
         })
+
+    openSpare()
 })
 
 const openSpare = () => {
@@ -97,7 +99,6 @@ const openSpare = () => {
                     :png-size="15"
                     :imageDirection="'left'"
                     :direction="'right'"
-                    @openSpare="openSpare"
                     class="mb-5"
                 ></SpareComponent>
                 <div class="flex flex-row justify-between mx-4">
