@@ -53,10 +53,6 @@ const calculateSpeech = () => {
     }
 }
 
-const openSpare = () => {
-    calculateSpeech()
-}
-
 onMounted(() => {
     const challengeId = router.currentRoute.value.params.id
     if (!challengeId) return router.push({ name: 'challenges' })
@@ -149,7 +145,6 @@ const completeChallenge = () => {
             :png-size="15"
             :imageDirection="'left'"
             :direction="'right'"
-            @openSpare="openSpare"
             class="mb-5"
         ></SpareComponent>
     </div>
