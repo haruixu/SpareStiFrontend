@@ -5,7 +5,7 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 import ModalComponent from '@/components/ModalComponent.vue'
-import InteractiveSpare from "@/components/InteractiveSpare.vue";
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
 const router = useRouter()
 
@@ -155,127 +155,136 @@ const confirmCancel = () => {
 </script>
 
 <template>
-  <div class="flex md:flex-row flex-col justify-center md:items-start items-center">
-        <h1 class="font-bold" v-text="pageTitle" />
-        <div class="flex flex-col gap-5 items-center justify-center">
-            <div class="flex flex-col">
-                <p class="mx-4">Tittel*</p>
-                <input
-                    v-model="challengeInstance.title"
-                    placeholder="Skriv en tittel"
-                    type="text"
-                />
-            </div>
-
-            <div class="flex flex-col">
-                <p class="mx-4">Beskrivelse (valgfri)</p>
-                <textarea
-                    v-model="challengeInstance.description"
-                    class="w-80 h-20 no-rezise"
-                    placeholder="Beskriv sparemålet"
-                />
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-3">
+    <div class="relative flex-1">
+        <h1 class="font-bold flex justify-center items-center" v-text="pageTitle" />
+        <div class="flex md:flex-row flex-col justify-center md:items-start items-center">
+            <div class="flex flex-col gap-5 items-center justify-center">
                 <div class="flex flex-col">
-                    <p class="mx-4">Spare per gang</p>
+                    <p class="mx-4">Tittel*</p>
                     <input
-                        v-model="challengeInstance.perPurchase"
-                        class="w-40 text-right"
-                        placeholder="Kr spart per sparing"
-                        type="number"
+                        v-model="challengeInstance.title"
+                        placeholder="Skriv en tittel"
+                        type="text"
                     />
                 </div>
 
                 <div class="flex flex-col">
-                    <div class="flex flex-row justify-between mx-4">
-                        <p>Kroner spart💸</p>
+                    <p class="mx-4">Beskrivelse (valgfri)</p>
+                    <textarea
+                        v-model="challengeInstance.description"
+                        class="w-80 h-20 no-rezise"
+                        placeholder="Beskriv sparemålet"
+                    />
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex flex-col">
+                        <p class="mx-4">Spare per gang</p>
+                        <input
+                            v-model="challengeInstance.perPurchase"
+                            class="w-40 text-right"
+                            placeholder="Kr spart per sparing"
+                            type="number"
+                        />
                     </div>
-                    <input
-                        v-model="challengeInstance.saved"
-                        class="w-40 text-right"
-                        placeholder="Sparebeløp"
-                        type="number"
-                    />
-                </div>
 
-                <div class="flex flex-col">
-                    <p class="mx-4">Av målbeløp💯*</p>
-                    <input
-                        v-model="challengeInstance.target"
-                        class="w-40 text-right"
-                        placeholder="Målbeløp"
-                        type="number"
-                    />
-                </div>
-            </div>
-            <ProgressBar :completion="completion" />
-
-            <div class="flex flex-row gap-4">
-                <div class="flex flex-col">
-                    <p class="mx-4">Forfallsdato*</p>
-                    <input
-                        :min="minDate"
-                        :max="maxDate"
-                        v-model="selectedDate"
-                        placeholder="Forfallsdato"
-                        type="date"
-                    />
-                </div>
-
-                <div class="flex flex-col">
-                    <p>Last opp ikon for utfordringen📸</p>
-                    <button
-                        class="mt-2 font-bold cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
-                    >
-                        💾
-                    </button>
-                </div>
-            </div>
-            <div class="flex flex-row justify-between w-full">
-                <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
-
-                <button class="primary" @click="submitAction" v-text="submitButton" />
-            </div>
-            <ModalComponent
-                :title="modalTitle"
-                :message="modalMessage"
-                :isModalOpen="errorModalOpen"
-                @close="errorModalOpen = false"
-            >
-                <template v-slot:input>
-                    <div class="flex justify-center items-center">
-                        <div class="flex flex-col gap-5">
-                            <button class="primary" @click="errorModalOpen = false">Lukk</button>
+                    <div class="flex flex-col">
+                        <div class="flex flex-row justify-between mx-4">
+                            <p>Kroner spart💸</p>
                         </div>
+                        <input
+                            v-model="challengeInstance.saved"
+                            class="w-40 text-right"
+                            placeholder="Sparebeløp"
+                            type="number"
+                        />
                     </div>
-                </template>
-            </ModalComponent>
 
-            <ModalComponent
-                :title="modalTitle"
-                :message="modalMessage"
-                :isModalOpen="confirmModalOpen"
-                @close="confirmModalOpen = false"
-            >
-                <template v-slot:input>
-                    <div class="flex justify-center items-center">
-                        <div class="flex flex-col gap-5">
-                            <button class="primary" @click="confirmCancel">Bekreft</button>
-                            <button class="primary danger" @click="confirmModalOpen = false">
-                                Avbryt
-                            </button>
-                        </div>
+                    <div class="flex flex-col">
+                        <p class="mx-4">Av målbeløp💯*</p>
+                        <input
+                            v-model="challengeInstance.target"
+                            class="w-40 text-right"
+                            placeholder="Målbeløp"
+                            type="number"
+                        />
                     </div>
-                </template>
-            </ModalComponent>
+                </div>
+                <ProgressBar :completion="completion" />
+
+                <div class="flex flex-row gap-4">
+                    <div class="flex flex-col">
+                        <p class="mx-4">Forfallsdato*</p>
+                        <input
+                            :min="minDate"
+                            :max="maxDate"
+                            v-model="selectedDate"
+                            placeholder="Forfallsdato"
+                            type="date"
+                        />
+                    </div>
+
+                    <div class="flex flex-col">
+                        <p>Last opp ikon for utfordringen📸</p>
+                        <button
+                            class="mt-2 font-bold cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
+                        >
+                            💾
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-row justify-between w-full">
+                    <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
+
+                    <button class="primary" @click="submitAction" v-text="submitButton" />
+                </div>
+                <ModalComponent
+                    :title="modalTitle"
+                    :message="modalMessage"
+                    :isModalOpen="errorModalOpen"
+                    @close="errorModalOpen = false"
+                >
+                    <template v-slot:input>
+                        <div class="flex justify-center items-center">
+                            <div class="flex flex-col gap-5">
+                                <button class="primary" @click="errorModalOpen = false">
+                                    Lukk
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </ModalComponent>
+
+                <ModalComponent
+                    :title="modalTitle"
+                    :message="modalMessage"
+                    :isModalOpen="confirmModalOpen"
+                    @close="confirmModalOpen = false"
+                >
+                    <template v-slot:input>
+                        <div class="flex justify-center items-center">
+                            <div class="flex flex-col gap-5">
+                                <button class="primary" @click="confirmCancel">Bekreft</button>
+                                <button class="primary danger" @click="confirmModalOpen = false">
+                                    Avbryt
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </ModalComponent>
+            </div>
         </div>
-        <div class="md:w-1/4 mt-10 p-5">
-          <InteractiveSpare
-              :png-size="10"
-              :speech="['Her kan du lage en utfordring!', `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
-              direction="left"
-          />
+        <div
+            class="lg:absolute right-5 lg:top-1/3 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+        >
+            <InteractiveSpare
+                :png-size="10"
+                :speech="[
+                        'Her kan du lage en spareutfordring! 🎢',
+                        `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
+                    ]"
+                direction="left"
+            />
         </div>
     </div>
 </template>
