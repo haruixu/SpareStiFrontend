@@ -4,7 +4,7 @@
             <SpareComponent
                 :speech="speech"
                 :png-size="15"
-                :direction="'left'"
+                :direction="'right'"
                 :imageDirection="'right'"
             ></SpareComponent>
             <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
@@ -32,12 +32,11 @@ import SpareComponent from '@/components/SpareComponent.vue'
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
-const isModalOpen = ref(false)
 const speech = ref<string[]>([])
-const helpSpeech = ref<string[]>([])
 
 const challenges = ref<Challenge[]>([])
 const goals = ref<Goal[]>([])
+const showWelcome = ref<boolean>(false)
 
 const goal = ref<Goal | null | undefined>(null)
 
@@ -48,19 +47,29 @@ onMounted(async () => {
     goals.value = goalStore.goals
     goal.value = goals.value[0]
     firstLoggedInSpeech()
+    SpareSpeech()
 })
 
 // Check if the user is logging in for the first time, and display the first login speech
 const firstLoggedInSpeech = () => {
     const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
     if (isFirstLogin) {
+        showWelcome.value = true
         speech.value = [
             'Hei, jeg er Spare!',
             'Jeg skal hjelpe deg med å spare penger.',
-            'Du får varsel når jeg har noe å si!'
+            'Trykk på meg for å høre hva jeg har å si 🐷'
         ]
-        isModalOpen.value = true
         router.replace({ name: 'home', query: { firstLogin: 'false' } })
+        showWelcome.value = false
     }
+}
+
+const SpareSpeech = () => {
+    speech.value = [
+        'Hei! Jeg er sparegrisen, Spare!',
+        'Valkommen til SpareSti 👑',
+        'Du kan trykke på meg for å høre hva jeg har å si 🐷'
+    ]
 }
 </script>
