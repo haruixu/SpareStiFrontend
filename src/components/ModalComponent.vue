@@ -5,7 +5,7 @@
     >
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full text-center">
             <h2 class="title font-bold mb-4">{{ title }}</h2>
-            <p class="message mb-4">{{ message }}</p>
+            <p class="message mb-4" v-html="message"></p>
 
             <slot />
 

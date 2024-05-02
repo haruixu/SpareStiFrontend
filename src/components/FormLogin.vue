@@ -111,7 +111,7 @@ watch(
             <button
                 name="submit"
                 :disabled="'' == username.valueOf() || '' == password.valueOf()"
-                class="grow-0"
+                class="primary grow-0"
                 @click="submitForm"
             >
                 Logg inn

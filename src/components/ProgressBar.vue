@@ -6,7 +6,8 @@ defineProps({
 
 <template>
     <div class="w-full bg-gray-200 rounded-full overflow-hidden">
-        <div :style="{ width: completion + '%' }" class="bg-green-500 h-2 rounded-full"></div>
+        <div :style="{ width: completion + '%' }" class="bg-lime-400 h-2 rounded-full">
+        </div>
     </div>
 </template>
 

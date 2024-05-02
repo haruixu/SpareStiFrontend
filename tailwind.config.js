@@ -27,7 +27,14 @@ export default {
                 'button-disabled': 'var(--grey)',
                 'button-danger': 'var(--red)',
                 'button-other': 'var(--accent1)'
-            }
+            },
+            backgroundSize: {
+                'auto': 'auto',
+                'cover': 'cover',
+                'contain': 'contain',
+                'pc': '20%',
+                'phone': '50%',
+            },
         }
     },
     plugins: []
