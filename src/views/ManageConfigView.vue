@@ -115,7 +115,9 @@ onMounted(() => {
                     <p class="font-bold">Passe</p>
                 </CardTemplate>
                 <CardTemplate
-                    :class="{ 'border-2 border-lime-400': configuration.motivation === 'VERY_HIGH' }"
+                    :class="{
+                        'border-2 border-lime-400': configuration.motivation === 'VERY_HIGH'
+                    }"
                     class="cursor-pointer p-4 border-2"
                     @click="configuration.motivation = 'VERY_HIGH'"
                 >
@@ -140,7 +142,9 @@ onMounted(() => {
                     <p class="font-bold">Noe kjent</p>
                 </CardTemplate>
                 <CardTemplate
-                    :class="{ 'border-2 border-lime-400': configuration.experience === 'VERY_HIGH' }"
+                    :class="{
+                        'border-2 border-lime-400': configuration.experience === 'VERY_HIGH'
+                    }"
                     class="cursor-pointer p-4 border-2"
                     @click="configuration.experience = 'VERY_HIGH'"
                 >
@@ -164,9 +168,11 @@ onMounted(() => {
                         v-text="'x'"
                     />
                 </CardTemplate>
-                <button 
+                <button
                     class="font-bold text-2xl cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
-                    @click="createChallengeType" v-text="'Legg til flere📝'" />
+                    @click="createChallengeType"
+                    v-text="'Legg til flere📝'"
+                />
             </div>
 
             <div class="flex flex-row justify-center gap-5">

@@ -236,11 +236,7 @@ const saveChanges = async () => {
 
                 <div class="flex flex-row justify-between">
                     <button class="primary danger" @click="router.back()" v-text="'Avbryt'" />
-                    <button
-                        class="primary"
-                        @click="saveChanges"
-                        v-text="'Lagre endringer'"
-                    />
+                    <button class="primary" @click="saveChanges" v-text="'Lagre endringer'" />
                 </div>
             </div>
         </div>

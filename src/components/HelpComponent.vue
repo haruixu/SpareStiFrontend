@@ -1,6 +1,6 @@
 <template>
     <div class="fixed bottom-5 right-5 hover:cursor-pointer z-50" @click="isModalOpen = true">
-        <img        
+        <img
             alt="Hjelp"
             class="h-10 transition-transform duration-300 ease-in-out hover:scale-110"
             src="@/assets/hjelp.png"
