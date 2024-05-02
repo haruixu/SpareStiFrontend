@@ -5,8 +5,13 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
 import SpareComponent from '@/components/SpareComponent.vue'
+import starImage from '@/assets/star.png';
+
 
 const router = useRouter()
+const goalImageUrl = ref(starImage);
+const isImageLoaded = ref(false);
+
 
 const goalInstance = ref<Goal>({
     title: 'Test tittel',
@@ -45,17 +50,28 @@ const calculateSpeech = () => {
     }
 }
 
-onMounted(() => {
-    const goalId = router.currentRoute.value.params.id
-    if (!goalId) return router.push({ name: 'goals' })
+onMounted(async () => {
+    const goalId = router.currentRoute.value.params.id;
+    if (!goalId) return router.push({ name: 'goals' });
 
-    authInterceptor(`/goals/${goalId}`)
-        .then((response) => {
-            goalInstance.value = response.data
-            calculateSpeech()
-        })
-        .catch(() => router.push({ name: 'goals' }))
-})
+    try {
+        const goalResponse = await authInterceptor.get(`/goals/${goalId}`);
+        goalInstance.value = goalResponse.data;
+        calculateSpeech();
+
+        try {
+            const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, { responseType: 'blob' });
+            goalImageUrl.value = URL.createObjectURL(imageResponse.data);
+        } catch (imageError) {
+            console.error("Failed to load image:", imageError);
+        }
+        isImageLoaded.value = true;
+    } catch (error) {
+        console.error("Failed to load goal details:", error);
+        await router.push({ name: 'goals' });
+    }
+});
+
 
 const completeGoal = () => {
     authInterceptor
@@ -89,11 +105,7 @@ const completeGoal = () => {
                 <div class="flex flex-row gap-4 justify-center">
                     <p class="text-wrap break-words">{{ goalInstance.description }}</p>
                     <div>
-                        <img
-                            class="w-20 h-20"
-                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                            alt="Profilbilde"
-                        />
+                        <img v-if="isImageLoaded" :src="goalImageUrl || '@/assets/star.png'" alt="Goal Image" class="w-full h-40 object-cover rounded-lg">
                     </div>
                 </div>
                 <br />
