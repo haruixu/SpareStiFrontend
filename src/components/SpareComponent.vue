@@ -8,7 +8,10 @@
                 'flex-row-reverse': imageDirection === 'left'
             }"
         >
-            <a @click="isModalOpen = true" class="hover:bg-transparent hover:p-0 hover:scale-105 z-20">
+            <a
+                @click="isModalOpen = true"
+                class="hover:bg-transparent hover:p-0 hover:scale-105 z-20"
+            >
                 <img
                     alt="Spare"
                     class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
