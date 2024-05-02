@@ -2,20 +2,21 @@
 import authInterceptor from '@/services/authInterceptor'
 import { onMounted, ref } from 'vue'
 import type { Profile } from '@/types/profile'
-import CardTemplate from '@/views/CardTemplate.vue'
+import CardTemplate from '@/components/CardTemplate.vue'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
+import { useUserStore } from '@/stores/userStore'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
 const completedChallenges = ref<Challenge[]>([])
 const speech = ref<string[]>([])
 
-onMounted(async () => {
-    await authInterceptor('/profile')
+const updateUser = async () => {
+    authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
             console.log(profile.value)
@@ -23,6 +24,10 @@ onMounted(async () => {
         .catch((error) => {
             return console.log(error)
         })
+}
+
+onMounted(async () => {
+    await updateUser()
 
     await authInterceptor(`/goals/completed?page=0&size=3`)
         .then((response) => {
@@ -42,6 +47,10 @@ onMounted(async () => {
 
     openSpare()
 })
+const updateBiometrics = async () => {
+    await useUserStore().bioRegister()
+    await updateUser()
+}
 
 const openSpare = () => {
     speech.value = [
@@ -91,6 +100,9 @@ const openSpare = () => {
                 </CardTemplate>
 
                 <button @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
+                <button @click="updateBiometrics">
+                    {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
+                </button>
             </div>
 
             <div class="flex flex-col">

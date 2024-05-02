@@ -17,10 +17,18 @@
                     :buttonText="'Legg til spareutfordring'"
                     :type="'challenge'"
                 />
+                <ButtonAddGoalOrChallenge
+                    :buttonText="'Generer spareutfordring'"
+                    :type="'generatedChallenge'"
+                    :showModal="showModal"
+                    @click="showModal = true"
+                    @update:showModal="showModal = $event"
+                />
             </div>
         </div>
         <savings-path :challenges="challenges" :goal="goal"></savings-path>
     </div>
+    <GeneratedChallengesModal v-show="showModal" @update:showModal="showModal = $event" />
 </template>
 
 <script setup lang="ts">
@@ -32,7 +40,10 @@ import { useGoalStore } from '@/stores/goalStore'
 import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import router from '@/router'
+import GeneratedChallengesModal from '@/components/GeneratedChallengesModal.vue'
 import SpareComponent from '@/components/SpareComponent.vue'
+
+const showModal = ref(false)
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
@@ -50,10 +61,15 @@ onMounted(async () => {
     challenges.value = challengeStore.challenges
     goals.value = goalStore.goals
     goal.value = goals.value[0]
+    console.log('Goals:', goals.value)
+
+    const lastModalShow = localStorage.getItem('lastModalShow')
+    if (!lastModalShow || Date.now() - Number(lastModalShow) >= 24 * 60 * 60 * 1000) {
+        showModal.value = true
+    }
     firstLoggedInSpeech()
 })
 
-// Check if the user is logging in for the first time, and display the first login speech
 const firstLoggedInSpeech = () => {
     const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
     if (isFirstLogin) {

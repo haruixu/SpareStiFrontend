@@ -106,7 +106,6 @@ const onButtonClick = async () => {
             parseFloat(amounts.value[index]) || 0
     })
 
-    userConfigStore.postUserConfig()
     await router.push({ name: 'configurations6' })
 }
 
