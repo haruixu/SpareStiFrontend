@@ -9,6 +9,7 @@ import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
 import { useUserStore } from '@/stores/userStore'
+import ModalEditAvatar from '@/components/ModalEditAvatar.vue'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
@@ -66,7 +67,11 @@ const openInteractiveSpare = () => {
             <div class="flex flex-col max-w-96 w-full gap-5">
                 <h1>Profile</h1>
                 <div class="flex flex-row gap-5">
+                    <div class="flex flex-col">
+
                     <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
+                        <ModalEditAvatar />
+                    </div>
                     <div class="w-full flex flex-col justify-between">
                         <h3 class="font-thin my-0">{{ profile?.username }}</h3>
                         <h3 class="font-thin my-0">
