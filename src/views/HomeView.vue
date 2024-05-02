@@ -68,6 +68,7 @@ onMounted(async () => {
         showModal.value = true
     }
     firstLoggedInSpeech()
+    SpareSpeech()
 })
 
 const firstLoggedInSpeech = () => {
@@ -79,5 +80,13 @@ const firstLoggedInSpeech = () => {
         speech.value.push('Trykk på meg for å høre hva jeg har å si 🐷')
         router.replace({ name: 'home', query: { firstLogin: 'false' } })
     }
+}
+
+const SpareSpeech = () => {
+    speech.value = [
+        'Hei! Jeg er sparegrisen, Spare!',
+        'Valkommen til SpareSti 👑',
+        'Du kan trykke på meg for å høre hva jeg har å si 🐷'
+    ]
 }
 </script>
