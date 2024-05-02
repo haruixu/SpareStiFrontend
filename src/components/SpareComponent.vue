@@ -53,13 +53,11 @@ const props = defineProps({
     imageDirection: String,
     show: {
         type: Boolean,
-        default: true,
+        default: false,
         required: false
     }
 })
-
-watchEffect(() => {
-    isModalOpen.value = props.show
+watchEffect(() => { isModalOpen.value = props.show
 })
 
 </script>

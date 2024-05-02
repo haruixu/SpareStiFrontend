@@ -3,11 +3,13 @@
         <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/4 md:pl-1 mt-10">
             <SpareComponent
                 :speech="speech"
-                :png-size="15"
+                :show="showWelcome"
+                :png-size="12"
                 :direction="'right'"
                 :imageDirection="'right'"
+                class="mt-24"
             ></SpareComponent>
-            <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
+            <div class="flex flex-row gap-2 items-center mx-auto mt-4 mb-20 md:flex-col md:gap-4 md:m-8">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
                     :buttonText="'Legg til spareutfordring'"
@@ -47,7 +49,6 @@ onMounted(async () => {
     goals.value = goalStore.goals
     goal.value = goals.value[0]
     firstLoggedInSpeech()
-    SpareSpeech()
 })
 
 // Check if the user is logging in for the first time, and display the first login speech
@@ -55,21 +56,10 @@ const firstLoggedInSpeech = () => {
     const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
     if (isFirstLogin) {
         showWelcome.value = true
-        speech.value = [
-            'Hei, jeg er Spare!',
-            'Jeg skal hjelpe deg med å spare penger.',
-            'Trykk på meg for å høre hva jeg har å si 🐷'
-        ]
+        speech.value.push('Hei, jeg er Spare!')
+        speech.value.push('Jeg skal hjelpe deg med å spare penger.')
+        speech.value.push('Trykk på meg for å høre hva jeg har å si 🐷')
         router.replace({ name: 'home', query: { firstLogin: 'false' } })
-        showWelcome.value = false
     }
-}
-
-const SpareSpeech = () => {
-    speech.value = [
-        'Hei! Jeg er sparegrisen, Spare!',
-        'Valkommen til SpareSti 👑',
-        'Du kan trykke på meg for å høre hva jeg har å si 🐷'
-    ]
 }
 </script>
