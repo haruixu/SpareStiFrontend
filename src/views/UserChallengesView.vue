@@ -50,9 +50,7 @@ onMounted(async () => {
     <h1 class="font-bold text-center">Dine utfordringer</h1>
     <div class="flex flex-col gap-5 items-center">
         <div class="flex flex-row gap-5">
-            <button
-                class="primary" 
-                @click="router.push({ name: 'new-challenge' })">
+            <button class="primary" @click="router.push({ name: 'new-challenge' })">
                 Opprett en ny utfordring
             </button>
         </div>
@@ -64,9 +62,7 @@ onMounted(async () => {
                 :key="challenge.id"
                 :challenge-instance="challenge"
             />
-            <p v-if="!activeChallenges">
-                Du har ingen aktive spareutfordringer😢
-            </p>
+            <p v-if="!activeChallenges">Du har ingen aktive spareutfordringer😢</p>
         </div>
         <PageControl
             :currentPage="currentPageActive"
@@ -91,5 +87,4 @@ onMounted(async () => {
     </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

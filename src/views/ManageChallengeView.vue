@@ -8,21 +8,19 @@ import ModalComponent from '@/components/ModalComponent.vue'
 
 const router = useRouter()
 
-const modalTitle = ref('');
-const modalMessage = ref('');
-const confirmModalOpen = ref(false);
-const errorModalOpen = ref(false);
+const modalTitle = ref('')
+const modalMessage = ref('')
+const confirmModalOpen = ref(false)
+const errorModalOpen = ref(false)
 
 const oneWeekFromNow = new Date()
 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
 const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 10)
 const selectedDate = ref<string>(minDate)
 
-
 const thirtyDaysFromNow = new Date()
 thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
 const maxDate = thirtyDaysFromNow.toISOString().slice(0, 10)
-
 
 const challengeInstance = ref<Challenge>({
     title: '',
@@ -33,10 +31,9 @@ const challengeInstance = ref<Challenge>({
     due: ''
 })
 
-
 watch(selectedDate, (newDate) => {
-  challengeInstance.value.due = newDate;
-});
+    challengeInstance.value.due = newDate
+})
 
 const isEdit = computed(() => router.currentRoute.value.name === 'edit-challenge')
 const pageTitle = computed(() => (isEdit.value ? 'Rediger utfordring🎨' : 'Ny utfordring🎨'))
@@ -46,48 +43,48 @@ const completion = computed(
 )
 
 function validateInputs() {
-    const errors = [];
+    const errors = []
 
-    challengeInstance.value.due = selectedDate.value + 'T23:59:59.999Z';
+    challengeInstance.value.due = selectedDate.value + 'T23:59:59.999Z'
 
     if (!challengeInstance.value.title || challengeInstance.value.title.length > 20) {
-        errors.push("Tittelen må være mellom 1 og 20 tegn.");
+        errors.push('Tittelen må være mellom 1 og 20 tegn.')
     }
     if (challengeInstance.value.description.length > 280) {
-        errors.push("Beskrivelsen må være under 280 tegn.");
+        errors.push('Beskrivelsen må være under 280 tegn.')
     }
     if (challengeInstance.value.target <= 0) {
-        errors.push("Målbeløpet må være større enn 0.");
+        errors.push('Målbeløpet må være større enn 0.')
     }
     if (new Date(challengeInstance.value.due) < new Date(minDate)) {
-        errors.push("Forfallsdatoen må være minst en uke frem i tid.");
+        errors.push('Forfallsdatoen må være minst en uke frem i tid.')
     }
     if (challengeInstance.value.perPurchase <= 0) {
-        errors.push("Pris per sparing må være større enn 0.");
+        errors.push('Pris per sparing må være større enn 0.')
     }
-    return errors;
+    return errors
 }
 
-const submitAction = async() => {
-    const errors = validateInputs();
-    if(errors.length > 0) {
-        const formatErrors = errors.join('\n');
-        modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨';
-        modalMessage.value = formatErrors;
-        errorModalOpen.value = true;
-        return;
+const submitAction = async () => {
+    const errors = validateInputs()
+    if (errors.length > 0) {
+        const formatErrors = errors.join('\n')
+        modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'
+        modalMessage.value = formatErrors
+        errorModalOpen.value = true
+        return
     }
     try {
         if (isEdit.value) {
-            updateChallenge();
+            updateChallenge()
         } else {
-            createChallenge();
+            createChallenge()
         }
     } catch (error) {
-        console.error(error);
-        modalTitle.value = 'Systemfeil';
-        modalMessage.value = 'En feil oppstod under lagring av utfordringen.';
-        errorModalOpen.value = true;
+        console.error(error)
+        modalTitle.value = 'Systemfeil'
+        modalMessage.value = 'En feil oppstod under lagring av utfordringen.'
+        errorModalOpen.value = true
     }
 }
 
@@ -135,15 +132,16 @@ const updateChallenge = () => {
 }
 
 const cancelCreation = () => {
-    if (challengeInstance.value.title !== '' ||
+    if (
+        challengeInstance.value.title !== '' ||
         challengeInstance.value.description !== '' ||
-        challengeInstance.value.perPurchase !== 0 ||  
-        challengeInstance.value.saved !== 0 ||        
-        challengeInstance.value.target !== 0)
-    {
-    modalTitle.value = 'Du er i ferd med å avbryte redigeringen🚨';
-    modalMessage.value = 'Er du sikker på at du vil avbryte?';
-    confirmModalOpen.value = true;
+        challengeInstance.value.perPurchase !== 0 ||
+        challengeInstance.value.saved !== 0 ||
+        challengeInstance.value.target !== 0
+    ) {
+        modalTitle.value = 'Du er i ferd med å avbryte redigeringen🚨'
+        modalMessage.value = 'Er du sikker på at du vil avbryte?'
+        confirmModalOpen.value = true
     } else {
         router.push({ name: 'challenges' })
     }
@@ -151,9 +149,8 @@ const cancelCreation = () => {
 
 const confirmCancel = () => {
     router.push({ name: 'challenges' })
-    confirmModalOpen.value = false;
+    confirmModalOpen.value = false
 }
-
 </script>
 
 <template>
@@ -224,24 +221,20 @@ const confirmCancel = () => {
                         type="date"
                     />
                 </div>
-        
+
                 <div class="flex flex-col">
                     <p>Last opp ikon for utfordringen📸</p>
-                    <button class="mt-2 font-bold cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90">💾</button>
+                    <button
+                        class="mt-2 font-bold cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
+                    >
+                        💾
+                    </button>
                 </div>
             </div>
             <div class="flex flex-row justify-between w-full">
+                <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
 
-                <button
-                    class="primary danger"
-                    @click="cancelCreation"
-                    v-text="'Avbryt'"
-                />
-
-                <button 
-                    class="primary"
-                    @click="submitAction" 
-                    v-text="submitButton" />
+                <button class="primary" @click="submitAction" v-text="submitButton" />
             </div>
             <ModalComponent
                 :title="modalTitle"
@@ -249,18 +242,13 @@ const confirmCancel = () => {
                 :isModalOpen="errorModalOpen"
                 @close="errorModalOpen = false"
             >
-            <template v-slot:input>
-                <div class="flex justify-center items-center">
-                    <div class="flex flex-col gap-5">
-                        <button
-                            class="primary"
-                            @click="errorModalOpen = false"
-                        >
-                            Lukk
-                        </button>
+                <template v-slot:input>
+                    <div class="flex justify-center items-center">
+                        <div class="flex flex-col gap-5">
+                            <button class="primary" @click="errorModalOpen = false">Lukk</button>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
             </ModalComponent>
 
             <ModalComponent
@@ -269,24 +257,16 @@ const confirmCancel = () => {
                 :isModalOpen="confirmModalOpen"
                 @close="confirmModalOpen = false"
             >
-            <template v-slot:input>
-                <div class="flex justify-center items-center">
-                    <div class="flex flex-col gap-5">
-                        <button
-                            class="primary"
-                            @click="confirmCancel"
-                        >
-                            Bekreft
-                        </button>
-                        <button
-                            class="primary danger"
-                            @click="confirmModalOpen = false"
-                        >
-                            Avbryt
-                        </button>
+                <template v-slot:input>
+                    <div class="flex justify-center items-center">
+                        <div class="flex flex-col gap-5">
+                            <button class="primary" @click="confirmCancel">Bekreft</button>
+                            <button class="primary danger" @click="confirmModalOpen = false">
+                                Avbryt
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
             </ModalComponent>
         </div>
     </div>
