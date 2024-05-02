@@ -63,20 +63,27 @@
                     class="flex flex-row items-center mx-auto h-20 w-4/5 md:w-full bg-black-400 gap-4"
                 >
                     <div class="flex flex-1 overflow-x-auto">
-                      <div v-for="index in 7" :key="index" class="min-w-max mx-auto">
-                        <div class="flex flex-col justify-around items-center">
-                          <!-- Display the current streak day number adjusted by index -->
-                          <span class="text-black text-xs md:text-1xl font-bold">
-                {{ currentStreak! - ((currentStreak! % 7) - index) }}
-            </span>
-                          <!-- Display images based on completion -->
-                          <img
-                              src="@/assets/pengesekkStreak.png"
-                              :alt="index <= currentStreak! % 7 ? 'challenge completed' : 'challenge not completed'"
-                              :class="{'max-h-6 max-w-6 md:max-h-10 md:max-w-10': true, 'grayscale': index > currentStreak! % 7}"
-                          />
+                        <div v-for="index in 7" :key="index" class="min-w-max mx-auto">
+                            <div class="flex flex-col justify-around items-center">
+                                <!-- Display the current streak day number adjusted by index -->
+                                <span class="text-black text-xs md:text-1xl font-bold">
+                                    {{ currentStreak! - ((currentStreak! % 7) - index) }}
+                                </span>
+                                <!-- Display images based on completion -->
+                                <img
+                                    src="@/assets/pengesekkStreak.png"
+                                    :alt="
+                                        index <= currentStreak! % 7
+                                            ? 'challenge completed'
+                                            : 'challenge not completed'
+                                    "
+                                    :class="{
+                                        'max-h-6 max-w-6 md:max-h-10 md:max-w-10': true,
+                                        grayscale: index > currentStreak! % 7
+                                    }"
+                                />
+                            </div>
                         </div>
-                      </div>
                     </div>
                 </div>
             </div>
@@ -98,7 +105,6 @@ onMounted(async () => {
     if (userStore.streak) {
         currentStreak.value = userStore.streak?.streak
         deadline.value = userStore.streak?.firstDue
-
     }
     console.log('Streak:', currentStreak.value)
     if (typeof window !== 'undefined') {
@@ -116,15 +122,13 @@ const handleWindowSizeChange = () => {
     screenSize.value = window.innerWidth
 }
 
-
-
 const displayStreakCard = ref(false)
 
 const display = () => {
     displayStreakCard.value = true
-    userStore.getUserStreak();
-    currentStreak.value = userStore.streak?.streak;
-    deadline.value = userStore.streak?.firstDue;
+    userStore.getUserStreak()
+    currentStreak.value = userStore.streak?.streak
+    deadline.value = userStore.streak?.firstDue
 }
 
 const hide = () => {

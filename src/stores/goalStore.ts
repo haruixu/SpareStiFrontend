@@ -15,8 +15,7 @@ export const useGoalStore = defineStore('goal', () => {
                     if (goal.priority === 1) {
                         priorityGoal.value = goal
                         break
-                    }
-                    else {
+                    } else {
                         priorityGoal.value = null
                     }
                 }
@@ -56,6 +55,6 @@ export const useGoalStore = defineStore('goal', () => {
         goals,
         priorityGoal,
         getUserGoals,
-        editUserGoal,
+        editUserGoal
     }
 })

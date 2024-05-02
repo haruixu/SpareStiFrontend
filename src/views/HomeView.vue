@@ -1,15 +1,15 @@
 <template>
     <div class="flex flex-col items-center max-h-[60vh] md:flex-row md:max-h-[80vh] mx-auto">
         <div class="flex flex-col basis-1/3 order-last md:order-first md:basis-1/4 md:pl-1 mt-10">
-          <SpareComponent
-              :speech="speech"
-              :show="showWelcome"
-              :png-size="12"
-              :direction="'right'"
-              :imageDirection="'right'"
-              class="mt-24"
-          ></SpareComponent>
-          <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
+            <SpareComponent
+                :speech="speech"
+                :show="showWelcome"
+                :png-size="12"
+                :direction="'right'"
+                :imageDirection="'right'"
+                class="mt-24"
+            ></SpareComponent>
+            <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
                     :buttonText="'Legg til spareutfordring'"
@@ -30,8 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import { onMounted, ref } from 'vue'
 import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallenge.vue'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
@@ -60,14 +59,12 @@ onMounted(async () => {
     goal.value = goalStore.priorityGoal
     const lastModalShow = localStorage.getItem('lastModalShow')
     if (!lastModalShow || Date.now() - Number(lastModalShow) >= 24 * 60 * 60 * 1000) {
-      showModal.value = true
+        showModal.value = true
     }
     firstLoggedInSpeech()
-    SpareSpeech();
+    SpareSpeech()
     isMounted.value = true
 })
-
-
 
 const firstLoggedInSpeech = () => {
     const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
@@ -83,13 +80,12 @@ const firstLoggedInSpeech = () => {
 }
 
 const SpareSpeech = () => {
-  speech.value = [
-    'Hei! Jeg er sparegrisen, Spare!',
-    'Valkommen til SpareSti 👑',
-    'Du kan trykke på meg for å høre hva jeg har å si 🐷'
-  ]
+    speech.value = [
+        'Hei! Jeg er sparegrisen, Spare!',
+        'Valkommen til SpareSti 👑',
+        'Du kan trykke på meg for å høre hva jeg har å si 🐷'
+    ]
 }
-
 </script>
 
 <style>

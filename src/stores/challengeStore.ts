@@ -32,15 +32,15 @@ export const useChallengeStore = defineStore('challenge', () => {
                 if (index !== -1) {
                     challenges.value[index] = { ...challenges.value[index], ...response.data }
                     console.log('Updated Challenge:', response.data)
-                    return challenges.value[index];
+                    return challenges.value[index]
                 }
             } else {
                 console.error('No challenge content found in response data')
-                return null;
+                return null
             }
         } catch (error) {
             console.error('Error updating challenge:', error)
-            return null;
+            return null
         }
     }
     const completeUserChallenge = async (challenge: Challenge) => {
@@ -56,15 +56,15 @@ export const useChallengeStore = defineStore('challenge', () => {
                     challenges.value[index] = { ...challenges.value[index], ...response.data }
                     console.log('Updated Challenge:', response.data)
                     console.log('Challenge Completed store:', challenges.value[index])
-                    return challenges.value[index];
+                    return challenges.value[index]
                 }
             } else {
                 console.error('No challenge content found in response data')
-                return null;
+                return null
             }
         } catch (error) {
             console.error('Error updating challenge:', error)
-            return null;
+            return null
         }
     }
 
