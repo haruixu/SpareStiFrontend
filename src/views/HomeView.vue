@@ -9,7 +9,9 @@
                 :imageDirection="'right'"
                 class="mt-24"
             ></SpareComponent>
-            <div class="flex flex-row gap-2 items-center mx-auto mt-4 mb-20 md:flex-col md:gap-4 md:m-8">
+            <div
+                class="flex flex-row gap-2 items-center mx-auto mt-4 mb-20 md:flex-col md:gap-4 md:m-8"
+            >
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
                     :buttonText="'Legg til spareutfordring'"

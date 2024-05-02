@@ -3,6 +3,18 @@
         <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
             Hvor mye bruker du per uke på ...
         </h1>
+        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+            <SpareComponent
+                :speech="[
+                    'Her skal du skrive inn hvor mye du bruker per uke på ulike kategorier. 🗓️',
+                    'Hvis du kjøper kaffe hver dag, kan du skrive inn hvor mye du bruker på kaffe per uke.'
+                ]"
+                :png-size="10"
+                :direction="'right'"
+                :imageDirection="'right'"
+            ></SpareComponent>
+            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
+        </div>
         <div class="w-full flex justify-center">
             <div :class="[showSecondBox ? 'md:grid md:grid-cols-2 md:gap-4 sm:gap-8 mb-6' : '']">
                 <div
@@ -79,6 +91,7 @@ import { computed, ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 import { useUserConfigStore } from '@/stores/userConfigStore'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const userConfigStore = useUserConfigStore()
 

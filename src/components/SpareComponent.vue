@@ -19,22 +19,22 @@
 
         <!-- InteractiveSpare modal component -->
         <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
-          <InteractiveSpare
-              :speech="speech"
-              :png-size="pngSize"
-              :direction="direction"
-              @emit:close="isModalOpen = false"
-          />
+            <InteractiveSpare
+                :speech="speech"
+                :png-size="pngSize"
+                :direction="direction"
+                @emit:close="isModalOpen = false"
+            />
 
-          <div class="-mb-5 mt-8 text-xs text-gray-500">
-            <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
-            <a
-                @click="isModalOpen = false"
-                class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
-            >
-              Skip
-            </a>
-          </div>
+            <div class="-mb-5 mt-8 text-xs text-gray-500">
+                <p class="justify-center items-center">Trykk for å se hva Spare har å si!</p>
+                <a
+                    @click="isModalOpen = false"
+                    class="underline hover:bg-transparent font-normal text-gray-500 cursor-pointer transition-none hover:transition-none hover:p-0"
+                >
+                    Skip
+                </a>
+            </div>
         </ModalComponent>
     </div>
 </template>
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import { defineProps, ref, watchEffect } from 'vue'
-import ModalComponent from "@/components/ModalComponent.vue";
+import ModalComponent from '@/components/ModalComponent.vue'
 
 const isModalOpen = ref(false)
 
@@ -57,7 +57,7 @@ const props = defineProps({
         required: false
     }
 })
-watchEffect(() => { isModalOpen.value = props.show
+watchEffect(() => {
+    isModalOpen.value = props.show
 })
-
 </script>

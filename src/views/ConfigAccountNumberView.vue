@@ -5,6 +5,20 @@
         <h1 class="mb-8 lg:mb-12 text-4xl font-bold">
             Legg til kontonummer for sparekonto og brukskonto
         </h1>
+        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+            <SpareComponent
+                :speech="[
+                    'Her skriver du inn kontonummer for sparekonto og brukskonto. 🪩',
+                    'Sparekonto er kontoen du vil legge alle dine oppsparte penger på!',
+                    'Brukskonto er kontoen du ønsker at pangene skal gå ut fra',
+                    'Du kan endre dette senere hvis du ønsker det!'
+                ]"
+                :png-size="10"
+                :direction="'right'"
+                :imageDirection="'right'"
+            ></SpareComponent>
+            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
+        </div>
         <div
             class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
         >
@@ -50,6 +64,7 @@ import { computed, ref } from 'vue'
 import { useAccountStore } from '@/stores/accountStore'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const MAX_DIGITS = 11
 const accountStore = useAccountStore()

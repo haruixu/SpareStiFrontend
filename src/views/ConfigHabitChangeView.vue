@@ -3,6 +3,17 @@
         <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
             Hvor store vaneedringer er du villig til å gjøre?
         </h1>
+        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+            <SpareComponent
+                :speech="[
+                    'Her kan du velge hvor mye innsats du er villig til å legge inn for å endre vanene dine! 📚'
+                ]"
+                :png-size="10"
+                :direction="'right'"
+                :imageDirection="'right'"
+            ></SpareComponent>
+            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
+        </div>
         <div class="grid grid-cols-1 gap-8 mb-16 sm:gap-14 sm:mb-20 md:grid-cols-3">
             <div
                 :class="{
@@ -51,6 +62,7 @@ import { ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 import { useUserConfigStore } from '@/stores/userConfigStore'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const selectedOption = ref<string | null>(null)
 const userConfigStore = useUserConfigStore()

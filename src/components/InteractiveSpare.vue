@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, defineProps, ref} from 'vue'
+import { computed, defineProps, ref } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 
 interface Props {
@@ -62,7 +62,6 @@ const imageClass = computed(() => {
 const bubbleDirection = computed(() => {
     return props.direction === 'right' ? 'btm-left-in' : 'btm-right-in'
 })
-
 </script>
 <style scoped>
 /* CSS talk bubble */
