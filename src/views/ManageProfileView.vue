@@ -75,6 +75,26 @@ onMounted(async () => {
         })
 })
 
+const selectImage = async () => {
+    const fileExplorer = document.getElementById('fileInput')!;
+
+    if (!fileExplorer) {
+        // Error handling
+        console.log("Vi klarte ikke å hente bildene dine. Prøv igjen!");
+    }
+    fileExplorer.click();
+
+   // fileExplorer.addEventListener('submit', uploadImage);
+}
+
+/*
+const uploadImage = async (event) => {
+
+    authInterceptor.post()
+    event.currentTarget
+}
+*/
+
 const saveChanges = async () => {
     if (isFormInvalid.value) {
         errorMessage.value = 'Vennligst fyll ut alle feltene riktig'
@@ -110,7 +130,16 @@ const saveChanges = async () => {
                         <button class="h-min bg-transparent text-4xl" v-text="'➡️'" />
                     </div>
                 </div>
-
+                <div class="flex flex-row justify-center">
+                    <input id="fileInput"
+                           type="file"
+                           style="display:none;"
+                           accept =".jpg, .jpeg, .png, .gif, .img" />
+                    <button
+                        v-text="'Last opp eget bilde!'"
+                        @click="selectImage()"
+                    />
+                </div>
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-between mx-4">
                         <p>Fornavn*</p>
