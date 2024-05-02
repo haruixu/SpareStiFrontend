@@ -4,7 +4,7 @@
         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
     >
         <div class="relative bg-white pt-10 p-4 rounded-lg shadow-xl" style="width: 40rem">
-            <button @click="closeModal" class="absolute top-0 right-0 m-2 text-white">
+            <button @click="closeModal" class="absolute top-0 right-0 m-2 primary">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-6 w-6"
@@ -61,7 +61,7 @@
                             >
                             <button
                                 @click="acceptChallenge(challenge)"
-                                class="text-white font-bold py-1 px-4 mt-[-14px] sm:mt-0"
+                                class="font-bold py-1 px-4 mt-[-14px] sm:mt-0 primary"
                             >
                                 Godta
                             </button>
