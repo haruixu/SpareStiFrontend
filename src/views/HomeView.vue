@@ -9,7 +9,9 @@
                 :imageDirection="'right'"
                 class="mt-24"
             ></SpareComponent>
-            <div class="flex flex-row gap-2 items-center mx-auto my-4 md:flex-col md:gap-4 md:m-8">
+            <div
+                class="flex flex-row gap-2 items-center mx-auto mt-4 mb-20 md:flex-col md:gap-4 md:m-8"
+            >
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
                     :buttonText="'Legg til spareutfordring'"
@@ -39,16 +41,18 @@ import { useChallengeStore } from '@/stores/challengeStore'
 import SavingsPath from '@/components/SavingsPath.vue'
 import router from '@/router'
 import GeneratedChallengesModal from '@/components/GeneratedChallengesModal.vue'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const showModal = ref(false)
 
 const goalStore = useGoalStore()
 const challengeStore = useChallengeStore()
-const isModalOpen = ref(false)
 const speech = ref<string[]>([])
-const showWelcome = ref<boolean>(false)
 
 const challenges = ref<Challenge[]>([])
+const goals = ref<Goal[]>([])
+const showWelcome = ref<boolean>(false)
+
 const goal = ref<Goal | null | undefined>(null)
 const isMounted = ref(false)
 
@@ -69,12 +73,10 @@ onMounted(async () => {
 const firstLoggedInSpeech = () => {
     const isFirstLogin = router.currentRoute.value.query.firstLogin === 'true'
     if (isFirstLogin) {
-        speech.value = [
-            'Hei, jeg er Spare!',
-            'Jeg skal hjelpe deg med å spare penger.',
-            'Du får varsel når jeg har noe å si!'
-        ]
-        isModalOpen.value = true
+        showWelcome.value = true
+        speech.value.push('Hei, jeg er Spare!')
+        speech.value.push('Jeg skal hjelpe deg med å spare penger.')
+        speech.value.push('Trykk på meg for å høre hva jeg har å si 🐷')
         router.replace({ name: 'home', query: { firstLogin: 'false' } })
     }
 }
@@ -87,19 +89,3 @@ const SpareSpeech = () => {
     ]
 }
 </script>
-
-<style>
-@keyframes jump {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.jump {
-    animation: jump 0.6s infinite ease-in-out;
-}
-</style>

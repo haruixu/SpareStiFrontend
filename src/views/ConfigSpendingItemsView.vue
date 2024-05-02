@@ -1,6 +1,19 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen text-center">
         <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">Hva bruker du mye penger på?</h1>
+        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+            <SpareComponent
+                :speech="[
+                    'Her kan du velge hva du bruker mye penger på, slik at vi kan hjelpe deg med å spare penger! 💸',
+                    'Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i \'Annet ...\' feltet',
+                    'Du må minst velge en kategori!'
+                ]"
+                :png-size="10"
+                :direction="'right'"
+                :imageDirection="'right'"
+            ></SpareComponent>
+            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
+        </div>
         <div class="flex flex-wrap justify-center gap-8 mb-8">
             <div
                 class="flex flex-col items-center justify-center bg-white rounded-lg sm:p-8 shadow-lg sm:w-full md:w-[45%]"
@@ -68,6 +81,7 @@ import { computed, ref } from 'vue'
 import ContinueButtonComponent from '@/components/ContinueButtonComponent.vue'
 import router from '@/router'
 import { useUserConfigStore } from '@/stores/userConfigStore'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const userConfigStore = useUserConfigStore()
 const selectedOptions = ref<string[]>([])
