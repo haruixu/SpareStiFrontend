@@ -1,6 +1,6 @@
 <template>
     <button
-        class="w-full max-w-60 max-h-12 font-bold py-2 rounded-full flex items-center justify-start pl-4 space-x-2 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 shadow-md transition duration-300 ease-in-out text-xs md:text-sm lg:text-base"
+        class="primary w-full max-w-60 py-2 flex items-center justify-start pl-4 space-x-2 focus:outline-none focus:ring-2 focus:ring-opacity-50 shadow-md text-xs md:text-sm lg:text-base"
         @click="routeToGoalOrChallenge"
     >
         <svg
