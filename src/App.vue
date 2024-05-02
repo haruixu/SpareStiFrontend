@@ -142,11 +142,11 @@ const helpMessages = computed(() => {
 </script>
 
 <template>
+    <HelpComponent v-if="showHelp" :speech="helpMessages" />
     <div
         class="min-h-screen bg-left-bottom bg-phone md:bg-pc bg-no-repeat" 
         :style="backgroundImageStyle">
-        <HelpComponent v-if="showHelp" :speech="helpMessages" />
-      <NavBarComponent v-if="showNavBar" />
+        <NavBarComponent v-if="showNavBar" />
   
       <main class="mb-10 ">
           <RouterView />

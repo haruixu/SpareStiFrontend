@@ -99,12 +99,17 @@ const openSpare = () => {
                     />
                 </CardTemplate>
 
-                <button @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
+                <button 
+                    class="primary secondary"
+                    @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
                 <button
+                    class="primary secondary"
                     @click="router.push({ name: 'edit-configuration' })"
                     v-text="'Rediger konfigurasjon'"
                 />
-                <button @click="updateBiometrics">
+                <button 
+                    class="primary"
+                    @click="updateBiometrics">
                     {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
                 </button>
             </div>
