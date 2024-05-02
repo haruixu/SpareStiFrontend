@@ -22,7 +22,10 @@
     --color-button: var(--green);
     --color-button-disabled: var(--grey);
     --color-nav-hover: var(--light-grey);
+    --color-button-edit: var(--grey);
     --color-button-hover: var(--light-green);
+    --color-button-danger: var(--accent3);
+    --color-button-danger-hover: var(--accent1);
 
     --color-link: var(--accent3);
     --color-border: var(--black);
@@ -30,10 +33,14 @@
     --section-gap: 160px;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        /* TODO: add dark mode colors */
-    }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
 }
 
 *,
