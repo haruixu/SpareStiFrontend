@@ -8,7 +8,7 @@
         </div>
         <div class="flex flex-col gap-5">
             <button @click="userStore.bioRegister()">Legg til nå!</button>
-            <button @click="router.push('konfigurasjonSteg1')">Jeg gjør det senere</button>
+            <button @click="router.push({ name: 'configurations1' })">Jeg gjør det senere</button>
         </div>
     </div>
 </template>
