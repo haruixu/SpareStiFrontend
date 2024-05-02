@@ -1,6 +1,6 @@
 <template>
   <!-- Challenge Icon and Details -->
-  <div class="flex  items-center justify-center shadow-black min-w-24 w-full h-auto md:max-h-full min-h-24 max-w-32 max-h-32 md:min-h-32 md:min-w-32 md:max-w-48 overflow-hidden">
+  <div v-if="challenge" class="flex  items-center justify-center shadow-black min-w-24 w-full h-auto md:max-h-full min-h-24 max-w-32 max-h-32 md:min-h-32 md:min-w-32 md:max-w-48 overflow-hidden">
     <!-- Challenge Icon -->
     <div class="flex flex-col items-center mx-auto md:mx-2 my-auto">
 
@@ -78,44 +78,36 @@
 <script setup lang="ts">
 import type {Challenge} from "@/types/challenge";
 import {useChallengeStore} from "@/stores/challengeStore";
-import type {Goal} from "@/types/goal";
-import {useGoalStore} from "@/stores/goalStore";
 import router from "@/router";
 
 const challengeStore = useChallengeStore();
-const goalStore = useGoalStore();
 
 interface Props {
   challenge: Challenge,
-  goal: Goal
 }
-const props = defineProps<Props>()
+defineProps<Props>()
+
+
+const emit = defineEmits(['update-challenge', 'complete-challenge']);
+
 
 // Increment saved amount
+// In your incrementSaved function in the child component
 const incrementSaved = async (challenge: Challenge) => {
-  // Safely increment the saved amount, ensuring it exists
-  challenge.saved += challenge.perPurchase
 
-  // Check if the saved amount meets or exceeds the target
-  if (challenge.saved >= challenge.target) {
-    challenge.completion = 100
-    await challengeStore.completeUserChallenge(challenge)
-  }
 
-  // Safely update the goal's saved value, ensuring goal.value exists and is not null
-  if (props.goal) {
-    props.goal.saved = (props.goal.saved || 0) + challenge.perPurchase
-    // Update the goal in the store, ensuring goal is not null or undefined
-    if (props.goal) {
-      await goalStore.editUserGoal(props.goal)
-    }
-  } else {
-    console.error('No goal selected for incrementing saved value.')
-  }
+  challenge.saved += challenge.perPurchase;
+  // Trigger the update in the store
 
-  // Update the challenge in the store
-  await challengeStore.editUserChallenge(challenge)
+  const updatedChallenge = await challengeStore.editUserChallenge(challenge) as Challenge;
+
+  console.log('updated challenge in child: ', updatedChallenge);
+
+  // Emit an event to inform the parent component of the update
+  emit('update-challenge', updatedChallenge);
+
 }
+
 
 const editChallenge = (challenge: Challenge) => {
   router.push(`/spareutfordringer/rediger/${challenge.id}`)

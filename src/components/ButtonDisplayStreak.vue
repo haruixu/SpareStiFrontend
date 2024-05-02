@@ -37,10 +37,22 @@
                 <Countdown
                     v-if="screenSize > 768 && currentStreak! > 0"
                     class="flex flex-row"
-                    countdownSize="1rem"
-                    labelSize=".5rem"
-                    mainColor="white"
-                    secondFlipColor="white"
+                    countdownSize="1.4rem"
+                    labelSize="0.8rem"
+                    mainColor="black"
+                    secondFlipColor="black"
+                    mainFlipBackgroundColor="#30ab0e"
+                    secondFlipBackgroundColor="#9af781"
+                    :labels="{ days: 'dager', hours: 'timer', minutes: 'min', seconds: 'sek' }"
+                    :deadlineISO="deadline"
+                ></Countdown>
+                <Countdown
+                    v-if="screenSize <= 768 && currentStreak! > 0"
+                    class="flex flex-row"
+                    countdownSize="1.1rem"
+                    labelSize=".6rem"
+                    mainColor="black"
+                    secondFlipColor="black"
                     mainFlipBackgroundColor="#30ab0e"
                     secondFlipBackgroundColor="#9af781"
                     :labels="{ days: 'dager', hours: 'timer', minutes: 'min', seconds: 'sek' }"
@@ -55,13 +67,13 @@
                         <div class="flex flex-col justify-around items-center">
                           <!-- Display the current streak day number adjusted by index -->
                           <span class="text-black text-xs md:text-1xl font-bold">
-                {{ currentStreak! - ((currentStreak! % 7) + 1 - index) }}
+                {{ currentStreak! - ((currentStreak! % 7) - index) }}
             </span>
                           <!-- Display images based on completion -->
                           <img
                               src="@/assets/pengesekkStreak.png"
                               :alt="index <= currentStreak! % 7 ? 'challenge completed' : 'challenge not completed'"
-                              :class="{'max-h-6 max-w-6 md:max-h-10 md:max-w-10': true, 'grayscale': index-1 > currentStreak! % 7}"
+                              :class="{'max-h-6 max-w-6 md:max-h-10 md:max-w-10': true, 'grayscale': index > currentStreak! % 7}"
                           />
                         </div>
                       </div>
@@ -73,21 +85,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 // @ts-ignore
 import { Countdown } from 'vue3-flip-countdown'
 
 const userStore = useUserStore()
 const currentStreak = ref<number>()
-const streakStart = ref<string>()
 const deadline = ref<string>()
 onMounted(async () => {
-    await userStore.getUserStreak()
+    userStore.getUserStreak()
     if (userStore.streak) {
         currentStreak.value = userStore.streak?.streak
-        streakStart.value = userStore.streak?.streakStart
-        deadline.value = userStore.streak?.streakStart
+        deadline.value = userStore.streak?.firstDue
+
     }
     console.log('Streak:', currentStreak.value)
     if (typeof window !== 'undefined') {
@@ -105,21 +116,15 @@ const handleWindowSizeChange = () => {
     screenSize.value = window.innerWidth
 }
 
-watch(
-    () => currentStreak.value,
-    (newStreak, oldStreak) => {
-        if (newStreak !== oldStreak) {
-            currentStreak.value = newStreak
-            console.log('Updated Steak:', currentStreak)
-        }
-    },
-    { immediate: true }
-)
+
 
 const displayStreakCard = ref(false)
 
 const display = () => {
     displayStreakCard.value = true
+    userStore.getUserStreak();
+    currentStreak.value = userStore.streak?.streak;
+    deadline.value = userStore.streak?.firstDue;
 }
 
 const hide = () => {

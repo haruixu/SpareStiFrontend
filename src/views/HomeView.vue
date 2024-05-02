@@ -24,7 +24,7 @@
                 />
             </div>
         </div>
-        <savings-path :challenges="challenges" :goal="goal"></savings-path>
+        <savings-path v-if="isMounted" :challenges="challenges" :goal="goal"></savings-path>
     </div>
     <InteractiveSpare
         :speech="speech"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import ButtonAddGoalOrChallenge from '@/components/ButtonAddGoalOrChallenge.vue'
 import type { Challenge } from '@/types/challenge'
@@ -59,9 +59,8 @@ const speech = ref<string[]>([])
 const newSpeechAvailable = ref(false)
 
 const challenges = ref<Challenge[]>([])
-const goals = ref<Goal[]>([])
-
 const goal = ref<Goal | null | undefined>(null)
+const isMounted = ref(false)
 
 onMounted(async () => {
     await goalStore.getUserGoals()
@@ -69,7 +68,10 @@ onMounted(async () => {
     challenges.value = challengeStore.challenges
     goal.value = goalStore.priorityGoal
     firstLoggedInSpeech()
+    isMounted.value = true
 })
+
+
 
 // Check if the user is logging in for the first time, and display the first login speech
 const firstLoggedInSpeech = () => {
