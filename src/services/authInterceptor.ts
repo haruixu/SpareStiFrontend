@@ -33,26 +33,16 @@ authInterceptor.interceptors.response.use(
             !originalRequest._retry
         ) {
             originalRequest._retry = true
+
             sessionStorage.removeItem('accessToken')
+            const username = localStorage.getItem('spareStiUsername')
 
-            const refreshToken = localStorage.getItem('refreshToken')
-            axios
-                .post('/auth/renewToken', null, {
-                    headers: {
-                        Authorization: `Bearer ${refreshToken}`
-                    }
-                })
-                .then((response) => {
-                    router.push({ name: 'login-bio', params: { username: response.data.username } })
-                })
-                .catch(() => {
-                    localStorage.removeItem('refreshToken')
-                    router.push({ name: 'login' })
-
-                    Promise.reject(error)
-                })
+            if (!username) {
+                await router.push({ name: 'login' })
+            } else {
+                await router.push({ name: 'login-bio', params: { username: username } })
+            }
         }
-
         return Promise.reject(error)
     }
 )

@@ -45,6 +45,11 @@ const router = createRouter({
             component: () => import('@/views/ManageProfileView.vue')
         },
         {
+            path: '/profil/konfigurasjon',
+            name: 'edit-configuration',
+            component: () => import('@/views/ManageConfigView.vue')
+        },
+        {
             path: '/sparemaal',
             name: 'goals',
             component: () => import('@/views/UserGoalsView.vue')
@@ -120,7 +125,7 @@ const router = createRouter({
             component: () => import('@/views/NotFoundView.vue')
         },
         {
-            path: '/konfigurerBiometri',
+            path: '/konfigurasjonBiometri',
             name: 'configure-biometric',
             component: () => import('@/views/ConfigBiometricView.vue')
         }
@@ -133,24 +138,11 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const publicPages = [
         { name: 'login' },
-        { name: 'register' },
         { name: 'login-bio' },
+        { name: 'register' },
         { name: 'resetPassword' },
         { name: 'start' }
     ]
-
-    const authRequired = !publicPages.some((page) => page.name === to.name)
-    const hasLoginCredentials =
-        sessionStorage.getItem('accessToken') !== null &&
-        localStorage.getItem('refreshToken') !== null
-
-    if (authRequired && !hasLoginCredentials) {
-        console.log('Routing to login')
-        await router.replace({ name: 'login' })
-        return next({ name: 'login' })
-    } else if (!authRequired && !hasLoginCredentials) {
-        return next()
-    }
 
     const configPages = [
         { name: 'configure-biometric' },
@@ -162,27 +154,47 @@ router.beforeEach(async (to, from, next) => {
         { name: 'configurations6' }
     ]
 
+    const authRequired = !publicPages.some((page) => page.name === to.name)
+    const loginCredentials = sessionStorage.getItem('accessToken')
+    const bioCredentials = localStorage.getItem('spareStiUsername')
+
     const userStore = useUserStore()
-
-    if (userStore.user.isConfigured == false) {
-        await userStore.checkIfUserConfigured()
-    }
-
     const configRequired = !configPages.some((page) => page.name === to.name)
-    const isConfigured = userStore.user.isConfigured
 
-    if (configRequired && !isConfigured) {
-        await router.replace({ name: 'configure-biometric' })
-        return next({ name: 'configure-biometric' })
-    } else if (!configRequired && isConfigured) {
-        await router.replace({ name: 'home' })
-        return next({ name: 'home' })
+    if (!loginCredentials) {
+        if (bioCredentials && to.name !== 'login-bio') {
+            console.log('Bio login')
+            await router.replace({ name: 'login-bio', params: { username: bioCredentials } })
+            return next({ name: 'login-bio', params: { username: bioCredentials } })
+        } else if (authRequired && !bioCredentials && to.name !== 'login') {
+            console.log('Normal login')
+            await router.replace({ name: 'login' })
+            return next({ name: 'login' })
+        } else if (!authRequired) {
+            console.log('Public page')
+            next()
+        }
+    } else {
+        if (userStore.user.isConfigured == false) {
+            await userStore.checkIfUserConfigured()
+        }
+
+        const isConfigured = userStore.user.isConfigured
+
+        if (configRequired && !isConfigured) {
+            await router.replace({ name: 'configure-biometric' })
+            return next({ name: 'configure-biometric' })
+        } else if (!configRequired && isConfigured) {
+            await router.replace({ name: 'home' })
+            return next({ name: 'home' })
+        }
+
+        if (!authRequired) {
+            await router.replace({ name: 'home' })
+            return next({ name: 'home' })
+        }
     }
 
-    if (!authRequired) {
-        await router.replace({ name: 'home' })
-        return next({ name: 'home' })
-    }
     return next()
 })
 

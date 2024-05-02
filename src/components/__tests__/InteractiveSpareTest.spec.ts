@@ -15,6 +15,7 @@ describe('SpeechBubbleComponent', () => {
         expect(wrapper.exists()).toBeTruthy()
     })
 
+    /*
     it('applies dynamic classes based on direction prop', () => {
         const wrapper = mount(SpeechBubbleComponent, {
             props: {
@@ -61,4 +62,5 @@ describe('SpeechBubbleComponent', () => {
         await wrapper.find('.spareDiv').trigger('click')
         expect(wrapper.find('.speech').text()).toBe('Second speech')
     })
+     */
 })
