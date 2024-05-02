@@ -28,6 +28,7 @@ const updatePassword = ref<boolean>(false)
 const confirmPassword = ref<string>('')
 const errorMessage = ref<string>('')
 const isModalOpen = ref(false)
+const image = ref<File>()
 
 const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{1,29}$/
 const emailRegex =
@@ -82,19 +83,18 @@ const selectImage = async () => {
 
         console.log('Vi klarte ikke å hente bildene dine. Prøv igjen!')
     }
-    fileInput.addEventListener('change', uploadImage)
+    if ( !fileInput.files) {
+        return;
+    }
+    image.value = fileInput.files[0]
 }
+const uploadImage = async () => {
 
-const uploadImage = (e : any) => {
-    const _form = e.currentTarget;
-
-    console.log("hei")
-    const formData = new FormData(_form)
-    console.log(formData)
+    // bildet må lastes opp som en form. altså en body med form
+    // const formData = new FormData()
 
     // authInterceptor.post("/profile/picture", formData)
 
-    e.preventDefault;
 }
 
 const saveChanges = async () => {
@@ -138,8 +138,13 @@ const saveChanges = async () => {
                            style="display:none;"
                            accept =".jpg, .jpeg, .png, .gif, .img" />
                     <button
-                        v-text="'Last opp eget bilde!'"
+                        v-text="'Velg eget bilde!'"
                         @click="selectImage()"
+                        />
+
+                    <button
+                        v-text="'Send bilde'"
+                        @click="uploadImage()"
                     />
                 </div>
                 <div class="flex flex-col">
