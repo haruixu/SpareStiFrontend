@@ -109,7 +109,7 @@ const helpMessages = computed(() => {
         messages.push(
             'Du kan også se hvor mye du har spart av utfordringen din, og hvor mye du har igjen'
         )
-    } else if (route.path.startsWith('/sparemaal/ny')) {
+    } else if (route.path.startsWith('/sparemaal/rediger/ny')) {
         messages.push('Her kan du opprette et nytt sparemål 🌸')
         messages.push(
             'Tittel er navnet på sparemålet, og beskrivelse er en kort forklaring på hva sparemålet går ut på.'
