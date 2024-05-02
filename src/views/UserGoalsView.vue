@@ -107,6 +107,3 @@ const changeOrder = async () => {
         />
     </div>
 </template>
-
-<style scoped>
-</style>

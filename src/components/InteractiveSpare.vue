@@ -1,25 +1,27 @@
 <template>
     <div
-        class="flex items-center mr-10 max-w-[60vh]"
-        :class="{ 'flex-row': direction === 'right', 'flex-row-reverse': direction === 'left' }"
+        class="spareDiv flex items-center mr-10 max-w-[60vh] cursor-pointer"
+        :class="{
+            'flex-row': direction === 'right',
+            'flex-row-reverse': direction === 'left'
+        }"
+        @click="nextSpeech"
     >
         <!-- Image -->
         <img
             :src="spareImageSrc"
             :style="{ width: pngSize + 'rem', height: pngSize + 'rem' }"
             :class="['object-contain', ...imageClass]"
-            alt="Sparemannen"
+            alt="Spare"
             class="w-dynamic h-dynamic object-contain"
-            @click="nextSpeech"
         />
 
         <!-- Speech Bubble -->
         <div
-            v-if="currentSpeech"
             :class="`mb-40 inline-block relative w-64 bg-white p-4 rounded-3xl border border-gray-600 tri-right round ${bubbleDirection}`"
         >
             <div class="text-left leading-6">
-                <p class="m-0">{{ currentSpeech }}</p>
+                <p class="speech m-0">{{ currentSpeech }}</p>
             </div>
         </div>
     </div>
@@ -30,31 +32,23 @@ import { computed, defineProps, ref } from 'vue'
 import spareImageSrc from '@/assets/spare.png'
 
 interface Props {
-    speech?: string[] // Using TypeScript's type for speech as an array of strings
-    direction: 'left' | 'right' // This restricts direction to either 'left' or 'right'
-    pngSize: number // Just declaring the type directly since it's simple
+    speech?: Array<string>
+    direction: 'left' | 'right'
+    pngSize: number
 }
 
 const props = defineProps<Props>()
-
-const speech = ref<String[]>(props.speech || [])
-
+const speech = ref<string[]>(props.speech || [])
 const currentSpeechIndex = ref(0)
 const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])
 
-const nextSpeech = () => {
-    if (speech.value.length > 0) {
-        // Remove the currently displayed speech first
-        speech.value.splice(currentSpeechIndex.value, 1)
+const emit = defineEmits(['emit:close'])
 
-        // Check if there are any speeches left after removal
-        if (speech.value.length > 0) {
-            // Move to the next speech or reset to the beginning if the current index is out of range
-            currentSpeechIndex.value = currentSpeechIndex.value % speech.value.length
-        } else {
-            // If no speeches left, reset index to indicate no available speech
-            currentSpeechIndex.value = -1
-        }
+const nextSpeech = () => {
+    if (currentSpeechIndex.value < speech.value.length - 1) {
+        currentSpeechIndex.value++
+    } else {
+        emit('emit:close')
     }
 }
 

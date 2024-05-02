@@ -10,8 +10,7 @@
             </router-link>
 
             <div class="flex flex-row justify-center">
-                <img alt="streak" class="w-8 h-8" src="@/assets/streakFlame.png" />
-                <p class="font-bold">Streak</p>
+                <ButtonDisplayStreak />
             </div>
         </div>
         <div v-if="!isHamburger" class="flex flex-row gap-10">
@@ -72,6 +71,7 @@ import { RouterLink } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalComponent from '@/components/ModalComponent.vue'
+import ButtonDisplayStreak from '@/components/ButtonDisplayStreak.vue'
 
 const userStore = useUserStore()
 
@@ -99,7 +99,9 @@ const updateWindowWidth = () => {
 }
 
 onMounted(() => {
-    window.addEventListener('resize', updateWindowWidth)
+    if (typeof window !== 'undefined') {
+        window.addEventListener('resize', updateWindowWidth)
+    }
     updateWindowWidth()
 })
 

@@ -2,7 +2,7 @@
 import authInterceptor from '@/services/authInterceptor'
 import { computed, onMounted, ref } from 'vue'
 import type { Profile } from '@/types/profile'
-import CardTemplate from '@/views/CardTemplate.vue'
+import CardTemplate from '@/components/CardTemplate.vue'
 import router from '@/router'
 import ToolTip from '@/components/ToolTip.vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
@@ -27,13 +27,28 @@ const profile = ref<Profile>({
 const updatePassword = ref<boolean>(false)
 const confirmPassword = ref<string>('')
 const errorMessage = ref<string>('')
+const isModalOpen = ref(false)
 
-const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{1,29}$/
+const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{0,29}$/
 const emailRegex =
     /^[æÆøØåÅa-zA-Z0-9_+&*-]+(?:\.[æÆøØåÅa-zA-Z0-9_+&*-]+)*@(?:[æÆøØåÅa-zA-Z0-9-]+\.)+[æÆøØåÅa-zA-Z]{2,7}$/
-const usernameRegex = /^[ÆØÅæøåA-Za-z][æÆøØåÅA-Za-z0-9_]{2,29}$/
 const passwordRegex = /^(?=.*[0-9])(?=.*[a-zæøå])(?=.*[ÆØÅA-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,30}$/
 const accountNumberRegex = /^\d{11}$/
+
+const MAX_DIGITS = 11
+
+function restrictToNumbers(event: InputEvent, type: string) {
+    const inputValue = (event.target as HTMLInputElement)?.value
+    if (inputValue !== undefined) {
+        const sanitizedValue = inputValue.replace(/\D/g, '')
+        const truncatedValue = sanitizedValue.slice(0, MAX_DIGITS)
+        if (type === 'spending') {
+            profile.value.spendingAccount.accNumber = parseInt(truncatedValue)
+        } else {
+            profile.value.savingAccount.accNumber = parseInt(truncatedValue)
+        }
+    }
+}
 
 const isFirstNameValid = computed(
     () => nameRegex.test(profile.value.firstName) && profile.value.firstName
@@ -42,7 +57,6 @@ const isLastNameValid = computed(
     () => nameRegex.test(profile.value.lastName) && profile.value.lastName
 )
 const isEmailValid = computed(() => emailRegex.test(profile.value.email))
-const isUsernameValid = computed(() => usernameRegex.test(profile.value.username))
 const isPasswordValid = computed(() => passwordRegex.test(profile.value.password || ''))
 const isSpendingAccountValid = computed(() =>
     accountNumberRegex.test(profile.value.spendingAccount.accNumber?.toString() || '')
@@ -57,7 +71,6 @@ const isFormInvalid = computed(
             isFirstNameValid,
             isLastNameValid,
             isEmailValid,
-            isUsernameValid,
             isSpendingAccountValid,
             isSavingAccountValid
         ].some((v) => !v.value) ||
@@ -107,7 +120,7 @@ const saveChanges = async () => {
                     <div class="flex flex-col justify-center">
                         <button class="h-min bg-transparent text-4xl" v-text="'⬅️'" />
                     </div>
-                    <div class="w-32 h-32 border-slate-200 border-2 rounded-full shrink-0" />
+                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
                     <div class="flex flex-col justify-center">
                         <button class="h-min bg-transparent text-4xl" v-text="'➡️'" />
                     </div>
@@ -122,6 +135,7 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.firstName"
+                        :class="{ 'bg-green-200': isFirstNameValid }"
                         name="firstname"
                         placeholder="Skriv inn fornavn"
                         type="text"
@@ -136,6 +150,7 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.lastName"
+                        :class="{ 'bg-green-200': isLastNameValid }"
                         name="lastname"
                         placeholder="Skriv inn etternavn"
                         type="text"
@@ -150,22 +165,9 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.email"
+                        :class="{ 'bg-green-200': isEmailValid }"
                         name="email"
                         placeholder="Skriv inn e-post"
-                        type="text"
-                    />
-                </div>
-                <div class="flex flex-col">
-                    <div class="flex flex-row justify-between mx-4">
-                        <p>Brukernavn*</p>
-                        <ToolTip
-                            :message="'Must start with a letter and can include numbers and underscores. 3-30 characters long.'"
-                        />
-                    </div>
-                    <input
-                        v-model="profile.username"
-                        name="username"
-                        placeholder="Skriv inn brukernavn"
                         type="text"
                     />
                 </div>
@@ -183,6 +185,7 @@ const saveChanges = async () => {
                     <input
                         v-if="updatePassword"
                         v-model="profile.password"
+                        :class="{ 'bg-green-200': isPasswordValid }"
                         class="w-full"
                         name="password"
                         placeholder="Skriv inn passord"
@@ -190,6 +193,7 @@ const saveChanges = async () => {
                     <input
                         v-if="updatePassword"
                         v-model="confirmPassword"
+                        :class="{ 'bg-red-200': profile.password !== confirmPassword }"
                         class="mt-2"
                         name="confirm"
                         placeholder="Bekreft passord"
@@ -204,36 +208,41 @@ const saveChanges = async () => {
                     :png-size="10"
                     :speech="['Her kan du endre på profilen din!']"
                     direction="left"
+                    :isModalOpen="isModalOpen"
                 />
 
                 <CardTemplate>
-                    <div class="bg-red-100">
+                    <div class="bg-red-300">
                         <p class="font-bold mx-3" v-text="'Brukskonto'" />
                     </div>
                     <input
+                        @input="restrictToNumbers($event as InputEvent, 'spending')"
                         v-model="profile.spendingAccount.accNumber"
-                        class="border-1 rounded-none rounded-b-xl w-full"
+                        :class="{ 'bg-green-200': isSpendingAccountValid }"
+                        class="border-2 rounded-none rounded-b-xl w-full"
                         placeholder="Kontonummer"
                         type="number"
                     />
                 </CardTemplate>
 
                 <CardTemplate>
-                    <div class="bg-red-100">
+                    <div class="bg-red-300">
                         <p class="font-bold mx-3" v-text="'Sparekonto'" />
                     </div>
                     <input
+                        @input="restrictToNumbers($event as InputEvent, 'saving')"
                         v-model="profile.savingAccount.accNumber"
-                        class="border-1 rounded-none rounded-b-xl w-full"
+                        :class="{ 'bg-green-200': isSavingAccountValid }"
+                        class="border-2 rounded-none rounded-b-xl w-full"
                         placeholder="Kontonummer"
                         type="number"
                     />
                 </CardTemplate>
 
                 <div class="flex flex-row justify-between">
-                    <button class="primary danger" @click="router.back()" v-text="'Avbryt'" />
+                    <button class="bg-button-other" @click="router.back()" v-text="'Avbryt'" />
                     <button
-                        class="primary"
+                        :disabled="isFormInvalid"
                         @click="saveChanges"
                         v-text="'Lagre endringer'"
                     />
@@ -242,5 +251,3 @@ const saveChanges = async () => {
         </div>
     </div>
 </template>
-
-<style scoped></style>

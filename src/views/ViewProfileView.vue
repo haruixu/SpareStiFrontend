@@ -1,20 +1,22 @@
 <script lang="ts" setup>
 import authInterceptor from '@/services/authInterceptor'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Profile } from '@/types/profile'
-import CardTemplate from '@/views/CardTemplate.vue'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import CardTemplate from '@/components/CardTemplate.vue'
 import type { Challenge } from '@/types/challenge'
 import type { Goal } from '@/types/goal'
 import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
+import SpareComponent from '@/components/SpareComponent.vue'
+import { useUserStore } from '@/stores/userStore'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
 const completedChallenges = ref<Challenge[]>([])
+const speech = ref<string[]>([])
 
-onMounted(async () => {
-    await authInterceptor('/profile')
+const updateUser = async () => {
+    authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
             console.log(profile.value)
@@ -22,6 +24,10 @@ onMounted(async () => {
         .catch((error) => {
             return console.log(error)
         })
+}
+
+onMounted(async () => {
+    await updateUser()
 
     await authInterceptor(`/goals/completed?page=0&size=3`)
         .then((response) => {
@@ -38,20 +44,30 @@ onMounted(async () => {
         .catch((error) => {
             return console.log(error)
         })
-})
 
-const welcome = computed(() => {
-    return [`Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`]
+    openSpare()
 })
+const updateBiometrics = async () => {
+    await useUserStore().bioRegister()
+    await updateUser()
+}
+
+const openSpare = () => {
+    speech.value = [
+        `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
+        'Her kan du finne en oversikt over dine profilinstillinger!',
+        'Du kan også se dine fullførte sparemål og utfordringer!'
+    ]
+}
 </script>
 
 <template>
     <div class="w-full flex px-10 justify-center">
         <div class="flex flex-row flex-wrap justify-center w-full max-w-screen-xl gap-20">
             <div class="flex flex-col max-w-96 w-full gap-5">
-                <h1>Profil</h1>
+                <h1>Profile</h1>
                 <div class="flex flex-row gap-5">
-                    <div class="w-32 h-32 border-slate-200 border-2 rounded-full shrink-0" />
+                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
                     <div class="w-full flex flex-col justify-between">
                         <h3 class="font-thin my-0">{{ profile?.username }}</h3>
                         <h3 class="font-thin my-0">
@@ -61,7 +77,7 @@ const welcome = computed(() => {
                     </div>
                 </div>
 
-                <h3 class="font-bold" v-text="'Du har spart ' + '< totalSaved >' + ' kr!'" />
+                <h3 class="font-bold" v-text="'Du har spart ' + '< totalSaved >' + 'kr'" />
 
                 <CardTemplate>
                     <div class="bg-red-300">
@@ -83,13 +99,24 @@ const welcome = computed(() => {
                     />
                 </CardTemplate>
 
-                <button 
-                    class="primary secondary w-40"
-                    @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
+                <button @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
+                <button
+                    @click="router.push({ name: 'edit-configuration' })"
+                    v-text="'Rediger konfigurasjon'"
+                />
+                <button @click="updateBiometrics">
+                    {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
+                </button>
             </div>
 
             <div class="flex flex-col">
-                <InteractiveSpare :png-size="10" :speech="welcome" direction="left" />
+                <SpareComponent
+                    :speech="speech"
+                    :png-size="15"
+                    :imageDirection="'left'"
+                    :direction="'right'"
+                    class="mb-5"
+                ></SpareComponent>
                 <div class="flex flex-row justify-between mx-4">
                     <p class="font-bold">Fullførte sparemål</p>
                     <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />
@@ -113,5 +140,3 @@ const welcome = computed(() => {
         </div>
     </div>
 </template>
-
-<style scoped></style>

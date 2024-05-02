@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const router = useRouter()
 
@@ -40,7 +40,7 @@ const calculateSpeech = () => {
         )
     } else if (completion.value >= 100) {
         return motivation.value.push(
-            `Fantastisk! Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
+            `!Fantastisk Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
         )
     }
 }
@@ -130,10 +130,14 @@ const completeGoal = () => {
                     v-text="'Marker målet som ferdig'"
                 />
             </div>
-            </div>
-            <InteractiveSpare :png-size="10" :speech="motivation" direction="left" />
-            <div>
         </div>
+        <SpareComponent
+            :speech="motivation"
+            :png-size="15"
+            :imageDirection="'left'"
+            :direction="'right'"
+            class="mb-5"
+        ></SpareComponent>
     </div>
 </template>
 
