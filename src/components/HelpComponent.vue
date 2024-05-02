@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed bottom-5 left-5">
+    <div class="fixed bottom-5 left-5 z-20">
         <div @click="isModalOpen = true" class="hover:cursor-pointer">
             <img
                 alt="Hjelp"
@@ -11,7 +11,7 @@
     <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
         <InteractiveSpare
             :speech="speech"
-            :png-size="15"
+            :png-size="12"
             direction="right"
             @emit:close="isModalOpen = false"
         />
