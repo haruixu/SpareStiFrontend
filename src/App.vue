@@ -36,7 +36,8 @@ const showSti = computed(() => {
         route.path == '/forgotPassword' ||
         route.path.startsWith('/konfigurasjon') ||
         route.path == '/hjem' ||
-        route.path == '/profil'
+        route.path == '/profil' ||
+        route.path.startsWith('/loggin')
     )
 })
 

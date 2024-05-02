@@ -65,9 +65,9 @@ const openSpare = () => {
     <div class="w-full flex px-10 justify-center">
         <div class="flex flex-row flex-wrap justify-center w-full max-w-screen-xl gap-20">
             <div class="flex flex-col max-w-96 w-full gap-5">
-                <h1>Profile</h1>
+                <h1>Profil</h1>
                 <div class="flex flex-row gap-5">
-                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
+                    <div class="w-32 h-32 border-slate-200 border-2 rounded-full shrink-0" />
                     <div class="w-full flex flex-col justify-between">
                         <h3 class="font-thin my-0">{{ profile?.username }}</h3>
                         <h3 class="font-thin my-0">
@@ -80,7 +80,7 @@ const openSpare = () => {
                 <h3 class="font-bold" v-text="'Du har spart ' + '< totalSaved >' + 'kr'" />
 
                 <CardTemplate>
-                    <div class="bg-red-300">
+                    <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Brukskonto'" />
                     </div>
                     <p
@@ -90,7 +90,7 @@ const openSpare = () => {
                 </CardTemplate>
 
                 <CardTemplate>
-                    <div class="bg-red-300">
+                    <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Sparekonto'" />
                     </div>
                     <p

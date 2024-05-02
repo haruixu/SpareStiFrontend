@@ -206,6 +206,8 @@ const saveChanges = async () => {
                     :isModalOpen="isModalOpen"
                 />
 
+                <p class="font-bold">Endre kontonummer:</p>
+
                 <CardTemplate>
                     <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Brukskonto'" />
@@ -213,7 +215,7 @@ const saveChanges = async () => {
                     <input
                         @input="restrictToNumbers($event as InputEvent, 'spending')"
                         v-model="profile.spendingAccount.accNumber"
-                        class="border-1 rounded-none rounded-b-xl w-full"
+                        class="border-transparent rounded-none rounded-b-xl w-full"
                         placeholder="Kontonummer"
                         type="number"
                     />
@@ -226,7 +228,7 @@ const saveChanges = async () => {
                     <input
                         @input="restrictToNumbers($event as InputEvent, 'saving')"
                         v-model="profile.savingAccount.accNumber"
-                        class="border-1 rounded-none rounded-b-xl w-full"
+                        class="border-transparent rounded-none rounded-b-xl w-full"
                         placeholder="Kontonummer"
                         type="number"
                     />

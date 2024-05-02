@@ -96,79 +96,81 @@ onMounted(() => {
 <template>
     <div class="w-full flex px-10 justify-center">
         <div class="flex flex-col justify-center items-center max-w-screen-xl gap-3">
-            <h1>Rediger kofigurasjonen</h1>
+            <h1>Rediger konfigurasjon✏️</h1>
 
-            <h2 class="font-thin">Hvor store vaneedringer er du villig til å gjøre?</h2>
+            <h3 class="font-bold">Hvor store vaneedringer er du villig til å gjøre?</h3>
             <div v-if="configuration" class="flex flex-row gap-5">
                 <CardTemplate
-                    :class="{ 'bg-green-500': configuration.motivation === 'VERY_LOW' }"
-                    class="cursor-pointer p-5"
+                    :class="{ 'border-2 border-lime-400': configuration.motivation === 'VERY_LOW' }"
+                    class="cursor-pointer p-4 border-2"
                     @click="configuration.motivation = 'VERY_LOW'"
                 >
-                    <p class="text-2xl">Litt</p>
+                    <p class="font-bold">Litt</p>
                 </CardTemplate>
                 <CardTemplate
-                    :class="{ 'bg-green-500': configuration.motivation === 'MEDIUM' }"
-                    class="cursor-pointer p-5"
+                    :class="{ 'border-2 border-lime-400': configuration.motivation === 'MEDIUM' }"
+                    class="cursor-pointer p-4 border-2"
                     @click="configuration.motivation = 'MEDIUM'"
                 >
-                    <p class="text-2xl">Passe</p>
+                    <p class="font-bold">Passe</p>
                 </CardTemplate>
                 <CardTemplate
-                    :class="{ 'bg-green-500': configuration.motivation === 'VERY_HIGH' }"
-                    class="cursor-pointer p-5"
+                    :class="{ 'border-2 border-lime-400': configuration.motivation === 'VERY_HIGH' }"
+                    class="cursor-pointer p-4 border-2"
                     @click="configuration.motivation = 'VERY_HIGH'"
                 >
-                    <p class="text-2xl">Store</p>
+                    <p class="font-bold">Store</p>
                 </CardTemplate>
             </div>
 
-            <h2 class="font-thin">Hvor kjent er du med sparing fra før av?</h2>
+            <h3 class="font-bold">Hvor kjent er du med sparing fra før av?</h3>
             <div v-if="configuration" class="flex flex-row gap-5">
                 <CardTemplate
-                    :class="{ 'bg-green-500': configuration.experience === 'VERY_LOW' }"
-                    class="cursor-pointer p-5"
+                    :class="{ 'border-2 border-lime-400': configuration.experience === 'VERY_LOW' }"
+                    class="cursor-pointer p-4 border-2"
                     @click="configuration.experience = 'VERY_LOW'"
                 >
-                    <p class="text-2xl">Litt kjent</p>
+                    <p class="font-bold">Litt kjent</p>
                 </CardTemplate>
                 <CardTemplate
-                    :class="{ 'bg-green-500': configuration.experience === 'MEDIUM' }"
-                    class="cursor-pointer p-5"
+                    :class="{ 'border-2 border-lime-400': configuration.experience === 'MEDIUM' }"
+                    class="cursor-pointer p-4 border-2"
                     @click="configuration.experience = 'MEDIUM'"
                 >
-                    <p class="text-2xl">Noe kjent</p>
+                    <p class="font-bold">Noe kjent</p>
                 </CardTemplate>
                 <CardTemplate
-                    :class="{ 'bg-green-500': configuration.experience === 'VERY_HIGH' }"
-                    class="cursor-pointer p-5"
+                    :class="{ 'border-2 border-lime-400': configuration.experience === 'VERY_HIGH' }"
+                    class="cursor-pointer p-4 border-2"
                     @click="configuration.experience = 'VERY_HIGH'"
                 >
-                    <p class="text-2xl">Godt kjent</p>
+                    <p class="font-bold">Godt kjent</p>
                 </CardTemplate>
             </div>
 
-            <h2 class="font-thin my-0">Hva bruker du mye penger på?</h2>
+            <h3 class="font-bold my-0">Hva bruker du mye penger på?</h3>
             <div class="flex flex-col gap-4 p-4 items-center">
                 <CardTemplate
                     v-for="(item, index) in configuration.challengeTypeConfigs"
                     :key="index"
-                    class="flex flex-row flex-wrap justify-center gap-5 border-4 p-3"
+                    class="flex flex-row flex-wrap justify-center gap-5 border-2 p-4"
                 >
                     <input v-model="item.type" placeholder="Type" type="text" />
                     <input v-model="item.specificAmount" placeholder="Pris per uke" type="number" />
                     <input v-model="item.generalAmount" placeholder="Generell pris" type="number" />
                     <button
-                        class="cursor-pointer bg-red-500 rounded-full w-min items-center"
+                        class="primary danger w-min items-center"
                         @click="deleteChallengeType(item.type)"
                         v-text="'x'"
                     />
                 </CardTemplate>
-                <button class="secondary" @click="createChallengeType" v-text="'+'" />
+                <button 
+                    class="font-bold text-2xl cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
+                    @click="createChallengeType" v-text="'Legg til flere📝'" />
             </div>
 
             <div class="flex flex-row justify-center gap-5">
-                <button class="secondary" @click="router.back()">Avbryt</button>
+                <button class="primary danger" @click="router.back()">Avbryt</button>
                 <button class="primary" @click="validateAndSave">Lagre</button>
             </div>
         </div>
