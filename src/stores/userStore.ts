@@ -238,7 +238,6 @@ export const useUserStore = defineStore('user', () => {
     const checkIfUserConfigured = async () => {
         await authInterceptor('/config')
             .then((response) => {
-                console.log('User configured: ' + user.value.isConfigured)
                 user.value.isConfigured = response.data.challengeConfig != null
             })
             .catch(() => {

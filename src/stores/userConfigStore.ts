@@ -2,30 +2,36 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import authInterceptor from '@/services/authInterceptor'
 import { AxiosError } from 'axios'
+import type { ChallengeConfig } from '@/types/challengeConfig'
+import router from '@/router'
 
 export const useUserConfigStore = defineStore('userConfig', () => {
-    const role = ref('USER')
-    const experience = ref('')
-    const motivation = ref('')
-    const challengeTypeConfigs = ref(
-        [] as {
-            type: string
-            specificAmount: number
-            generalAmount: number
-        }[]
-    )
-    const accounts = ref({
-        savings: '',
-        spending: ''
+    const challengeConfig = ref<ChallengeConfig>({
+        experience: '',
+        motivation: '',
+        challengeTypeConfigs: []
     })
+
+    const savingAccount = ref({
+        accountType: 'SAVING',
+        accNumber: 0,
+        balance: 0
+    })
+
+    const spendingAccount = ref({
+        accountType: 'SPENDING',
+        accNumber: 0,
+        balance: 0
+    })
+
     const errorMessage = ref<string>('')
 
     const setExperience = (value: string) => {
-        experience.value = value
+        challengeConfig.value.experience = value
     }
 
     const setMotivation = (value: string) => {
-        motivation.value = value
+        challengeConfig.value.motivation = value
     }
 
     const addChallengeTypeConfig = (
@@ -33,53 +39,62 @@ export const useUserConfigStore = defineStore('userConfig', () => {
         specificAmount: number,
         generalAmount: number
     ) => {
-        challengeTypeConfigs.value.push({ type, specificAmount, generalAmount })
-    }
-
-    const postAccount = async (
-        accountType: 'SAVING' | 'SPENDING',
-        accNumber: string,
-        balance: number
-    ) => {
-        const payload = {
-            accountType,
-            accNumber,
-            balance
-        }
-        await authInterceptor.post('/accounts', payload).catch((error) => {
-            const axiosError = error as AxiosError
-            errorMessage.value =
-                (axiosError.response?.data as string) || 'An error occurred while posting account'
-            console.error('Error posting account:', errorMessage.value)
+        challengeConfig.value.challengeTypeConfigs.push({
+            type: type,
+            specificAmount: specificAmount,
+            generalAmount: generalAmount
         })
     }
 
-    const postUserConfig = async () => {
-        const payload = {
-            experience: experience.value,
-            motivation: motivation.value,
-            challengeTypeConfigs: Array.from(challengeTypeConfigs.value)
+    const setAccount = (type: 'SAVING' | 'SPENDING', accNumber: number) => {
+        if (type === 'SAVING') {
+            savingAccount.value.accNumber = accNumber
+        } else {
+            spendingAccount.value.accNumber = accNumber
         }
-        await authInterceptor.post('/config/challenge', payload).catch((error) => {
-            const axiosError = error as AxiosError
-            errorMessage.value =
-                (axiosError.response?.data as string) ||
-                'An error occurred while updating configuration'
-            console.error('Error updating configuration:', errorMessage.value)
-        })
+    }
+
+    const createConfig = () => {
+        authInterceptor
+            .post('/accounts', savingAccount.value)
+            .then(() => authInterceptor.post('/accounts', spendingAccount.value))
+            .then(() => authInterceptor.post('/config/challenge', challengeConfig.value))
+            .then(() => {
+                resetConfig()
+                return router.push({ name: 'home', query: { firstLogin: 'true' } })
+            })
+            .catch((error: AxiosError) => {
+                console.error(error)
+                resetConfig()
+                return router.push({ name: 'configurations1' })
+            })
+    }
+
+    const resetConfig = () => {
+        challengeConfig.value = {
+            experience: '',
+            motivation: '',
+            challengeTypeConfigs: []
+        }
+        savingAccount.value = {
+            accountType: 'SAVING',
+            accNumber: 0,
+            balance: 0
+        }
+        spendingAccount.value = {
+            accountType: 'SPENDING',
+            accNumber: 0,
+            balance: 0
+        }
     }
 
     return {
-        role,
-        experience,
-        motivation,
-        challengeTypeConfigs,
-        accounts,
+        challengeConfig,
         errorMessage,
         setExperience,
         setMotivation,
+        setAccount,
         addChallengeTypeConfig,
-        postAccount,
-        postUserConfig
+        createConfig
     }
 })

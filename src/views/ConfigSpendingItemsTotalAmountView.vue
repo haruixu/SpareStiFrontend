@@ -95,14 +95,14 @@ import SpareComponent from '@/components/SpareComponent.vue'
 
 const userConfigStore = useUserConfigStore()
 
-const options = ref(userConfigStore.challengeTypeConfigs)
+const options = ref(userConfigStore.challengeConfig.challengeTypeConfigs)
 const amounts = ref(options.value.map(() => ''))
 
 const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
 const onButtonClick = async () => {
     options.value.forEach((option, index) => {
-        userConfigStore.challengeTypeConfigs[index].generalAmount =
+        userConfigStore.challengeConfig.challengeTypeConfigs[index].generalAmount =
             parseFloat(amounts.value[index]) || 0
     })
 
