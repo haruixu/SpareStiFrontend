@@ -7,8 +7,8 @@ import type { Challenge } from '@/types/challenge'
 
 const router = useRouter()
 
-const uploadedFile: Ref<File | null> = ref(null);
-const challengeImageUrl = ref('');
+const uploadedFile: Ref<File | null> = ref(null)
+const challengeImageUrl = ref('')
 
 const oneWeekFromNow = new Date()
 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
@@ -32,8 +32,8 @@ const isAmountSaved = ref(false)
 const timesSaved = ref(challengeInstance.value.saved / challengeInstance.value.perPurchase)
 
 const removeUploadedFile = () => {
-    uploadedFile.value = null;
-};
+    uploadedFile.value = null
+}
 
 watch(
     () => timesSaved.value,
@@ -82,13 +82,13 @@ watch(
 )
 
 const handleFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
-        uploadedFile.value = target.files[0]; // Save the first selected file
+        uploadedFile.value = target.files[0]
     } else {
-        uploadedFile.value = null;
+        uploadedFile.value = null
     }
-};
+}
 
 const selectedDate = ref(minDate)
 watch(
@@ -120,41 +120,40 @@ const isInputValid = computed(() => {
 
 const submitAction = async () => {
     if (!isInputValid.value) {
-        alert('Fyll ut alle feltene');
-        return;
+        alert('Fyll ut alle feltene')
+        return
     }
 
     try {
-        const responseData = await (isEdit.value ? updateChallenge() : createChallenge());
+        const responseData = await (isEdit.value ? updateChallenge() : createChallenge())
 
-        const challengeId = isEdit.value ? challengeInstance.value.id : responseData.id;
+        const challengeId = isEdit.value ? challengeInstance.value.id : responseData.id
         if (uploadedFile.value && challengeId) {
-            const formData = new FormData();
-            formData.append('file', uploadedFile.value);
-            formData.append('id', challengeId.toString());
+            const formData = new FormData()
+            formData.append('file', uploadedFile.value)
+            formData.append('id', challengeId.toString())
 
             const uploadResponse = await authInterceptor.post('/challenges/picture', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
 
             if (uploadResponse.status === 200) {
-                challengeImageUrl.value = URL.createObjectURL(uploadedFile.value);
+                challengeImageUrl.value = URL.createObjectURL(uploadedFile.value)
             } else {
-                throw new Error('Failed to upload image');
+                throw new Error('Failed to upload image')
             }
         }
 
-        await router.push({ name: 'challenges' });
+        await router.push({ name: 'challenges' })
     } catch (error) {
-        console.error(error);
+        console.error(error)
         if (error instanceof Error) {
-            console.error('En feil oppstod: ' + error.message);
+            console.error('En feil oppstod: ' + error.message)
         } else {
-            console.error('En feil oppstod, og vi kunne ikke hente detaljer.');
+            console.error('En feil oppstod, og vi kunne ikke hente detaljer.')
         }
     }
-};
-
+}
 
 onMounted(async () => {
     if (isEdit.value) {
@@ -177,17 +176,18 @@ onMounted(async () => {
     }
 })
 
-
 const createChallenge = async (): Promise<any> => {
-    const response = await authInterceptor.post('/challenges', challengeInstance.value);
-    return response.data;
-};
+    const response = await authInterceptor.post('/challenges', challengeInstance.value)
+    return response.data
+}
 
 const updateChallenge = async (): Promise<any> => {
-    const response = await authInterceptor.put(`/challenges/${challengeInstance.value.id}`, challengeInstance.value);
-    return response.data;
-};
-
+    const response = await authInterceptor.put(
+        `/challenges/${challengeInstance.value.id}`,
+        challengeInstance.value
+    )
+    return response.data
+}
 </script>
 
 <template>
@@ -275,10 +275,19 @@ const updateChallenge = async (): Promise<any> => {
                 />
             </div>
 
-            <label for="fileUploadChallenge" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+            <label
+                for="fileUploadChallenge"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+            >
                 Legg til bilde
             </label>
-            <input id="fileUploadChallenge" type="file" accept=".jpg" hidden @change="handleFileChange" />
+            <input
+                id="fileUploadChallenge"
+                type="file"
+                accept=".jpg"
+                hidden
+                @change="handleFileChange"
+            />
 
             <div v-if="uploadedFile" class="flex justify-center items-center mt-4">
                 <p>{{ uploadedFile.name }}</p>
@@ -303,4 +312,3 @@ const updateChallenge = async (): Promise<any> => {
     resize: none;
 }
 </style>
-

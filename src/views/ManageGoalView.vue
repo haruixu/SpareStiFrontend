@@ -4,8 +4,7 @@ import { computed, onMounted, type Ref, ref, watch } from 'vue'
 import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
-const uploadedFile: Ref<File | null> = ref(null);
-
+const uploadedFile: Ref<File | null> = ref(null)
 
 const router = useRouter()
 
@@ -48,14 +47,13 @@ const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
 const completion = computed(() => (goalInstance.value.saved / goalInstance.value.target) * 100)
 
 const handleFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
-        uploadedFile.value = target.files[0]; // Save the first selected file
+        uploadedFile.value = target.files[0]
     } else {
-        uploadedFile.value = null;
+        uploadedFile.value = null
     }
-};
-
+}
 
 const isInputValid = computed(() => {
     return (
@@ -69,41 +67,38 @@ const isInputValid = computed(() => {
 
 const submitAction = async () => {
     if (!isInputValid.value) {
-        alert('Fyll ut alle feltene');
-        return;
+        alert('Fyll ut alle feltene')
+        return
     }
 
     try {
-        const response = await (isEdit.value ? updateGoal() : createGoal());
+        const response = await (isEdit.value ? updateGoal() : createGoal())
 
-        const goalId = isEdit.value ? goalInstance.value.id : response.data.id;
+        const goalId = isEdit.value ? goalInstance.value.id : response.data.id
         if (uploadedFile.value && goalId) {
-            const formData = new FormData();
-            formData.append('file', uploadedFile.value);
-            formData.append('id', goalId.toString());
+            const formData = new FormData()
+            formData.append('file', uploadedFile.value)
+            formData.append('id', goalId.toString())
 
             await authInterceptor.post('/goals/picture', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
         }
 
-        await router.push({ name: 'goals' });
+        await router.push({ name: 'goals' })
     } catch (error) {
-        console.error(error);
+        console.error(error)
         if (error instanceof Error) {
-            console.error('En feil oppstod: ' + error.message);
+            console.error('En feil oppstod: ' + error.message)
         } else {
-            console.error('En feil oppstod, og vi kunne ikke hente detaljer.');
+            console.error('En feil oppstod, og vi kunne ikke hente detaljer.')
         }
     }
-};
-
-
+}
 
 const removeUploadedFile = () => {
-    uploadedFile.value = null;
-};
-
+    uploadedFile.value = null
+}
 
 onMounted(async () => {
     if (isEdit.value) {
@@ -123,26 +118,28 @@ onMounted(async () => {
 })
 
 const createGoal = (): Promise<any> => {
-    return authInterceptor.post('/goals', goalInstance.value)
-        .then(response => {
-            return response;
+    return authInterceptor
+        .post('/goals', goalInstance.value)
+        .then((response) => {
+            return response
         })
-        .catch(error => {
-            console.error(error);
-            throw new Error('Failed to create goal');
-        });
-};
+        .catch((error) => {
+            console.error(error)
+            throw new Error('Failed to create goal')
+        })
+}
 
 const updateGoal = (): Promise<any> => {
-    return authInterceptor.put(`/goals/${goalInstance.value.id}`, goalInstance.value)
-        .then(response => {
-            return response;
+    return authInterceptor
+        .put(`/goals/${goalInstance.value.id}`, goalInstance.value)
+        .then((response) => {
+            return response
         })
-        .catch(error => {
-            console.error(error);
-            throw new Error('Failed to update goal');
-        });
-};
+        .catch((error) => {
+            console.error(error)
+            throw new Error('Failed to update goal')
+        })
+}
 
 const deleteGoal = () => {
     authInterceptor
@@ -208,7 +205,10 @@ const deleteGoal = () => {
                 />
             </div>
 
-            <label for="fileUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+            <label
+                for="fileUpload"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+            >
                 Legg til bilde
             </label>
             <input id="fileUpload" type="file" accept=".jpg" hidden @change="handleFileChange" />
