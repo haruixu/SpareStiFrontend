@@ -100,6 +100,10 @@ const openSpare = () => {
                 </CardTemplate>
 
                 <button @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
+                <button
+                    @click="router.push({ name: 'edit-configuration' })"
+                    v-text="'Rediger konfigurasjon'"
+                />
                 <button @click="updateBiometrics">
                     {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
                 </button>

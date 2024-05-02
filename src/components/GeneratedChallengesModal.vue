@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { AxiosResponse } from 'axios'
 
