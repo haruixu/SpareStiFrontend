@@ -7,6 +7,8 @@ import type { Challenge } from '@/types/challenge'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
 const router = useRouter()
+const challengeImageUrl = ref<string>('')
+
 
 const challengeInstance = ref<Challenge>({
     title: 'Test titel',
@@ -55,17 +57,27 @@ const calculateSpeech = () => {
     }
 }
 
-onMounted(() => {
-    const challengeId = router.currentRoute.value.params.id
-    if (!challengeId) return router.push({ name: 'challenges' })
+onMounted(async () => {
+    const challengeId = router.currentRoute.value.params.id;
+    if (!challengeId) return router.push({ name: 'challenges' });
 
-    authInterceptor(`/challenges/${challengeId}`)
-        .then((response) => {
-            challengeInstance.value = response.data
-            calculateSpeech()
-        })
-        .catch(() => router.push({ name: 'challenges' }))
-})
+    try {
+        const challengeResponse = await authInterceptor.get(`/challenges/${challengeId}`);
+        challengeInstance.value = challengeResponse.data;
+        try {
+            const imageResponse = await authInterceptor.get(`/challenges/picture?id=${challengeId}`, { responseType: 'blob' });
+            challengeImageUrl.value = URL.createObjectURL(imageResponse.data);
+        } catch (imageError) {
+            console.error("Failed to load image:", imageError);
+            // Optionally set a default image or leave as blank
+            challengeImageUrl.value = ''; // Set to a default image if you have one or keep it empty
+        }
+    } catch (error) {
+        console.error("Failed to load challenge details:", error);
+        await router.push({ name: 'challenges' });
+    }
+});
+
 
 const completeChallenge = () => {
     authInterceptor
@@ -81,6 +93,11 @@ const completeChallenge = () => {
 
 <template>
     <div class="flex flex-row flex-wrap items-center justify-center gap-10">
+        <div class="flex flex-col justify-center border-4 border-black rounded-3xl p-5 card-shadow overflow-hidden w-full md:w-1/3">
+            <div class="w-full h-full border border-gray-300 flex justify-center items-center rounded overflow-hidden">
+                <img v-if="challengeImageUrl" :src="challengeImageUrl" alt="Challenge Image" class="w-full h-full object-cover">
+            </div>
+        </div>
         <div class="flex flex-col gap-5 max-w-96">
             <button
                 class="w-min"

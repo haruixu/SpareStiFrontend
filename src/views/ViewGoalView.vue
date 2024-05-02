@@ -13,8 +13,10 @@ const goalInstance = ref<Goal>({
     saved: 0,
     target: 100,
     description: 'Dette er en lang textbeskrivelse',
-    due: ''
+    due: '',
 })
+
+const goalImageUrl = ref<string>('')
 
 const completion = computed(() => (goalInstance.value.saved / goalInstance.value.target) * 100)
 const isCompleted = computed(() => goalInstance.value.completedOn != null)
@@ -50,17 +52,33 @@ const calculateSpeech = () => {
     }
 }
 
-onMounted(() => {
-    const goalId = router.currentRoute.value.params.id
-    if (!goalId) return router.push({ name: 'goals' })
+onMounted(async () => {
+    const goalId = router.currentRoute.value.params.id;
+    if (!goalId) {
+        router.push({ name: 'goals' });
+        return;
+    }
 
-    authInterceptor(`/goals/${goalId}`)
-        .then((response) => {
-            goalInstance.value = response.data
-            calculateSpeech()
-        })
-        .catch(() => router.push({ name: 'goals' }))
-})
+    try {
+        const goalResponse = await authInterceptor.get(`/goals/${goalId}`);
+        goalInstance.value = goalResponse.data;
+        calculateSpeech();
+    } catch (error) {
+        console.error('Error fetching goal details:', error);
+        router.push({ name: 'goals' });
+        return; // Stop further execution in case of goal fetch errors
+    }
+
+    try {
+        const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, { responseType: 'blob' });
+        goalImageUrl.value = URL.createObjectURL(imageResponse.data);
+    } catch (error) {
+        console.error('Error fetching goal image:', error);
+        // Handle cases where the image isn't crucial by not redirecting
+        goalImageUrl.value = ''; // You could set a default image here if preferred
+    }
+});
+
 
 const completeGoal = () => {
     authInterceptor
@@ -72,10 +90,18 @@ const completeGoal = () => {
             console.error(error)
         })
 }
+
 </script>
 
 <template>
     <div class="flex flex-row flex-wrap items-center justify-center gap-10">
+
+        <div class="flex flex-col justify-center border-4 border-black rounded-3xl p-5 card-shadow overflow-hidden w-full md:w-1/3">
+            <div class="w-full h-full border border-gray-300 flex justify-center items-center rounded overflow-hidden">
+                <img v-if="goalImageUrl" :src="goalImageUrl" alt="Challenge Image" class="w-full h-full object-cover">
+            </div>
+        </div>
+
         <div class="flex flex-col gap-5 max-w-96">
             <button
                 class="w-min"

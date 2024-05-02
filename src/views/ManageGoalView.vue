@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, type Ref, ref, watch } from 'vue'
 import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
+const uploadedFile: Ref<File | null> = ref(null);
+
 
 const router = useRouter()
 
@@ -45,6 +47,16 @@ const pageTitle = computed(() => (isEdit.value ? 'Rediger sparemål' : 'Nytt spa
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
 const completion = computed(() => (goalInstance.value.saved / goalInstance.value.target) * 100)
 
+const handleFileChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+        uploadedFile.value = target.files[0]; // Save the first selected file
+    } else {
+        uploadedFile.value = null;
+    }
+};
+
+
 const isInputValid = computed(() => {
     return (
         goalInstance.value.title.length > 0 &&
@@ -55,17 +67,43 @@ const isInputValid = computed(() => {
     )
 })
 
-const submitAction = () => {
+const submitAction = async () => {
     if (!isInputValid.value) {
-        return () => alert('Fyll ut alle feltene')
+        alert('Fyll ut alle feltene');
+        return;
     }
 
-    if (isEdit.value) {
-        updateGoal()
-    } else {
-        createGoal()
+    try {
+        const response = await (isEdit.value ? updateGoal() : createGoal());
+
+        const goalId = isEdit.value ? goalInstance.value.id : response.data.id;
+        if (uploadedFile.value && goalId) {
+            const formData = new FormData();
+            formData.append('file', uploadedFile.value);
+            formData.append('id', goalId.toString());
+
+            await authInterceptor.post('/goals/picture', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+        }
+
+        await router.push({ name: 'goals' });
+    } catch (error) {
+        console.error(error);
+        if (error instanceof Error) {
+            console.error('En feil oppstod: ' + error.message);
+        } else {
+            console.error('En feil oppstod, og vi kunne ikke hente detaljer.');
+        }
     }
-}
+};
+
+
+
+const removeUploadedFile = () => {
+    uploadedFile.value = null;
+};
+
 
 onMounted(async () => {
     if (isEdit.value) {
@@ -84,27 +122,27 @@ onMounted(async () => {
     }
 })
 
-const createGoal = () => {
-    authInterceptor
-        .post('/goals', goalInstance.value, {})
-        .then(() => {
-            return router.push({ name: 'goals' })
+const createGoal = (): Promise<any> => {
+    return authInterceptor.post('/goals', goalInstance.value)
+        .then(response => {
+            return response;
         })
-        .catch((error) => {
-            console.error(error)
-        })
-}
+        .catch(error => {
+            console.error(error);
+            throw new Error('Failed to create goal');
+        });
+};
 
-const updateGoal = () => {
-    authInterceptor
-        .put(`/goals/${goalInstance.value.id}`, goalInstance.value)
-        .then(() => {
-            router.back()
+const updateGoal = (): Promise<any> => {
+    return authInterceptor.put(`/goals/${goalInstance.value.id}`, goalInstance.value)
+        .then(response => {
+            return response;
         })
-        .catch((error) => {
-            console.error(error)
-        })
-}
+        .catch(error => {
+            console.error(error);
+            throw new Error('Failed to update goal');
+        });
+};
 
 const deleteGoal = () => {
     authInterceptor
@@ -168,6 +206,15 @@ const deleteGoal = () => {
                     placeholder="Forfallsdato"
                     type="datetime-local"
                 />
+            </div>
+
+            <label for="fileUpload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+                Legg til bilde
+            </label>
+            <input id="fileUpload" type="file" accept=".jpg" hidden @change="handleFileChange" />
+            <div v-if="uploadedFile" class="flex justify-center items-center mt-4">
+                <p>{{ uploadedFile.name }}</p>
+                <button @click="removeUploadedFile" class="ml-2">Remove</button>
             </div>
 
             <div class="flex flex-row justify-between w-full">
