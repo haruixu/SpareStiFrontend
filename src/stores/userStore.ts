@@ -52,8 +52,8 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
-    const login = async (username: string, password: string) => {
-        await axios
+    const login = (username: string, password: string) => {
+        axios
             .post(`http://localhost:8080/auth/login`, {
                 username: username,
                 password: password
@@ -65,14 +65,17 @@ export const useUserStore = defineStore('user', () => {
                 user.value.lastname = response.data.lastName
                 user.value.username = response.data.username
 
-                authInterceptor('/profile').then((profileResponse) => {
-                    if (profileResponse.data.hasPasskey === true) {
-                        localStorage.setItem('spareStiUsername', username)
-                    }
-                })
-
-                checkIfUserConfigured()
-
+                return authInterceptor('/profile')
+            })
+            .then((profileResponse) => {
+                if (profileResponse.data.hasPasskey === true) {
+                    localStorage.setItem('spareStiUsername', username)
+                } else {
+                    localStorage.removeItem('spareStiUsername')
+                }
+                return checkIfUserConfigured()
+            })
+            .then(() => {
                 user.value.isConfigured
                     ? router.push({ name: 'home' })
                     : router.push({ name: 'configure-biometric' })
