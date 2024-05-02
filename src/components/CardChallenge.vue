@@ -22,8 +22,8 @@ const handleCardClick = () => {
 
 <template>
     <div
-        :class="{ 'bg-green-200 cursor-default': isCompleted }"
-        class="border-2 border-black rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer w-52 overflow-hidden"
+        :class="{ 'cursor-default': isCompleted }"
+        class="border-2 border-lime-400 rounded-xl p-4 flex flex-col items-center gap-2 cursor-pointer w-52 overflow-hidden transition-transform duration-100 ease-in-out hover:scale-105 hover:opacity-90"
         @click="handleCardClick"
     >
         <h3 class="my-0 mx-6">{{ challengeInstance.title }}</h3>

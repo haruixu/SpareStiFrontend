@@ -45,6 +45,11 @@ const router = createRouter({
             component: () => import('@/views/ManageProfileView.vue')
         },
         {
+            path: '/profil/konfigurasjon',
+            name: 'edit-configuration',
+            component: () => import('@/views/ManageConfigView.vue')
+        },
+        {
             path: '/sparemaal',
             name: 'goals',
             component: () => import('@/views/UserGoalsView.vue')

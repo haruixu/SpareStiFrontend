@@ -4,7 +4,7 @@ import { computed, onMounted, ref } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Goal } from '@/types/goal'
-import InteractiveSpare from '@/components/InteractiveSpare.vue'
+import SpareComponent from '@/components/SpareComponent.vue'
 
 const router = useRouter()
 
@@ -20,11 +20,6 @@ const completion = computed(() => (goalInstance.value.saved / goalInstance.value
 const isCompleted = computed(() => goalInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
-const isModalOpen = ref(false)
-
-const openInteractiveSpare = () => {
-    isModalOpen.value = true
-}
 
 const calculateSpeech = () => {
     if (completion.value === 0) {
@@ -45,7 +40,7 @@ const calculateSpeech = () => {
         )
     } else if (completion.value >= 100) {
         return motivation.value.push(
-            `Fantastisk! Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
+            `!Fantastisk Du har nådd målet ditt! Du har spart ${goalInstance.value.saved}kr av ${goalInstance.value.target}kr.`
         )
     }
 }
@@ -78,29 +73,36 @@ const completeGoal = () => {
     <div class="flex flex-row flex-wrap items-center justify-center gap-10">
         <div class="flex flex-col gap-5 max-w-96">
             <button
-                class="w-min"
+                class="w-min bg-transparent rounded-lg font-bold left-10 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
                 @click="router.push({ name: 'goals', params: { id: goalInstance.id } })"
             >
-                Oversikt
+                👈Oversikt
             </button>
 
             <div
-                class="flex flex-col justify-center border-4 border-black rounded-3xl align-middle p-5 card-shadow overflow-hidden w-full"
+                class="flex flex-col justify-center border-2 rounded-3xl align-middle p-5 card-shadow overflow-hidden w-full"
             >
                 <h2 class="my-0">Sparemål:</h2>
                 <h2 class="font-light">
                     {{ goalInstance.title }}
                 </h2>
-                <p class="text-wrap break-words">{{ goalInstance.description }}</p>
+                <div class="flex flex-row gap-4 justify-center">
+                    <p class="text-wrap break-words">{{ goalInstance.description }}</p>
+                    <div>
+                        <img
+                            class="w-20 h-20"
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                            alt="Profilbilde"
+                        />
+                    </div>
+                </div>
                 <br />
                 <p class="text-center">
                     Du har spart {{ goalInstance.saved }}kr av {{ goalInstance.target }}kr
                 </p>
                 <ProgressBar :completion="completion" />
-            </div>
-
-            <div class="flex flex-row justify-between gap-2 w-full">
                 <button
+                    class="primary secondary mt-6"
                     v-if="!isCompleted"
                     @click="
                         router.push({
@@ -111,15 +113,8 @@ const completeGoal = () => {
                 >
                     Rediger
                 </button>
-
                 <button
-                    v-if="!isCompleted"
-                    @click="completeGoal"
-                    v-text="'Marker målet som ferdig'"
-                />
-
-                <button
-                    class="bg-button-danger hover:bg-button-danger"
+                    class="danger mt-2 rounded-2xl p-1"
                     @click="
                         authInterceptor
                             .delete(`/goals/${goalInstance.id}`)
@@ -129,23 +124,21 @@ const completeGoal = () => {
                 >
                     Slett
                 </button>
+                <button
+                    class="primary mt-4"
+                    v-if="!isCompleted"
+                    @click="completeGoal"
+                    v-text="'Marker målet som ferdig'"
+                />
             </div>
         </div>
-        <div class="flex items-center">
-            <a @click="openInteractiveSpare" class="hover:bg-transparent z-20">
-                <img
-                    alt="Spare"
-                    class="scale-x-[-1] md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
-                    src="@/assets/spare.png"
-                />
-            </a>
-        </div>
-        <InteractiveSpare
-            :png-size="10"
+        <SpareComponent
             :speech="motivation"
-            direction="left"
-            :isModalOpen="isModalOpen"
-        />
+            :png-size="15"
+            :imageDirection="'left'"
+            :direction="'right'"
+            class="mb-5"
+        ></SpareComponent>
     </div>
 </template>
 

@@ -30,11 +30,26 @@ const errorMessage = ref<string>('')
 const isModalOpen = ref(false)
 const image = ref<File>()
 
-const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{1,29}$/
+const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{0,29}$/
 const emailRegex =
     /^[æÆøØåÅa-zA-Z0-9_+&*-]+(?:\.[æÆøØåÅa-zA-Z0-9_+&*-]+)*@(?:[æÆøØåÅa-zA-Z0-9-]+\.)+[æÆøØåÅa-zA-Z]{2,7}$/
 const passwordRegex = /^(?=.*[0-9])(?=.*[a-zæøå])(?=.*[ÆØÅA-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,30}$/
 const accountNumberRegex = /^\d{11}$/
+
+const MAX_DIGITS = 11
+
+function restrictToNumbers(event: InputEvent, type: string) {
+    const inputValue = (event.target as HTMLInputElement)?.value
+    if (inputValue !== undefined) {
+        const sanitizedValue = inputValue.replace(/\D/g, '')
+        const truncatedValue = sanitizedValue.slice(0, MAX_DIGITS)
+        if (type === 'spending') {
+            profile.value.spendingAccount.accNumber = parseInt(truncatedValue)
+        } else {
+            profile.value.savingAccount.accNumber = parseInt(truncatedValue)
+        }
+    }
+}
 
 const isFirstNameValid = computed(
     () => nameRegex.test(profile.value.firstName) && profile.value.firstName
@@ -237,6 +252,7 @@ const saveChanges = async () => {
                         <p class="font-bold mx-3" v-text="'Brukskonto'" />
                     </div>
                     <input
+                        @input="restrictToNumbers($event as InputEvent, 'spending')"
                         v-model="profile.spendingAccount.accNumber"
                         :class="{ 'bg-green-200': isSpendingAccountValid }"
                         class="border-2 rounded-none rounded-b-xl w-full"
@@ -250,6 +266,7 @@ const saveChanges = async () => {
                         <p class="font-bold mx-3" v-text="'Sparekonto'" />
                     </div>
                     <input
+                        @input="restrictToNumbers($event as InputEvent, 'saving')"
                         v-model="profile.savingAccount.accNumber"
                         :class="{ 'bg-green-200': isSavingAccountValid }"
                         class="border-2 rounded-none rounded-b-xl w-full"
@@ -270,5 +287,3 @@ const saveChanges = async () => {
         </div>
     </div>
 </template>
-
-<style scoped></style>

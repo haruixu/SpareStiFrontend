@@ -4,113 +4,87 @@ import { computed, onMounted, ref, watch } from 'vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
+import ModalComponent from '@/components/ModalComponent.vue'
 
 const router = useRouter()
 
+const modalTitle = ref('')
+const modalMessage = ref('')
+const confirmModalOpen = ref(false)
+const errorModalOpen = ref(false)
+
 const oneWeekFromNow = new Date()
 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
-const minDate = oneWeekFromNow.toISOString().slice(0, 16)
+const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 10)
+const selectedDate = ref<string>(minDate)
 
 const thirtyDaysFromNow = new Date()
 thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
-const maxDate = thirtyDaysFromNow.toISOString().slice(0, 16)
+const maxDate = thirtyDaysFromNow.toISOString().slice(0, 10)
 
 const challengeInstance = ref<Challenge>({
     title: '',
-    perPurchase: 20,
+    perPurchase: 0,
     saved: 0,
-    target: 100,
+    target: 0,
     description: '',
-    due: minDate + ':00.000Z',
-    type: ''
+    due: ''
 })
 
-const isAmountSaved = ref(false)
-const timesSaved = ref(challengeInstance.value.saved / challengeInstance.value.perPurchase)
-
-watch(
-    () => timesSaved.value,
-    (newVal) => {
-        challengeInstance.value.saved = newVal * challengeInstance.value.perPurchase
-        challengeInstance.value.saved = parseFloat(challengeInstance.value.saved.toFixed(2))
-    }
-)
-
-watch(
-    () => challengeInstance.value.saved,
-    (newVal) => {
-        challengeInstance.value.saved = Math.max(
-            0,
-            Math.min(challengeInstance.value.target, newVal)
-        )
-        challengeInstance.value.saved = parseFloat(challengeInstance.value.saved.toFixed(2))
-        timesSaved.value = challengeInstance.value.saved / challengeInstance.value.perPurchase
-        timesSaved.value = parseFloat(timesSaved.value.toFixed(2))
-    }
-)
-
-watch(
-    () => challengeInstance.value.perPurchase,
-    (newVal) => {
-        challengeInstance.value.perPurchase = Math.max(
-            1,
-            Math.min(challengeInstance.value.target, newVal)
-        )
-        challengeInstance.value.perPurchase = parseFloat(
-            challengeInstance.value.perPurchase.toFixed(2)
-        )
-        timesSaved.value = challengeInstance.value.saved / challengeInstance.value.perPurchase
-        timesSaved.value = parseFloat(timesSaved.value.toFixed(2))
-    }
-)
-
-watch(
-    () => challengeInstance.value.target,
-    (newVal) => {
-        challengeInstance.value.target = Math.max(
-            Math.max(challengeInstance.value.saved, 1),
-            newVal
-        )
-    }
-)
-
-const selectedDate = ref(minDate)
-watch(
-    () => selectedDate.value,
-    (newVal) => {
-        if (newVal) {
-            selectedDate.value = newVal < minDate ? minDate : newVal
-            challengeInstance.value.due = selectedDate.value + ':00.000Z'
-        }
-    }
-)
+watch(selectedDate, (newDate) => {
+    challengeInstance.value.due = newDate
+})
 
 const isEdit = computed(() => router.currentRoute.value.name === 'edit-challenge')
-const pageTitle = computed(() => (isEdit.value ? 'Rediger utfordring' : 'Ny utfordring'))
+const pageTitle = computed(() => (isEdit.value ? 'Rediger utfordring🎨' : 'Ny utfordring🎨'))
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
 const completion = computed(
     () => (challengeInstance.value.saved / challengeInstance.value.target) * 100
 )
 
-const isInputValid = computed(() => {
-    return (
-        challengeInstance.value.title.length > 0 &&
-        challengeInstance.value.title.length <= 20 &&
-        challengeInstance.value.description.length <= 280 &&
-        challengeInstance.value.target > 0 &&
-        challengeInstance.value.due !== ''
-    )
-})
+function validateInputs() {
+    const errors = []
 
-const submitAction = () => {
-    if (!isInputValid.value) {
-        return () => alert('Fyll ut alle feltene')
+    challengeInstance.value.due = selectedDate.value + 'T23:59:59.999Z'
+
+    if (!challengeInstance.value.title || challengeInstance.value.title.length > 20) {
+        errors.push('Tittelen må være mellom 1 og 20 tegn.')
     }
+    if (challengeInstance.value.description.length > 280) {
+        errors.push('Beskrivelsen må være under 280 tegn.')
+    }
+    if (challengeInstance.value.target <= 0) {
+        errors.push('Målbeløpet må være større enn 0.')
+    }
+    if (new Date(challengeInstance.value.due) < new Date(minDate)) {
+        errors.push('Forfallsdatoen må være minst en uke frem i tid.')
+    }
+    if (challengeInstance.value.perPurchase <= 0) {
+        errors.push('Pris per sparing må være større enn 0.')
+    }
+    return errors
+}
 
-    if (isEdit.value) {
-        updateChallenge()
-    } else {
-        createChallenge()
+const submitAction = async () => {
+    const errors = validateInputs()
+    if (errors.length > 0) {
+        const formatErrors = errors.join('\n')
+        modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'
+        modalMessage.value = formatErrors
+        errorModalOpen.value = true
+        return
+    }
+    try {
+        if (isEdit.value) {
+            updateChallenge()
+        } else {
+            createChallenge()
+        }
+    } catch (error) {
+        console.error(error)
+        modalTitle.value = 'Systemfeil'
+        modalMessage.value = 'En feil oppstod under lagring av utfordringen.'
+        errorModalOpen.value = true
     }
 }
 
@@ -156,6 +130,27 @@ const updateChallenge = () => {
             console.error(error)
         })
 }
+
+const cancelCreation = () => {
+    if (
+        challengeInstance.value.title !== '' ||
+        challengeInstance.value.description !== '' ||
+        challengeInstance.value.perPurchase !== 0 ||
+        challengeInstance.value.saved !== 0 ||
+        challengeInstance.value.target !== 0
+    ) {
+        modalTitle.value = 'Du er i ferd med å avbryte redigeringen🚨'
+        modalMessage.value = 'Er du sikker på at du vil avbryte?'
+        confirmModalOpen.value = true
+    } else {
+        router.push({ name: 'challenges' })
+    }
+}
+
+const confirmCancel = () => {
+    router.push({ name: 'challenges' })
+    confirmModalOpen.value = false
+}
 </script>
 
 <template>
@@ -172,12 +167,7 @@ const updateChallenge = () => {
             </div>
 
             <div class="flex flex-col">
-                <p class="mx-4">Type</p>
-                <input v-model="challengeInstance.type" placeholder="Skriv en type" type="text" />
-            </div>
-
-            <div class="flex flex-col">
-                <p class="mx-4">Beskrivelse</p>
+                <p class="mx-4">Beskrivelse (valgfri)</p>
                 <textarea
                     v-model="challengeInstance.description"
                     class="w-80 h-20 no-rezise"
@@ -187,7 +177,7 @@ const updateChallenge = () => {
 
             <div class="flex flex-col sm:flex-row gap-3">
                 <div class="flex flex-col">
-                    <p class="mx-4">Pris per sparing</p>
+                    <p class="mx-4">Spare per gang</p>
                     <input
                         v-model="challengeInstance.perPurchase"
                         class="w-40 text-right"
@@ -198,30 +188,18 @@ const updateChallenge = () => {
 
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-between mx-4">
-                        <p>{{ isAmountSaved ? 'Kroner spart' : 'Antall sparinger' }}</p>
-                        <button class="p-0 bg-transparent" @click="isAmountSaved = !isAmountSaved">
-                            🔄️
-                        </button>
+                        <p>Kroner spart💸</p>
                     </div>
                     <input
-                        v-if="isAmountSaved"
                         v-model="challengeInstance.saved"
                         class="w-40 text-right"
-                        min="0"
                         placeholder="Sparebeløp"
-                        type="number"
-                    />
-                    <input
-                        v-else
-                        v-model="timesSaved"
-                        class="w-40 text-right"
-                        placeholder="Kr spart per sparing"
                         type="number"
                     />
                 </div>
 
                 <div class="flex flex-col">
-                    <p class="mx-4">Av målbeløp...*</p>
+                    <p class="mx-4">Av målbeløp💯*</p>
                     <input
                         v-model="challengeInstance.target"
                         class="w-40 text-right"
@@ -232,26 +210,64 @@ const updateChallenge = () => {
             </div>
             <ProgressBar :completion="completion" />
 
-            <div class="flex flex-col">
-                <p class="mx-4">Forfallsdato*</p>
-                <input
-                    v-model="selectedDate"
-                    :max="maxDate"
-                    :min="minDate"
-                    placeholder="Forfallsdato"
-                    type="datetime-local"
-                />
-            </div>
+            <div class="flex flex-row gap-4">
+                <div class="flex flex-col">
+                    <p class="mx-4">Forfallsdato*</p>
+                    <input
+                        :min="minDate"
+                        :max="maxDate"
+                        v-model="selectedDate"
+                        placeholder="Forfallsdato"
+                        type="date"
+                    />
+                </div>
 
+                <div class="flex flex-col">
+                    <p>Last opp ikon for utfordringen📸</p>
+                    <button
+                        class="mt-2 font-bold cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
+                    >
+                        💾
+                    </button>
+                </div>
+            </div>
             <div class="flex flex-row justify-between w-full">
-                <button :disabled="!isInputValid" @click="submitAction" v-text="submitButton" />
+                <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
 
-                <button
-                    class="bg-button-other"
-                    @click="router.push({ name: 'challenges' })"
-                    v-text="'Avbryt'"
-                />
+                <button class="primary" @click="submitAction" v-text="submitButton" />
             </div>
+            <ModalComponent
+                :title="modalTitle"
+                :message="modalMessage"
+                :isModalOpen="errorModalOpen"
+                @close="errorModalOpen = false"
+            >
+                <template v-slot:input>
+                    <div class="flex justify-center items-center">
+                        <div class="flex flex-col gap-5">
+                            <button class="primary" @click="errorModalOpen = false">Lukk</button>
+                        </div>
+                    </div>
+                </template>
+            </ModalComponent>
+
+            <ModalComponent
+                :title="modalTitle"
+                :message="modalMessage"
+                :isModalOpen="confirmModalOpen"
+                @close="confirmModalOpen = false"
+            >
+                <template v-slot:input>
+                    <div class="flex justify-center items-center">
+                        <div class="flex flex-col gap-5">
+                            <button class="primary" @click="confirmCancel">Bekreft</button>
+                            <button class="primary danger" @click="confirmModalOpen = false">
+                                Avbryt
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </ModalComponent>
         </div>
     </div>
 </template>
