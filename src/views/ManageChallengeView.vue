@@ -242,12 +242,8 @@ const confirmCancel = () => {
                 :isModalOpen="errorModalOpen"
                 @close="errorModalOpen = false"
             >
-                <template v-slot:input>
-                    <div class="flex justify-center items-center">
-                        <div class="flex flex-col gap-5">
-                            <button class="primary" @click="errorModalOpen = false">Lukk</button>
-                        </div>
-                    </div>
+                <template v-slot:buttons>
+                    <button class="primary" @click="errorModalOpen = false">Lukk</button>
                 </template>
             </ModalComponent>
 
@@ -257,15 +253,9 @@ const confirmCancel = () => {
                 :isModalOpen="confirmModalOpen"
                 @close="confirmModalOpen = false"
             >
-                <template v-slot:input>
-                    <div class="flex justify-center items-center">
-                        <div class="flex flex-col gap-5">
-                            <button class="primary" @click="confirmCancel">Bekreft</button>
-                            <button class="primary danger" @click="confirmModalOpen = false">
-                                Avbryt
-                            </button>
-                        </div>
-                    </div>
+                <template v-slot:buttons>
+                    <button class="primary" @click="confirmCancel">Bekreft</button>
+                    <button class="primary danger" @click="confirmModalOpen = false">Avbryt</button>
                 </template>
             </ModalComponent>
         </div>

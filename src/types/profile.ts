@@ -5,6 +5,7 @@ export interface Profile {
     email: string
     username: string
     password?: string
+    savedAmount?: number
     spendingAccount: {
         accNumber?: number
         accountType?: string

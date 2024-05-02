@@ -77,7 +77,10 @@ const openSpare = () => {
                     </div>
                 </div>
 
-                <h3 class="font-bold" v-text="'Du har spart ' + '< totalSaved >' + 'kr'" />
+                <h3
+                    class="font-bold"
+                    v-text="'Du har totalt spart ' + profile?.savedAmount + 'kr'"
+                />
 
                 <CardTemplate>
                     <div class="bg-red-100">
