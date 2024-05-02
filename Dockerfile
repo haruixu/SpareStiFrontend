@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5173
 
-CMD [ "npm", "run", "dev" ]
+CMD ["sudo", "npm", "run", "dev" , "--", "--host", "sparesti.me"]

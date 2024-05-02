@@ -15,11 +15,10 @@ export default defineConfig({
     }
   },
   server: {
-    host: '0.0.0.0',
     port: 5173,
     https: {
-      key: fs.readFileSync('./src/keystore/privkey.pem'),
-      cert: fs.readFileSync('./src/keystore/fullchain.pem')
+      key: './src/keystore/privkey.pem',
+      cert: './src/keystore/fullchain.pem'
     }
   }
 })
