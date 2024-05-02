@@ -20,7 +20,7 @@
         </button>
         <div class="h-1 w-4/6 mx-auto my-2 opacity-10"></div>
         <div
-            v-if="challenges"
+            v-if="challengesLocal"
             ref="containerRef"
             class="container relative pt-6 w-4/5 bg-cover bg-[center] md:[background-position: center;] mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60vh] md:min-w-2/5 overflow-y-auto border-2 border-transparent rounded-xl bg-white shadow-lg shadow-slate-400"
             style="background-image: url('src/assets/backgroundSavingsPath.png')"
@@ -30,7 +30,7 @@
             </div>
 
             <div
-                v-for="(challenge, index) in challenges"
+                v-for="(challenge, index) in challengesLocal"
                 :key="challenge.id"
                 class="flex flex-col items-center"
                 :ref="(el) => assignRef(el, challenge, index)"
@@ -61,7 +61,7 @@
                         ></img-gif-template>
                     </div>
                     <card-challenge-savings-path
-                        :goal="goal!"
+                        :goal="goalLocal!"
                         :challenge="challenge"
                         @update-challenge="handleChallengeUpdate"
                     ></card-challenge-savings-path>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <!-- Piggy Steps, centered -->
-                <div v-if="index !== challenges.length" class="flex justify-center w-full">
+                <div v-if="index !== challengesLocal.length" class="flex justify-center w-full">
                     <img
                         :src="getPigStepsIcon()"
                         :class="{ 'transform scale-x-[-1]': index % 2 === 0 }"
@@ -94,14 +94,14 @@
                 </div>
 
                 <div
-                    v-if="index === challenges.length - 1 && index % 2 === 0"
+                    v-if="index === challengesLocal.length - 1 && index % 2 === 0"
                     class="flex flex-row mt-2"
                 >
                     <button class="text-2xl ml-48" @click="addSpareUtfordring">+</button>
                     <p class="">Legg til <br />Spareutfordring</p>
                 </div>
                 <div
-                    v-else-if="index === challenges.length - 1 && index % 2 !== 0"
+                    v-else-if="index === challengesLocal.length - 1 && index % 2 !== 0"
                     class="mr-20 flex flex-row"
                 >
                     <button class="text-2xl ml-10 rounded-full" @click="addSpareUtfordring">
@@ -118,11 +118,15 @@
             />
         </div>
         <!-- Goal -->
-        <div v-if="goal" class="flex flex-row justify-around m-t-2 pt-6 w-full mx-auto">
+        <div v-if="goalLocal" class="flex flex-row justify-around m-t-2 pt-6 w-full mx-auto">
             <div class="grid grid-rows-2 grid-flow-col gap 4">
-                <div class="row-span-3 cursor-pointer" @click="editGoal(goal)">
-                    <img :src="getGoalIcon(goal)" class="w-12 h-12 mx-auto" :alt="goal.title" />
-                    <div class="text-lg font-bold" data-cy="goal-title">{{ goal.title }}</div>
+                <div class="row-span-3 cursor-pointer" @click="editGoal(goalLocal)">
+                    <img
+                        :src="getGoalIcon(goalLocal)"
+                        class="w-12 h-12 mx-auto"
+                        :alt="goalLocal.title"
+                    />
+                    <div class="text-lg font-bold" data-cy="goal-title">{{ goalLocal.title }}</div>
                 </div>
             </div>
             <div class="flex flex-col items-end">
@@ -134,7 +138,7 @@
                     ref="targetRef"
                     class="bg-yellow-400 px-4 py-1 rounded-full text-black font-bold"
                 >
-                    {{ goal.saved }}kr / {{ goal.target }}kr
+                    {{ goalLocal.saved }}kr / {{ goalLocal.target }}kr
                 </div>
             </div>
         </div>
@@ -147,8 +151,8 @@
         class="max-w-20 max-h-20 absolute opacity-0"
     />
     <img
-        v-if="goal"
-        :src="getGoalIcon(goal)"
+        v-if="goalLocal"
+        :src="getGoalIcon(goalLocal)"
         alt="could not load"
         ref="goalIconRef"
         class="shadow-sm shadow-amber-300 max-w-20 max-h-20 absolute opacity-0"
@@ -183,8 +187,8 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const challenges = ref<Challenge[]>()
-let goal: Goal | null | undefined = reactive({
+const challengesLocal = ref<Challenge[]>()
+let goalLocal: Goal | null | undefined = reactive({
     title: '', // Default empty string to prevent undefined errors
     saved: 0,
     target: 0
@@ -197,8 +201,8 @@ const componentKey = ref<number>(0)
 onMounted(async () => {
     window.addEventListener('resize', handleWindowSizeChange)
     handleWindowSizeChange()
-    challenges.value = props.challenges
-    goal = props.goal
+    challengesLocal.value = props.challenges
+    goalLocal = props.goal
     sortChallenges()
     allChallengesCompleted()
     // Delay the execution of the following logic by 300ms
@@ -221,7 +225,7 @@ onMounted(async () => {
     loadAnimatedStates()
 
     // Get completed challenge IDs, ensuring that only defined IDs are considered
-    const completedChallenges = challenges.value
+    const completedChallenges = challengesLocal.value
         .filter((challenge) => challenge.completion! >= 100 && challenge.id !== undefined)
         .map((challenge) => challenge.id as number) // Use 'as number' to assert that ids are numbers after the check
 
@@ -245,10 +249,10 @@ onUnmounted(() => {
 })
 
 const handleChallengeUpdate = (updatedChallenge: Challenge) => {
-    if (challenges.value) {
-        const index = challenges.value.findIndex((c) => c.id === updatedChallenge.id)
+    if (challengesLocal.value) {
+        const index = challengesLocal.value.findIndex((c) => c.id === updatedChallenge.id)
         if (index !== -1) {
-            challenges.value[index] = { ...updatedChallenge }
+            challengesLocal.value[index] = { ...updatedChallenge }
         }
 
         if (
@@ -259,7 +263,7 @@ const handleChallengeUpdate = (updatedChallenge: Challenge) => {
             saveAnimatedStateChallenge(updatedChallenge)
         }
 
-        if (goal) {
+        if (goalLocal) {
             incrementGoalSaved(updatedChallenge)
             // Force component update right here might be more appropriate
             componentKey.value++
@@ -268,21 +272,21 @@ const handleChallengeUpdate = (updatedChallenge: Challenge) => {
 }
 
 const incrementGoalSaved = async (challenge: Challenge) => {
-    if (goal) {
+    if (goalLocal) {
         // Correct the addition mistake and remove setTimeout
-        goal.saved = goal.saved + challenge.perPurchase
+        goalLocal.saved = goalLocal.saved + challenge.perPurchase
         await nextTick() // Only add the perPurchase amount
 
-        const completion = (goal.saved / goal.target) * 100
-        if (completion >= 100 && !animatedGoals.value.includes(goal.id as number)) {
-            animateGoal(goal)
+        const completion = (goalLocal.saved / goalLocal.target) * 100
+        if (completion >= 100 && !animatedGoals.value.includes(goalLocal.id as number)) {
+            animateGoal(goalLocal)
             setTimeout(() => {
                 goalStore.getUserGoals()
-                goal = goalStore.priorityGoal
+                goalLocal = goalStore.priorityGoal
             }, 4000) // Keep this delay only for the store update and goal switch
         } else {
             await goalStore.getUserGoals()
-            goal = goalStore.priorityGoal
+            goalLocal = goalStore.priorityGoal
         }
     }
 }
@@ -301,8 +305,8 @@ const addSpareUtfordring = () => {
  */
 const allChallengesCompleted = () => {
     // Assuming challenges.value is an array of challenge objects
-    if (challenges.value) {
-        for (const challenge of challenges.value) {
+    if (challengesLocal.value) {
+        for (const challenge of challengesLocal.value) {
             if (challenge.completion !== 100) {
                 return false // If any challenge is not completed, return false
             }
@@ -592,7 +596,7 @@ const getPigStepsIcon = () => {
 }
 
 const goToEditGoal = () => {
-    router.push({ name: 'edit-goal', params: { id: goal?.id } })
+    router.push({ name: 'edit-goal', params: { id: goalLocal?.id } })
 }
 
 const editGoal = (goal: Goal) => {
@@ -604,8 +608,8 @@ const editGoal = (goal: Goal) => {
 
  */
 const sortChallenges = () => {
-    if (challenges.value) {
-        challenges.value.sort((a, b) => {
+    if (challengesLocal.value) {
+        challengesLocal.value.sort((a, b) => {
             // First, sort by completion status: non-completed (less than 100) before completed (100)
             if (a.completion !== 100 && b.completion === 100) {
                 return 1 // 'a' is not completed and 'b' is completed, 'a' should come first
@@ -643,10 +647,10 @@ const handleWindowSizeChange = () => {
 
  */
 const scrollToFirstUncompleted = () => {
-    if (challenges.value) {
+    if (challengesLocal.value) {
         let found = false
-        for (let i = 0; i < challenges.value.length; i++) {
-            if (challenges.value[i].completion! < 100) {
+        for (let i = 0; i < challengesLocal.value.length; i++) {
+            if (challengesLocal.value[i].completion! < 100) {
                 const refKey = `uncompleted-${i}`
                 if (elementRefs[refKey]) {
                     elementRefs[refKey]!.scrollIntoView({ behavior: 'smooth', block: 'start' })

@@ -81,10 +81,10 @@ const completeChallenge = () => {
     <div class="flex flex-row flex-wrap items-center justify-center gap-10">
         <div class="flex flex-col gap-5 max-w-96">
             <button
-                class="w-min bg-transparent rounded-lg font-bold left-10 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-100 justify-start"                
+                class="w-min bg-transparent rounded-lg font-bold left-10 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
                 @click="router.push({ name: 'challenges', params: { id: challengeInstance.id } })"
             >
-            👈Oversikt
+                👈Oversikt
             </button>
 
             <div
@@ -108,17 +108,16 @@ const completeChallenge = () => {
                 </p>
                 <div class="justify-center pl-20">
                     <button
-                    class="primary danger mt-2 rounded-2xl p-2 w-40"
-                    @click="
-                        authInterceptor
-                            .delete(`/challenges/${challengeInstance.id}`)
-                            .then(() => router.push({ name: 'challenges' }))
-                            .catch((error) => console.error(error))
-                    "
-                >
-                    Slett
-                </button>
-
+                        class="primary danger mt-2 rounded-2xl p-2 w-40"
+                        @click="
+                            authInterceptor
+                                .delete(`/challenges/${challengeInstance.id}`)
+                                .then(() => router.push({ name: 'challenges' }))
+                                .catch((error) => console.error(error))
+                        "
+                    >
+                        Slett
+                    </button>
                 </div>
             </div>
 

@@ -50,7 +50,6 @@ const challengeStore = useChallengeStore()
 const speech = ref<string[]>([])
 
 const challenges = ref<Challenge[]>([])
-const goals = ref<Goal[]>([])
 const showWelcome = ref<boolean>(false)
 
 const goal = ref<Goal | null | undefined>(null)
