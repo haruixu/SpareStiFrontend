@@ -3,8 +3,8 @@ import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import ToolTip from '@/components/ToolTip.vue'
 
-const firstname = ref<string>('')
-const lastname = ref<string>('')
+const firstName = ref<string>('')
+const lastName = ref<string>('')
 const email = ref<string>('')
 const username = ref<string>('')
 const password = ref<string>('')
@@ -21,8 +21,8 @@ const emailRegex =
 const usernameRegex = /^[ÆØÅæøåA-Za-z][æÆøØåÅA-Za-z0-9_]{2,29}$/
 const passwordRegex = /^(?=.*[0-9])(?=.*[a-zæøå])(?=.*[ÆØÅA-Z])(?=.*[@#$%^&+=!])(?=\S+$).{8,30}$/
 
-const isFirstNameValid = computed(() => nameRegex.test(firstname.value) && firstname.value)
-const isLastNameValid = computed(() => nameRegex.test(lastname.value) && lastname.value)
+const isFirstNameValid = computed(() => nameRegex.test(firstName.value) && firstName.value)
+const isLastNameValid = computed(() => nameRegex.test(lastName.value) && lastName.value)
 const isEmailValid = computed(() => emailRegex.test(email.value))
 const isUsernameValid = computed(() => usernameRegex.test(username.value))
 const isPasswordValid = computed(() => passwordRegex.test(password.value))
@@ -35,7 +35,7 @@ const isFormInvalid = computed(
 )
 
 const submitForm = () => {
-    userStore.register(firstname.value, lastname.value, email.value, username.value, password.value)
+    userStore.register(firstName.value, lastName.value, email.value, username.value, password.value)
 }
 
 const toggleShowPassword = () => {
@@ -60,8 +60,8 @@ watch(
                 />
             </div>
             <input
-                v-model="firstname"
-                name="firstname"
+                v-model="firstName"
+                name="firstName"
                 :class="{ 'bg-green-200': isFirstNameValid }"
                 placeholder="Skriv inn fornavn"
                 type="text"
@@ -75,8 +75,8 @@ watch(
                 />
             </div>
             <input
-                v-model="lastname"
-                name="lastname"
+                v-model="lastName"
+                name="lastName"
                 :class="{ 'bg-green-200': isLastNameValid }"
                 placeholder="Skriv inn etternavn"
                 type="text"

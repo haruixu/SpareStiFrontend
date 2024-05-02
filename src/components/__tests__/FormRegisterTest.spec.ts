@@ -24,8 +24,8 @@ describe('FormRegister', () => {
     })
 
     function successfulFormFill() {
-        wrapper.find('input[name="firstname"]').setValue('firstname')
-        wrapper.find('input[name="lastname"]').setValue('lastname')
+        wrapper.find('input[name="firstName"]').setValue('firstName')
+        wrapper.find('input[name="lastName"]').setValue('lastName')
         wrapper.find('input[name="email"]').setValue('email@test.work')
         wrapper.find('input[name="username"]').setValue('username')
         wrapper.find('input[name="password"]').setValue('Password123!')
@@ -37,15 +37,15 @@ describe('FormRegister', () => {
         expect(wrapper.text()).toContain('Passord')
         expect(wrapper.text()).toContain('Registrer deg')
 
-        expect(wrapper.find('input[name="firstname"]').exists()).toBe(true)
-        expect(wrapper.find('input[name="lastname"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="firstName"]').exists()).toBe(true)
+        expect(wrapper.find('input[name="lastName"]').exists()).toBe(true)
         expect(wrapper.find('input[name="email"]').exists()).toBe(true)
         expect(wrapper.find('input[name="username"]').exists()).toBe(true)
         expect(wrapper.find('input[name="password"]').exists()).toBe(true)
         expect(wrapper.find('input[name="confirm"]').exists()).toBe(true)
 
-        expect((wrapper.find('input[name="firstname"]').element as HTMLInputElement).value).toBe('')
-        expect((wrapper.find('input[name="lastname"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="firstName"]').element as HTMLInputElement).value).toBe('')
+        expect((wrapper.find('input[name="lastName"]').element as HTMLInputElement).value).toBe('')
         expect((wrapper.find('input[name="email"]').element as HTMLInputElement).value).toBe('')
         expect((wrapper.find('input[name="username"]').element as HTMLInputElement).value).toBe('')
         expect((wrapper.find('input[name="password"]').element as HTMLInputElement).value).toBe('')
