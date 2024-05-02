@@ -32,8 +32,8 @@
             <img
                 @click="editChallenge(challenge)"
                 :data-cy="'challenge-icon-' + challenge.id"
-                :src="getChallengeIcon(challenge)"
-                class="max-w-12 max-h-12 md:max-h-16 md:max-w-16 lg:max-w-20 lg:max-h-20 cursor-pointer hover:scale-125"
+                :src="challengeImageUrl"
+                class="max-w-12 max-h-12 md:max-h-8 md:max-w-8 lg:max-w-10 lg:max-h-10 cursor-pointer hover:scale-125 rounded-sm"
                 :alt="challenge.title"
             />
             <!-- Progress Bar, if the challenge is not complete -->
@@ -78,13 +78,17 @@
 import type { Challenge } from '@/types/challenge'
 import { useChallengeStore } from '@/stores/challengeStore'
 import router from '@/router'
+import { onMounted, ref } from 'vue'
+import authInterceptor from '@/services/authInterceptor'
 
 const challengeStore = useChallengeStore()
+const challengeImageUrl = ref('/assets/star.png');  // Default or placeholder image
+const props = defineProps<{ challenge: Challenge }>();
+
 
 interface Props {
     challenge: Challenge
 }
-defineProps<Props>()
 
 const emit = defineEmits(['update-challenge', 'complete-challenge'])
 
@@ -105,9 +109,23 @@ const incrementSaved = async (challenge: Challenge) => {
 const editChallenge = (challenge: Challenge) => {
     router.push(`/spareutfordringer/rediger/${challenge.id}`)
 }
-// Helper methods to get icons
-const getChallengeIcon = (challenge: Challenge): string => {
-    //TODO change to challenge.icon
-    return `src/assets/coffee.png`
-}
+
+const getChallengeIcon = async (challengeId: number) => {
+    try {
+        const imageResponse = await authInterceptor.get(`/challenges/picture?id=${challengeId}`, { responseType: 'blob' });
+        challengeImageUrl.value = URL.createObjectURL(imageResponse.data);
+    } catch (error) {
+        console.error("Failed to load challenge icon:", error);
+        challengeImageUrl.value = '/assets/default-icon.png';  // Fallback on error
+    }
+};
+
+onMounted(() => {
+    if (props.challenge?.id) {
+        getChallengeIcon(props.challenge.id);
+    } else {
+        console.error("Challenge id is undefined");
+    }
+});
+
 </script>

@@ -122,8 +122,8 @@
             <div class="grid grid-rows-2 grid-flow-col gap 4">
                 <div class="row-span-3 cursor-pointer" @click="editGoal(goalLocal)">
                     <img
-                        :src="getGoalIcon(goalLocal)"
-                        class="w-12 h-12 mx-auto"
+                        :src="goalImageUrl"
+                        class="w-12 h-12 mx-auto rounded-sm"
                         :alt="goalLocal.title"
                     />
                     <div class="text-lg font-bold" data-cy="goal-title">{{ goalLocal.title }}</div>
@@ -152,10 +152,10 @@
     />
     <img
         v-if="goalLocal"
-        :src="getGoalIcon(goalLocal)"
+        :src="goalImageUrl"
         alt="could not load"
         ref="goalIconRef"
-        class="shadow-sm shadow-amber-300 max-w-20 max-h-20 absolute opacity-0"
+        class="shadow-sm shadow-amber-300 max-w-20 max-h-20 absolute opacity-0 rounded-sm"
     />
 </template>
 
@@ -177,6 +177,7 @@ import { useRouter } from 'vue-router'
 import { useGoalStore } from '@/stores/goalStore'
 import ImgGifTemplate from '@/components/ImgGifTemplate.vue'
 import CardChallengeSavingsPath from '@/components/CardChallengeSavingsPath.vue'
+import authInterceptor from '@/services/authInterceptor'
 
 const router = useRouter()
 const goalStore = useGoalStore()
@@ -583,14 +584,28 @@ const triggerConfetti = () => {
     })
 }
 
-//fetching images
-const getGoalIcon = (goal: Goal): string => {
-    if (goal) {
-        return `src/assets/${goal.title.toLowerCase()}.png`
-    } else {
-        return 'src/assets/pengesekkStreak.png'
+
+const goalImageUrl = ref('src/assets/pengesekkStreak.png');
+
+
+const getGoalIcon = async (goalId: number) => {
+    try {
+        const imageResponse = await authInterceptor.get(`/goals/picture?id=${goalId}`, { responseType: 'blob' });
+        goalImageUrl.value = URL.createObjectURL(imageResponse.data);
+    } catch (error) {
+        console.error("Failed to load challenge icon:", error);
+        goalImageUrl.value = 'src/assets/pengesekkStreak.png';
     }
-}
+};
+
+onMounted(() => {
+    if (props.goal?.id) {
+        getGoalIcon(props.goal.id);
+    } else {
+        console.error("Goal id is undefined");
+    }
+});
+
 const getPigStepsIcon = () => {
     return 'src/assets/pigSteps.png'
 }
