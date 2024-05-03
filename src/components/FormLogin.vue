@@ -89,12 +89,12 @@ watch(
                 >
                     {{ showPassword ? '🔓' : '🔒' }}
                 </button>
-                <a
-                    @click="isModalOpen = true"
-                    class="transition-none absolute right-3 top-10 hover:underline hover:bg-transparent text-[#ef9691] hover:transition-none hover:p-0 cursor-pointer"
-                    >Glemt passord?</a
-                >
             </div>
+            <a
+                class="hover:underline hover:bg-transparent hover:transition-none hover:p-0 cursor-pointer text-right text-sm mr-4"
+                @click="isModalOpen = true"
+                >Glemt passord?</a
+            >
         </div>
         <div class="flex flex-row gap-5">
             <button
