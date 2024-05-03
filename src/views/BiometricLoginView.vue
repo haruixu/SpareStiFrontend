@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
-import router from '@/router'
 import { useUserStore } from '@/stores/userStore'
 
 const route = useRoute()
@@ -8,8 +7,7 @@ const username = route.params.username as string
 
 // Function to remove bio credential from local storage
 const removeBioCredential = () => {
-    localStorage.removeItem('spareStiUsername')
-    router.push({ name: 'login' })
+    useUserStore().logout()
 }
 
 // Function to login with biometric
