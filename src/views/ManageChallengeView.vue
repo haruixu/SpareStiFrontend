@@ -243,46 +243,36 @@ const removeUploadedFile = () => {
                             type="date"
                         />
                     </div>
-
-                    <div class="flex flex-col">
+                </div>
+                <div class="flex flex-row justify-between w-full">
+                    <div class="flex flex-col items-center">
                         <p>Last opp ikon for utfordringen📸</p>
-                        <button
-                            class="mt-2 font-bold cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-90"
+                        <label
+                            for="fileUpload"
+                            class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
                         >
                             💾
-                        </button>
+                        </label>
+                        <input
+                            id="fileUpload"
+                            type="file"
+                            accept=".jpg"
+                            hidden
+                            @change="handleFileChange"
+                        />
+                        <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
+                            <p class="text-sm">{{ uploadedFile.name }}</p>
+                            <button
+                                @click="removeUploadedFile"
+                                class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                            >
+                                Fjern fil
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-row justify-between w-full">
                     <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
-                <div class="flex flex-col items-center">
-                    <p>Last opp ikon for utfordringen📸</p>
-                    <label
-                        for="fileUpload"
-                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
-                    >
-                        💾
-                    </label>
-                    <input
-                        id="fileUpload"
-                        type="file"
-                        accept=".jpg"
-                        hidden
-                        @change="handleFileChange"
-                    />
-                    <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
-                        <p class="text-sm">{{ uploadedFile.name }}</p>
-                        <button
-                            @click="removeUploadedFile"
-                            class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
-                        >
-                            Fjern fil
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-row justify-between w-full">
-                <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
 
                     <button class="primary" @click="submitAction" v-text="submitButton" />
                 </div>

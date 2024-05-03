@@ -101,20 +101,21 @@ const openSpare = () => {
                         v-text="profile?.savingAccount.accNumber || 'Ingen sparekonto oppkoblet'"
                     />
                 </CardTemplate>
-
-                <button
-                    class="primary secondary"
-                    @click="router.push({ name: 'edit-profile' })"
-                    v-text="'Rediger bruker'"
-                />
-                <button
-                    class="primary secondary"
-                    @click="router.push({ name: 'edit-configuration' })"
-                    v-text="'Rediger konfigurasjon'"
-                />
-                <button class="primary" @click="updateBiometrics">
-                    {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
-                </button>
+                <div class="flex flex-col justify-center items-center space-y-2">
+                    <button
+                        class="primary secondary w-2/3"
+                        @click="router.push({ name: 'edit-profile' })"
+                        v-text="'Rediger bruker'"
+                    />
+                    <button
+                        class="primary secondary w-2/3"
+                        @click="router.push({ name: 'edit-configuration' })"
+                        v-text="'Rediger konfigurasjon'"
+                    />
+                    <button class="primary w-2/3" @click="updateBiometrics">
+                        {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
+                    </button>
+                </div>
             </div>
 
             <div class="flex flex-col">

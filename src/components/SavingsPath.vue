@@ -12,7 +12,7 @@
         </div>
         <button
             v-if="!allChallengesCompleted()"
-            class="h-auto w-auto absolute flex text-center self-end mr-10 md:mr-20 text-wrap border-2 border-gray-400 shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32 top-60 z-50 p-2 text-xs md:text-sm hover:scale-105"
+            class="h-auto w-auto absolute flex text-center self-end mr-10 md:mr-20 text-wrap border-2 border-gray-200 rounded-xl shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32 top-60 z-50 p-2 text-xs md:text-sm hover:scale-105"
             @click="scrollToFirstUncompleted"
             v-show="!isAtFirstUncompleted"
         >
