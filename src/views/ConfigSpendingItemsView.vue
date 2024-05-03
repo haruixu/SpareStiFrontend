@@ -73,7 +73,7 @@
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isFormValid"
-                class="px-10 py-3 text-2xl font-bold mt-36 mr-4 sm:mb-12 sm:mt-10"
+                class="md:px-10 md:py-3 px-7 py-2 text-2xl font-bold md:mt-12 mt-4 mr-4 sm:mb-12 sm:mt-10"
             ></ContinueButtonComponent>
         </div>
     </div>
