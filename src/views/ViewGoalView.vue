@@ -11,6 +11,7 @@ const router = useRouter()
 const goalImageUrl = ref(starImage)
 const isImageLoaded = ref(false)
 
+// Goal object
 const goalInstance = ref<Goal>({
     title: 'Test tittel',
     saved: 0,
@@ -24,6 +25,7 @@ const isCompleted = computed(() => goalInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
 
+// Function to calculate the speech for the spare component based on the completion of the goal
 const calculateSpeech = () => {
     if (completion.value === 0) {
         return motivation.value.push(
@@ -48,6 +50,7 @@ const calculateSpeech = () => {
     }
 }
 
+// Get goal details, image and calculate speech
 onMounted(async () => {
     const goalId = router.currentRoute.value.params.id
     if (!goalId) return router.push({ name: 'goals' })
@@ -72,6 +75,7 @@ onMounted(async () => {
     }
 })
 
+// Function to mark the goal as completed
 const completeGoal = () => {
     authInterceptor
         .put(`/goals/${goalInstance.value.id}/complete`)

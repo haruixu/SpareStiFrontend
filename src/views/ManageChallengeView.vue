@@ -15,15 +15,18 @@ const modalMessage = ref('')
 const confirmModalOpen = ref(false)
 const errorModalOpen = ref(false)
 
+// Set the minimum date to one week from now
 const oneWeekFromNow = new Date()
 oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
 const minDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().slice(0, 10)
 const selectedDate = ref<string>(minDate)
 
+// Set the maximum date to thirty days from now
 const thirtyDaysFromNow = new Date()
 thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
 const maxDate = thirtyDaysFromNow.toISOString().slice(0, 10)
 
+// Create a new challenge instance
 const challengeInstance = ref<Challenge>({
     title: '',
     perPurchase: 0,
@@ -33,10 +36,12 @@ const challengeInstance = ref<Challenge>({
     due: ''
 })
 
+// Watch for changes in the selected date
 watch(selectedDate, (newDate) => {
     challengeInstance.value.due = newDate
 })
 
+// Computed properties
 const isEdit = computed(() => router.currentRoute.value.name === 'edit-challenge')
 const pageTitle = computed(() => (isEdit.value ? 'Rediger utfordring🎨' : 'Ny utfordring🎨'))
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
@@ -44,6 +49,7 @@ const completion = computed(
     () => (challengeInstance.value.saved / challengeInstance.value.target) * 100
 )
 
+// Function to validate the inputs
 function validateInputs() {
     const errors = []
 
@@ -69,6 +75,7 @@ function validateInputs() {
     return errors
 }
 
+// Function to handle file change
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
@@ -78,8 +85,11 @@ const handleFileChange = (event: Event) => {
     }
 }
 
+// Function to submit
 const submitAction = async () => {
     const errors = validateInputs()
+
+    // If there are errors, show them in a modal
     if (errors.length > 0) {
         const formatErrors = errors.join('\n')
         modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'
@@ -109,13 +119,13 @@ const submitAction = async () => {
 
         await router.push({ name: 'challenges' })
     } catch (error) {
-        console.error('Error during challenge submission:', error)
         modalTitle.value = 'Systemfeil'
         modalMessage.value = 'En feil oppstod under lagring av utfordringen.'
         errorModalOpen.value = true
     }
 }
 
+// Function to fetch the challenge if it is an edit
 onMounted(async () => {
     if (isEdit.value) {
         const challengeId = router.currentRoute.value.params.id
@@ -137,11 +147,13 @@ onMounted(async () => {
     }
 })
 
+// Function to create a challenge
 const createChallenge = async () => {
     const response = await authInterceptor.post('/challenges', challengeInstance.value)
     return response.data
 }
 
+// Function to update a challenge
 const updateChallenge = async () => {
     const response = await authInterceptor.put(
         `/challenges/${challengeInstance.value.id}`,
@@ -150,6 +162,7 @@ const updateChallenge = async () => {
     return response.data
 }
 
+// Function to cancel the creation
 const cancelCreation = () => {
     if (
         challengeInstance.value.title !== '' ||
@@ -166,11 +179,13 @@ const cancelCreation = () => {
     }
 }
 
+// Function to confirm the cancel and open the modal
 const confirmCancel = () => {
     router.push({ name: 'challenges' })
     confirmModalOpen.value = false
 }
 
+// Function to remove the uploaded file
 const removeUploadedFile = () => {
     uploadedFile.value = null
 }
@@ -239,6 +254,7 @@ const removeUploadedFile = () => {
                         <p class="mx-4">Forfallsdato*</p>
                         <input
                             :min="minDate"
+                            :max="maxDate"
                             v-model="selectedDate"
                             placeholder="Forfallsdato"
                             type="date"

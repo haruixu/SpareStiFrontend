@@ -72,6 +72,7 @@ const userConfigStore = useUserConfigStore()
 const spendingAccount = ref('')
 const savingsAccount = ref('')
 
+// Check if the form is valid, the account numbers should be 11 digits long
 const isFormValid = computed(() => {
     return (
         spendingAccount.value.replace(/\./g, '').length === MAX_DIGITS &&
@@ -79,6 +80,7 @@ const isFormValid = computed(() => {
     )
 })
 
+// Save the account numbers to the store
 async function onButtonClick() {
     const savingAccountNumber = parseInt(savingsAccount.value.replace(/\./g, ''))
     const spendingAccountNumber = parseInt(spendingAccount.value.replace(/\./g, ''))
@@ -86,9 +88,11 @@ async function onButtonClick() {
     userConfigStore.setAccount('SAVING', savingAccountNumber)
     userConfigStore.setAccount('SPENDING', spendingAccountNumber)
 
+    // Create a new user config
     await userConfigStore.createConfig()
 }
 
+// Restrict the input to numbers only
 function restrictToNumbers(event: InputEvent, type: string) {
     const inputValue = (event.target as HTMLInputElement)?.value
     if (inputValue !== undefined) {
@@ -102,6 +106,7 @@ function restrictToNumbers(event: InputEvent, type: string) {
     }
 }
 
+// Apply formatting to the account number
 function applyFormatting(type: string) {
     if (type === 'spending') {
         spendingAccount.value = formatAccount(spendingAccount.value)
@@ -110,6 +115,7 @@ function applyFormatting(type: string) {
     }
 }
 
+// Remove formatting from the account number
 function removeFormatting(type: string) {
     if (type === 'spending') {
         spendingAccount.value = removeFormat(spendingAccount.value)
@@ -118,10 +124,12 @@ function removeFormatting(type: string) {
     }
 }
 
+// Format the account number to 1234.56.78901
 function formatAccount(value: string): string {
     return value.replace(/\D/g, '').replace(/^(.{4})(.{2})(.*)$/, '$1.$2.$3')
 }
 
+// Remove the formatting from the account number
 function removeFormat(value: string): string {
     return value.replace(/\./g, '')
 }

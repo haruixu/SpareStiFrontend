@@ -1,3 +1,4 @@
+// Represents a user profile.
 export interface Profile {
     id: number
     firstName: string

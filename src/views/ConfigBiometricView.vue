@@ -20,6 +20,7 @@ import router from '@/router'
 
 const userStore = useUserStore()
 
+// Function to register biometric authentication
 const bioRegister = async () => {
     await userStore.bioRegister()
     await router.push({ name: 'configurations1' })
