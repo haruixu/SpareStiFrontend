@@ -256,7 +256,7 @@ const removeUploadedFile = () => {
                         <input
                             id="fileUpload"
                             type="file"
-                            accept=".jpg"
+                            accept=".jpg, .png"
                             hidden
                             @change="handleFileChange"
                         />
