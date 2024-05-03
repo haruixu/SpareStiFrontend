@@ -178,7 +178,7 @@ const completeChallenge = () => {
             :png-size="15"
             :imageDirection="'left'"
             :direction="'right'"
-            class="mb-5"
+            class="mb-5 w-96 h-96"
         ></SpareComponent>
     </div>
 </template>

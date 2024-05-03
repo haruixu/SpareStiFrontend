@@ -78,6 +78,7 @@ onMounted(async () => {
                 :key="challenge.id"
                 :challenge-instance="challenge"
             />
+            <p v-if="!completedChallenges">Du har ingen fullførte spareutfordringer😢</p>
         </div>
         <PageControl
             :currentPage="currentPageCompleted"

@@ -1,6 +1,6 @@
 <template>
     <nav class="flex justify-between items-center min-h-32 text-xl w-full px-3 my-0">
-        <div class="order-first basis-1/5">
+        <div class="order-first md:basis-1/5 basis-2/5">
             <router-link to="/hjem" @click="hamburgerOpen = false">
                 <img
                     alt="logo"
@@ -27,13 +27,13 @@
                 Logg ut
             </button>
         </div>
-        <div class="flex flex-row gap-2">
-            <ButtonDisplayStreak v-if="isHamburger" />
-            <button class="primary logout" v-if="isHamburger" @click="toggleMenu">☰</button>
+        <div v-if="isHamburger" class="flex flex-row gap-2 md:basis-2/5 justify-end">
+            <ButtonDisplayStreak />
+            <button class="primary logout" @click="toggleMenu">☰</button>
         </div>
     </nav>
 
-    <div v-if="hamburgerOpen" class="flex flex-col bg-white border border-slate-300 z-50">
+    <div v-if="hamburgerOpen" class="flex flex-col absolute w-full bg-white border border-slate-300 z-50">
         <router-link to="/hjem" @click="hamburgerOpen = false">🏠Hjem</router-link>
         <router-link to="/sparemaal" @click="hamburgerOpen = false">🎯Sparemål</router-link>
         <router-link to="/spareutfordringer" @click="hamburgerOpen = false"

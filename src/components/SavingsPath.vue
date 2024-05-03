@@ -118,25 +118,24 @@
             />
         </div>
         <!-- Goal -->
-        <div v-if="goalLocal" class="flex flex-row justify-around m-t-2 pt-6 w-full mx-auto">
+        <div v-if="goalLocal" class="flex flex-row md:justify-between justify-around m-t-2 pt-6 w-[80%] mx-auto">
             <div class="grid grid-rows-2 grid-flow-col gap 4">
-                <div class="row-span-3 cursor-pointer" @click="editGoal(goalLocal)">
+                <p class="md:mr-20 md:text-xl mt-4 font-bold text-sm md:text-nowrap h-auto w-32 mr-0">Ditt neste sparemål🤩:</p>
+                <div class="row-span-3 cursor-pointer md:ml-10 text-center" @click="editGoal(goalLocal)">
                     <img
                         :src="goalImageUrl"
                         class="w-12 h-12 mx-auto rounded-sm"
                         :alt="goalLocal.title"
                     />
-                    <div class="text-lg font-bold" data-cy="goal-title">{{ goalLocal.title }}</div>
+                    <div class="md:text-lg text-xs font-bold" data-cy="goal-title">{{ goalLocal.title }}</div>
                 </div>
             </div>
-            <div class="flex flex-col items-end">
-                <div @click="goToEditGoal" class="cursor-pointer">
-                    <h3 class="text-blue-500 text-base">Endre mål</h3>
-                </div>
+            <div class="flex flex-col items-end gap-2">
+                <button class="primary secondary md:text-lg text-xs" @click="goToEditGoal">Endre mål</button>
                 <div
                     :key="componentKey"
                     ref="targetRef"
-                    class="bg-yellow-400 px-4 py-1 rounded-full text-black font-bold"
+                    class="bg-yellow-300 px-4 py-1 rounded-2xl text-black font-bold md:text-lg text-xs text-nowrap"
                 >
                     {{ goalLocal.saved }}kr / {{ goalLocal.target }}kr
                 </div>

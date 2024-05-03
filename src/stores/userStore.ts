@@ -261,12 +261,21 @@ export const useUserStore = defineStore('user', () => {
         try {
             const imageResponse = await authInterceptor.get('/profile/picture', {
                 responseType: 'blob'
-            })
-            profilePicture.value = URL.createObjectURL(imageResponse.data)
-        } catch (error: any) {
-            console.error('Failed to retrieve profile picture:', error.response.data)
+            });
+            // Ensure the response is indeed an image
+            if (imageResponse.data.type.startsWith('image/')) {
+                profilePicture.value = URL.createObjectURL(imageResponse.data);
+                console.log('Profile picture retrieved:', profilePicture.value);
+            } else {
+                throw new Error('Not a valid image file');
+            }
+        } catch (error) {
+            console.error('Failed to retrieve profile picture:', error);
+            // Set to default image or keep it blank
+            profilePicture.value = ''; // Assuming you want to keep it blank as per your initial setup
         }
     }
+    
 
     return {
         user,

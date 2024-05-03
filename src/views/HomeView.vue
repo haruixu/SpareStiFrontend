@@ -24,7 +24,8 @@
                 />
             </div>
         </div>
-        <savings-path v-if="isMounted" :challenges="challenges" :goal="goal"></savings-path>
+        <savings-path v-if="isMounted" :challenges="challenges" :goal="goal">
+        </savings-path>
     </div>
     <GeneratedChallengesModal v-show="showModal" @update:showModal="showModal = $event" />
 </template>
