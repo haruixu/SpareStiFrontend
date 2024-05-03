@@ -1,38 +1,110 @@
 @import './base.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 #app {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
+    margin: 0 auto auto auto;
+    width: 100%;
     font-weight: normal;
+
+    display: flex;
+    flex-direction: column;
 }
 
-a,
-.green {
-    text-decoration: none;
-    color: hsla(160, 100%, 37%, 1);
+h1,
+h2,
+h3 {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+button.primary {
+    background-color: transparent;
+    border-color: var(--color-button);
+    color: var(--color-text);
+    padding: 0.2rem 1rem;
+    font-weight: bold;
+    border-radius: 1rem;
+    border-width: 2px;
+    cursor: pointer;
     transition: 0.4s;
-    padding: 3px;
+}
+
+button.primary:disabled {
+    background-color: var(--color-button-disabled);
+    border-color: var(--color-button-disabled);
+    cursor: not-allowed;
+}
+button.primary:hover {
+    border-color: var(--color-button-hover);
+    transition: 0.7s;
+}
+
+button.secondary {
+    border-color: var(--color-button-edit);
+}
+
+button.secondary:hover {
+    border-color: black;
+    transition: 0.7s;
+}
+
+button.danger {
+    background-color: var(--color-button-danger);
+    border-color: transparent;
+}
+
+button.danger:hover {
+    background-color: var(--color-button-danger-hover);
+    border-color: var(--color-button-danger);
+    transition: 0.7s;
+}
+
+button.logout {
+    background-color: var(--color-button);
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-link);
+    font-weight: bold;
+    transition: 0.4s;
+}
+
+input {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+}
+
+textarea {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem;
+    border-radius: 1rem;
 }
 
 @media (hover: hover) {
     a:hover {
-        background-color: hsla(160, 100%, 37%, 0.2);
-    }
-}
-
-@media (min-width: 1024px) {
-    body {
-        display: flex;
-        place-items: center;
-    }
-
-    #app {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        padding: 0 2rem;
+        background-color: var(--color-nav-hover);
+        transition: 0.5s;
+        text-decoration: none;
+        padding: 3px 3px;
+        border-radius: 8px;
     }
 }
