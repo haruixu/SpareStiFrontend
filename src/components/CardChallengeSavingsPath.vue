@@ -115,7 +115,6 @@ const getChallengeIcon = async (challengeId: number) => {
         })
         challengeImageUrl.value = URL.createObjectURL(imageResponse.data)
     } catch (error) {
-        console.error('Failed to load challenge icon:', error)
         challengeImageUrl.value = '/src/assets/star.png' // Fallback on error
     }
 }
