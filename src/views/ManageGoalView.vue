@@ -5,6 +5,7 @@ import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import ModalComponent from '@/components/ModalComponent.vue'
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
 const router = useRouter()
 const uploadedFile: Ref<File | null> = ref(null)
@@ -38,6 +39,8 @@ function validateInputs() {
     const errors = []
 
     goalInstance.value.due = selectedDate.value + 'T23:59:59.999Z'
+    goalInstance.value.saved = parseInt(goalInstance.value.saved.toString())
+    goalInstance.value.target = parseInt(goalInstance.value.target.toString())
 
     if (!goalInstance.value.title) {
         errors.push('Tittel må fylles ut')
@@ -103,10 +106,6 @@ const submitAction = async () => {
         errorModalOpen.value = true
     }
 }
-
-watch(selectedDate, (newDate) => {
-    console.log(newDate)
-})
 
 onMounted(async () => {
     if (isEdit.value) {
@@ -193,23 +192,6 @@ const handleFileChange = (event: Event) => {
 const removeUploadedFile = () => {
     uploadedFile.value = null
 }
-
-onMounted(async () => {
-    if (isEdit.value) {
-        const goalId = router.currentRoute.value.params.id
-        if (!goalId) return router.push({ name: 'goals' })
-
-        await authInterceptor(`/goals/${goalId}`)
-            .then((response) => {
-                goalInstance.value = response.data
-                selectedDate.value = response.data.due.slice(0, 16)
-            })
-            .catch((error) => {
-                console.error(error)
-                router.push({ name: 'goals' })
-            })
-    }
-})
 </script>
 
 <template>
@@ -267,14 +249,14 @@ onMounted(async () => {
                     <p>Last opp ikon for utfordringen📸</p>
                     <label
                         for="fileUpload"
-                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
+                        class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
                     >
-                        💾
+                        Legg til 💾
                     </label>
                     <input
                         id="fileUpload"
                         type="file"
-                        accept=".jpg"
+                        accept=".jpg, .png"
                         hidden
                         @change="handleFileChange"
                     />
@@ -327,6 +309,15 @@ onMounted(async () => {
                     <button class="primary danger" @click="confirmModalOpen = false">Avbryt</button>
                 </template>
             </ModalComponent>
+        </div>
+        <div
+            class="lg:absolute right-5 lg:top-1/3 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+        >
+            <InteractiveSpare
+                :png-size="10"
+                :speech="[`Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
+                direction="left"
+            />
         </div>
     </div>
 </template>

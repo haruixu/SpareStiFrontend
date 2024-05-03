@@ -28,7 +28,6 @@ const updatePassword = ref<boolean>(false)
 const confirmPassword = ref<string>('')
 const errorMessage = ref<string>('')
 const isModalOpen = ref(false)
-const image = ref<File>()
 
 const nameRegex = /^[æÆøØåÅa-zA-Z,.'-][æÆøØåÅa-zA-Z ,.'-]{0,29}$/
 const emailRegex =
@@ -90,24 +89,6 @@ onMounted(async () => {
         })
 })
 
-const selectImage = async () => {
-    const fileInput = document.getElementById('fileInput')! as HTMLInputElement
-    if (!fileInput) {
-        // Error handling
-
-        console.log('Vi klarte ikke å hente bildene dine. Prøv igjen!')
-    }
-    if (!fileInput.files) {
-        return
-    }
-    image.value = fileInput.files[0]
-}
-const uploadImage = async () => {
-    // bildet må lastes opp som en form. altså en body med form
-    // const formData = new FormData()
-    // authInterceptor.post("/profile/picture", formData)
-}
-
 const saveChanges = async () => {
     if (isFormInvalid.value) {
         errorMessage.value = 'Vennligst fyll ut alle feltene riktig'
@@ -134,26 +115,6 @@ const saveChanges = async () => {
         <div class="flex flex-row flex-wrap justify-center w-full max-w-screen-xl gap-20">
             <div class="flex flex-col max-w-96 w-full gap-5">
                 <h1>Rediger profil</h1>
-                <div class="w-full flex flex-row gap-5 justify-between justify-items-end">
-                    <div class="flex flex-col justify-center">
-                        <button class="h-min bg-transparent text-4xl" v-text="'⬅️'" />
-                    </div>
-                    <div class="w-32 h-32 border-stale-200 border-2 rounded-full shrink-0" />
-                    <div class="flex flex-col justify-center">
-                        <button class="h-min bg-transparent text-4xl" v-text="'➡️'" />
-                    </div>
-                </div>
-                <div class="flex flex-row justify-center">
-                    <input
-                        id="fileInput"
-                        type="file"
-                        style="display: none"
-                        accept=".jpg, .jpeg, .png, .gif, .img"
-                    />
-                    <button v-text="'Velg eget bilde!'" @click="selectImage()" />
-
-                    <button v-text="'Send bilde'" @click="uploadImage()" />
-                </div>
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-between mx-4">
                         <p>Fornavn*</p>

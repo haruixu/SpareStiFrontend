@@ -6,18 +6,21 @@ import type { ChallengeConfig } from '@/types/challengeConfig'
 import router from '@/router'
 
 export const useUserConfigStore = defineStore('userConfig', () => {
+    // Reactive state to hold the challenge configuration
     const challengeConfig = ref<ChallengeConfig>({
         experience: '',
         motivation: '',
         challengeTypeConfigs: []
     })
 
+    // Reactive state to hold the saving account information
     const savingAccount = ref({
         accountType: 'SAVING',
         accNumber: 0,
         balance: 0
     })
 
+    // Reactive state to hold the spending account information
     const spendingAccount = ref({
         accountType: 'SPENDING',
         accNumber: 0,
@@ -26,14 +29,17 @@ export const useUserConfigStore = defineStore('userConfig', () => {
 
     const errorMessage = ref<string>('')
 
+    // Function to set experience in the challenge configuration
     const setExperience = (value: string) => {
         challengeConfig.value.experience = value
     }
 
+    // Function to set motivation in the challenge configuration
     const setMotivation = (value: string) => {
         challengeConfig.value.motivation = value
     }
 
+    // Function to add challenge type configuration
     const addChallengeTypeConfig = (
         type: string,
         specificAmount: number,
@@ -46,6 +52,7 @@ export const useUserConfigStore = defineStore('userConfig', () => {
         })
     }
 
+    // Function to set account information
     const setAccount = (type: 'SAVING' | 'SPENDING', accNumber: number) => {
         if (type === 'SAVING') {
             savingAccount.value.accNumber = accNumber
@@ -54,11 +61,16 @@ export const useUserConfigStore = defineStore('userConfig', () => {
         }
     }
 
+    // Function to create user configuration
     const createConfig = () => {
         authInterceptor
+            // Create saving account
             .post('/accounts', savingAccount.value)
+            // Create spending account
             .then(() => authInterceptor.post('/accounts', spendingAccount.value))
+            // Create challenge configuration
             .then(() => authInterceptor.post('/config/challenge', challengeConfig.value))
+            // Navigate to home page after configuration creation
             .then(() => {
                 resetConfig()
                 return router.push({ name: 'home', query: { firstLogin: 'true' } })
@@ -70,6 +82,7 @@ export const useUserConfigStore = defineStore('userConfig', () => {
             })
     }
 
+    // Function to reset configuration states
     const resetConfig = () => {
         challengeConfig.value = {
             experience: '',
@@ -88,6 +101,7 @@ export const useUserConfigStore = defineStore('userConfig', () => {
         }
     }
 
+    // Return reactive states and functions to be used by components
     return {
         challengeConfig,
         errorMessage,
