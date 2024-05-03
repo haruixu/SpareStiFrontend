@@ -18,6 +18,7 @@ const modalTitle = ref<string>('')
 const errorModalOpen = ref<boolean>(false)
 const confirmModalOpen = ref<boolean>(false)
 
+// Goal instance
 const goalInstance = ref<Goal>({
     title: '',
     saved: 0,
@@ -26,15 +27,18 @@ const goalInstance = ref<Goal>({
     due: ''
 })
 
+// Watch for changes in the selected date
 watch(selectedDate, (newDate) => {
     goalInstance.value.due = newDate
 })
 
+// Computed properties
 const isEdit = computed(() => router.currentRoute.value.name === 'edit-goal')
 const pageTitle = computed(() => (isEdit.value ? 'Rediger sparemål🎨' : 'Nytt sparemål🎨'))
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
 const completion = computed(() => (goalInstance.value.saved / goalInstance.value.target) * 100)
 
+// Function to validate the inputs
 function validateInputs() {
     const errors = []
 
@@ -67,8 +71,11 @@ function validateInputs() {
     return errors
 }
 
+// Function to submit the goal
 const submitAction = async () => {
     const errors = validateInputs()
+
+  // Handle the errors
     if (errors.length > 0) {
         const formatErrors = errors.join('<br>')
         modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'
@@ -107,6 +114,7 @@ const submitAction = async () => {
     }
 }
 
+// Fetch the goal on mounted
 onMounted(async () => {
     if (isEdit.value) {
         const goalId = router.currentRoute.value.params.id
@@ -126,6 +134,7 @@ onMounted(async () => {
     }
 })
 
+// Function to create a goal
 const createGoal = async (): Promise<any> => {
     try {
         const response = await authInterceptor.post('/goals', goalInstance.value)
@@ -136,6 +145,7 @@ const createGoal = async (): Promise<any> => {
     }
 }
 
+// Function to update a goal
 const updateGoal = async (): Promise<any> => {
     try {
         const response = await authInterceptor.put(
@@ -149,6 +159,7 @@ const updateGoal = async (): Promise<any> => {
     }
 }
 
+// Function to delete a goal
 const deleteGoal = () => {
     authInterceptor
         .delete(`/goals/${goalInstance.value.id}`)
@@ -160,6 +171,7 @@ const deleteGoal = () => {
         })
 }
 
+// Function to cancel the creation
 function cancelCreation() {
     if (
         goalInstance.value.title !== '' ||
@@ -175,11 +187,13 @@ function cancelCreation() {
     }
 }
 
+// Function to confirm the cancel
 const confirmCancel = () => {
     router.push({ name: 'goals' })
     confirmModalOpen.value = false
 }
 
+// Function to handle file change
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
@@ -189,6 +203,7 @@ const handleFileChange = (event: Event) => {
     }
 }
 
+// Function to remove the uploaded file
 const removeUploadedFile = () => {
     uploadedFile.value = null
 }

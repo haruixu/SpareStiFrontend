@@ -20,6 +20,7 @@ const profilePicture = ref<string>()
 const userStore = useUserStore()
 const refreshTrigger = ref(0)
 
+// Function to update the user
 const updateUser = async () => {
     authInterceptor('/profile')
         .then((response) => {
@@ -30,6 +31,7 @@ const updateUser = async () => {
         })
 }
 
+// Get user details and completed goals and challenges
 onMounted(async () => {
     await updateUser()
 
@@ -54,11 +56,13 @@ onMounted(async () => {
     openSpare()
 })
 
+// Function to update biometrics
 const updateBiometrics = async () => {
     await useUserStore().bioRegister()
     await updateUser()
 }
 
+// Function to update the profile picture
 const updateProfilePicture = async () => {
     await updateUser()
     await userStore.getProfilePicture()
@@ -66,10 +70,12 @@ const updateProfilePicture = async () => {
     refreshSpareComponent()
 }
 
+// Function to refresh spare component
 const refreshSpareComponent = () => {
     refreshTrigger.value++
 }
 
+// Function to open the spare component and show the welcome message
 const openSpare = () => {
     speech.value = [
         `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName}! 🤠`,

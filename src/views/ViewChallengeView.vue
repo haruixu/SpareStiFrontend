@@ -11,6 +11,7 @@ const router = useRouter()
 const challengeImageUrl = ref(starImage)
 const isImageLoaded = ref(false)
 
+// Challenge object
 const challengeInstance = ref<Challenge>({
     title: 'Tittel',
     perPurchase: 20,
@@ -22,6 +23,7 @@ const challengeInstance = ref<Challenge>({
     completedOn: ''
 })
 
+// Computed values
 const timesSaved = computed(
     () => challengeInstance.value.saved / challengeInstance.value.perPurchase
 )
@@ -32,6 +34,7 @@ const isCompleted = computed(() => challengeInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
 
+// Function to calculate the speech for the spare component based on the completion of the challenge
 const calculateSpeech = () => {
     if (completion.value === 0) {
         return motivation.value.push(
@@ -56,6 +59,7 @@ const calculateSpeech = () => {
     }
 }
 
+// Get the challenge, image and calculate the speech
 onMounted(async () => {
     const challengeId = router.currentRoute.value.params.id
     if (!challengeId) return router.push({ name: 'challenges' })
@@ -81,6 +85,7 @@ onMounted(async () => {
     }
 })
 
+// Function to complete the challenge
 const completeChallenge = () => {
     authInterceptor
         .put(`/challenges/${challengeInstance.value.id}/complete`)
