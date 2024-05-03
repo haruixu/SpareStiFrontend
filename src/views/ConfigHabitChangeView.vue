@@ -73,6 +73,7 @@ import SpareComponent from '@/components/SpareComponent.vue'
 const selectedOption = ref<string | null>(null)
 const userConfigStore = useUserConfigStore()
 
+// Set motivation value based on selected option
 const selectOption = (option: string) => {
     selectedOption.value = option
     let motivationValue = ''
@@ -92,6 +93,7 @@ const selectOption = (option: string) => {
     userConfigStore.setMotivation(motivationValue)
 }
 
+// Navigates to the next configuration view if an option is selected
 const onButtonClick = () => {
     if (selectedOption.value) {
         router.push({ name: 'configurations2' })

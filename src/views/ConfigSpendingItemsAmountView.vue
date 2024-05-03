@@ -64,6 +64,7 @@ const amounts = ref(options.value.map(() => ''))
 
 const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
+// Save the amounts to the user config store and navigate to the next page
 const onButtonClick = () => {
     options.value.forEach((option, index) => {
         userConfigStore.challengeConfig.challengeTypeConfigs[index].specificAmount =
@@ -72,6 +73,7 @@ const onButtonClick = () => {
     router.push({ name: 'configurations5' })
 }
 
+// Filter the input to only allow numbers and commas
 const filterAmount = (index: number, event: Event) => {
     const input = event.target as HTMLInputElement
     let filteredValue = input.value.replace(/[^\d,]/g, '')

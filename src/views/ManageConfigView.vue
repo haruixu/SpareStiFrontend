@@ -6,6 +6,7 @@ import { onMounted, ref } from 'vue'
 import ModalComponent from '@/components/ModalComponent.vue'
 import router from '@/router'
 
+// Configuration object
 const configuration = ref<ChallengeConfig>({
     motivation: '',
     experience: '',
@@ -20,6 +21,7 @@ const configuration = ref<ChallengeConfig>({
 
 const error = ref<string | null>(null)
 
+// Function to delete a challenge type
 const deleteChallengeType = (type: string) => {
     if (configuration.value.challengeTypeConfigs) {
         configuration.value.challengeTypeConfigs = configuration.value.challengeTypeConfigs.filter(
@@ -28,6 +30,7 @@ const deleteChallengeType = (type: string) => {
     }
 }
 
+// Function to create a new challenge type
 const createChallengeType = () => {
     configuration.value.challengeTypeConfigs?.push({
         type: '',
@@ -36,6 +39,7 @@ const createChallengeType = () => {
     })
 }
 
+// Function to validate and save the configuration
 const validateAndSave = () => {
     if (!configuration.value.motivation) {
         return (error.value = 'Du må velge hvor store vaneendringer du er villig til å gjøre')
@@ -70,6 +74,7 @@ const validateAndSave = () => {
     saveConfiguration()
 }
 
+// Function to save the configuration
 const saveConfiguration = () => {
     authInterceptor
         .put('/config/challenge', configuration.value)
@@ -81,6 +86,7 @@ const saveConfiguration = () => {
         })
 }
 
+// Fetch configuration on mounted
 onMounted(() => {
     authInterceptor('/config/challenge')
         .then((response) => {

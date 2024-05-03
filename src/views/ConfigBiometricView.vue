@@ -25,6 +25,7 @@ const userStore = useUserStore()
 
 const bioError = ref<boolean>(false)
 
+// Function to register biometric authentication
 const bioRegister = async () => {
     const result = await userStore.bioRegister()
 

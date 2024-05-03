@@ -18,6 +18,7 @@ const completedGoals = ref<Goal[]>([])
 
 const isDraggable = ref(false)
 
+// Get active and completed goals
 onMounted(async () => {
     await authInterceptor('/goals/active')
         .then((response) => {
@@ -31,6 +32,7 @@ onMounted(async () => {
     await updatePage(0)
 })
 
+// Function to update the page
 const updatePage = async (page: number) => {
     await authInterceptor(`/goals/completed?page=${page}&size=5`)
         .then((response) => {
@@ -43,6 +45,7 @@ const updatePage = async (page: number) => {
         })
 }
 
+// Function to change the order of the goals
 const changeOrder = async () => {
     if (isDraggable.value) {
         const priorities = activeGoals.value.map((goal) => goal.id)

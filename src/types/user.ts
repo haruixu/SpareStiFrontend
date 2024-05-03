@@ -1,3 +1,4 @@
+// Represents the user object
 export interface User {
     firstName: string
     lastName: string

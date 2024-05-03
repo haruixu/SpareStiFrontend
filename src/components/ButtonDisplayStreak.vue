@@ -9,7 +9,7 @@
             <img
                 src="@/assets/pengesekkStreak.png"
                 alt="streak"
-                class="mx-auto w-10 h-10 md:w-12 md:h-12"
+                class="mx-auto min-w-10 h-10 md:w-12 md:h-12"
             />
         </button>
 

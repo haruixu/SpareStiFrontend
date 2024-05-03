@@ -64,6 +64,7 @@ const amounts = ref(options.value.map(() => ''))
 
 const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
+// Update the general amount for each challenge type
 const onButtonClick = async () => {
     options.value.forEach((option, index) => {
         userConfigStore.challengeConfig.challengeTypeConfigs[index].generalAmount =
@@ -73,6 +74,7 @@ const onButtonClick = async () => {
     await router.push({ name: 'configurations6' })
 }
 
+// Filter the input to only allow numbers and commas
 const filterAmount = (index: number, event: Event) => {
     const input = event.target as HTMLInputElement
     let filteredValue = input.value.replace(/[^\d,]/g, '')

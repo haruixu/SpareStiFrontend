@@ -71,6 +71,7 @@ import SpareComponent from '@/components/SpareComponent.vue'
 const selectedOption = ref<string | null>(null)
 const userConfigStore = useUserConfigStore()
 
+// Set experience value based on selected option
 const selectOption = (option: string) => {
     selectedOption.value = option
     let experienceValue = ''
@@ -90,6 +91,7 @@ const selectOption = (option: string) => {
     userConfigStore.setExperience(experienceValue)
 }
 
+// Navigate to next configuration page if option is selected
 const onButtonClick = () => {
     if (selectedOption.value) {
         router.push({ name: 'configurations3' })
