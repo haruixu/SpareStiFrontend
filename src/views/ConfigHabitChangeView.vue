@@ -4,7 +4,7 @@
             Hvor store vaneedringer er du villig til å gjøre?
         </h1>
         <div class="grid grid-cols-1 gap-8 sm:gap-14 md:grid-cols-3">
-            <div
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
                     'border-gray-300 border-2': selectedOption !== 'litt'
@@ -13,9 +13,9 @@
                 @click="selectOption('litt')"
             >
                 <img src="@/assets/litt.png" alt="Thumbs down emoji" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-md sm:text-lg font-bold">Litt</p>
-            </div>
-            <div
+                <span class="mt-2 text-md sm:text-lg font-bold">Litt</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'passe',
                     'border-gray-300 border-2': selectedOption !== 'passe'
@@ -24,9 +24,9 @@
                 @click="selectOption('passe')"
             >
                 <img src="@/assets/passe.png" alt="A little bit emoji" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-md sm:text-lg font-bold">Passe</p>
-            </div>
-            <div
+                <span class="mt-2 text-md sm:text-lg font-bold">Passe</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'store',
                     'border-gray-300 border-2': selectedOption !== 'store'
@@ -35,8 +35,8 @@
                 @click="selectOption('store')"
             >
                 <img src="@/assets/store.png" alt="Thumbs up emoji" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-md sm:text-lg font-bold">Store</p>
-            </div>
+                <span class="mt-2 text-md sm:text-lg font-bold">Store</span>
+            </button>
         </div>
         <div class="flex flex-row flex-wrap justify-center gap-x-52 gap-y-5">
             <div class="flex flex-col">

@@ -6,7 +6,7 @@
                 <div
                     v-for="(option, index) in options"
                     :key="`first-option-${index}`"
-                    class="my-4 flex flex-row justify-between items-center"
+                    class="my-4 flex flex-row items-center self-end"
                 >
                     <p class="text-xl font-bold mr-4 text-wrap">{{ option.type }}</p>
                     <div class="flex flex-row self-end items-center">

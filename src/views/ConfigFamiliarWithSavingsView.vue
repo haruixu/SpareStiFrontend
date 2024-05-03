@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center gap-5">
         <h1 class="text-2xl font-bold sm:text-4xl">Hvor kjent er du med sparing fra før?</h1>
         <div class="grid grid-cols-1 gap-8 sm:gap-14 md:grid-cols-3">
-            <div
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
                     'border-gray-300 border-2': selectedOption !== 'litt'
@@ -11,9 +11,9 @@
                 @click="selectOption('litt')"
             >
                 <img src="@/assets/nose.png" alt="Pig nose" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-lg font-bold">Litt kjent</p>
-            </div>
-            <div
+                <span class="mt-2 text-lg font-bold">Litt kjent</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'noe',
                     'border-gray-300 border-2': selectedOption !== 'noe'
@@ -22,9 +22,9 @@
                 @click="selectOption('noe')"
             >
                 <img src="@/assets/head.png" alt="Pig face" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-lg font-bold">Noe kjent</p>
-            </div>
-            <div
+                <span class="mt-2 text-lg font-bold">Noe kjent</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'godt',
                     'border-gray-300 border-2': selectedOption !== 'godt'
@@ -33,8 +33,8 @@
                 @click="selectOption('godt')"
             >
                 <img src="@/assets/pig.png" alt="Whole pig" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-lg font-bold">Godt kjent</p>
-            </div>
+                <span class="mt-2 text-lg font-bold">Godt kjent</span>
+            </button>
         </div>
         <div class="flex flex-row flex-wrap justify-center gap-x-52 gap-y-5">
             <div class="flex flex-col">
