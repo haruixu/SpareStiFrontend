@@ -1,9 +1,18 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen text-center">
-        <h1 class="mb-3 text-2xl font-bold sm:text-4xl mt-0 md:mt-7">Hva bruker du mye penger på?</h1>
-        <p class="text-sm mb-8 md:mb-10">Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i "Annet ..." feltet</p>
-      <div class="md:absolute fixed bottom-3 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4">
-        <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">Trykk på meg for hjelp ❗️</p>
+        <h1 class="mb-3 text-2xl font-bold sm:text-4xl mt-0 md:mt-7">
+            Hva bruker du mye penger på?
+        </h1>
+        <p class="text-sm mb-8 md:mb-10">
+            Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i "Annet ..."
+            feltet
+        </p>
+        <div
+            class="md:absolute fixed bottom-3 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4"
+        >
+            <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">
+                Trykk på meg for hjelp ❗️
+            </p>
             <SpareComponent
                 :speech="[
                     'Her kan du velge hva du bruker mye penger på, slik at vi kan hjelpe deg med å spare penger! 💸',
@@ -68,7 +77,7 @@
                 </div>
             </div>
         </div>
-      <p class="mb-1">Husk at du kan endre dette senere!</p>
+        <p class="mb-1">Husk at du kan endre dette senere!</p>
         <div class="w-full text-right">
             <ContinueButtonComponent
                 @click="onButtonClick"

@@ -1,10 +1,14 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-      <h1 class="mb-8 md:mb-16 mt-2 text-2xl font-bold sm:text-4xl">
+        <h1 class="mb-8 md:mb-16 mt-2 text-2xl font-bold sm:text-4xl">
             Hvor kjent er du med sparing fra før?
         </h1>
-      <div class="absolute bottom-4 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4">
-        <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">Trykk på meg for hjelp ❗️</p>
+        <div
+            class="absolute bottom-4 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4"
+        >
+            <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">
+                Trykk på meg for hjelp ❗️
+            </p>
             <SpareComponent
                 :speech="[
                     'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡',
@@ -15,7 +19,7 @@
                 :imageDirection="'right'"
             ></SpareComponent>
         </div>
-      <div class="grid grid-cols-1 gap-8 mb-2 sm:gap-10 sm:mb-12 md:grid-cols-3">
+        <div class="grid grid-cols-1 gap-8 mb-2 sm:gap-10 sm:mb-12 md:grid-cols-3">
             <div
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
@@ -50,7 +54,7 @@
                 <p class="mt-2 text-lg font-bold">Godt kjent</p>
             </div>
         </div>
-      <p class="mb-4 md:mb-10">Husk at du kan endre dette senere!</p>
+        <p class="mb-4 md:mb-10">Husk at du kan endre dette senere!</p>
         <ContinueButtonComponent
             :disabled="selectedOption === null"
             @click="onButtonClick"

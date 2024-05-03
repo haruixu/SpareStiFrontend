@@ -315,9 +315,7 @@ const removeUploadedFile = () => {
         >
             <InteractiveSpare
                 :png-size="10"
-                :speech="[
-                    `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
-                ]"
+                :speech="[`Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
                 direction="left"
             />
         </div>
