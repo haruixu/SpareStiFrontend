@@ -11,5 +11,5 @@ export interface Challenge {
     createdOn?: string // Mapping ZonedDateTime to Date
     type?: string // Not specified as @NotNull, so it's optional
     completion?: number // Assuming BigDecimal maps to number, optional due to @Transient
-    completedOn?: string // Adding the new variable as optional
+    completedOn?: string | null // Adding the new variable as optional
 }

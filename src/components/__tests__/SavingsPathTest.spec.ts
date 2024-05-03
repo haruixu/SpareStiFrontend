@@ -2,6 +2,13 @@ import {beforeEach,describe,expect,it,vi} from'vitest'
 import {mount}from'@vue/test-utils'
 import {createPinia,setActivePinia}from'pinia'
 import SavingsPath from '@/components/SavingsPath.vue'
+import {createRouter, createWebHistory} from "vue-router";
+
+// Create a mock router instance
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [],  // Add necessary mock routes or leave empty if routing specifics are not tested
+});
 
 vi.mock('canvas-confetti',()=>({
   default:vi.fn(()=>({
@@ -40,7 +47,7 @@ describe('SavingsPathComponent',()=>{
     setActivePinia(pinia);
     wrapper = mount(SavingsPath, {
       global: {
-        plugins: [pinia]
+        plugins: [pinia, router]
       },
       props: {
         challenges: [
@@ -54,7 +61,8 @@ describe('SavingsPathComponent',()=>{
             due: '2022-01-01T00:00:00Z',
             createdOn: '2021-01-01T00:00:00Z',
             type: 'Challengetype',
-            completion: 10
+            completion: 10,
+            completedOn: null
           }
         ],
         goal: {
@@ -66,6 +74,7 @@ describe('SavingsPathComponent',()=>{
           due: '2022-01-01T00:00:00Z',
           createdOn: '2021-01-01T00:00:00Z',
           completion: 10
+
         }
       }
     });
@@ -82,9 +91,9 @@ describe('SavingsPathComponent',()=>{
       await wrapper.vm.$nextTick()
       const challengeText=wrapper.text()
       expect(challengeText).toContain('Testchallenge')
-      expect(challengeText).toContain('Din Sparesti  Ufullførte utfordringer↓ ️ Testchallenge100kr / 1000kr  + +Legg til SpareutfordringTestgoalEndre mål100kr / 1000kr')
+      expect(challengeText).toContain('Din Sparesti  Ufullførte utfordringer↓ ️ Testchallenge100kr / 1000kr  + 20kr på Testchallenge + Legg til Spareutfordring Ditt neste sparemål🤩: Testgoal Endre mål 100kr / 1000kr')
       expect(challengeText).toContain('Testgoal')
-      expect(challengeText).toContain('Din Sparesti  Ufullførte utfordringer↓ ️ Testchallenge100kr / 1000kr  + +Legg til SpareutfordringTestgoalEndre mål100kr / 1000kr')
+      expect(challengeText).toContain('Din Sparesti  Ufullførte utfordringer↓ ️ Testchallenge100kr / 1000kr  + 20kr på Testchallenge + Legg til Spareutfordring Ditt neste sparemål🤩: Testgoal Endre mål 100kr / 1000kr')
     })
 
     it('shoulddisplaythecorrectnumberofchallengeelements',()=>{
@@ -93,36 +102,41 @@ describe('SavingsPathComponent',()=>{
     })
   })
 
-  describe('UserInteractions',()=>{
-    it('shouldupdatechallengeprogresswhenincrementbuttonisclicked',async()=>{
-      await wrapper.vm.$nextTick()
-      const incrementButton=wrapper.find('[data-cy="increment-challenge1"]')
-      expect(incrementButton.exists()).toBe(true)
-      await incrementButton.trigger('click')
-      expect(wrapper.vm.challenges[0].saved).toBe(120)
-    })
-  })
+  describe('UserInteractions', () => {
+    it('should update challenge progress when increment button is clicked', async () => {
+      await wrapper.vm.$nextTick();
+      const incrementButton = wrapper.find('[data-cy="increment-challenge"]');
+      if (!incrementButton.exists()) {
+        console.error('Increment button does not exist, props:', wrapper.props());
+      }
+      expect(incrementButton.exists()).toBe(true);  // Verify button is rendered
+      await incrementButton.trigger('click');
+      await wrapper.vm.$nextTick();  // Process any asynchronous updates
+      expect(wrapper.vm.challenges[0].saved).toBe(120);  // Check if state is updated
+    });
+  });
+
 
   describe('StateManagement',()=>{
     it('shouldreacttochangesinchallengecompletionstatus',async()=>{
-//Initiallyincomplete
-      let progressBar=wrapper.find('.bg-green-600')
+      let progressBar=wrapper.find('.bg-lime-400')
       expect(progressBar.element.style.width).toBe('10%')
 
 //Updatechallengetobealmostcomplete
       await wrapper.setProps({
-        challenges:[
+        challenges: [
           {
             ...wrapper.props().challenges[0],
-            saved:900,
-            completion:90
+            saved: 900,
+            completion: 90
           }
         ]
-      })
-      await wrapper.vm.$nextTick()
-      await wrapper.vm.$nextTick()
+      });
+      await wrapper.vm.$nextTick();  // Ensure updates are processed
+      await wrapper.vm.$nextTick();  // Sometimes needed if updates depend on asynchronous updates
 
-      progressBar=wrapper.find('.bg-green-600')
+
+      progressBar=wrapper.find('.bg-lime-400')
       expect(progressBar.element.style.width).toBe('10%')
     })
   })

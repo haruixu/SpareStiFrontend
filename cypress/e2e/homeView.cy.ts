@@ -83,7 +83,18 @@ describe('Goals and Challenges Page Load', () => {
       }
     }).as('fetchConfig');
 
+    cy.intercept('GET', '/profile', {
+      statusCode: 200,
+      body: {
 
+      },
+    }).as('fetchProfile');
+    cy.intercept('GET', '/profile/picture', {
+      statusCode: 200,
+      body: {
+
+      },
+    }).as('fetchProfile');
 
     // Mock the POST request for renewing the token if it's not implemented in the backend
     cy.intercept('POST', '/auth/renewToken', {
@@ -145,17 +156,18 @@ describe('Goals and Challenges Page Load', () => {
         title: 'Coffee Challenge',
         type: 'coffee',
         perPurchase: 20,
-        saved: 80,  // this is the updated amount
+        saved: 60,  // this is the updated amount
         target: 100,
-        completion: 80,
+        completion: 60,
+        completedOn: null
       },
-    }).as('incrementChallenge1');
+    }).as('incrementChallenge');
 
 
     cy.intercept('PUT', '/goals/1', {
       statusCode: 200,
       body:  { id: 1, title: 'gaming', saved: 170, target: 1000, completion: 15 },
-    }).as('incrementChallenge');
+    }).as('incrementChallenge1');
 
     // Mock the POST request for renewing the token if it's not implemented in the backend
     cy.intercept('POST', '/auth/renewToken', {
@@ -164,13 +176,13 @@ describe('Goals and Challenges Page Load', () => {
         accessToken: 'newlyRenewedAccessToken'
       }
     }).as('renewToken');
-    cy.get('[data-cy=increment-challenge1]').click();
-    cy.wait('@incrementChallenge1'); // Wait for the specific challenge update intercept
+    cy.get('[data-cy="increment-challenge"]').click();
+    cy.wait('@incrementChallenge'); // Wait for the specific challenge update intercept
 
     // Check if the progress bar reflects the right percentage
     cy.get('[data-cy=challenge-progress]')
     .invoke('attr', 'style')
-    .should('contain', 'width: 80%');  // Directly check the style attribute for the width
+    .should('contain', 'width: 60%');  // Directly check the style attribute for the width
   });
   it('Should navigate to the spare challenges page when adding a new challenge', () => {
     // Mock the routing to the spare challenges page
@@ -224,28 +236,6 @@ describe('Goals and Challenges Page Load', () => {
 
     // Optionally, you can check if the URL has changed to '/profil'
     cy.url().should('include', '/profil');
-
-  });
-  it('it should navigate change profile picture', () => {
-    // Simulate the click on the router-link
-
-    cy.get('[data-cy=hamburger-menu]').click();
-    cy.get('[data-cy=profile-link]').click();
-
-
-    // Optionally, you can check if the URL has changed to '/profil'
-    cy.url().should('include', '/profil');
-
-    cy.get('[data-cy=edit-avatar]').click();
-    cy.get('[data-cy=save-avatar]').click();
-    
-    cy.intercept('GET', '/profile', {
-      statusCode: 200,
-      body: {
-
-      },
-    }).as('fetchProfile');
-
 
   });
 

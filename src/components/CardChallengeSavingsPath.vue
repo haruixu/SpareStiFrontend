@@ -9,7 +9,7 @@
             <div class="flex flex-col flex-nowrap self-center">
                 <!-- Check Icon -->
                 <div
-                    v-if="challenge.completion !== undefined && challenge.completedOn !== null"
+                    v-if="challenge.completion != undefined && challenge.completedOn != null"
                     class="min-w-6 min-h-6 max-w-6 max-h-6 md:min-h-8 md:max-h-8 md:min-w-8 md:max-w-8 ml-20 md:ml-32 p-1 basis-1/4 self-end"
                 >
                     <img src="@/assets/completed.png" alt="" />️
@@ -38,7 +38,7 @@
             />
             <!-- Progress Bar, if the challenge is not complete -->
             <div
-                v-if="challenge.completion != undefined && challenge.completedOn === null"
+                v-if="challenge.completion != undefined && challenge.completedOn == null"
                 class="flex-grow w-full mt-2"
             >
                 <div class="flex flex-row ml-5 md:ml-10 justify-center">
@@ -57,7 +57,7 @@
                         </div>
                         <button
                             @click="incrementSaved(challenge)"
-                            :data-cy="'increment-challenge' + challenge.id"
+                            :data-cy="'increment-challenge'"
                             type="button"
                             class="primary text-xs ml-2 z-10 relative"
                         >
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <span
-                v-else-if="challenge.completedOn !== null"
+                v-else-if="challenge.completedOn != null"
                 class="text-center text-xs md:text-base"
                 >Ferdig: {{ challenge.saved }}</span
             >

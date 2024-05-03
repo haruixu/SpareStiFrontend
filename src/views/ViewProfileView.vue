@@ -10,6 +10,7 @@ import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalEditAvatar from '@/components/ModalEditAvatar.vue'
+import CardChallenge from "@/components/CardChallenge.vue";
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
@@ -180,10 +181,10 @@ const openSpare = () => {
                     />
                 </div>
                 <CardTemplate class="p-4 flex flex-row flex-wrap justify-center gap-2 mb-4 mt-2">
-                    <CardGoal
+                    <CardChallenge
                         v-for="challenge in completedChallenges"
                         :key="challenge.id"
-                        :goal-instance="challenge"
+                        :challenge-instance="challenge"
                     />
                 </CardTemplate>
             </div>
