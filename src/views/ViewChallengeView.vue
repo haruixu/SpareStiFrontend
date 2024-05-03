@@ -112,14 +112,14 @@ const completeChallenge = () => {
                 <h2 class="font-light">
                     {{ challengeInstance.title }}
                 </h2>
-                <div class="flex flex-row gap-4 justify-center">
+                <div class="flex flex-col gap-4 justify-center">
                     <p class="text-wrap break-words">{{ challengeInstance.description }}</p>
-                    <div>
+                    <div class="flex justify-center items-center">
                         <img
                             v-if="isImageLoaded"
                             :src="challengeImageUrl || '@/assets/star.png'"
                             alt="Goal Image"
-                            class="w-full h-40 object-cover rounded-lg"
+                            class="w-44 h-44 object-cover rounded-lg"
                         />
                     </div>
                 </div>
@@ -134,24 +134,8 @@ const completeChallenge = () => {
                 <br />
                 <p>
                     Du sparer {{ challengeInstance.perPurchase }}kr hver gang du dropper å bruke
-                    penger på {{ challengeInstance.type }}
+                    penger på {{ challengeInstance.title }}
                 </p>
-                <div class="justify-center pl-20">
-                    <button
-                        class="primary danger mt-2 rounded-2xl p-2 w-40"
-                        @click="
-                            authInterceptor
-                                .delete(`/challenges/${challengeInstance.id}`)
-                                .then(() => router.push({ name: 'challenges' }))
-                                .catch((error) => console.error(error))
-                        "
-                    >
-                        Slett
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex flex-row justify-between w-full">
                 <button
                     class="primary secondary"
                     v-if="!isCompleted"
@@ -164,9 +148,19 @@ const completeChallenge = () => {
                 >
                     Rediger
                 </button>
-
                 <button
-                    class="primary"
+                    class="primary danger mt-2 rounded-2xl p-2"
+                    @click="
+                        authInterceptor
+                            .delete(`/challenges/${challengeInstance.id}`)
+                            .then(() => router.push({ name: 'challenges' }))
+                            .catch((error) => console.error(error))
+                    "
+                >
+                    Slett
+                </button>
+                <button
+                    class="primary mt-2"
                     v-if="!isCompleted"
                     @click="completeChallenge"
                     v-text="'Sett utfordring til ferdig'"
@@ -178,7 +172,7 @@ const completeChallenge = () => {
             :png-size="15"
             :imageDirection="'left'"
             :direction="'right'"
-            class="mb-5"
+            class="mb-5 w-96 h-96"
         ></SpareComponent>
     </div>
 </template>

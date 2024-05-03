@@ -8,8 +8,18 @@
                 'flex-row-reverse': imageDirection === 'left'
             }"
         >
-            <a @click="isModalOpen = true" class="hover:bg-transparent z-20">
+            <a
+                @click="isModalOpen = true"
+                class="hover:bg-transparent hover:p-0 hover:scale-105 z-20"
+            >
                 <img
+                    v-if="profilePicture && isMounted"
+                    alt="Spare"
+                    class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
+                    :src="profilePicture"
+                />
+                <img
+                    v-else
                     alt="Spare"
                     class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
                     src="@/assets/spare.png"
@@ -41,10 +51,14 @@
 
 <script setup lang="ts">
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
-import { defineProps, ref, watchEffect } from 'vue'
+import { defineProps, onMounted, ref, watchEffect } from 'vue'
 import ModalComponent from '@/components/ModalComponent.vue'
+import { useUserStore } from '@/stores/userStore'
 
+const userStore = useUserStore()
 const isModalOpen = ref(false)
+const profilePicture = ref<string>()
+const isMounted = ref(false)
 
 const props = defineProps({
     speech: Array<string>,
@@ -59,5 +73,11 @@ const props = defineProps({
 })
 watchEffect(() => {
     isModalOpen.value = props.show
+})
+
+onMounted(async () => {
+    await userStore.getProfilePicture()
+    profilePicture.value = userStore.profilePicture
+    isMounted.value = true
 })
 </script>

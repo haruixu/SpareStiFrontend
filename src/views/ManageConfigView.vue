@@ -159,12 +159,16 @@ onMounted(() => {
                     class="flex flex-row flex-wrap justify-center gap-5 border-2 p-4"
                 >
                     <input v-model="item.type" placeholder="Type" type="text" />
-                    <input v-model="item.specificAmount" placeholder="Pris per uke" type="number" />
-                    <input v-model="item.generalAmount" placeholder="Generell pris" type="number" />
+                    <input
+                        v-model="item.specificAmount"
+                        placeholder="Generell pris"
+                        type="number"
+                    />
+                    <input v-model="item.generalAmount" placeholder="Pris per uke" type="number" />
                     <button
                         class="primary danger w-min items-center"
                         @click="deleteChallengeType(item.type)"
-                        v-text="'x'"
+                        v-text="'Slett'"
                     />
                 </CardTemplate>
                 <button

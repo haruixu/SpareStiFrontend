@@ -17,19 +17,20 @@ const showNavBar = computed(() => {
 })
 
 const backgroundImageStyle = computed(() => {
-    if (showSti.value) {
+    if (dontShowSti.value) {
+        console.log(dontShowSti.value)
         return {
-            backgroundImage: "url('src/assets/sti.png')"
+            backgroundImage: 'none'
         }
     } else {
         return {
-            backgroundImage: 'none'
+            backgroundImage: "url('src/assets/sti.png')"
         }
     }
 })
 
-const showSti = computed(() => {
-    return !(
+const dontShowSti = computed(() => {
+    return (
         route.path == '/' ||
         route.path == '/registrer' ||
         route.path == '/logginn' ||
@@ -110,7 +111,7 @@ const helpMessages = computed(() => {
         messages.push(
             'Du kan også se hvor mye du har spart av utfordringen din, og hvor mye du har igjen'
         )
-    } else if (route.path.startsWith('/sparemaal/rediger')) {
+    } else if (route.path.startsWith('/sparemaal/rediger/ny')) {
         messages.push('Her kan du opprette et nytt sparemål 🌸')
         messages.push(
             'Tittel er navnet på sparemålet, og beskrivelse er en kort forklaring på hva sparemålet går ut på.'
@@ -120,7 +121,7 @@ const helpMessages = computed(() => {
         )
         messages.push('Forfallsdato er datoen du ønsker å ha nådd sparemålet ditt.')
         messages.push('Lykke til med sparingen! 🌴')
-    } else if (route.path.startsWith('/spareutfordring/rediger')) {
+    } else if (route.path.startsWith('/spareutfordringer/ny')) {
         messages.push('Her kan du opprette en ny utfordring ☕️')
         messages.push(
             'Tittel er navnet på utfordringen, og beskrivelse er en kort forklaring på hva utfordringen går ut på.'

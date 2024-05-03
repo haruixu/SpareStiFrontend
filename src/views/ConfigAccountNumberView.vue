@@ -6,6 +6,7 @@
             Legg til kontonummer for sparekonto og brukskonto
         </h1>
         <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+            <p class="text-sm font-bold mb-3 animate-bounce">Trykk på meg for hjelp ❗️</p>
             <SpareComponent
                 :speech="[
                     'Her skriver du inn kontonummer for sparekonto og brukskonto. 🪩',
@@ -17,7 +18,6 @@
                 :direction="'right'"
                 :imageDirection="'right'"
             ></SpareComponent>
-            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
         </div>
         <div
             class="flex flex-col items-center justify-center bg-white rounded-lg p-8 shadow-lg w-full md:w-[45%]"
@@ -49,6 +49,7 @@
                 />
             </div>
         </div>
+        <p class="mt-10">Husk at du kan endre dette senere!</p>
         <div class="absolute bottom-36 right-2">
             <ContinueButtonComponent
                 @click="onButtonClick"

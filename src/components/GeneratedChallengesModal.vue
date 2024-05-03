@@ -4,7 +4,7 @@
         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
     >
         <div class="relative bg-white pt-10 p-4 rounded-lg shadow-xl" style="width: 40rem">
-            <button @click="closeModal" class="absolute top-0 right-0 m-2 text-white">
+            <button @click="closeModal" class="absolute top-0 right-0 m-2 primary">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-6 w-6"
@@ -61,7 +61,7 @@
                             >
                             <button
                                 @click="acceptChallenge(challenge)"
-                                class="text-white font-bold py-1 px-4 mt-[-14px] sm:mt-0"
+                                class="font-bold py-1 px-4 mt-[-14px] sm:mt-0 primary"
                             >
                                 Godta
                             </button>
@@ -80,6 +80,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { AxiosResponse } from 'axios'
+import { useChallengeStore } from '@/stores/challengeStore'
 
 interface Challenge {
     title: string
@@ -94,6 +95,8 @@ interface Challenge {
 
 const showModal = ref(true)
 const generatedChallenges = reactive<Challenge[]>([])
+const emit = defineEmits(['update-challenges'])
+const challengeStore = useChallengeStore()
 
 async function fetchGeneratedChallenges() {
     try {
@@ -122,7 +125,7 @@ onMounted(() => {
     localStorage.setItem('lastModalShow', Date.now().toString())
 })
 
-function acceptChallenge(challenge: Challenge) {
+async function acceptChallenge(challenge: Challenge) {
     if (!challenge) {
         console.error('No challenge data provided to acceptChallenge function.')
         return
@@ -136,7 +139,7 @@ function acceptChallenge(challenge: Challenge) {
         due: challenge.dueFull,
         type: challenge.type
     }
-    authInterceptor
+    await authInterceptor
         .post('/challenges', postData)
         .then((response: AxiosResponse) => {
             challenge.isAccepted = true
@@ -144,6 +147,9 @@ function acceptChallenge(challenge: Challenge) {
         .catch((error) => {
             console.error('Failed to save challenge:', error)
         })
+    await challengeStore.getUserChallenges()
+    const challenges = challengeStore.challenges
+    emit('update-challenges', challenges)
 }
 
 const closeModal = () => {

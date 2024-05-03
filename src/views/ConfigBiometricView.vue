@@ -6,9 +6,11 @@
             <img alt="bioAuthTouch" class="w-40 h-40" src="@/assets/bioAuthTouch.png" />
             <img alt="bioAuthFace" class="w-40 h-40" src="@/assets/bioAuthFace.png" />
         </div>
-        <div class="flex flex-col gap-5">
-            <button @click="bioRegister">Legg til nå!</button>
-            <button @click="router.push({ name: 'configurations1' })">Jeg gjør det senere</button>
+        <div class="flex flex-col gap-6">
+            <button class="font-bold mt-10" @click="bioRegister">Legg til nå!</button>
+            <button class="font-bold" @click="router.push({ name: 'configurations1' })">
+                Jeg gjør det senere
+            </button>
         </div>
     </div>
 </template>
