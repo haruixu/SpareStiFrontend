@@ -93,7 +93,13 @@ const toggleOption = (option: string) => {
 const isFormValid = computed(() => {
     const predefinedSelected = selectedOptions.value.length > 0
     const customFilled = customOptions.value.some((option) => option.trim() !== '')
-    return predefinedSelected || customFilled
+    const allOptions = [
+        ...selectedOptions.value,
+        ...customOptions.value.filter((option) => option.trim() !== '')
+    ]
+    const uniqueOptions = new Set(allOptions)
+    const hasDuplicates = uniqueOptions.size < allOptions.length
+    return (predefinedSelected || customFilled) && !hasDuplicates
 })
 
 const onButtonClick = () => {
