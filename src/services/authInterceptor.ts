@@ -4,7 +4,7 @@ import router from '@/router'
 import { useUserStore } from '@/stores/userStore'
 
 const authInterceptor = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://129.241.98.22:8080',
     headers: {
         'Content-Type': 'application/json'
     }

@@ -93,7 +93,7 @@ const resetPassword = async () => {
 
     // Send request to backend to reset password
     try {
-        await axios.post('http://localhost:8080/forgotPassword/resetPassword', {
+        await axios.post('http://129.241.98.22:8080/forgotPassword/resetPassword', {
             resetID: resetID.value, // Reset ID
             userID: userID.value, // User ID
             newPassword: newPassword.value // New password

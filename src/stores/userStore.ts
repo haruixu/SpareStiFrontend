@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', () => {
         password: string
     ) => {
         await axios
-            .post(`http://localhost:8080/auth/register`, {
+            .post(`http://129.241.98.22:8080/auth/register`, {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', () => {
     // Function to log in a user
     const login = (username: string, password: string) => {
         axios
-            .post(`http://localhost:8080/auth/login`, {
+            .post(`http://129.241.98.22:8080/auth/login`, {
                 username: username,
                 password: password
             })
@@ -195,7 +195,7 @@ export const useUserStore = defineStore('user', () => {
     // Method to login using biometric data
     const bioLogin = (username: string) => {
         axios
-            .post(`http://localhost:8080/auth/bioLogin/${username}`)
+            .post(`http://129.241.98.22:8080/auth/bioLogin/${username}`)
             .then((request) => {
                 initialCheckStatus(request)
 
@@ -241,7 +241,7 @@ export const useUserStore = defineStore('user', () => {
                     clientExtensionResults: publicKeyCredential.getClientExtensionResults()
                 }
 
-                return axios.post(`http://localhost:8080/auth/finishBioLogin/${username}`, {
+                return axios.post(`http://129.241.98.22:8080/auth/finishBioLogin/${username}`, {
                     credential: JSON.stringify(encodedResult)
                 })
             })
