@@ -5,6 +5,7 @@ import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import ModalComponent from '@/components/ModalComponent.vue'
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
 const router = useRouter()
 const uploadedFile: Ref<File | null> = ref(null)
@@ -245,29 +246,29 @@ const removeUploadedFile = () => {
                     />
                 </div>
                 <div class="flex flex-col items-center">
-                    <p>Last opp ikon for utfordringen📸</p>
-                    <label
-                        for="fileUpload"
-                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
-                    >
-                        💾
-                    </label>
-                    <input
-                        id="fileUpload"
-                        type="file"
-                        accept=".jpg"
-                        hidden
-                        @change="handleFileChange"
-                    />
-                    <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
-                        <p class="text-sm">{{ uploadedFile.name }}</p>
-                        <button
-                            @click="removeUploadedFile"
-                            class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                        <p>Last opp ikon for utfordringen📸</p>
+                        <label
+                            for="fileUpload"
+                            class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
                         >
-                            Fjern fil
-                        </button>
-                    </div>
+                            Legg til 💾
+                        </label>
+                        <input
+                            id="fileUpload"
+                            type="file"
+                            accept=".jpg, .png"
+                            hidden
+                            @change="handleFileChange"
+                        />
+                        <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
+                            <p class="text-sm">{{ uploadedFile.name }}</p>
+                            <button
+                                @click="removeUploadedFile"
+                                class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                            >
+                                Fjern fil
+                            </button>
+                        </div>
                 </div>
             </div>
 
@@ -312,14 +313,11 @@ const removeUploadedFile = () => {
                 </ModalComponent>
             </div>
             <div
-                class="lg:absolute right-5 lg:top-1/4 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+            class="lg:absolute right-5 lg:top-1/3 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
             >
                 <InteractiveSpare
                     :png-size="10"
-                    :speech="[
-                        'Her kan du lage et sparemål! 💎',
-                        `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
-                    ]"
+                    :speech="[`Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
                     direction="left"
                 />
             </div>
