@@ -101,6 +101,7 @@ const editChallenge = (challenge: Challenge) => {
     router.push(`/spareutfordringer/rediger/${challenge.id}`)
 }
 
+// Fetch the challenge icon
 const getChallengeIcon = async (challengeId: number) => {
     try {
         const imageResponse = await authInterceptor.get(`/challenges/picture?id=${challengeId}`, {
@@ -112,6 +113,7 @@ const getChallengeIcon = async (challengeId: number) => {
     }
 }
 
+// Fetch the challenge icon on component mount
 onMounted(() => {
     if (props.challenge?.id) {
         getChallengeIcon(props.challenge.id)

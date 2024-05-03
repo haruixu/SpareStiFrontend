@@ -16,7 +16,9 @@ const props = defineProps({
 })
 
 const goalInstance = props.goalInstance
+// Slice the date to remove the time and format it
 const displayDate = computed(() => goalInstance.due?.slice(0, 16).split('T').join(' '))
+// Check if the goal is completed
 const isCompleted = computed(() => goalInstance.completedOn != null)
 
 const handleCardClick = () => {

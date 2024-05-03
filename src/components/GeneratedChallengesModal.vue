@@ -98,6 +98,7 @@ const generatedChallenges = reactive<Challenge[]>([])
 const emit = defineEmits(['update-challenges'])
 const challengeStore = useChallengeStore()
 
+// Fetch generated challenges from the backend
 async function fetchGeneratedChallenges() {
     try {
         const response: AxiosResponse = await authInterceptor.get('/challenges/generate')
@@ -120,11 +121,13 @@ async function fetchGeneratedChallenges() {
     }
 }
 
+// Fetch generated challenges on component mount
 onMounted(() => {
     fetchGeneratedChallenges()
     localStorage.setItem('lastModalShow', Date.now().toString())
 })
 
+// Accept a challenge
 async function acceptChallenge(challenge: Challenge) {
     if (!challenge) {
         console.error('No challenge data provided to acceptChallenge function.')
