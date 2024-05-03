@@ -3,10 +3,13 @@ import NavBarComponent from '@/components/NavBarComponent.vue'
 import { RouterView, useRoute } from 'vue-router'
 import { computed } from 'vue'
 import HelpComponent from '@/components/HelpComponent.vue'
+import Sti from '@/assets/sti.png'
 
 const route = useRoute()
 
+// Check if the navbar should be shown and return the paths that should not have the navbar
 const showNavBar = computed(() => {
+    // Check if the route is the home page, login page, registration page, forgot password page or configuration page
     return !(
         route.path == '/' ||
         route.path == '/registrer' ||
@@ -16,31 +19,33 @@ const showNavBar = computed(() => {
     )
 })
 
+// Background image for the sti component
 const backgroundImageStyle = computed(() => {
-    if (showSti.value) {
+    if (dontShowSti.value) {
         return {
-            backgroundImage: "url('src/assets/sti.png')"
+            backgroundImage: 'none'
         }
     } else {
         return {
-            backgroundImage: 'none'
+            backgroundImage: `url(${Sti})`
         }
     }
 })
 
-const showSti = computed(() => {
-    return !(
+// Check if the sti component should be shown and return the paths that should have the sti component
+const dontShowSti = computed(() => {
+    return (
         route.path == '/' ||
         route.path == '/registrer' ||
         route.path == '/logginn' ||
         route.path == '/forgotPassword' ||
         route.path.startsWith('/konfigurasjon') ||
         route.path == '/hjem' ||
-        route.path == '/profil' ||
         route.path.startsWith('/loggin')
     )
 })
 
+// Check if the help component should be shown and return the paths that should not have the help component
 const showHelp = computed(() => {
     return !(
         route.path == '/' ||
@@ -51,7 +56,9 @@ const showHelp = computed(() => {
     )
 })
 
+// Help messages for the help component
 const helpMessages = computed(() => {
+    // Check the path and return the help messages for the specific path
     let messages = []
 
     if (route.path == '/hjem') {
@@ -110,7 +117,7 @@ const helpMessages = computed(() => {
         messages.push(
             'Du kan også se hvor mye du har spart av utfordringen din, og hvor mye du har igjen'
         )
-    } else if (route.path.startsWith('/sparemaal/rediger')) {
+    } else if (route.path.startsWith('/sparemaal/rediger/ny')) {
         messages.push('Her kan du opprette et nytt sparemål 🌸')
         messages.push(
             'Tittel er navnet på sparemålet, og beskrivelse er en kort forklaring på hva sparemålet går ut på.'
@@ -120,7 +127,7 @@ const helpMessages = computed(() => {
         )
         messages.push('Forfallsdato er datoen du ønsker å ha nådd sparemålet ditt.')
         messages.push('Lykke til med sparingen! 🌴')
-    } else if (route.path.startsWith('/spareutfordring/rediger')) {
+    } else if (route.path.startsWith('/spareutfordringer/ny')) {
         messages.push('Her kan du opprette en ny utfordring ☕️')
         messages.push(
             'Tittel er navnet på utfordringen, og beskrivelse er en kort forklaring på hva utfordringen går ut på.'

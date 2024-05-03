@@ -13,7 +13,8 @@
 
     --accent1: #f4bab9;
     --accent2: #95e35d;
-    --accent3: #ef9691;
+    --accent3: #fac6c3;
+    --accent4: #a41c14;
 }
 
 :root {
@@ -27,7 +28,7 @@
     --color-button-danger: var(--accent3);
     --color-button-danger-hover: var(--accent1);
 
-    --color-link: var(--accent3);
+    --color-link: var(--accent4);
     --color-border: var(--black);
 
     --section-gap: 160px;

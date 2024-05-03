@@ -1,59 +1,63 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
-            Hvor kjent er du med sparing fra før?
-        </h1>
-        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
-            <SpareComponent
-                :speech="[
-                    'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡'
-                ]"
-                :png-size="10"
-                :direction="'right'"
-                :imageDirection="'right'"
-            ></SpareComponent>
-            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
-        </div>
-        <div class="grid grid-cols-1 gap-8 mb-16 sm:gap-14 sm:mb-20 md:grid-cols-3">
-            <div
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center gap-5">
+        <h1 class="text-2xl font-bold sm:text-4xl">Hvor kjent er du med sparing fra før?</h1>
+        <div class="grid grid-cols-1 gap-8 sm:gap-14 md:grid-cols-3">
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
                     'border-gray-300 border-2': selectedOption !== 'litt'
                 }"
-                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-32 h-32 p-2 sm:w-60 sm:h-60 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('litt')"
             >
                 <img src="@/assets/nose.png" alt="Pig nose" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-lg font-bold">Litt kjent</p>
-            </div>
-            <div
+                <span class="mt-2 text-lg font-bold">Litt kjent</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'noe',
                     'border-gray-300 border-2': selectedOption !== 'noe'
                 }"
-                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-32 h-32 p-2 sm:w-60 sm:h-60 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('noe')"
             >
                 <img src="@/assets/head.png" alt="Pig face" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-lg font-bold">Noe kjent</p>
-            </div>
-            <div
+                <span class="mt-2 text-lg font-bold">Noe kjent</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'godt',
                     'border-gray-300 border-2': selectedOption !== 'godt'
                 }"
-                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-32 h-32 p-2 sm:w-60 sm:h-60 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('godt')"
             >
                 <img src="@/assets/pig.png" alt="Whole pig" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-lg font-bold">Godt kjent</p>
+                <span class="mt-2 text-lg font-bold">Godt kjent</span>
+            </button>
+        </div>
+        <div class="flex flex-row flex-wrap justify-center gap-x-52 gap-y-5">
+            <div class="flex flex-col">
+                <SpareComponent
+                    :direction="'right'"
+                    :imageDirection="'right'"
+                    :png-size="10"
+                    :speech="[
+                        'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡'
+                    ]"
+                    class="w-60"
+                ></SpareComponent>
+                <p class="text-xs animate-bounce">Trykk på meg for hjelp ❗️</p>
+            </div>
+            <div class="flex flex-col">
+                <p>Husk at du kan endre dette senere!</p>
+                <ContinueButtonComponent
+                    :disabled="selectedOption === null"
+                    class="px-10 py-3 text-2xl"
+                    @click="onButtonClick"
+                />
             </div>
         </div>
-        <ContinueButtonComponent
-            :disabled="selectedOption === null"
-            @click="onButtonClick"
-            class="px-10 py-3 text-2xl self-end"
-        ></ContinueButtonComponent>
     </div>
 </template>
 
@@ -67,6 +71,7 @@ import SpareComponent from '@/components/SpareComponent.vue'
 const selectedOption = ref<string | null>(null)
 const userConfigStore = useUserConfigStore()
 
+// Set experience value based on selected option
 const selectOption = (option: string) => {
     selectedOption.value = option
     let experienceValue = ''
@@ -86,6 +91,7 @@ const selectOption = (option: string) => {
     userConfigStore.setExperience(experienceValue)
 }
 
+// Navigate to next configuration page if option is selected
 const onButtonClick = () => {
     if (selectedOption.value) {
         router.push({ name: 'configurations3' })

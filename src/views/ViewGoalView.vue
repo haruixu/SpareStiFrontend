@@ -11,6 +11,7 @@ const router = useRouter()
 const goalImageUrl = ref(starImage)
 const isImageLoaded = ref(false)
 
+// Goal object
 const goalInstance = ref<Goal>({
     title: 'Test tittel',
     saved: 0,
@@ -24,6 +25,7 @@ const isCompleted = computed(() => goalInstance.value.completedOn != null)
 
 const motivation = ref<string[]>([])
 
+// Function to calculate the speech for the spare component based on the completion of the goal
 const calculateSpeech = () => {
     if (completion.value === 0) {
         return motivation.value.push(
@@ -48,6 +50,7 @@ const calculateSpeech = () => {
     }
 }
 
+// Get goal details, image and calculate speech
 onMounted(async () => {
     const goalId = router.currentRoute.value.params.id
     if (!goalId) return router.push({ name: 'goals' })
@@ -72,6 +75,7 @@ onMounted(async () => {
     }
 })
 
+// Function to mark the goal as completed
 const completeGoal = () => {
     authInterceptor
         .put(`/goals/${goalInstance.value.id}/complete`)
@@ -101,14 +105,14 @@ const completeGoal = () => {
                 <h2 class="font-light">
                     {{ goalInstance.title }}
                 </h2>
-                <div class="flex flex-row gap-4 justify-center">
+                <div class="flex flex-col gap-4 justify-center">
                     <p class="text-wrap break-words">{{ goalInstance.description }}</p>
-                    <div>
+                    <div class="flex justify-center items-center">
                         <img
                             v-if="isImageLoaded"
                             :src="goalImageUrl || '@/assets/star.png'"
                             alt="Goal Image"
-                            class="w-full h-40 object-cover rounded-lg"
+                            class="w-44 h-44 object-cover rounded-lg"
                         />
                     </div>
                 </div>
@@ -153,7 +157,7 @@ const completeGoal = () => {
             :png-size="15"
             :imageDirection="'left'"
             :direction="'right'"
-            class="mb-5"
+            class="mb-5 w-96 h-96"
         ></SpareComponent>
     </div>
 </template>

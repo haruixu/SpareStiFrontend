@@ -11,6 +11,7 @@ import { base64urlToUint8array, initialCheckStatus, uint8arrayToBase64url } from
 import type { CredentialCreationOptions } from '@/types/CredentialCreationOptions'
 
 export const useUserStore = defineStore('user', () => {
+    // Reactive state to hold the user information
     const user = ref<User>({
         firstName: '',
         lastName: '',
@@ -19,7 +20,9 @@ export const useUserStore = defineStore('user', () => {
     })
     const errorMessage = ref<string>('')
     const streak = ref<Streak>()
+    const profilePicture = ref<string>('')
 
+    // Function to register a new user
     const register = async (
         firstName: string,
         lastName: string,
@@ -36,8 +39,10 @@ export const useUserStore = defineStore('user', () => {
                 password: password
             })
             .then((response) => {
+                // Save access token in session storage
                 sessionStorage.setItem('accessToken', response.data.accessToken)
 
+                // Update user information
                 user.value.firstName = firstName
                 user.value.lastName = lastName
                 user.value.username = username
@@ -50,6 +55,7 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
+    // Function to log in a user
     const login = (username: string, password: string) => {
         axios
             .post(`http://localhost:8080/auth/login`, {
@@ -66,11 +72,13 @@ export const useUserStore = defineStore('user', () => {
                 return authInterceptor('/profile')
             })
             .then((profileResponse) => {
+                // Check if the user has a passkey and store spare username if needed
                 if (profileResponse.data.hasPasskey === true) {
                     localStorage.setItem('spareStiUsername', username)
                 } else {
                     localStorage.removeItem('spareStiUsername')
                 }
+                // Check if the user is configured and redirect accordingly
                 return checkIfUserConfigured()
             })
             .then(() => {
@@ -84,10 +92,13 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
+    // Method to log out a user
     const logout = () => {
+        // Remove access token and spare username from storage
         sessionStorage.removeItem('accessToken')
         localStorage.removeItem('spareStiUsername')
 
+        // Clear user information
         user.value.firstName = ''
         user.value.lastName = ''
         user.value.username = ''
@@ -96,6 +107,7 @@ export const useUserStore = defineStore('user', () => {
         router.push({ name: 'login' })
     }
 
+    // Method to retrieve user's streak
     const getUserStreak = () => {
         authInterceptor('/profile/streak')
             .then((response) => {
@@ -107,14 +119,19 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
-    const bioRegister = async () => {
-        authInterceptor
+    // Method to register biometric data
+    const bioRegister = async (): Promise<boolean | null> => {
+        // Send biometric registration request to the server
+        let response = null
+        await authInterceptor
             .post('/auth/bioRegistration')
             .then((response) => {
                 initialCheckStatus(response)
 
+                // Process credential creation options
                 const credentialCreateJson: CredentialCreationOptions = response.data
 
+                // Transform credential creation options
                 const credentialCreateOptions: CredentialCreationOptions = {
                     publicKey: {
                         ...credentialCreateJson.publicKey,
@@ -137,11 +154,13 @@ export const useUserStore = defineStore('user', () => {
                     }
                 }
 
+                // Create credential using browser's credentials API
                 return navigator.credentials.create(
                     credentialCreateOptions
                 ) as Promise<PublicKeyCredential>
             })
             .then((publicKeyCredential) => {
+                // Process the created credential
                 const publicKeyResponse =
                     publicKeyCredential.response as AuthenticatorAttestationResponse
                 const encodedResult = {
@@ -157,18 +176,23 @@ export const useUserStore = defineStore('user', () => {
                     clientExtensionResults: publicKeyCredential.getClientExtensionResults()
                 }
 
+                // Send encoded result to complete biometric registration
                 return authInterceptor.post('/auth/finishBioRegistration', {
                     credential: JSON.stringify(encodedResult)
                 })
             })
             .then(() => {
                 localStorage.setItem('spareStiUsername', user.value.username)
+                response = true
             })
             .catch((error) => {
                 console.error(error)
+                response = false
             })
+        return response
     }
 
+    // Method to login using biometric data
     const bioLogin = (username: string) => {
         axios
             .post(`http://localhost:8080/auth/bioLogin/${username}`)
@@ -235,6 +259,7 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
+    // Method to check if the user is configured
     const checkIfUserConfigured = async () => {
         await authInterceptor('/config')
             .then((response) => {
@@ -245,6 +270,39 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
+    // Method to upload user's profile picture
+    const uploadProfilePicture = async (formData: FormData) => {
+        try {
+            const response = await authInterceptor.post('/profile/picture', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            console.log('Upload successful:', response.data)
+        } catch (error: any) {
+            console.error('Failed to upload profile picture:', error.response.data)
+        }
+    }
+
+    // Method to retrieve user's profile picture
+    const getProfilePicture = async () => {
+        try {
+            const imageResponse = await authInterceptor.get('/profile/picture', {
+                responseType: 'blob'
+            })
+            // Ensure the response is indeed an image
+            if (imageResponse.data.type.startsWith('image/')) {
+                profilePicture.value = URL.createObjectURL(imageResponse.data)
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
+                console.error('No profile picture found:', error.response.data)
+            } else {
+                console.error('Error fetching profile picture:', error)
+            }
+            profilePicture.value = ''
+        }
+    }
+
+    // Return the variables and methods to be used by components
     return {
         user,
         checkIfUserConfigured,
@@ -255,6 +313,9 @@ export const useUserStore = defineStore('user', () => {
         bioRegister,
         errorMessage,
         getUserStreak,
-        streak
+        streak,
+        uploadProfilePicture,
+        getProfilePicture,
+        profilePicture
     }
 })

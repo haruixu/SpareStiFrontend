@@ -5,6 +5,7 @@ import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import ModalComponent from '@/components/ModalComponent.vue'
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
 const router = useRouter()
 const uploadedFile: Ref<File | null> = ref(null)
@@ -17,6 +18,7 @@ const modalTitle = ref<string>('')
 const errorModalOpen = ref<boolean>(false)
 const confirmModalOpen = ref<boolean>(false)
 
+// Goal instance
 const goalInstance = ref<Goal>({
     title: '',
     saved: 0,
@@ -25,19 +27,24 @@ const goalInstance = ref<Goal>({
     due: ''
 })
 
+// Watch for changes in the selected date
 watch(selectedDate, (newDate) => {
     goalInstance.value.due = newDate
 })
 
+// Computed properties
 const isEdit = computed(() => router.currentRoute.value.name === 'edit-goal')
 const pageTitle = computed(() => (isEdit.value ? 'Rediger sparemål🎨' : 'Nytt sparemål🎨'))
 const submitButton = computed(() => (isEdit.value ? 'Oppdater' : 'Opprett'))
 const completion = computed(() => (goalInstance.value.saved / goalInstance.value.target) * 100)
 
+// Function to validate the inputs
 function validateInputs() {
     const errors = []
 
     goalInstance.value.due = selectedDate.value + 'T23:59:59.999Z'
+    goalInstance.value.saved = parseInt(goalInstance.value.saved.toString())
+    goalInstance.value.target = parseInt(goalInstance.value.target.toString())
 
     if (!goalInstance.value.title) {
         errors.push('Tittel må fylles ut')
@@ -64,8 +71,11 @@ function validateInputs() {
     return errors
 }
 
+// Function to submit the goal
 const submitAction = async () => {
     const errors = validateInputs()
+
+    // Handle the errors
     if (errors.length > 0) {
         const formatErrors = errors.join('<br>')
         modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'
@@ -104,10 +114,7 @@ const submitAction = async () => {
     }
 }
 
-watch(selectedDate, (newDate) => {
-    console.log(newDate)
-})
-
+// Fetch the goal on mounted
 onMounted(async () => {
     if (isEdit.value) {
         const goalId = router.currentRoute.value.params.id
@@ -127,6 +134,7 @@ onMounted(async () => {
     }
 })
 
+// Function to create a goal
 const createGoal = async (): Promise<any> => {
     try {
         const response = await authInterceptor.post('/goals', goalInstance.value)
@@ -137,6 +145,7 @@ const createGoal = async (): Promise<any> => {
     }
 }
 
+// Function to update a goal
 const updateGoal = async (): Promise<any> => {
     try {
         const response = await authInterceptor.put(
@@ -150,6 +159,7 @@ const updateGoal = async (): Promise<any> => {
     }
 }
 
+// Function to delete a goal
 const deleteGoal = () => {
     authInterceptor
         .delete(`/goals/${goalInstance.value.id}`)
@@ -161,6 +171,7 @@ const deleteGoal = () => {
         })
 }
 
+// Function to cancel the creation
 function cancelCreation() {
     if (
         goalInstance.value.title !== '' ||
@@ -176,11 +187,13 @@ function cancelCreation() {
     }
 }
 
+// Function to confirm the cancel
 const confirmCancel = () => {
     router.push({ name: 'goals' })
     confirmModalOpen.value = false
 }
 
+// Function to handle file change
 const handleFileChange = (event: Event) => {
     const target = event.target as HTMLInputElement
     if (target.files && target.files.length > 0) {
@@ -190,26 +203,10 @@ const handleFileChange = (event: Event) => {
     }
 }
 
+// Function to remove the uploaded file
 const removeUploadedFile = () => {
     uploadedFile.value = null
 }
-
-onMounted(async () => {
-    if (isEdit.value) {
-        const goalId = router.currentRoute.value.params.id
-        if (!goalId) return router.push({ name: 'goals' })
-
-        await authInterceptor(`/goals/${goalId}`)
-            .then((response) => {
-                goalInstance.value = response.data
-                selectedDate.value = response.data.due.slice(0, 16)
-            })
-            .catch((error) => {
-                console.error(error)
-                router.push({ name: 'goals' })
-            })
-    }
-})
 </script>
 
 <template>
@@ -267,14 +264,14 @@ onMounted(async () => {
                     <p>Last opp ikon for utfordringen📸</p>
                     <label
                         for="fileUpload"
-                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
+                        class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
                     >
-                        💾
+                        Legg til 💾
                     </label>
                     <input
                         id="fileUpload"
                         type="file"
-                        accept=".jpg"
+                        accept=".jpg, .png"
                         hidden
                         @change="handleFileChange"
                     />
@@ -327,6 +324,15 @@ onMounted(async () => {
                     <button class="primary danger" @click="confirmModalOpen = false">Avbryt</button>
                 </template>
             </ModalComponent>
+        </div>
+        <div
+            class="lg:absolute right-5 lg:top-1/3 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+        >
+            <InteractiveSpare
+                :png-size="10"
+                :speech="[`Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
+                direction="left"
+            />
         </div>
     </div>
 </template>

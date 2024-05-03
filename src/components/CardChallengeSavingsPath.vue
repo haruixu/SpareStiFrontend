@@ -1,7 +1,7 @@
 <template>
     <!-- Challenge Icon and Details -->
     <div
-        v-if="challenge"
+        v-if="challenge && isMounted"
         class="flex items-center justify-center shadow-black min-w-24 w-full h-auto md:max-h-full min-h-24 max-w-32 max-h-32 md:min-h-32 md:min-w-32 md:max-w-48 overflow-hidden"
     >
         <!-- Challenge Icon -->
@@ -9,7 +9,7 @@
             <div class="flex flex-col flex-nowrap self-center">
                 <!-- Check Icon -->
                 <div
-                    v-if="challenge.completion !== undefined && challenge.completion >= 100"
+                    v-if="challenge.completedOn !== null"
                     class="min-w-6 min-h-6 max-w-6 max-h-6 md:min-h-8 md:max-h-8 md:min-w-8 md:max-w-8 ml-20 md:ml-32 p-1 basis-1/4 self-end"
                 >
                     <img src="@/assets/completed.png" alt="" />️
@@ -33,19 +33,16 @@
                 @click="editChallenge(challenge)"
                 :data-cy="'challenge-icon-' + challenge.id"
                 :src="challengeImageUrl"
-                class="max-w-12 max-h-12 md:max-h-8 md:max-w-8 lg:max-w-10 lg:max-h-10 cursor-pointer hover:scale-125 rounded-sm"
+                class="max-w-8 max-h-12 md:max-h-8 md:max-w-8 lg:max-w-10 lg:max-h-10 cursor-pointer hover:scale-125 rounded-sm"
                 :alt="challenge.title"
             />
             <!-- Progress Bar, if the challenge is not complete -->
-            <div
-                v-if="challenge.completion != undefined && challenge.completion < 100"
-                class="flex-grow w-full mt-2"
-            >
+            <div v-if="challenge.completedOn === null" class="flex-grow w-full mt-2">
                 <div class="flex flex-row ml-5 md:ml-10 justify-center">
                     <div class="flex flex-col">
                         <div class="bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                             <div
-                                class="bg-green-600 h-2.5 rounded-full"
+                                class="bg-lime-400 h-2.5 rounded-full"
                                 data-cy="challenge-progress"
                                 :style="{
                                     width: (challenge.saved / challenge.target) * 100 + '%'
@@ -55,16 +52,15 @@
                         <div class="text-center text-nowrap text-xs md:text-base">
                             {{ challenge.saved }}kr / {{ challenge.target }}kr
                         </div>
+                        <button
+                            @click="incrementSaved(challenge)"
+                            :data-cy="'increment-challenge'"
+                            type="button"
+                            class="primary text-xs ml-2 z-10 relative"
+                        >
+                            + {{ challenge.perPurchase }}kr på {{ challenge.title }}
+                        </button>
                     </div>
-
-                    <button
-                        @click="incrementSaved(challenge)"
-                        :data-cy="'increment-challenge' + challenge.id"
-                        type="button"
-                        class="inline-block mb-2 ml-2 h-7 w-8 rounded-full p-1 uppercase leading-normal transition duration-150 ease-in-out focus:bg-green-accent-300 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-green-600 active:shadow-green-200 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                    >
-                        +
-                    </button>
                 </div>
             </div>
             <span v-else class="text-center text-xs md:text-base"
@@ -85,11 +81,9 @@ const challengeStore = useChallengeStore()
 const challengeImageUrl = ref('/src/assets/star.png') // Default or placeholder image
 const props = defineProps<{ challenge: Challenge }>()
 
-interface Props {
-    challenge: Challenge
-}
-
 const emit = defineEmits(['update-challenge', 'complete-challenge'])
+
+const isMounted = ref(false)
 
 // Increment saved amount
 // In your incrementSaved function in the child component
@@ -98,8 +92,6 @@ const incrementSaved = async (challenge: Challenge) => {
     // Trigger the update in the store
 
     const updatedChallenge = (await challengeStore.editUserChallenge(challenge)) as Challenge
-
-    console.log('updated challenge in child: ', updatedChallenge)
 
     // Emit an event to inform the parent component of the update
     emit('update-challenge', updatedChallenge)
@@ -116,7 +108,6 @@ const getChallengeIcon = async (challengeId: number) => {
         })
         challengeImageUrl.value = URL.createObjectURL(imageResponse.data)
     } catch (error) {
-        console.error('Failed to load challenge icon:', error)
         challengeImageUrl.value = '/src/assets/star.png' // Fallback on error
     }
 }
@@ -127,5 +118,6 @@ onMounted(() => {
     } else {
         console.error('Challenge id is undefined')
     }
+    isMounted.value = true
 })
 </script>

@@ -16,6 +16,7 @@ const totalPagesCompleted = ref(1)
 const activeChallenges = ref<Challenge[]>([])
 const completedChallenges = ref<Challenge[]>([])
 
+// Function to get active challenges
 const getActiveChallenges = async (newPage: number) => {
     await authInterceptor(`/challenges/active?page=${newPage}&size=5`)
         .then((response) => {
@@ -28,6 +29,7 @@ const getActiveChallenges = async (newPage: number) => {
         })
 }
 
+// Function to get completed challenges
 const getCompletedChallenges = async (newPage: number) => {
     await authInterceptor(`/challenges/completed?page=${newPage}&size=5`)
         .then((response) => {
@@ -40,6 +42,7 @@ const getCompletedChallenges = async (newPage: number) => {
         })
 }
 
+// Get active and completed challenges
 onMounted(async () => {
     await getActiveChallenges(currentPageActive.value)
     await getCompletedChallenges(currentPageActive.value)
@@ -50,7 +53,11 @@ onMounted(async () => {
     <h1 class="font-bold text-center">Dine utfordringer</h1>
     <div class="flex flex-col gap-5 items-center">
         <div class="flex flex-row gap-5">
-            <button class="primary" @click="router.push({ name: 'new-challenge' })">
+            <button
+                class="primary"
+                data-cy="create-challenge"
+                @click="router.push({ name: 'new-challenge' })"
+            >
                 Opprett en ny utfordring
             </button>
         </div>
@@ -62,7 +69,7 @@ onMounted(async () => {
                 :key="challenge.id"
                 :challenge-instance="challenge"
             />
-            <p v-if="!activeChallenges">Du har ingen aktive spareutfordringer😢</p>
+            <p v-if="activeChallenges.length == 0">Du har ingen aktive spareutfordringer😢</p>
         </div>
         <PageControl
             :currentPage="currentPageActive"
@@ -78,6 +85,7 @@ onMounted(async () => {
                 :key="challenge.id"
                 :challenge-instance="challenge"
             />
+            <p v-if="completedChallenges.length == 0">Du har ingen fullførte spareutfordringer😢</p>
         </div>
         <PageControl
             :currentPage="currentPageCompleted"
