@@ -246,29 +246,29 @@ const removeUploadedFile = () => {
                     />
                 </div>
                 <div class="flex flex-col items-center">
-                        <p>Last opp ikon for utfordringen📸</p>
-                        <label
-                            for="fileUpload"
-                            class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
+                    <p>Last opp ikon for utfordringen📸</p>
+                    <label
+                        for="fileUpload"
+                        class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
+                    >
+                        Legg til 💾
+                    </label>
+                    <input
+                        id="fileUpload"
+                        type="file"
+                        accept=".jpg, .png"
+                        hidden
+                        @change="handleFileChange"
+                    />
+                    <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
+                        <p class="text-sm">{{ uploadedFile.name }}</p>
+                        <button
+                            @click="removeUploadedFile"
+                            class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
                         >
-                            Legg til 💾
-                        </label>
-                        <input
-                            id="fileUpload"
-                            type="file"
-                            accept=".jpg, .png"
-                            hidden
-                            @change="handleFileChange"
-                        />
-                        <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
-                            <p class="text-sm">{{ uploadedFile.name }}</p>
-                            <button
-                                @click="removeUploadedFile"
-                                class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
-                            >
-                                Fjern fil
-                            </button>
-                        </div>
+                            Fjern fil
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -298,30 +298,28 @@ const removeUploadedFile = () => {
                 </template>
             </ModalComponent>
 
-                <ModalComponent
-                    :title="modalTitle"
-                    :message="modalMessage"
-                    :isModalOpen="confirmModalOpen"
-                    @close="confirmModalOpen = false"
-                >
-                    <template v-slot:buttons>
-                        <button class="primary" @click="confirmCancel">Bekreft</button>
-                        <button class="primary danger" @click="confirmModalOpen = false">
-                            Avbryt
-                        </button>
-                    </template>
-                </ModalComponent>
-            </div>
-            <div
-            class="lg:absolute right-5 lg:top-1/3 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+            <ModalComponent
+                :title="modalTitle"
+                :message="modalMessage"
+                :isModalOpen="confirmModalOpen"
+                @close="confirmModalOpen = false"
             >
-                <InteractiveSpare
-                    :png-size="10"
-                    :speech="[`Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
-                    direction="left"
-                />
-            </div>
+                <template v-slot:buttons>
+                    <button class="primary" @click="confirmCancel">Bekreft</button>
+                    <button class="primary danger" @click="confirmModalOpen = false">Avbryt</button>
+                </template>
+            </ModalComponent>
         </div>
+        <div
+            class="lg:absolute right-5 lg:top-1/3 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+        >
+            <InteractiveSpare
+                :png-size="10"
+                :speech="[`Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`]"
+                direction="left"
+            />
+        </div>
+    </div>
 </template>
 
 <style scoped>

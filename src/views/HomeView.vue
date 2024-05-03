@@ -122,7 +122,6 @@ const SpareSpeech = () => {
     ]
 }
 
-
 const handleCompletedChallenge = async () => {
     updateUser()
 }
