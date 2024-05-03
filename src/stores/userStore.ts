@@ -21,6 +21,7 @@ export const useUserStore = defineStore('user', () => {
     const user = ref<User>(defaultUser)
     const errorMessage = ref<string>('')
     const streak = ref<Streak>()
+    const profilePicture = ref<string>('')
 
     const register = async (
         firstname: string,
@@ -246,6 +247,27 @@ export const useUserStore = defineStore('user', () => {
                 user.value.isConfigured = false
             })
     }
+    // Inside your store or component methods
+    const uploadProfilePicture = async (formData: FormData) => {
+        try {
+            const response = await authInterceptor.post('/profile/picture', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            console.log('Upload successful:', response.data);
+        } catch (error: any) {
+            console.error('Failed to upload profile picture:', error.response.data);
+        }
+    };
+
+    const getProfilePicture = async () => {
+        try {
+            const imageResponse = await authInterceptor.get('/profile/picture', { responseType: 'blob' });
+            profilePicture.value = URL.createObjectURL(imageResponse.data);
+        } catch (error: any) {
+            console.error('Failed to retrieve profile picture:', error.response.data);
+        }
+    };
+
 
     return {
         user,
@@ -257,6 +279,9 @@ export const useUserStore = defineStore('user', () => {
         bioRegister,
         errorMessage,
         getUserStreak,
-        streak
+        streak,
+        uploadProfilePicture,
+        getProfilePicture,
+        profilePicture,
     }
 })

@@ -107,7 +107,6 @@ const editChallenge = (challenge: Challenge) => {
 }
 // Helper methods to get icons
 const getChallengeIcon = (challenge: Challenge): string => {
-    //TODO change to challenge.icon
     return `src/assets/coffee.png`
 }
 </script>
