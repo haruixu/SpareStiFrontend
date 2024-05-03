@@ -106,7 +106,6 @@ const submitAction = async () => {
     }
 }
 
-
 onMounted(async () => {
     if (isEdit.value) {
         const goalId = router.currentRoute.value.params.id
@@ -192,7 +191,6 @@ const handleFileChange = (event: Event) => {
 const removeUploadedFile = () => {
     uploadedFile.value = null
 }
-
 </script>
 
 <template>

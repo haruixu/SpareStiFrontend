@@ -1,6 +1,6 @@
 <template>
     <p class="mt-2 font-bold">Streak</p>
-     <div class="flex flex-col items-center relative">
+    <div class="flex flex-col items-center relative">
         <button
             @mouseover="display"
             @mouseleave="hide"
@@ -22,12 +22,16 @@
             >
                 <span class="text-xs md:text-2xl font-bold text-black"
                     >{{ currentStreak
-                    }}{{ currentStreak === 1 ? ' utfordring fullført' : ' utfordringer fullført🚀' }}
+                    }}{{
+                        currentStreak === 1 ? ' utfordring fullført' : ' utfordringer fullført🚀'
+                    }}
                 </span>
                 <p class="text-black text-xs md:text-1xl md:font-bold my-2">
                     {{
                         currentStreak! > 0
-                            ? 'Bra jobba du har fullført ' + currentStreak + ' utfordringer på rad! Din neste utfordring utløper om:'
+                            ? 'Bra jobba du har fullført ' +
+                              currentStreak +
+                              ' utfordringer på rad! Din neste utfordring utløper om:'
                             : 'Du har ikke fullført en utfordring det siste. Fullfør en nå for å starte en streak!'
                     }}
                 </p>

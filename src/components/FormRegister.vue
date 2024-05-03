@@ -12,8 +12,7 @@ const confirm = ref<string>('')
 
 const showPassword = ref<boolean>(false)
 const errorMessage = ref<string>('')
-const passwordValidations = ref<string[]>([]);
-
+const passwordValidations = ref<string[]>([])
 
 const userStore = useUserStore()
 
@@ -45,37 +44,37 @@ const toggleShowPassword = () => {
 }
 
 const validatePassword = () => {
-  const messages = [];
-  const lengthValid = password.value.length >= 8 && password.value.length <= 30;
-  const numberValid = /[0-9]/.test(password.value);
-  const lowercaseValid = /[a-zæøå]/.test(password.value);
-  const uppercaseValid = /[ÆØÅA-Z]/.test(password.value);
-  const specialCharacterValid = /[@#$%^&+=!]/.test(password.value);
-  const noSpacesValid = !/\s/.test(password.value);
+    const messages = []
+    const lengthValid = password.value.length >= 8 && password.value.length <= 30
+    const numberValid = /[0-9]/.test(password.value)
+    const lowercaseValid = /[a-zæøå]/.test(password.value)
+    const uppercaseValid = /[ÆØÅA-Z]/.test(password.value)
+    const specialCharacterValid = /[@#$%^&+=!]/.test(password.value)
+    const noSpacesValid = !/\s/.test(password.value)
 
-  if (!lengthValid) {
-    messages.push('Må være mellom 8 og 30 karakterer. ');
-  }
-  if (!numberValid) {
-    messages.push('Må inneholde minst ett tall. ');
-  }
-  if (!lowercaseValid) {
-    messages.push('Må inneholde minst én liten bokstav. ');
-  }
-  if (!uppercaseValid) {
-    messages.push('Må inneholde minst én stor bokstav. ');
-  }
-  if (!specialCharacterValid) {
-    messages.push('Må inneholde minst ett spesialtegn (@#$%^&+=!). ');
-  }
-  if (!noSpacesValid) {
-    messages.push('Må ikke inneholde mellomrom. ');
-  }
+    if (!lengthValid) {
+        messages.push('Må være mellom 8 og 30 karakterer. ')
+    }
+    if (!numberValid) {
+        messages.push('Må inneholde minst ett tall. ')
+    }
+    if (!lowercaseValid) {
+        messages.push('Må inneholde minst én liten bokstav. ')
+    }
+    if (!uppercaseValid) {
+        messages.push('Må inneholde minst én stor bokstav. ')
+    }
+    if (!specialCharacterValid) {
+        messages.push('Må inneholde minst ett spesialtegn (@#$%^&+=!). ')
+    }
+    if (!noSpacesValid) {
+        messages.push('Må ikke inneholde mellomrom. ')
+    }
 
-  passwordValidations.value = messages;
-};
+    passwordValidations.value = messages
+}
 
-watch(password, validatePassword);
+watch(password, validatePassword)
 
 watch(
     () => userStore.errorMessage,
@@ -180,11 +179,11 @@ watch(
                 placeholder="Bekreft passord"
                 type="password"
             />
-          <div class="ml-4">
-            <p class="text-sm">
-              <span v-for="message in passwordValidations" :key="message">{{ message }}</span>
-            </p>
-          </div>
+            <div class="ml-4">
+                <p class="text-sm">
+                    <span v-for="message in passwordValidations" :key="message">{{ message }}</span>
+                </p>
+            </div>
         </div>
         <div class="flex flex-row gap-5">
             <button

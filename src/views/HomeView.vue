@@ -9,8 +9,13 @@
                 :imageDirection="'right'"
                 class="my-0 md:ml-5"
             ></SpareComponent>
-            <div class="flex flex-col gap-2 items-center mx-auto mt-4 mb-20 md:gap-4 md:m-0 md:ml-4 w-full">
-                <h3 v-text="'Du har spart ' + profile?.savedAmount + ' kr totalt!💫'" class="font-bold" />
+            <div
+                class="flex flex-col gap-2 items-center mx-auto mt-4 mb-20 md:gap-4 md:m-0 md:ml-4 w-full"
+            >
+                <h3
+                    v-text="'Du har spart ' + profile?.savedAmount + ' kr totalt!💫'"
+                    class="font-bold"
+                />
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
                     :buttonText="'Legg til spareutfordring'"
@@ -25,14 +30,20 @@
                 />
             </div>
         </div>
-        <savings-path 
-            v-if="isMounted" 
-            :challenges="challenges" 
-            :goal="goal" @complete-challenge="handleCompletedChallenge" 
-            :key="refreshSavingPath">
+        <savings-path
+            v-if="isMounted"
+            :challenges="challenges"
+            :goal="goal"
+            @complete-challenge="handleCompletedChallenge"
+            :key="refreshSavingPath"
+        >
         </savings-path>
     </div>
-    <GeneratedChallengesModal v-show="showModal" @update:showModal="showModal = $event" @update-challenges="handleUpdateChallenges"/>
+    <GeneratedChallengesModal
+        v-show="showModal"
+        @update:showModal="showModal = $event"
+        @update-challenges="handleUpdateChallenges"
+    />
 </template>
 
 <script setup lang="ts">
@@ -48,7 +59,6 @@ import router from '@/router'
 import GeneratedChallengesModal from '@/components/GeneratedChallengesModal.vue'
 import SpareComponent from '@/components/SpareComponent.vue'
 import authInterceptor from '@/services/authInterceptor'
-
 
 const showModal = ref(false)
 const profile = ref<Profile>()
@@ -76,8 +86,8 @@ onMounted(async () => {
     firstLoggedInSpeech()
     SpareSpeech()
     updateUser()
-    console.log(challenges.value);
-    
+    console.log(challenges.value)
+
     isMounted.value = true
 })
 
@@ -119,5 +129,4 @@ const handleUpdateChallenges = async (newChallenges: Challenge[]) => {
     console.log(challenges.value)
     refreshSavingPath.value++
 }
-
 </script>

@@ -299,7 +299,7 @@ const removeUploadedFile = () => {
                     :isModalOpen="confirmModalOpen"
                     @close="confirmModalOpen = false"
                 >
-                <template v-slot:buttons>
+                    <template v-slot:buttons>
                         <button class="primary" @click="confirmCancel">Bekreft</button>
                         <button class="primary danger" @click="confirmModalOpen = false">
                             Avbryt

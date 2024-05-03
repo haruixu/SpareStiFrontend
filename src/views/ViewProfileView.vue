@@ -18,8 +18,7 @@ const speech = ref<string[]>([])
 const profilePicture = ref<string>()
 
 const userStore = useUserStore()
-const refreshTrigger = ref(0);
-
+const refreshTrigger = ref(0)
 
 const updateUser = async () => {
     authInterceptor('/profile')
@@ -64,11 +63,11 @@ const updateProfilePicture = async () => {
     await updateUser()
     await userStore.getProfilePicture()
     profilePicture.value = userStore.profilePicture
-    refreshSpareComponent();
+    refreshSpareComponent()
 }
 
 const refreshSpareComponent = () => {
-    refreshTrigger.value++;
+    refreshTrigger.value++
 }
 
 const openSpare = () => {
@@ -78,9 +77,6 @@ const openSpare = () => {
         'Du kan også se dine fullførte sparemål og utfordringer!'
     ]
 }
-
-
-
 </script>
 
 <template>
@@ -90,12 +86,14 @@ const openSpare = () => {
                 <h1>Profil</h1>
                 <div class="flex flex-row gap-5">
                     <div class="flex flex-col gap-1">
-                        <img v-if="profilePicture"
+                        <img
+                            v-if="profilePicture"
                             :src="profilePicture"
                             alt="could not load"
                             class="block mx-auto h-32 rounded-full border-slate-200 border-2 sm:mx-0 sm:shrink-0"
                         />
-                        <img v-else
+                        <img
+                            v-else
                             alt="Spare"
                             class="block mx-auto h-32 rounded-full border-slate-200 border-2 sm:mx-0 sm:shrink-0"
                             src="@/assets/spare.png"

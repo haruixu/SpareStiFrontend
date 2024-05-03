@@ -66,7 +66,9 @@
                     </div>
                 </div>
             </div>
-            <span v-else-if="challenge.completedOn !== null" class="text-center text-xs md:text-base"
+            <span
+                v-else-if="challenge.completedOn !== null"
+                class="text-center text-xs md:text-base"
                 >Ferdig: {{ challenge.saved }}</span
             >
         </div>

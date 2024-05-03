@@ -24,9 +24,7 @@
             </div>
             <div class="flex flex-row items-center justify-center mx-auto">
                 <button @click="saveAvatar" class="primary save-button">Lagre</button>
-            
             </div>
-        
         </div>
     </div>
 </template>
@@ -110,10 +108,8 @@ const cycleArray = (direction: string) => {
     }
 }
 
-
-
 const saveAvatar = async () => {
-    if ( currentAvatar.value.startsWith('blob:')) {
+    if (currentAvatar.value.startsWith('blob:')) {
         // If there's a new file selected, upload it
         const formData = new FormData()
         formData.append('file', currentAvatar.value)

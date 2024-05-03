@@ -18,7 +18,10 @@
             <router-link active-class="border-b-2" to="/profil">🤭Profil</router-link>
         </div>
 
-        <div v-if="!isHamburger" class="flex-row flex gap-2 justify-end w-auto h-14 basis-1/5 px-10">
+        <div
+            v-if="!isHamburger"
+            class="flex-row flex gap-2 justify-end w-auto h-14 basis-1/5 px-10"
+        >
             <ButtonDisplayStreak />
             <button
                 class="primary basis-1/3 h-10 mt-1 bg-[#95e35d] logout focus:ring focus:ring-black-300 text-nowrap"
@@ -33,7 +36,10 @@
         </div>
     </nav>
 
-    <div v-if="hamburgerOpen" class="flex flex-col absolute w-full bg-white border border-slate-300 z-50">
+    <div
+        v-if="hamburgerOpen"
+        class="flex flex-col absolute w-full bg-white border border-slate-300 z-50"
+    >
         <router-link to="/hjem" @click="hamburgerOpen = false">🏠Hjem</router-link>
         <router-link to="/sparemaal" @click="hamburgerOpen = false">🎯Sparemål</router-link>
         <router-link to="/spareutfordringer" @click="hamburgerOpen = false"

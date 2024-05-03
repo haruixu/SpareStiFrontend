@@ -8,7 +8,9 @@
         </div>
         <div class="flex flex-col gap-6">
             <button class="font-bold mt-10" @click="bioRegister">Legg til nå!</button>
-            <button class="font-bold" @click="router.push({ name: 'configurations1' })">Jeg gjør det senere</button>
+            <button class="font-bold" @click="router.push({ name: 'configurations1' })">
+                Jeg gjør det senere
+            </button>
         </div>
     </div>
 </template>

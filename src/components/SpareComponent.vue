@@ -12,16 +12,18 @@
                 @click="isModalOpen = true"
                 class="hover:bg-transparent hover:p-0 hover:scale-105 z-20"
             >
-                <img v-if="profilePicture && isMounted"
+                <img
+                    v-if="profilePicture && isMounted"
                     alt="Spare"
                     class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
                     :src="profilePicture"
                 />
-                <img v-else
+                <img
+                    v-else
                     alt="Spare"
                     class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
                     src="@/assets/spare.png"
-                /> 
+                />
             </a>
         </div>
 
@@ -51,7 +53,7 @@
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 import { defineProps, onMounted, ref, watchEffect } from 'vue'
 import ModalComponent from '@/components/ModalComponent.vue'
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/userStore'
 
 const userStore = useUserStore()
 const isModalOpen = ref(false)

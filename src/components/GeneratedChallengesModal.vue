@@ -80,8 +80,8 @@
 import { onMounted, reactive, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { AxiosResponse } from 'axios'
-import { useChallengeStore } from '@/stores/challengeStore';
-import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
+import { useChallengeStore } from '@/stores/challengeStore'
+import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt'
 
 interface Challenge {
     title: string
