@@ -269,9 +269,9 @@ onMounted(async () => {
                         <p>Last opp ikon for utfordringen📸</p>
                         <label
                             for="fileUpload"
-                            class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
+                            class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
                         >
-                            💾
+                            Legg til 💾
                         </label>
                         <input
                             id="fileUpload"

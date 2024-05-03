@@ -168,7 +168,7 @@ onMounted(() => {
                     <button
                         class="primary danger w-min items-center"
                         @click="deleteChallengeType(item.type)"
-                        v-text="'x'"
+                        v-text="'Slett'"
                     />
                 </CardTemplate>
                 <button
