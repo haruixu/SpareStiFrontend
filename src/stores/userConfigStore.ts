@@ -6,7 +6,6 @@ import type { ChallengeConfig } from '@/types/challengeConfig'
 import router from '@/router'
 
 export const useUserConfigStore = defineStore('userConfig', () => {
-
     // Reactive state to hold the challenge configuration
     const challengeConfig = ref<ChallengeConfig>({
         experience: '',

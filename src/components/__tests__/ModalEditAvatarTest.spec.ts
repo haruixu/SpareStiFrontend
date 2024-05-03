@@ -9,13 +9,13 @@ const app = createApp({
     setup() {
         app.use(pinia)
     },
-    render: () => null,
+    render: () => null
 })
 
 const wrapper = mount(ModalEditAvatar, {
     global: {
-        plugins: [pinia],
-    },
+        plugins: [pinia]
+    }
 })
 
 describe('ModalEditAvatar', () => {

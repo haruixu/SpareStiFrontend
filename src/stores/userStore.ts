@@ -11,7 +11,6 @@ import { base64urlToUint8array, initialCheckStatus, uint8arrayToBase64url } from
 import type { CredentialCreationOptions } from '@/types/CredentialCreationOptions'
 
 export const useUserStore = defineStore('user', () => {
-
     // Reactive state to hold the user information
     const user = ref<User>({
         firstName: '',
@@ -40,7 +39,6 @@ export const useUserStore = defineStore('user', () => {
                 password: password
             })
             .then((response) => {
-
                 // Save access token in session storage
                 sessionStorage.setItem('accessToken', response.data.accessToken)
 
