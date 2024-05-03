@@ -5,6 +5,7 @@ import type { Goal } from '@/types/goal'
 import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import ModalComponent from '@/components/ModalComponent.vue'
+import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
 const router = useRouter()
 const uploadedFile: Ref<File | null> = ref(null)
@@ -213,45 +214,46 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="flex flex-col justify-center items-center">
-        <h1 class="font-bold" v-text="pageTitle" />
-        <div class="flex flex-col gap-5 items-center justify-center">
-            <div class="flex flex-col">
-                <p class="mx-4">Tittel*</p>
-                <input v-model="goalInstance.title" placeholder="Skriv en tittel" type="text" />
-            </div>
-
-            <div class="flex flex-col">
-                <p class="mx-4">Beskrivelse (valgfri)</p>
-                <textarea
-                    v-model="goalInstance.description"
-                    class="w-80 h-20 no-rezise"
-                    placeholder="Beskriv sparemålet"
-                />
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-3">
+    <div class="relative flex-1 min-h-screen">
+        <h1 class="font-bold flex justify-center items-center" v-text="pageTitle" />
+        <div class="flex md:flex-row flex-col justify-center md:items-start items-center">
+            <div class="flex flex-col gap-5 items-center justify-center">
                 <div class="flex flex-col">
-                    <p class="mx-4">Kroner spart💸</p>
-                    <input
-                        v-model="goalInstance.saved"
-                        class="w-40 text-right"
-                        placeholder="Sparebeløp"
-                        type="number"
-                    />
+                    <p class="mx-4">Tittel*</p>
+                    <input v-model="goalInstance.title" placeholder="Skriv en tittel" type="text" />
                 </div>
 
                 <div class="flex flex-col">
-                    <p class="mx-4">Av målbeløp💯*</p>
-                    <input
-                        v-model="goalInstance.target"
-                        class="w-40 text-right"
-                        placeholder="Målbeløp"
-                        type="number"
+                    <p class="mx-4">Beskrivelse (valgfri)</p>
+                    <textarea
+                        v-model="goalInstance.description"
+                        class="w-80 h-20 no-rezise"
+                        placeholder="Beskriv sparemålet"
                     />
                 </div>
-            </div>
-            <ProgressBar :completion="completion" />
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="flex flex-col">
+                        <p class="mx-4">Kroner spart💸</p>
+                        <input
+                            v-model="goalInstance.saved"
+                            class="w-40 text-right"
+                            placeholder="Sparebeløp"
+                            type="number"
+                        />
+                    </div>
+
+                    <div class="flex flex-col">
+                        <p class="mx-4">Av målbeløp💯*</p>
+                        <input
+                            v-model="goalInstance.target"
+                            class="w-40 text-right"
+                            placeholder="Målbeløp"
+                            type="number"
+                        />
+                    </div>
+                </div>
+                <ProgressBar :completion="completion" />
 
             <div class="flex flex-row gap-4">
                 <div class="flex flex-col">
@@ -328,6 +330,19 @@ onMounted(async () => {
                 </template>
             </ModalComponent>
         </div>
+        <div
+            class="lg:absolute right-5 lg:top-1/4 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
+        >
+            <InteractiveSpare
+                :png-size="10"
+                :speech="[
+                    'Her kan du lage et sparemål! 💎',
+                    `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
+                ]"
+                direction="left"
+            />
+        </div>
+    </div>
     </div>
 </template>
 

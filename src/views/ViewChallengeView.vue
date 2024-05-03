@@ -134,7 +134,7 @@ const completeChallenge = () => {
                 <br />
                 <p>
                     Du sparer {{ challengeInstance.perPurchase }}kr hver gang du dropper å bruke
-                    penger på {{ challengeInstance.type }}
+                    penger på {{ challengeInstance.title }}
                 </p>
                 <div class="justify-center pl-20">
                     <button

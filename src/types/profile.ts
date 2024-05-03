@@ -16,6 +16,7 @@ export interface Profile {
         accountType?: string
         balance?: number
     }
+    savedAmount?: number
     badges?: object[]
     hasPasskey?: boolean
 }

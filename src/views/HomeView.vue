@@ -7,11 +7,9 @@
                 :png-size="12"
                 :direction="'right'"
                 :imageDirection="'right'"
-                class="mt-24"
+                class="my-10 md:ml-5"
             ></SpareComponent>
-            <div
-                class="flex flex-row gap-2 items-center mx-auto mt-4 mb-20 md:flex-col md:gap-4 md:m-8"
-            >
+            <div class="flex flex-col gap-2 items-center mx-auto mt-4 mb-20 md:gap-4 md:m-0 w-full">
                 <ButtonAddGoalOrChallenge :buttonText="'Legg til sparemål'" :type="'goal'" />
                 <ButtonAddGoalOrChallenge
                     :buttonText="'Legg til spareutfordring'"

@@ -12,7 +12,7 @@
         </div>
         <button
             v-if="!allChallengesCompleted()"
-            class="h-auto w-auto absolute flex text-center self-end mr-10 md:mr-20 text-wrap shadow-sm shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32 top-60 z-50 p-2 text-xs md:text-sm"
+            class="h-auto w-auto absolute flex text-center self-end mr-10 md:mr-20 text-wrap border-2 border-gray-200 rounded-xl shadow-black sm:top-50 sm:text-xs sm:mr-20 lg:mr-32 top-60 z-50 p-2 text-xs md:text-sm hover:scale-105"
             @click="scrollToFirstUncompleted"
             v-show="!isAtFirstUncompleted"
         >
@@ -22,11 +22,11 @@
         <div
             v-if="challengesLocal"
             ref="containerRef"
-            class="container relative pt-6 w-4/5 bg-cover bg-[center] md:[background-position: center;] mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60vh] md:min-w-2/5 overflow-y-auto border-2 border-transparent rounded-xl bg-white shadow-lg shadow-slate-400"
-            style="background-image: url('src/assets/backgroundSavingsPath.png')"
+            class="container relative pt-6 w-4/5 bg-cover bg-[center] md:[background-position: center;] mx-auto md:w-4/5 no-scrollbar h-full max-h-[60vh] md:max-h-[60vh] md:min-w-2/5 overflow-y-auto border-transparent rounded-lg bg-white shadow-md shadow-slate-400"
+            style="background-image: url('src/assets/bakgrunn.png')"
         >
             <div>
-                <img src="@/assets/start.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
+                <img src="@/assets/start-sign.png" alt="Spare" class="md:w-1/6 md:h-auto h-20" />
             </div>
 
             <div
@@ -107,12 +107,12 @@
                     <button class="text-2xl ml-10 rounded-full" @click="addSpareUtfordring">
                         +
                     </button>
-                    <p class="">Legg til <br />Spareutfordring</p>
+                    <p class="pl-2">Legg til <br />Spareutfordring</p>
                 </div>
                 <!-- Finish line -->
             </div>
             <img
-                src="@/assets/finishLine.png"
+                src="@/assets/finishline2.png"
                 class="w-full max-h-auto mx-auto mt-4"
                 alt="Finish Line"
             />

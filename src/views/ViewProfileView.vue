@@ -23,7 +23,6 @@ const updateUser = async () => {
     authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
-            console.log(profile.value)
         })
         .catch((error) => {
             return console.log(error)
@@ -53,6 +52,7 @@ onMounted(async () => {
     profilePicture.value = userStore.profilePicture
     openSpare()
 })
+
 const updateBiometrics = async () => {
     await useUserStore().bioRegister()
     await updateUser()
@@ -66,7 +66,7 @@ const updateProfilePicture = async () => {
 
 const openSpare = () => {
     speech.value = [
-        `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName} !`,
+        `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName}! 🤠`,
         'Her kan du finne en oversikt over dine profilinstillinger!',
         'Du kan også se dine fullførte sparemål og utfordringer!'
     ]
@@ -98,7 +98,7 @@ const openSpare = () => {
 
                 <h3
                     class="font-bold"
-                    v-text="'Du har totalt spart ' + profile?.savedAmount + 'kr'"
+                    v-text="'Du har spart ' + profile?.savedAmount + ' kr totalt'"
                 />
 
                 <CardTemplate>
@@ -120,20 +120,21 @@ const openSpare = () => {
                         v-text="profile?.savingAccount.accNumber || 'Ingen sparekonto oppkoblet'"
                     />
                 </CardTemplate>
-
-                <button
-                    class="primary secondary"
-                    @click="router.push({ name: 'edit-profile' })"
-                    v-text="'Rediger bruker'"
-                />
-                <button
-                    class="primary secondary"
-                    @click="router.push({ name: 'edit-configuration' })"
-                    v-text="'Rediger konfigurasjon'"
-                />
-                <button class="primary" @click="updateBiometrics">
-                    {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
-                </button>
+                <div class="flex flex-col justify-center items-center space-y-2">
+                    <button
+                        class="primary secondary w-2/3"
+                        @click="router.push({ name: 'edit-profile' })"
+                        v-text="'Rediger bruker'"
+                    />
+                    <button
+                        class="primary secondary w-2/3"
+                        @click="router.push({ name: 'edit-configuration' })"
+                        v-text="'Rediger konfigurasjon'"
+                    />
+                    <button class="primary w-2/3" @click="updateBiometrics">
+                        {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
+                    </button>
+                </div>
             </div>
 
             <div class="flex flex-col">
@@ -146,7 +147,11 @@ const openSpare = () => {
                 ></SpareComponent>
                 <div class="flex flex-row justify-between mx-4">
                     <p class="font-bold">Fullførte sparemål</p>
-                    <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />
+                    <a
+                        @click="router.push({ name: 'goals' })"
+                        class="hover:p-0 cursor-pointer text-blue-500"
+                        v-text="'Se alle'"
+                    />
                 </div>
                 <CardTemplate class="p-4 flex flex-row flex-wrap justify-center gap-2 mb-4 mt-2">
                     <CardGoal v-for="goal in completedGoals" :key="goal.id" :goal-instance="goal" />
@@ -154,7 +159,11 @@ const openSpare = () => {
 
                 <div class="flex flex-row justify-between mx-4">
                     <p class="font-bold">Fullførte utfordringer</p>
-                    <a class="hover:p-0 cursor-pointer" v-text="'Se alle'" />
+                    <a
+                        @click="router.push({ name: 'challenges' })"
+                        class="hover:p-0 cursor-pointer text-blue-500"
+                        v-text="'Se alle'"
+                    />
                 </div>
                 <CardTemplate class="p-4 flex flex-row flex-wrap justify-center gap-2 mb-4 mt-2">
                     <CardGoal
