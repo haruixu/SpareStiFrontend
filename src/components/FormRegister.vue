@@ -12,6 +12,8 @@ const confirm = ref<string>('')
 
 const showPassword = ref<boolean>(false)
 const errorMessage = ref<string>('')
+const passwordValidations = ref<string[]>([]);
+
 
 const userStore = useUserStore()
 
@@ -42,6 +44,39 @@ const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
 
+const validatePassword = () => {
+  const messages = [];
+  const lengthValid = password.value.length >= 8 && password.value.length <= 30;
+  const numberValid = /[0-9]/.test(password.value);
+  const lowercaseValid = /[a-zæøå]/.test(password.value);
+  const uppercaseValid = /[ÆØÅA-Z]/.test(password.value);
+  const specialCharacterValid = /[@#$%^&+=!]/.test(password.value);
+  const noSpacesValid = !/\s/.test(password.value);
+
+  if (!lengthValid) {
+    messages.push('Må være mellom 8 og 30 karakterer. ');
+  }
+  if (!numberValid) {
+    messages.push('Må inneholde minst ett tall. ');
+  }
+  if (!lowercaseValid) {
+    messages.push('Må inneholde minst én liten bokstav. ');
+  }
+  if (!uppercaseValid) {
+    messages.push('Må inneholde minst én stor bokstav. ');
+  }
+  if (!specialCharacterValid) {
+    messages.push('Må inneholde minst ett spesialtegn (@#$%^&+=!). ');
+  }
+  if (!noSpacesValid) {
+    messages.push('Må ikke inneholde mellomrom. ');
+  }
+
+  passwordValidations.value = messages;
+};
+
+watch(password, validatePassword);
+
 watch(
     () => userStore.errorMessage,
     (newValue: string) => {
@@ -56,7 +91,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Fornavn*</p>
                 <ToolTip
-                    :message="'Must include only letters, spaces, commas, apostrophes, periods, and hyphens. 1-30 characters long'"
+                    :message="'Må kun inneholde bokstaver, mellomrom, komma, apostrof, punktum, og bindestrek. 1-30 karakterer langt'"
                 />
             </div>
             <input
@@ -71,7 +106,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Etternavn*</p>
                 <ToolTip
-                    :message="'Must include only letters, spaces, commas, apostrophes, periods, and hyphens. 1-30 characters long'"
+                    :message="'Må kun inneholde bokstaver, mellomrom, komma, apostrof, punktum, og bindestrek. 1-30 karakterer langt'"
                 />
             </div>
             <input
@@ -86,7 +121,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>E-post*</p>
                 <ToolTip
-                    :message="'Valid email: Starts with Norwegian letters, numbers, or special characters. Includes \@\ followed by a domain. Ends with 2-7 letters.'"
+                    :message="'Gyldig email: Må starte med norske bokstaver, tall, eller spesielle karakterer. Inkluderer \@\ fulgt av et domene. Ender med 2-7 bokstaver.'"
                 />
             </div>
             <input
@@ -101,7 +136,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Brukernavn*</p>
                 <ToolTip
-                    :message="'Must start with a letter and can include numbers and underscores. 3-30 characters long.'"
+                    :message="'Må starte med en bokstav og kan inneholde tall og understrek. 3-30 karakterer langt.'"
                 />
             </div>
             <input
@@ -116,7 +151,7 @@ watch(
             <div class="flex flex-row justify-between mx-4">
                 <p>Passord*</p>
                 <ToolTip
-                    :message="'Must be at least 8 characters, including at least one number, one lowercase letter, one uppercase letter, one special character (@#$%^&+=!), and no spaces.'"
+                    :message="'Må være minst 8 karakterer, inkludert et tall, en liten bokstav, en stor bokstav, et spesialtegn (@#$%^&+=!), og ingen mellomrom.'"
                 />
             </div>
             <div class="relative">
@@ -145,6 +180,11 @@ watch(
                 placeholder="Bekreft passord"
                 type="password"
             />
+          <div class="ml-4">
+            <p class="text-sm">
+              <span v-for="message in passwordValidations" :key="message">{{ message }}</span>
+            </p>
+          </div>
         </div>
         <div class="flex flex-row gap-5">
             <button
@@ -155,7 +195,6 @@ watch(
             >
                 Registrer deg
             </button>
-            <p>{{ errorMessage }}</p>
         </div>
     </div>
 </template>
