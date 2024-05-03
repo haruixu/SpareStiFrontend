@@ -1,5 +1,7 @@
 <template>
-    <button @click="openModal" class="primary text-nowrap" data-cy="edit-avatar">Endre avatar</button>
+    <button @click="openModal" class="primary text-nowrap" data-cy="edit-avatar">
+        Endre avatar
+    </button>
     <div
         v-if="isModalOpen"
         class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
@@ -23,7 +25,9 @@
                 <button @click="cycleArray('next')">▶</button>
             </div>
             <div class="flex flex-row items-center justify-center mx-auto">
-                <button @click="saveAvatar" class="primary save-button" data-cy="save-avatar">Lagre</button>
+                <button @click="saveAvatar" class="primary save-button" data-cy="save-avatar">
+                    Lagre
+                </button>
             </div>
         </div>
     </div>

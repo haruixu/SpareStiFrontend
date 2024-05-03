@@ -42,11 +42,16 @@
     >
         <router-link to="/hjem" @click="hamburgerOpen = false">🏠Hjem</router-link>
         <router-link to="/sparemaal" @click="hamburgerOpen = false">🎯Sparemål</router-link>
-        <router-link to="/spareutfordringer" @click="hamburgerOpen = false" data-cy="challenges-link"
+        <router-link
+            to="/spareutfordringer"
+            @click="hamburgerOpen = false"
+            data-cy="challenges-link"
             >💰Spareutfordringer</router-link
         >
-      <router-link to="/profil" @click="hamburgerOpen = false" data-cy="profile-link">🤭Profil</router-link>
-      <button class="focus:ring focus:ring-black-300" @click="openModal">Logg ut</button>
+        <router-link to="/profil" @click="hamburgerOpen = false" data-cy="profile-link"
+            >🤭Profil</router-link
+        >
+        <button class="focus:ring focus:ring-black-300" @click="openModal">Logg ut</button>
     </div>
     <ModalComponent
         :title="'Vil du logge ut?'"

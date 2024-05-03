@@ -10,7 +10,7 @@ import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalEditAvatar from '@/components/ModalEditAvatar.vue'
-import CardChallenge from "@/components/CardChallenge.vue";
+import CardChallenge from '@/components/CardChallenge.vue'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])

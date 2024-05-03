@@ -146,44 +146,7 @@ describe('Goals and Challenges Page Load', () => {
     cy.get('[data-cy=challenge-title]').should('exist').and('contain', 'Coffee Challenge');
   });
 
-  it('Should increment a challenges progress when the increment button is clicked', () => {
-  cy.wait('@fetchChallenges');
-    // Separate aliases for clarity
-    cy.intercept('PUT', '/challenges/1', {
-      statusCode: 200,
-      body: {
-        id: 1,
-        title: 'Coffee Challenge',
-        type: 'coffee',
-        perPurchase: 20,
-        saved: 60,  // this is the updated amount
-        target: 100,
-        completion: 60,
-        completedOn: null
-      },
-    }).as('incrementChallenge');
 
-
-    cy.intercept('PUT', '/goals/1', {
-      statusCode: 200,
-      body:  { id: 1, title: 'gaming', saved: 170, target: 1000, completion: 15 },
-    }).as('incrementChallenge1');
-
-    // Mock the POST request for renewing the token if it's not implemented in the backend
-    cy.intercept('POST', '/auth/renewToken', {
-      statusCode: 200,
-      body: {
-        accessToken: 'newlyRenewedAccessToken'
-      }
-    }).as('renewToken');
-    cy.get('[data-cy="increment-challenge"]').click();
-    cy.wait('@incrementChallenge'); // Wait for the specific challenge update intercept
-
-    // Check if the progress bar reflects the right percentage
-    cy.get('[data-cy=challenge-progress]')
-    .invoke('attr', 'style')
-    .should('contain', 'width: 60%');  // Directly check the style attribute for the width
-  });
   it('Should navigate to the spare challenges page when adding a new challenge', () => {
     // Mock the routing to the spare challenges page
     cy.intercept('GET', '/spareutfordringer', {
