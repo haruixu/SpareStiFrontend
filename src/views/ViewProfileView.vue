@@ -9,11 +9,15 @@ import CardGoal from '@/components/CardGoal.vue'
 import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
 import { useUserStore } from '@/stores/userStore'
+import ModalEditAvatar from '@/components/ModalEditAvatar.vue'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
 const completedChallenges = ref<Challenge[]>([])
 const speech = ref<string[]>([])
+const profilePicture = ref<string>()
+
+const userStore = useUserStore()
 
 const updateUser = async () => {
     authInterceptor('/profile')
@@ -44,12 +48,20 @@ onMounted(async () => {
             return console.log(error)
         })
 
+    await userStore.getProfilePicture()
+    profilePicture.value = userStore.profilePicture
     openSpare()
 })
 
 const updateBiometrics = async () => {
     await useUserStore().bioRegister()
     await updateUser()
+}
+
+const updateProfilePicture = async () => {
+    await updateUser()
+    await userStore.getProfilePicture()
+    profilePicture.value = userStore.profilePicture
 }
 
 const openSpare = () => {
@@ -67,7 +79,14 @@ const openSpare = () => {
             <div class="flex flex-col max-w-96 w-full gap-5">
                 <h1>Profil</h1>
                 <div class="flex flex-row gap-5">
-                    <div class="w-32 h-32 border-slate-200 border-2 rounded-full shrink-0" />
+                    <div class="flex flex-col gap-1">
+                        <img
+                            :src="profilePicture"
+                            alt="could not load"
+                            class="block mx-auto h-32 rounded-full border-green-600 border-2 sm:mx-0 sm:shrink-0"
+                        />
+                        <ModalEditAvatar @update-profile-picture="updateProfilePicture" />
+                    </div>
                     <div class="w-full flex flex-col justify-between">
                         <h3 class="font-thin my-0 md:text-xl text-lg">{{ profile?.username }}</h3>
                         <h3 class="font-thin my-0 md:text-xl text-lg">

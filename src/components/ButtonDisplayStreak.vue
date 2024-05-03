@@ -1,6 +1,5 @@
 <template>
-    <div class="flex flex-col items-center absolute">
-        <span class="text-sm text-bold">STREAK</span>
+    <div class="flex flex-col items-center relative">
         <button
             @mouseover="display"
             @mouseleave="hide"
@@ -15,7 +14,7 @@
 
         <div
             v-if="displayStreakCard"
-            class="w-[30vh] h-[20vh] md:w-auto md:h-auto group z-50 bg-opacity-50 overflow-hidden absolute left-0 top-14 md:top-20 flex flex-col justify-evenly text-wrap"
+            class="w-[30vh] h-[20vh] md:w-auto md:h-auto group z-50 bg-opacity-50 overflow-hidden absolute right-[-4rem] top-14 md:top-20 flex flex-col justify-evenly text-wrap"
         >
             <div
                 class="flex flex-col justify-evenly w-full h-full py-2 px-4 md:py-0 bg-white rounded-2xl border-4 border-green-300"
@@ -60,7 +59,7 @@
                     class="flex flex-row items-center mx-auto h-20 w-4/5 md:w-full bg-black-400 gap-4"
                 >
                     <div class="flex flex-1 overflow-x-auto">
-                        <div v-for="index in 7" :key="index" class="min-w-max mx-auto">
+                        <div v-for="index in 6" :key="index" class="min-w-max mx-auto">
                             <div class="flex flex-col justify-around items-center">
                                 <!-- Display the current streak day number adjusted by index -->
                                 <span class="text-black text-xs md:text-1xl font-bold">
