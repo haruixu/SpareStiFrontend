@@ -338,7 +338,6 @@ onMounted(async () => {
                 <InteractiveSpare
                     :png-size="10"
                     :speech="[
-                        'Her kan du lage et sparemål! 💎',
                         `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
                     ]"
                     direction="left"
