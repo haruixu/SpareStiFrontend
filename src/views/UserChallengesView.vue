@@ -62,7 +62,7 @@ onMounted(async () => {
                 :key="challenge.id"
                 :challenge-instance="challenge"
             />
-            <p v-if="!activeChallenges">Du har ingen aktive spareutfordringer😢</p>
+            <p v-if="activeChallenges.length == 0">Du har ingen aktive spareutfordringer😢</p>
         </div>
         <PageControl
             :currentPage="currentPageActive"
@@ -78,7 +78,7 @@ onMounted(async () => {
                 :key="challenge.id"
                 :challenge-instance="challenge"
             />
-            <p v-if="!completedChallenges">Du har ingen fullførte spareutfordringer😢</p>
+            <p v-if="completedChallenges.length == 0">Du har ingen fullførte spareutfordringer😢</p>
         </div>
         <PageControl
             :currentPage="currentPageCompleted"

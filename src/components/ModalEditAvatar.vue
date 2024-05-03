@@ -22,13 +22,11 @@
                 </div>
                 <button @click="cycleArray('next')">▶</button>
             </div>
-            <div class="flex flex-row items-center gap-4 mx-auto">
-                <button @click="saveAvatar" class="primary save-button basis-1/2">Lagre</button>
-                <button @click="openFileExplorer" class="primary basis-1/2">
-                    Upload New Avatar
-                </button>
+            <div class="flex flex-row items-center justify-center mx-auto">
+                <button @click="saveAvatar" class="primary save-button">Lagre</button>
+            
             </div>
-            <input type="file" ref="fileInput" @change="handleFileUpload" hidden />
+        
         </div>
     </div>
 </template>
@@ -77,8 +75,7 @@ const openModal = () => {
     const urlProfilePicture = userStore.profilePicture
     // Check if a profile picture URL exists and append it to the avatars list
     const img = localStorage.getItem('profilePicture') as string
-    console.log(state.avatars)
-    console.log(img)
+
     if (state.avatars.includes(state.selectedPublicImg) || state.avatars.includes(img)) {
         // Remove the public asset from the list if it's already selected
         state.avatars = state.avatars.filter((avatar) => avatar !== state.selectedPublicImg)
@@ -113,23 +110,13 @@ const cycleArray = (direction: string) => {
     }
 }
 
-const handleFileUpload = async (event: any) => {
-    const input = event.target
-    if (input.files && input.files[0]) {
-        const file = input.files[0]
-        // Clear any existing temporary blob URLs
-        state.avatars = state.avatars.filter((avatar) => !avatar.startsWith('blob:'))
-        state.newFile = file // Save the new file object for later upload
-        state.avatars.push(URL.createObjectURL(file)) // Add the blob URL for preview
-        state.currentAvatarIndex = state.avatars.length - 1 // Set this new avatar as current
-    }
-}
+
 
 const saveAvatar = async () => {
-    if (state.newFile && currentAvatar.value.startsWith('blob:')) {
+    if ( currentAvatar.value.startsWith('blob:')) {
         // If there's a new file selected, upload it
         const formData = new FormData()
-        formData.append('file', state.newFile)
+        formData.append('file', currentAvatar.value)
         await userStore.uploadProfilePicture(formData)
     } else if (currentAvatar.value.startsWith('/')) {
         // If it's a public asset, fetch it as a blob and upload

@@ -266,13 +266,14 @@ export const useUserStore = defineStore('user', () => {
             if (imageResponse.data.type.startsWith('image/')) {
                 profilePicture.value = URL.createObjectURL(imageResponse.data);
                 console.log('Profile picture retrieved:', profilePicture.value);
-            } else {
-                throw new Error('Not a valid image file');
             }
         } catch (error) {
-            console.error('Failed to retrieve profile picture:', error);
-            // Set to default image or keep it blank
-            profilePicture.value = ''; // Assuming you want to keep it blank as per your initial setup
+            if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
+                console.error('No profile picture found:', error.response.data);
+            } else {
+                console.error('Error fetching profile picture:', error);
+            }
+            profilePicture.value = ''; 
         }
     }
     
