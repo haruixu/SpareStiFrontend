@@ -6,7 +6,9 @@ import HelpComponent from '@/components/HelpComponent.vue'
 
 const route = useRoute()
 
+// Check if the navbar should be shown and return the paths that should not have the navbar
 const showNavBar = computed(() => {
+  // Check if the route is the home page, login page, registration page, forgot password page or configuration page
     return !(
         route.path == '/' ||
         route.path == '/registrer' ||
@@ -16,6 +18,7 @@ const showNavBar = computed(() => {
     )
 })
 
+// Check if the background image should be shown
 const backgroundImageStyle = computed(() => {
     if (dontShowSti.value) {
         console.log(dontShowSti.value)
@@ -29,6 +32,7 @@ const backgroundImageStyle = computed(() => {
     }
 })
 
+// Check if the Sti should be shown and return the paths that should have the Sti
 const dontShowSti = computed(() => {
     return (
         route.path == '/' ||
@@ -42,6 +46,7 @@ const dontShowSti = computed(() => {
     )
 })
 
+// Check if the help component should be shown and return the paths that should not have the help component
 const showHelp = computed(() => {
     return !(
         route.path == '/' ||
@@ -52,7 +57,9 @@ const showHelp = computed(() => {
     )
 })
 
+// Help messages for the help component
 const helpMessages = computed(() => {
+  // Check the path and return the help messages for the specific path
     let messages = []
 
     if (route.path == '/hjem') {
