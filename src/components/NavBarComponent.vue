@@ -32,7 +32,7 @@
         </div>
         <div v-if="isHamburger" class="flex flex-row gap-2 md:basis-2/5 justify-end">
             <ButtonDisplayStreak />
-            <button class="primary logout" @click="toggleMenu">☰</button>
+            <button class="primary logout" @click="toggleMenu" data-cy="hamburger-menu">☰</button>
         </div>
     </nav>
 
@@ -42,10 +42,15 @@
     >
         <router-link to="/hjem" @click="hamburgerOpen = false">🏠Hjem</router-link>
         <router-link to="/sparemaal" @click="hamburgerOpen = false">🎯Sparemål</router-link>
-        <router-link to="/spareutfordringer" @click="hamburgerOpen = false"
+        <router-link
+            to="/spareutfordringer"
+            @click="hamburgerOpen = false"
+            data-cy="challenges-link"
             >💰Spareutfordringer</router-link
         >
-        <router-link to="/profil" @click="hamburgerOpen = false">🤭Profil</router-link>
+        <router-link to="/profil" @click="hamburgerOpen = false" data-cy="profile-link"
+            >🤭Profil</router-link
+        >
         <button class="focus:ring focus:ring-black-300" @click="openModal">Logg ut</button>
     </div>
     <ModalComponent

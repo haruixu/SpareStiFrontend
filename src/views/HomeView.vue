@@ -86,7 +86,6 @@ onMounted(async () => {
     firstLoggedInSpeech()
     SpareSpeech()
     updateUser()
-    console.log(challenges.value)
 
     isMounted.value = true
 })
