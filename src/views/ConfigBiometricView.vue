@@ -2,13 +2,15 @@
     <div class="flex flex-col justify-center items-center w-full gap-5 m-5">
         <h1>Alternativ innlogging</h1>
         <h3>Vil du legge til alternativ innlogging som biometrisk autentisering?</h3>
-        <div class="flex flex-row justify-center gap-10">
+        <div class="flex flex-row justify-center gap-5">
             <img alt="bioAuthTouch" class="w-40 h-40" src="@/assets/bioAuthTouch.png" />
             <img alt="bioAuthFace" class="w-40 h-40" src="@/assets/bioAuthFace.png" />
         </div>
         <div class="flex flex-col gap-5">
-            <button @click="bioRegister">Legg til nå!</button>
-            <button @click="router.push({ name: 'configurations1' })">Jeg gjør det senere</button>
+            <button class="primary" @click="bioRegister">Legg til nå!</button>
+            <button class="primary secondary" @click="router.push({ name: 'configurations1' })">
+                Jeg gjør det senere
+            </button>
         </div>
         <p v-if="bioError" class="text-red-500">Noe gikk galt, prøv igjen senere</p>
     </div>
