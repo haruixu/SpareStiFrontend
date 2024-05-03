@@ -17,19 +17,20 @@ const showNavBar = computed(() => {
 })
 
 const backgroundImageStyle = computed(() => {
-    if (showSti.value) {
+    if (dontShowSti.value) {
+        console.log(dontShowSti.value)
         return {
-            backgroundImage: "url('src/assets/sti.png')"
+            backgroundImage: 'none'
         }
     } else {
         return {
-            backgroundImage: 'none'
+            backgroundImage: "url('src/assets/sti.png')"
         }
     }
 })
 
-const showSti = computed(() => {
-    return !(
+const dontShowSti = computed(() => {
+    return (
         route.path == '/' ||
         route.path == '/registrer' ||
         route.path == '/logginn' ||

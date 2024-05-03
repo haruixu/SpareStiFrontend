@@ -262,9 +262,18 @@ export const useUserStore = defineStore('user', () => {
             const imageResponse = await authInterceptor.get('/profile/picture', {
                 responseType: 'blob'
             })
-            profilePicture.value = URL.createObjectURL(imageResponse.data)
-        } catch (error: any) {
-            console.error('Failed to retrieve profile picture:', error.response.data)
+            // Ensure the response is indeed an image
+            if (imageResponse.data.type.startsWith('image/')) {
+                profilePicture.value = URL.createObjectURL(imageResponse.data)
+                console.log('Profile picture retrieved:', profilePicture.value)
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
+                console.error('No profile picture found:', error.response.data)
+            } else {
+                console.error('Error fetching profile picture:', error)
+            }
+            profilePicture.value = ''
         }
     }
 
