@@ -182,6 +182,7 @@ watch(
             <div class="ml-4">
                 <p class="text-sm">
                     <span v-for="message in passwordValidations" :key="message">{{ message }}</span>
+                    <span v-if="errorMessage">{{ errorMessage }}</span>
                 </p>
             </div>
         </div>
