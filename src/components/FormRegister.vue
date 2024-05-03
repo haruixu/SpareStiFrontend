@@ -129,7 +129,7 @@ watch(
                     :class="{ 'border-2 border-lime-400': isPasswordValid }"
                 />
                 <button
-                    class="absolute right-0 top-1 bg-transparent hover:bg-transparent"
+                    class="absolute right-0 top-1 bg-transparent hover:bg-transparent mr-4 mt-1"
                     @click="toggleShowPassword"
                 >
                     {{ showPassword ? '🔓' : '🔒' }}

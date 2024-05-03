@@ -25,9 +25,9 @@
                     }}{{
                         currentStreak === 1 ? ' utfordring fullført' : ' utfordringer fullført'
                     }}
-                    streak</span
+                    </span
                 >
-                <p class="text-black text-xs md:text-1xl md:font-bold">
+                <p class="text-black text-xs md:text-1xl md:font-bold my-2">
                     {{
                         currentStreak! > 0
                             ? 'Bra jobba du har fullført ' + currentStreak + ' utfordringer på rad!'
