@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 
 const userStore = useUserStore()
