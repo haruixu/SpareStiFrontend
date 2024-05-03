@@ -97,18 +97,15 @@ const selectImage = async () => {
 
         console.log('Vi klarte ikke å hente bildene dine. Prøv igjen!')
     }
-    if ( !fileInput.files) {
-        return;
+    if (!fileInput.files) {
+        return
     }
     image.value = fileInput.files[0]
 }
 const uploadImage = async () => {
-
     // bildet må lastes opp som en form. altså en body med form
     // const formData = new FormData()
-
     // authInterceptor.post("/profile/picture", formData)
-
 }
 
 const saveChanges = async () => {
@@ -147,19 +144,15 @@ const saveChanges = async () => {
                     </div>
                 </div>
                 <div class="flex flex-row justify-center">
-                    <input id="fileInput"
-                           type="file"
-                           style="display:none;"
-                           accept =".jpg, .jpeg, .png, .gif, .img" />
-                    <button
-                        v-text="'Velg eget bilde!'"
-                        @click="selectImage()"
-                        />
-
-                    <button
-                        v-text="'Send bilde'"
-                        @click="uploadImage()"
+                    <input
+                        id="fileInput"
+                        type="file"
+                        style="display: none"
+                        accept=".jpg, .jpeg, .png, .gif, .img"
                     />
+                    <button v-text="'Velg eget bilde!'" @click="selectImage()" />
+
+                    <button v-text="'Send bilde'" @click="uploadImage()" />
                 </div>
                 <div class="flex flex-col">
                     <div class="flex flex-row justify-between mx-4">

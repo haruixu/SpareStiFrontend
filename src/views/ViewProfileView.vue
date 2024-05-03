@@ -17,7 +17,7 @@ const completedChallenges = ref<Challenge[]>([])
 const speech = ref<string[]>([])
 const profilePicture = ref<string>()
 
-const userStore = useUserStore();
+const userStore = useUserStore()
 
 const updateUser = async () => {
     authInterceptor('/profile')
@@ -32,7 +32,6 @@ const updateUser = async () => {
 
 onMounted(async () => {
     await updateUser()
-
 
     await authInterceptor(`/goals/completed?page=0&size=3`)
         .then((response) => {
@@ -51,7 +50,7 @@ onMounted(async () => {
         })
 
     await userStore.getProfilePicture()
-    profilePicture.value = userStore.profilePicture;
+    profilePicture.value = userStore.profilePicture
     openSpare()
 })
 const updateBiometrics = async () => {
@@ -59,10 +58,10 @@ const updateBiometrics = async () => {
     await updateUser()
 }
 
-const updateProfilePicture =async () => {
-  await updateUser()
-  await userStore.getProfilePicture()
-  profilePicture.value = userStore.profilePicture;
+const updateProfilePicture = async () => {
+    await updateUser()
+    await userStore.getProfilePicture()
+    profilePicture.value = userStore.profilePicture
 }
 
 const openSpare = () => {
@@ -81,9 +80,11 @@ const openSpare = () => {
                 <h1>Profil</h1>
                 <div class="flex flex-row gap-5">
                     <div class="flex flex-col gap-1">
-
-
-                         <img :src="profilePicture" alt="could not load" class="block mx-auto h-32 rounded-full border-green-600 border-2 sm:mx-0 sm:shrink-0"/>
+                        <img
+                            :src="profilePicture"
+                            alt="could not load"
+                            class="block mx-auto h-32 rounded-full border-green-600 border-2 sm:mx-0 sm:shrink-0"
+                        />
                         <ModalEditAvatar @update-profile-picture="updateProfilePicture" />
                     </div>
                     <div class="w-full flex flex-col justify-between">

@@ -249,23 +249,24 @@ export const useUserStore = defineStore('user', () => {
     const uploadProfilePicture = async (formData: FormData) => {
         try {
             const response = await authInterceptor.post('/profile/picture', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            console.log('Upload successful:', response.data);
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            console.log('Upload successful:', response.data)
         } catch (error: any) {
-            console.error('Failed to upload profile picture:', error.response.data);
+            console.error('Failed to upload profile picture:', error.response.data)
         }
-    };
+    }
 
     const getProfilePicture = async () => {
         try {
-            const imageResponse = await authInterceptor.get('/profile/picture', { responseType: 'blob' });
-            profilePicture.value = URL.createObjectURL(imageResponse.data);
+            const imageResponse = await authInterceptor.get('/profile/picture', {
+                responseType: 'blob'
+            })
+            profilePicture.value = URL.createObjectURL(imageResponse.data)
         } catch (error: any) {
-            console.error('Failed to retrieve profile picture:', error.response.data);
+            console.error('Failed to retrieve profile picture:', error.response.data)
         }
-    };
-
+    }
 
     return {
         user,
@@ -280,6 +281,6 @@ export const useUserStore = defineStore('user', () => {
         streak,
         uploadProfilePicture,
         getProfilePicture,
-        profilePicture,
+        profilePicture
     }
 })

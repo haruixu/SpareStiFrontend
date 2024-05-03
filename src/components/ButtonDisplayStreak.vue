@@ -14,7 +14,7 @@
 
         <div
             v-if="displayStreakCard"
-            class="w-[30vh] h-[20vh] md:w-auto md:h-auto group z-50 bg-opacity-50 overflow-hidden absolute   right-[-4rem] top-14 md:top-20 flex flex-col justify-evenly text-wrap"
+            class="w-[30vh] h-[20vh] md:w-auto md:h-auto group z-50 bg-opacity-50 overflow-hidden absolute right-[-4rem] top-14 md:top-20 flex flex-col justify-evenly text-wrap"
         >
             <div
                 class="flex flex-col justify-evenly w-full h-full py-2 px-4 md:py-0 bg-white rounded-2xl border-4 border-green-300"

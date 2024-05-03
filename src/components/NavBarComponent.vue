@@ -19,7 +19,7 @@
         </div>
 
         <div v-if="!isHamburger" class="flex-row flex gap-2 justify-end w-auto h-14 basis-1/5">
-            <ButtonDisplayStreak/>
+            <ButtonDisplayStreak />
             <button
                 class="primary basis-1/2 bg-[#95e35d] logout focus:ring focus:ring-black-300 text-nowrap"
                 @click="openModal"
@@ -28,10 +28,9 @@
             </button>
         </div>
         <div class="flex flex-row gap-2">
-          <ButtonDisplayStreak v-if="isHamburger"/>
-          <button class="primary logout" v-if="isHamburger" @click="toggleMenu">☰</button>
+            <ButtonDisplayStreak v-if="isHamburger" />
+            <button class="primary logout" v-if="isHamburger" @click="toggleMenu">☰</button>
         </div>
-
     </nav>
 
     <div v-if="hamburgerOpen" class="flex flex-col bg-white border border-slate-300 z-50">
