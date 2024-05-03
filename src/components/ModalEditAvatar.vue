@@ -1,5 +1,5 @@
 <template>
-    <button @click="openModal" class="primary text-nowrap">Endre avatar</button>
+    <button @click="openModal" class="primary text-nowrap" data-cy="edit-avatar">Endre avatar</button>
     <div
         v-if="isModalOpen"
         class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
@@ -23,7 +23,7 @@
                 <button @click="cycleArray('next')">▶</button>
             </div>
             <div class="flex flex-row items-center gap-4 mx-auto">
-                <button @click="saveAvatar" class="primary save-button basis-1/2">Lagre</button>
+                <button @click="saveAvatar" class="primary save-button basis-1/2" data-cy="save-avatar">Lagre</button>
                 <button @click="openFileExplorer" class="primary basis-1/2">
                     Upload New Avatar
                 </button>
