@@ -78,7 +78,7 @@ const openSpare = () => {
     <div class="w-full flex px-10 justify-center">
         <div class="flex flex-row flex-wrap justify-center w-full max-w-screen-xl gap-20">
             <div class="flex flex-col max-w-96 w-full gap-5">
-                <h1>Profile</h1>
+                <h1>Profil</h1>
                 <div class="flex flex-row gap-5">
                     <div class="flex flex-col gap-1">
 
@@ -95,10 +95,13 @@ const openSpare = () => {
                     </div>
                 </div>
 
-                <h3 class="font-bold" v-text="'Du har spart ' + '< totalSaved >' + 'kr'" />
+                <h3
+                    class="font-bold"
+                    v-text="'Du har totalt spart ' + profile?.savedAmount + 'kr'"
+                />
 
                 <CardTemplate>
-                    <div class="bg-red-300">
+                    <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Brukskonto'" />
                     </div>
                     <p
@@ -108,7 +111,7 @@ const openSpare = () => {
                 </CardTemplate>
 
                 <CardTemplate>
-                    <div class="bg-red-300">
+                    <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Sparekonto'" />
                     </div>
                     <p
@@ -117,12 +120,17 @@ const openSpare = () => {
                     />
                 </CardTemplate>
 
-                <button @click="router.push({ name: 'edit-profile' })" v-text="'Rediger bruker'" />
                 <button
+                    class="primary secondary"
+                    @click="router.push({ name: 'edit-profile' })"
+                    v-text="'Rediger bruker'"
+                />
+                <button
+                    class="primary secondary"
                     @click="router.push({ name: 'edit-configuration' })"
                     v-text="'Rediger konfigurasjon'"
                 />
-                <button @click="updateBiometrics">
+                <button class="primary" @click="updateBiometrics">
                     {{ profile?.hasPasskey ? 'Endre biometri' : 'Legg til biometri' }}
                 </button>
             </div>

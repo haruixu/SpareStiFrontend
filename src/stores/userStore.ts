@@ -11,29 +11,27 @@ import { base64urlToUint8array, initialCheckStatus, uint8arrayToBase64url } from
 import type { CredentialCreationOptions } from '@/types/CredentialCreationOptions'
 
 export const useUserStore = defineStore('user', () => {
-    const defaultUser: User = {
-        firstname: 'Firstname',
-        lastname: 'Lastname',
-        username: 'Username',
+    const user = ref<User>({
+        firstName: '',
+        lastName: '',
+        username: '',
         isConfigured: false
-    }
-
-    const user = ref<User>(defaultUser)
+    })
     const errorMessage = ref<string>('')
     const streak = ref<Streak>()
     const profilePicture = ref<string>('')
 
     const register = async (
-        firstname: string,
-        lastname: string,
+        firstName: string,
+        lastName: string,
         email: string,
         username: string,
         password: string
     ) => {
         await axios
             .post(`http://localhost:8080/auth/register`, {
-                firstName: firstname,
-                lastName: lastname,
+                firstName: firstName,
+                lastName: lastName,
                 email: email,
                 username: username,
                 password: password
@@ -41,8 +39,8 @@ export const useUserStore = defineStore('user', () => {
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
 
-                user.value.firstname = firstname
-                user.value.lastname = lastname
+                user.value.firstName = firstName
+                user.value.lastName = lastName
                 user.value.username = username
 
                 router.push({ name: 'configure-biometric' })
@@ -62,8 +60,8 @@ export const useUserStore = defineStore('user', () => {
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
 
-                user.value.firstname = response.data.firstName
-                user.value.lastname = response.data.lastName
+                user.value.firstName = response.data.firstName
+                user.value.lastName = response.data.lastName
                 user.value.username = response.data.username
 
                 return authInterceptor('/profile')
@@ -88,10 +86,14 @@ export const useUserStore = defineStore('user', () => {
     }
 
     const logout = () => {
-        console.log('Logging out')
         sessionStorage.removeItem('accessToken')
         localStorage.removeItem('spareStiUsername')
-        user.value = defaultUser
+
+        user.value.firstName = ''
+        user.value.lastName = ''
+        user.value.username = ''
+        user.value.isConfigured = false
+
         router.push({ name: 'login' })
     }
 
@@ -173,10 +175,8 @@ export const useUserStore = defineStore('user', () => {
             .post(`http://localhost:8080/auth/bioLogin/${username}`)
             .then((request) => {
                 initialCheckStatus(request)
-                console.log(request)
 
                 const credentialGetJson: CredentialRequestOptions = request.data
-                console.log(credentialGetJson)
 
                 const credentialGetOptions: CredentialRequestOptions = {
                     publicKey: {
@@ -217,7 +217,6 @@ export const useUserStore = defineStore('user', () => {
                     },
                     clientExtensionResults: publicKeyCredential.getClientExtensionResults()
                 }
-                console.log(encodedResult)
 
                 return axios.post(`http://localhost:8080/auth/finishBioLogin/${username}`, {
                     credential: JSON.stringify(encodedResult)
@@ -226,8 +225,8 @@ export const useUserStore = defineStore('user', () => {
             .then((response) => {
                 sessionStorage.setItem('accessToken', response.data.accessToken)
 
-                user.value.firstname = response.data.firstName
-                user.value.lastname = response.data.lastName
+                user.value.firstName = response.data.firstName
+                user.value.lastName = response.data.lastName
                 user.value.username = response.data.username
 
                 router.push({ name: 'home' })
@@ -240,7 +239,6 @@ export const useUserStore = defineStore('user', () => {
     const checkIfUserConfigured = async () => {
         await authInterceptor('/config')
             .then((response) => {
-                console.log('User configured: ' + user.value.isConfigured)
                 user.value.isConfigured = response.data.challengeConfig != null
             })
             .catch(() => {

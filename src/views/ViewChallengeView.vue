@@ -5,8 +5,11 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 import SpareComponent from '@/components/SpareComponent.vue'
+import starImage from '@/assets/star.png'
 
 const router = useRouter()
+const challengeImageUrl = ref(starImage)
+const isImageLoaded = ref(false)
 
 const challengeInstance = ref<Challenge>({
     title: 'Tittel',
@@ -53,16 +56,29 @@ const calculateSpeech = () => {
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
     const challengeId = router.currentRoute.value.params.id
     if (!challengeId) return router.push({ name: 'challenges' })
 
-    authInterceptor(`/challenges/${challengeId}`)
-        .then((response) => {
-            challengeInstance.value = response.data
-            calculateSpeech()
-        })
-        .catch(() => router.push({ name: 'challenges' }))
+    try {
+        const challengeResponse = await authInterceptor.get(`/challenges/${challengeId}`)
+        challengeInstance.value = challengeResponse.data
+        calculateSpeech()
+
+        try {
+            const imageResponse = await authInterceptor.get(
+                `/challenges/picture?id=${challengeId}`,
+                { responseType: 'blob' }
+            )
+            challengeImageUrl.value = URL.createObjectURL(imageResponse.data)
+        } catch (imageError) {
+            console.error('Failed to load image:', imageError)
+        }
+        isImageLoaded.value = true
+    } catch (error) {
+        console.error('Failed to load challenge details:', error)
+        await router.push({ name: 'challenges' })
+    }
 })
 
 const completeChallenge = () => {
@@ -80,6 +96,8 @@ const completeChallenge = () => {
 <template>
     <div class="flex flex-row flex-wrap items-center justify-center gap-10">
         <div class="flex flex-col gap-5 max-w-96">
+            <div class="flex flex-col items-center"></div>
+
             <button
                 class="w-min bg-transparent rounded-lg font-bold left-10 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-110 hover:opacity-100 justify-start"
                 @click="router.push({ name: 'challenges', params: { id: challengeInstance.id } })"
@@ -92,15 +110,27 @@ const completeChallenge = () => {
             >
                 <h2 class="my-0">Spareutfordring:</h2>
                 <h2 class="font-light">
-                    {{ challengeInstance.title + ' ' + challengeInstance.type }}
+                    {{ challengeInstance.title }}
                 </h2>
+                <div class="flex flex-row gap-4 justify-center">
+                    <p class="text-wrap break-words">{{ challengeInstance.description }}</p>
+                    <div>
+                        <img
+                            v-if="isImageLoaded"
+                            :src="challengeImageUrl || '@/assets/star.png'"
+                            alt="Goal Image"
+                            class="w-full h-40 object-cover rounded-lg"
+                        />
+                    </div>
+                </div>
+                <br />
                 <p class="text-center">
                     Du har spart {{ timesSaved }} ganger som er {{ challengeInstance.saved }}kr av
                     {{ challengeInstance.target }}kr
                 </p>
                 <ProgressBar :completion="completion" />
                 <br />
-                <p class="text-wrap break-words">{{ challengeInstance.description }}</p>
+
                 <br />
                 <p>
                     Du sparer {{ challengeInstance.perPurchase }}kr hver gang du dropper å bruke

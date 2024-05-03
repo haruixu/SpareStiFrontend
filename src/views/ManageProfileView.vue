@@ -84,10 +84,9 @@ onMounted(async () => {
     await authInterceptor('/profile')
         .then((response) => {
             profile.value = response.data
-            console.log(profile.value)
         })
         .catch((error) => {
-            return console.log(error)
+            console.error(error)
         })
 })
 
@@ -142,7 +141,7 @@ const saveChanges = async () => {
                     <div class="flex flex-col justify-center">
                         <button class="h-min bg-transparent text-4xl" v-text="'⬅️'" />
                     </div>
-                    <div class="w-32 h-32 border-black border-2 rounded-full shrink-0" />
+                    <div class="w-32 h-32 border-stale-200 border-2 rounded-full shrink-0" />
                     <div class="flex flex-col justify-center">
                         <button class="h-min bg-transparent text-4xl" v-text="'➡️'" />
                     </div>
@@ -171,8 +170,7 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.firstName"
-                        :class="{ 'bg-green-200': isFirstNameValid }"
-                        name="firstname"
+                        name="firstName"
                         placeholder="Skriv inn fornavn"
                         type="text"
                     />
@@ -186,8 +184,7 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.lastName"
-                        :class="{ 'bg-green-200': isLastNameValid }"
-                        name="lastname"
+                        name="lastName"
                         placeholder="Skriv inn etternavn"
                         type="text"
                     />
@@ -201,7 +198,6 @@ const saveChanges = async () => {
                     </div>
                     <input
                         v-model="profile.email"
-                        :class="{ 'bg-green-200': isEmailValid }"
                         name="email"
                         placeholder="Skriv inn e-post"
                         type="text"
@@ -221,7 +217,6 @@ const saveChanges = async () => {
                     <input
                         v-if="updatePassword"
                         v-model="profile.password"
-                        :class="{ 'bg-green-200': isPasswordValid }"
                         class="w-full"
                         name="password"
                         placeholder="Skriv inn passord"
@@ -229,7 +224,6 @@ const saveChanges = async () => {
                     <input
                         v-if="updatePassword"
                         v-model="confirmPassword"
-                        :class="{ 'bg-red-200': profile.password !== confirmPassword }"
                         class="mt-2"
                         name="confirm"
                         placeholder="Bekreft passord"
@@ -247,41 +241,37 @@ const saveChanges = async () => {
                     :isModalOpen="isModalOpen"
                 />
 
+                <p class="font-bold">Endre kontonummer:</p>
+
                 <CardTemplate>
-                    <div class="bg-red-300">
+                    <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Brukskonto'" />
                     </div>
                     <input
                         @input="restrictToNumbers($event as InputEvent, 'spending')"
                         v-model="profile.spendingAccount.accNumber"
-                        :class="{ 'bg-green-200': isSpendingAccountValid }"
-                        class="border-2 rounded-none rounded-b-xl w-full"
+                        class="border-transparent rounded-none rounded-b-xl w-full"
                         placeholder="Kontonummer"
                         type="number"
                     />
                 </CardTemplate>
 
                 <CardTemplate>
-                    <div class="bg-red-300">
+                    <div class="bg-red-100">
                         <p class="font-bold mx-3" v-text="'Sparekonto'" />
                     </div>
                     <input
                         @input="restrictToNumbers($event as InputEvent, 'saving')"
                         v-model="profile.savingAccount.accNumber"
-                        :class="{ 'bg-green-200': isSavingAccountValid }"
-                        class="border-2 rounded-none rounded-b-xl w-full"
+                        class="border-transparent rounded-none rounded-b-xl w-full"
                         placeholder="Kontonummer"
                         type="number"
                     />
                 </CardTemplate>
 
                 <div class="flex flex-row justify-between">
-                    <button class="bg-button-other" @click="router.back()" v-text="'Avbryt'" />
-                    <button
-                        :disabled="isFormInvalid"
-                        @click="saveChanges"
-                        v-text="'Lagre endringer'"
-                    />
+                    <button class="primary danger" @click="router.back()" v-text="'Avbryt'" />
+                    <button class="primary" @click="saveChanges" v-text="'Lagre endringer'" />
                 </div>
             </div>
         </div>
