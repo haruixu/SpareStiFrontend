@@ -237,26 +237,23 @@ const removeUploadedFile = () => {
                         <p class="mx-4">Forfallsdato*</p>
                         <input
                             :min="minDate"
-                            :max="maxDate"
                             v-model="selectedDate"
                             placeholder="Forfallsdato"
                             type="date"
                         />
                     </div>
-                </div>
-                <div class="flex flex-row justify-between w-full">
                     <div class="flex flex-col items-center">
                         <p>Last opp ikon for utfordringen📸</p>
                         <label
                             for="fileUpload"
-                            class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
+                            class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
                         >
-                            💾
+                            Legg til 💾
                         </label>
                         <input
                             id="fileUpload"
                             type="file"
-                            accept=".jpg"
+                            accept=".jpg, .png"
                             hidden
                             @change="handleFileChange"
                         />
@@ -271,6 +268,7 @@ const removeUploadedFile = () => {
                         </div>
                     </div>
                 </div>
+
                 <div class="flex flex-row justify-between w-full">
                     <button class="primary danger" @click="cancelCreation" v-text="'Avbryt'" />
 

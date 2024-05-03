@@ -255,94 +255,96 @@ onMounted(async () => {
                 </div>
                 <ProgressBar :completion="completion" />
 
-            <div class="flex flex-row gap-4">
-                <div class="flex flex-col">
-                    <p class="mx-4">Forfallsdato*</p>
-                    <input
-                        :min="minDate"
-                        v-model="selectedDate"
-                        placeholder="Forfallsdato"
-                        type="date"
-                    />
-                </div>
-                <div class="flex flex-col items-center">
-                    <p>Last opp ikon for utfordringen📸</p>
-                    <label
-                        for="fileUpload"
-                        class="bg-white text-black text-lg p-1 mt-2 rounded cursor-pointer leading-none"
-                    >
-                        💾
-                    </label>
-                    <input
-                        id="fileUpload"
-                        type="file"
-                        accept=".jpg"
-                        hidden
-                        @change="handleFileChange"
-                    />
-                    <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
-                        <p class="text-sm">{{ uploadedFile.name }}</p>
-                        <button
-                            @click="removeUploadedFile"
-                            class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                <div class="flex flex-row gap-4">
+                    <div class="flex flex-col">
+                        <p class="mx-4">Forfallsdato*</p>
+                        <input
+                            :min="minDate"
+                            v-model="selectedDate"
+                            placeholder="Forfallsdato"
+                            type="date"
+                        />
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <p>Last opp ikon for utfordringen📸</p>
+                        <label
+                            for="fileUpload"
+                            class="bg-white text-black text-lg cursor-pointer leading-none rounded-full border p-3 border-black"
                         >
-                            Fjern fil
-                        </button>
+                            Legg til 💾
+                        </label>
+                        <input
+                            id="fileUpload"
+                            type="file"
+                            accept=".jpg, .png"
+                            hidden
+                            @change="handleFileChange"
+                        />
+                        <div v-if="uploadedFile" class="flex justify-center items-center mt-2">
+                            <p class="text-sm">{{ uploadedFile.name }}</p>
+                            <button
+                                @click="removeUploadedFile"
+                                class="ml-2 text-xs font-bold border-2 p-1 rounded text-red-500"
+                            >
+                                Fjern fil
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="flex flex-row justify-between w-full">
-                <button
-                    v-if="isEdit"
-                    class="ml-2 primary danger"
-                    @click="deleteGoal"
-                    v-text="'Slett'"
-                />
-                <button
-                    v-else
-                    class="ml-2 primary danger"
-                    @click="cancelCreation"
-                    v-text="'Avbryt'"
-                />
-                <button class="primary" @click="submitAction" v-text="submitButton" />
-            </div>
-            <ModalComponent
-                :title="modalTitle"
-                :message="modalMessage"
-                :isModalOpen="errorModalOpen"
-                @close="errorModalOpen = false"
-            >
-                <template v-slot:buttons>
-                    <button class="primary" @click="errorModalOpen = false">Lukk</button>
-                </template>
-            </ModalComponent>
+                <div class="flex flex-row justify-between w-full">
+                    <button
+                        v-if="isEdit"
+                        class="ml-2 primary danger"
+                        @click="deleteGoal"
+                        v-text="'Slett'"
+                    />
+                    <button
+                        v-else
+                        class="ml-2 primary danger"
+                        @click="cancelCreation"
+                        v-text="'Avbryt'"
+                    />
+                    <button class="primary" @click="submitAction" v-text="submitButton" />
+                </div>
+                <ModalComponent
+                    :title="modalTitle"
+                    :message="modalMessage"
+                    :isModalOpen="errorModalOpen"
+                    @close="errorModalOpen = false"
+                >
+                    <template v-slot:buttons>
+                        <button class="primary" @click="errorModalOpen = false">Lukk</button>
+                    </template>
+                </ModalComponent>
 
-            <ModalComponent
-                :title="modalTitle"
-                :message="modalMessage"
-                :isModalOpen="confirmModalOpen"
-                @close="confirmModalOpen = false"
+                <ModalComponent
+                    :title="modalTitle"
+                    :message="modalMessage"
+                    :isModalOpen="confirmModalOpen"
+                    @close="confirmModalOpen = false"
+                >
+                    <template v-slot:buttons>
+                        <button class="primary" @click="confirmCancel">Bekreft</button>
+                        <button class="primary danger" @click="confirmModalOpen = false">
+                            Avbryt
+                        </button>
+                    </template>
+                </ModalComponent>
+            </div>
+            <div
+                class="lg:absolute right-5 lg:top-1/4 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
             >
-                <template v-slot:buttons>
-                    <button class="primary" @click="confirmCancel">Bekreft</button>
-                    <button class="primary danger" @click="confirmModalOpen = false">Avbryt</button>
-                </template>
-            </ModalComponent>
+                <InteractiveSpare
+                    :png-size="10"
+                    :speech="[
+                        'Her kan du lage et sparemål! 💎',
+                        `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
+                    ]"
+                    direction="left"
+                />
+            </div>
         </div>
-        <div
-            class="lg:absolute right-5 lg:top-1/4 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
-        >
-            <InteractiveSpare
-                :png-size="10"
-                :speech="[
-                    'Her kan du lage et sparemål! 💎',
-                    `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
-                ]"
-                direction="left"
-            />
-        </div>
-    </div>
     </div>
 </template>
 

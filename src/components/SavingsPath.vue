@@ -41,7 +41,7 @@
                         'justify-center mx-auto md:justify-between': index % 2 === 1,
                         'justify-center md:justify-between mx-auto': index % 2 === 0
                     }"
-                    class="flex flex-row w-full md:w-4/5 justify-start gap-4 md:gap-8"
+                    class="flex flex-row w-full md:w-4/5 justify-start gap-4 md:gap-8 h-auto"
                 >
                     <div class="flex">
                         <img-gif-template
@@ -97,14 +97,16 @@
                     v-if="index === challengesLocal.length - 1 && index % 2 === 0"
                     class="flex flex-row mt-2"
                 >
-                    <button class="text-2xl ml-48" @click="addSpareUtfordring">+</button>
+                    <button class="text-2xl ml-48 mr-2 primary" @click="addSpareUtfordring">
+                        +
+                    </button>
                     <p class="">Legg til <br />Spareutfordring</p>
                 </div>
                 <div
                     v-else-if="index === challengesLocal.length - 1 && index % 2 !== 0"
                     class="mr-20 flex flex-row"
                 >
-                    <button class="text-2xl ml-10 rounded-full" @click="addSpareUtfordring">
+                    <button class="text-2xl ml-10 rounded-full primary" @click="addSpareUtfordring">
                         +
                     </button>
                     <p class="pl-2">Legg til <br />Spareutfordring</p>

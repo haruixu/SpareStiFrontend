@@ -103,11 +103,11 @@ const openSpare = () => {
                         <ModalEditAvatar @update-profile-picture="updateProfilePicture" />
                     </div>
                     <div class="w-full flex flex-col justify-between">
-                        <h3 class="font-thin my-0">{{ profile?.username }}</h3>
-                        <h3 class="font-thin my-0">
+                        <h3 class="font-thin my-0 md:text-xl text-lg">{{ profile?.username }}</h3>
+                        <h3 class="font-thin my-0 md:text-xl text-lg">
                             {{ profile?.firstName + ' ' + profile?.lastName }}
                         </h3>
-                        <h3 class="font-thin my-0">{{ profile?.email }}</h3>
+                        <h3 class="font-thin my-0 md:text-xl text-lg">{{ profile?.email }}</h3>
                     </div>
                 </div>
 

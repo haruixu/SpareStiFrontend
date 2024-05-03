@@ -33,7 +33,7 @@
                 @click="editChallenge(challenge)"
                 :data-cy="'challenge-icon-' + challenge.id"
                 :src="challengeImageUrl"
-                class="max-w-12 max-h-12 md:max-h-8 md:max-w-8 lg:max-w-10 lg:max-h-10 cursor-pointer hover:scale-125 rounded-sm"
+                class="max-w-8 max-h-12 md:max-h-8 md:max-w-8 lg:max-w-10 lg:max-h-10 cursor-pointer hover:scale-125 rounded-sm"
                 :alt="challenge.title"
             />
             <!-- Progress Bar, if the challenge is not complete -->
@@ -55,16 +55,15 @@
                         <div class="text-center text-nowrap text-xs md:text-base">
                             {{ challenge.saved }}kr / {{ challenge.target }}kr
                         </div>
+                        <button
+                            @click="incrementSaved(challenge)"
+                            :data-cy="'increment-challenge' + challenge.id"
+                            type="button"
+                            class="primary text-xs ml-2 z-10 relative"
+                        >
+                            + {{ challenge.perPurchase }}kr på {{ challenge.title }}
+                        </button>
                     </div>
-
-                    <button
-                        @click="incrementSaved(challenge)"
-                        :data-cy="'increment-challenge' + challenge.id"
-                        type="button"
-                        class="primary text-xl inline-block mb-2 ml-2 h-7 w-8 rounded-full uppercase leading-normal transition duration-150 ease-in-out focus:bg-lime-400 focus:shadow-green-2 focus:outline-none focus:ring-0 active:bg-lime-400 active:shadow-green-200 motion-reduce:transition-none"
-                    >
-                        +
-                    </button>
                 </div>
             </div>
             <span v-else class="text-center text-xs md:text-base"
@@ -112,7 +111,6 @@ const getChallengeIcon = async (challengeId: number) => {
         })
         challengeImageUrl.value = URL.createObjectURL(imageResponse.data)
     } catch (error) {
-        console.error('Failed to load challenge icon:', error)
         challengeImageUrl.value = '/src/assets/star.png' // Fallback on error
     }
 }
