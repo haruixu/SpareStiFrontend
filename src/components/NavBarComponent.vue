@@ -1,6 +1,6 @@
 <template>
     <nav class="flex justify-between items-center min-h-32 text-xl w-full px-3 my-0">
-        <div>
+        <div class="order-first basis-1/5">
             <router-link to="/hjem" @click="hamburgerOpen = false">
                 <img
                     alt="logo"
@@ -8,12 +8,8 @@
                     src="@/assets/spareSti.png"
                 />
             </router-link>
-
-            <div class="flex flex-row justify-center">
-                <ButtonDisplayStreak />
-            </div>
         </div>
-        <div v-if="!isHamburger" class="flex flex-row gap-10">
+        <div v-if="!isHamburger" class="flex flex-row justify-center gap-10 mx-auto basis-3/5">
             <router-link active-class="border-b-2" to="/hjem">🏠Hjem</router-link>
             <router-link active-class="border-b-2" to="/sparemaal">🎯Sparemål</router-link>
             <router-link active-class="border-b-2" to="/spareutfordringer"
@@ -22,15 +18,20 @@
             <router-link active-class="border-b-2" to="/profil">🤭Profil</router-link>
         </div>
 
-        <div v-if="!isHamburger" class="flex justify-center w-40">
+        <div v-if="!isHamburger" class="flex-row flex gap-2 justify-end w-auto h-14 basis-1/5">
+            <ButtonDisplayStreak/>
             <button
-                class="primary bg-[#95e35d] logout focus:ring focus:ring-black-300"
+                class="primary basis-1/2 bg-[#95e35d] logout focus:ring focus:ring-black-300 text-nowrap"
                 @click="openModal"
             >
                 Logg ut
             </button>
         </div>
-        <button class="primary logout" v-if="isHamburger" @click="toggleMenu">☰</button>
+        <div class="flex flex-row gap-2">
+          <ButtonDisplayStreak v-if="isHamburger"/>
+          <button class="primary logout" v-if="isHamburger" @click="toggleMenu">☰</button>
+        </div>
+
     </nav>
 
     <div v-if="hamburgerOpen" class="flex flex-col bg-white border border-slate-300 z-50">
