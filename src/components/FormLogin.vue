@@ -36,7 +36,7 @@ const toggleShowPassword = () => {
 const submitReset = async () => {
     isSendingEmail.value = true
 
-  // Send request to backend to reset password
+    // Send request to backend to reset password
     await axios
         .post('http://localhost:8080/forgotPassword/changePasswordRequest', {
             email: resetEmail.value

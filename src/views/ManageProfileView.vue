@@ -79,7 +79,9 @@ const isFormInvalid = computed(
             isSavingAccountValid
         ].some((v) => !v.value) ||
         (updatePassword.value
-            ? profile.value.password !== confirmPassword.value || profile.value.password === '' || !isPasswordValid.value
+            ? profile.value.password !== confirmPassword.value ||
+              profile.value.password === '' ||
+              !isPasswordValid.value
             : false)
 )
 
@@ -105,7 +107,6 @@ const saveChanges = async () => {
     if (!updatePassword.value) {
         delete profile.value.password
     }
-
 
     await authInterceptor
         .put('/profile', profile.value)

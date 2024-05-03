@@ -91,7 +91,7 @@ const canResetPassword = computed(() => {
 const resetPassword = async () => {
     isModalOpen.value = true // Open modal
 
-  // Send request to backend to reset password
+    // Send request to backend to reset password
     try {
         await axios.post('http://localhost:8080/forgotPassword/resetPassword', {
             resetID: resetID.value, // Reset ID

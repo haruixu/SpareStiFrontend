@@ -75,7 +75,7 @@ function validateInputs() {
 const submitAction = async () => {
     const errors = validateInputs()
 
-  // Handle the errors
+    // Handle the errors
     if (errors.length > 0) {
         const formatErrors = errors.join('<br>')
         modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'

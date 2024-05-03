@@ -9,7 +9,7 @@ const route = useRoute()
 
 // Check if the navbar should be shown and return the paths that should not have the navbar
 const showNavBar = computed(() => {
-  // Check if the route is the home page, login page, registration page, forgot password page or configuration page
+    // Check if the route is the home page, login page, registration page, forgot password page or configuration page
     return !(
         route.path == '/' ||
         route.path == '/registrer' ||
@@ -21,28 +21,28 @@ const showNavBar = computed(() => {
 
 // Background image for the sti component
 const backgroundImageStyle = computed(() => {
-  if (dontShowSti.value) {
-    return {
-      backgroundImage: 'none'
-    };
-  } else {
-    return {
-      backgroundImage: `url(${Sti})`
-    };
-  }
-});
+    if (dontShowSti.value) {
+        return {
+            backgroundImage: 'none'
+        }
+    } else {
+        return {
+            backgroundImage: `url(${Sti})`
+        }
+    }
+})
 
 // Check if the sti component should be shown and return the paths that should have the sti component
 const dontShowSti = computed(() => {
-  return (
-      route.path == '/' ||
-      route.path == '/registrer' ||
-      route.path == '/logginn' ||
-      route.path == '/forgotPassword' ||
-      route.path.startsWith('/konfigurasjon') ||
-      route.path == '/hjem' ||
-      route.path.startsWith('/loggin')
-  )
+    return (
+        route.path == '/' ||
+        route.path == '/registrer' ||
+        route.path == '/logginn' ||
+        route.path == '/forgotPassword' ||
+        route.path.startsWith('/konfigurasjon') ||
+        route.path == '/hjem' ||
+        route.path.startsWith('/loggin')
+    )
 })
 
 // Check if the help component should be shown and return the paths that should not have the help component
@@ -58,7 +58,7 @@ const showHelp = computed(() => {
 
 // Help messages for the help component
 const helpMessages = computed(() => {
-  // Check the path and return the help messages for the specific path
+    // Check the path and return the help messages for the specific path
     let messages = []
 
     if (route.path == '/hjem') {

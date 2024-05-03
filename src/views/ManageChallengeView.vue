@@ -89,7 +89,7 @@ const handleFileChange = (event: Event) => {
 const submitAction = async () => {
     const errors = validateInputs()
 
-  // If there are errors, show them in a modal
+    // If there are errors, show them in a modal
     if (errors.length > 0) {
         const formatErrors = errors.join('\n')
         modalTitle.value = 'Oops! Noe er feil med det du har fylt ut🚨'

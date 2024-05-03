@@ -61,7 +61,7 @@ const validatePassword = () => {
     const specialCharacterValid = /[@#$%^&+=!]/.test(password.value) // check if password contains a special character
     const noSpacesValid = !/\s/.test(password.value) // check if password contains no spaces
 
-  // add error messages to array if validation fails
+    // add error messages to array if validation fails
     if (!lengthValid) {
         messages.push('Må være mellom 8 og 30 karakterer. ')
     }

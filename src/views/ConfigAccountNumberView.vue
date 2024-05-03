@@ -88,7 +88,7 @@ async function onButtonClick() {
     userConfigStore.setAccount('SAVING', savingAccountNumber)
     userConfigStore.setAccount('SPENDING', spendingAccountNumber)
 
-  // Create a new user config
+    // Create a new user config
     await userConfigStore.createConfig()
 }
 
