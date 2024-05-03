@@ -112,14 +112,14 @@ const completeChallenge = () => {
                 <h2 class="font-light">
                     {{ challengeInstance.title }}
                 </h2>
-                <div class="flex flex-row gap-4 justify-center">
+                <div class="flex flex-col gap-4 justify-center">
                     <p class="text-wrap break-words">{{ challengeInstance.description }}</p>
-                    <div>
+                    <div class="flex justify-center items-center">
                         <img
                             v-if="isImageLoaded"
                             :src="challengeImageUrl || '@/assets/star.png'"
                             alt="Goal Image"
-                            class="w-full h-40 object-cover rounded-lg"
+                            class="w-44 h-44 object-cover rounded-lg"
                         />
                     </div>
                 </div>
@@ -134,7 +134,7 @@ const completeChallenge = () => {
                 <br />
                 <p>
                     Du sparer {{ challengeInstance.perPurchase }}kr hver gang du dropper å bruke
-                    penger på {{ challengeInstance.type }}
+                    penger på {{ challengeInstance.title }}
                 </p>
                 <div class="justify-center pl-20">
                     <button
