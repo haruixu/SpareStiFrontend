@@ -183,6 +183,8 @@ import authInterceptor from '@/services/authInterceptor'
 const router = useRouter()
 const goalStore = useGoalStore()
 
+const emit = defineEmits (['complete-challenge'])
+
 interface Props {
     challenges: Challenge[]
     goal: Goal | null | undefined
@@ -263,6 +265,7 @@ const handleChallengeUpdate = (updatedChallenge: Challenge) => {
         ) {
             animateChallenge(updatedChallenge)
             saveAnimatedStateChallenge(updatedChallenge)
+            emit('complete-challenge')
         }
 
         if (goalLocal) {
@@ -627,9 +630,9 @@ const sortChallenges = () => {
     if (challengesLocal.value) {
         challengesLocal.value.sort((a, b) => {
             // First, sort by completion status: non-completed (less than 100) before completed (100)
-            if (a.completion !== 100 && b.completion === 100) {
+            if (a.completedOn === null && b.completedOn !== null) {
                 return 1 // 'a' is not completed and 'b' is completed, 'a' should come first
-            } else if (a.completion === 100 && b.completion !== 100) {
+            } else if (a.completion !== null && b.completion === null) {
                 return -1 // 'a' is completed and 'b' is not, 'b' should come first
             } else {
                 // Explicitly convert dates to numbers for subtraction

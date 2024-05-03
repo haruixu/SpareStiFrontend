@@ -34,7 +34,7 @@ const updateUser = async () => {
 onMounted(async () => {
     await updateUser()
 
-    await authInterceptor(`/goals/completed?page=0&size=3`)
+    await authInterceptor(`/goals/completed?page=0&size=2`)
         .then((response) => {
             completedGoals.value = response.data.content
         })
@@ -42,7 +42,7 @@ onMounted(async () => {
             return console.log(error)
         })
 
-    await authInterceptor('/challenges/completed?page=0&size=3')
+    await authInterceptor('/challenges/completed?page=0&size=2')
         .then((response) => {
             completedChallenges.value = response.data.content
         })
@@ -102,7 +102,7 @@ const openSpare = () => {
                         />
                         <ModalEditAvatar @update-profile-picture="updateProfilePicture" />
                     </div>
-                    <div class="w-full flex flex-col justify-between">
+                    <div class="w-full flex flex-col justify-start gap-1">
                         <h3 class="font-thin my-0 md:text-xl text-lg">{{ profile?.username }}</h3>
                         <h3 class="font-thin my-0 md:text-xl text-lg">
                             {{ profile?.firstName + ' ' + profile?.lastName }}

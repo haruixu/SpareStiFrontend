@@ -136,23 +136,7 @@ const completeChallenge = () => {
                     Du sparer {{ challengeInstance.perPurchase }}kr hver gang du dropper å bruke
                     penger på {{ challengeInstance.title }}
                 </p>
-                <div class="justify-center pl-20">
                     <button
-                        class="primary danger mt-2 rounded-2xl p-2 w-40"
-                        @click="
-                            authInterceptor
-                                .delete(`/challenges/${challengeInstance.id}`)
-                                .then(() => router.push({ name: 'challenges' }))
-                                .catch((error) => console.error(error))
-                        "
-                    >
-                        Slett
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex flex-row justify-between w-full">
-                <button
                     class="primary secondary"
                     v-if="!isCompleted"
                     @click="
@@ -164,9 +148,19 @@ const completeChallenge = () => {
                 >
                     Rediger
                 </button>
-
-                <button
-                    class="primary"
+                    <button
+                        class="primary danger mt-2 rounded-2xl p-2"
+                        @click="
+                            authInterceptor
+                                .delete(`/challenges/${challengeInstance.id}`)
+                                .then(() => router.push({ name: 'challenges' }))
+                                .catch((error) => console.error(error))
+                        "
+                    >
+                        Slett
+                    </button>
+                    <button
+                    class="primary mt-2"
                     v-if="!isCompleted"
                     @click="completeChallenge"
                     v-text="'Sett utfordring til ferdig'"

@@ -18,10 +18,10 @@
             <router-link active-class="border-b-2" to="/profil">🤭Profil</router-link>
         </div>
 
-        <div v-if="!isHamburger" class="flex-row flex gap-2 justify-end w-auto h-14 basis-1/5">
+        <div v-if="!isHamburger" class="flex-row flex gap-2 justify-end w-auto h-14 basis-1/5 px-10">
             <ButtonDisplayStreak />
             <button
-                class="primary basis-1/2 bg-[#95e35d] logout focus:ring focus:ring-black-300 text-nowrap"
+                class="primary basis-1/3 h-10 mt-1 bg-[#95e35d] logout focus:ring focus:ring-black-300 text-nowrap"
                 @click="openModal"
             >
                 Logg ut
