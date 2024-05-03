@@ -1,19 +1,21 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center relative">
-        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
-            Hvor mye bruker du per uke på ...
-        </h1>
+        <h1 class="mb-2 text-2xl font-bold sm:text-4xl">Hvor mye bruker du per uke på ...</h1>
+        <p class="text-sm mb-8 md:mb-10">
+            Her kan du skrive inn hvor mye du bruker per uke på ulike kategorier
+        </p>
         <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+            <p class="text-sm font-bold mb-3 animate-bounce">Trykk på meg for hjelp ❗️</p>
             <SpareComponent
                 :speech="[
                     'Her skal du skrive inn hvor mye du bruker per uke på ulike kategorier. 🗓️',
-                    'Hvis du kjøper kaffe hver dag, kan du skrive inn hvor mye du bruker på kaffe per uke.'
+                    'Hvis du kjøper kaffe hver dag, kan du skrive inn hvor mye du bruker på kaffe per uke.',
+                    'Du kan redigere dette senere!'
                 ]"
                 :png-size="10"
                 :direction="'right'"
                 :imageDirection="'right'"
             ></SpareComponent>
-            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
         </div>
         <div class="w-full flex justify-center">
             <div :class="[showSecondBox ? 'md:grid md:grid-cols-2 md:gap-4 sm:gap-8 mb-6' : '']">
@@ -76,6 +78,7 @@
                 </div>
             </div>
         </div>
+        <p class="mt-10">Husk at du kan endre dette senere!</p>
         <div class="w-full text-right">
             <ContinueButtonComponent
                 @click="onButtonClick"

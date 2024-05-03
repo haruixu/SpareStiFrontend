@@ -297,19 +297,33 @@ const removeUploadedFile = () => {
                 </template>
             </ModalComponent>
 
-            <ModalComponent
-                :title="modalTitle"
-                :message="modalMessage"
-                :isModalOpen="confirmModalOpen"
-                @close="confirmModalOpen = false"
+                <ModalComponent
+                    :title="modalTitle"
+                    :message="modalMessage"
+                    :isModalOpen="confirmModalOpen"
+                    @close="confirmModalOpen = false"
+                >
+                    <template v-slot:buttons>
+                        <button class="primary" @click="confirmCancel">Bekreft</button>
+                        <button class="primary danger" @click="confirmModalOpen = false">
+                            Avbryt
+                        </button>
+                    </template>
+                </ModalComponent>
+            </div>
+            <div
+                class="lg:absolute right-5 lg:top-1/4 max-lg:bottom-0 max-lg:mt-44 transform -translate-y-1/2 lg:w-1/4 lg:max-w-xs"
             >
-                <template v-slot:buttons>
-                    <button class="primary" @click="confirmCancel">Bekreft</button>
-                    <button class="primary danger" @click="confirmModalOpen = false">Avbryt</button>
-                </template>
-            </ModalComponent>
+                <InteractiveSpare
+                    :png-size="10"
+                    :speech="[
+                        'Her kan du lage et sparemål! 💎',
+                        `Trenger du hjelp? Trykk på ❓ nede i høyre hjørne!`
+                    ]"
+                    direction="left"
+                />
+            </div>
         </div>
-    </div>
 </template>
 
 <style scoped>

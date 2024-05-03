@@ -108,6 +108,7 @@ const firstLoggedInSpeech = () => {
         speech.value.push('Hei, jeg er Spare!')
         speech.value.push('Jeg skal hjelpe deg med å spare penger.')
         speech.value.push('Trykk på meg for å høre hva jeg har å si 🐷')
+        speech.value.push('Trenger du hjelp? Trykk på ❓ nede i høyre hjørne')
         router.replace({ name: 'home', query: { firstLogin: 'false' } })
     }
 }
@@ -116,9 +117,11 @@ const SpareSpeech = () => {
     speech.value = [
         'Hei! Jeg er sparegrisen, Spare!',
         'Valkommen til SpareSti 👑',
-        'Du kan trykke på meg for å høre hva jeg har å si 🐷'
+        'Du kan trykke på meg for å høre hva jeg har å si 🐷',
+        'Trenger du hjelp? Trykk på ❓ nede i høyre hjørne'
     ]
 }
+
 
 const handleCompletedChallenge = async () => {
     updateUser()
@@ -126,7 +129,6 @@ const handleCompletedChallenge = async () => {
 
 const handleUpdateChallenges = async (newChallenges: Challenge[]) => {
     challenges.value = newChallenges
-    console.log(challenges.value)
     refreshSavingPath.value++
 }
 </script>
