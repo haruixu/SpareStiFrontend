@@ -97,7 +97,9 @@
                     v-if="index === challengesLocal.length - 1 && index % 2 === 0"
                     class="flex flex-row mt-2"
                 >
-                    <button class="text-2xl ml-48 mr-2 primary" @click="addSpareUtfordring">+</button>
+                    <button class="text-2xl ml-48 mr-2 primary" @click="addSpareUtfordring">
+                        +
+                    </button>
                     <p class="">Legg til <br />Spareutfordring</p>
                 </div>
                 <div
