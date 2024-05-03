@@ -1,20 +1,7 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
-            Hvor kjent er du med sparing fra før?
-        </h1>
-        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
-            <SpareComponent
-                :speech="[
-                    'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡'
-                ]"
-                :png-size="10"
-                :direction="'right'"
-                :imageDirection="'right'"
-            ></SpareComponent>
-            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
-        </div>
-        <div class="grid grid-cols-1 gap-8 mb-16 sm:gap-14 sm:mb-20 md:grid-cols-3">
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center gap-5">
+        <h1 class="text-2xl font-bold sm:text-4xl">Hvor kjent er du med sparing fra før?</h1>
+        <div class="grid grid-cols-1 gap-8 sm:gap-14 md:grid-cols-3">
             <div
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
@@ -49,11 +36,25 @@
                 <p class="mt-2 text-lg font-bold">Godt kjent</p>
             </div>
         </div>
-        <ContinueButtonComponent
-            :disabled="selectedOption === null"
-            @click="onButtonClick"
-            class="px-10 py-3 text-2xl self-end"
-        ></ContinueButtonComponent>
+        <div class="flex flex-row flex-wrap justify-center gap-x-52 gap-y-5">
+            <div class="flex flex-col">
+                <SpareComponent
+                    :direction="'right'"
+                    :imageDirection="'right'"
+                    :png-size="10"
+                    :speech="[
+                        'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡'
+                    ]"
+                    class="w-60"
+                ></SpareComponent>
+                <p class="text-xs">Trykk på meg for hjelp ❗️</p>
+            </div>
+            <ContinueButtonComponent
+                :disabled="selectedOption === null"
+                class="px-10 py-3 text-2xl self-end"
+                @click="onButtonClick"
+            ></ContinueButtonComponent>
+        </div>
     </div>
 </template>
 
