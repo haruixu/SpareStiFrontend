@@ -1,4 +1,4 @@
-// Definition of the ChallengeConfig type
+// Interface of the ChallengeConfig type
 export interface ChallengeConfig {
     experience: string // Mapping to an enum in Java, but TypeScript uses string
     motivation: string // Mapping to an enum in Java, but TypeScript uses string
