@@ -4,8 +4,8 @@
             Hvor mye bruker du per kjøp på ...
         </h1>
       <p class="text-sm mb-8 md:mb-10">Her kan du skrive inn hvor mye du bruker per kjøp på ulike kategorier</p>
-        <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
-          <p class="text-sm font-bold mb-3 animate-bounce">Trykk på meg for hjelp ❗️</p>
+      <div class="md:absolute fixed bottom-3 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4">
+          <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">Trykk på meg for hjelp ❗️</p>
             <SpareComponent
                 :speech="[
                     'Her kan du skrive inn hvor mye penger du bruker per kjøp på ulike ting. 🍔',
