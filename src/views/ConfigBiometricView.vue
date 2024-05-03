@@ -7,8 +7,8 @@
             <img alt="bioAuthFace" class="w-40 h-40" src="@/assets/bioAuthFace.png" />
         </div>
         <div class="flex flex-col gap-6">
-            <button class="font-bold mt-10" @click="bioRegister">Legg til nå!</button>
-            <button class="font-bold" @click="router.push({ name: 'configurations1' })">
+            <button class="primary" @click="bioRegister">Legg til nå!</button>
+            <button class="primary secondary" @click="router.push({ name: 'configurations1' })">
                 Jeg gjør det senere
             </button>
         </div>
@@ -28,9 +28,9 @@ const bioError = ref<boolean>(false)
 const bioRegister = async () => {
     const result = await userStore.bioRegister()
 
-    if (result === true) {
+    if (result == true) {
         await router.push({ name: 'configurations1' })
-    } else if (result === false) {
+    } else if (result == false) {
         bioError.value = true
     }
 }
