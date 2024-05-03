@@ -3,6 +3,7 @@ import NavBarComponent from '@/components/NavBarComponent.vue'
 import { RouterView, useRoute } from 'vue-router'
 import { computed } from 'vue'
 import HelpComponent from '@/components/HelpComponent.vue'
+import Sti from '@/assets/sti.png'
 
 const route = useRoute()
 
@@ -18,32 +19,30 @@ const showNavBar = computed(() => {
     )
 })
 
-// Check if the background image should be shown
+// Background image for the sti component
 const backgroundImageStyle = computed(() => {
-    if (dontShowSti.value) {
-        console.log(dontShowSti.value)
-        return {
-            backgroundImage: 'none'
-        }
-    } else {
-        return {
-            backgroundImage: "url('src/assets/sti.png')"
-        }
-    }
-})
+  if (dontShowSti.value) {
+    return {
+      backgroundImage: 'none'
+    };
+  } else {
+    return {
+      backgroundImage: `url(${Sti})`
+    };
+  }
+});
 
-// Check if the Sti should be shown and return the paths that should have the Sti
+// Check if the sti component should be shown and return the paths that should have the sti component
 const dontShowSti = computed(() => {
-    return (
-        route.path == '/' ||
-        route.path == '/registrer' ||
-        route.path == '/logginn' ||
-        route.path == '/forgotPassword' ||
-        route.path.startsWith('/konfigurasjon') ||
-        route.path == '/hjem' ||
-        route.path == '/profil' ||
-        route.path.startsWith('/loggin')
-    )
+  return (
+      route.path == '/' ||
+      route.path == '/registrer' ||
+      route.path == '/logginn' ||
+      route.path == '/forgotPassword' ||
+      route.path.startsWith('/konfigurasjon') ||
+      route.path == '/hjem' ||
+      route.path.startsWith('/loggin')
+  )
 })
 
 // Check if the help component should be shown and return the paths that should not have the help component
