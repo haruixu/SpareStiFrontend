@@ -291,7 +291,6 @@ export const useUserStore = defineStore('user', () => {
             // Ensure the response is indeed an image
             if (imageResponse.data.type.startsWith('image/')) {
                 profilePicture.value = URL.createObjectURL(imageResponse.data)
-                console.log('Profile picture retrieved:', profilePicture.value)
             }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response && error.response.status === 400) {

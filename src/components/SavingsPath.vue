@@ -275,6 +275,9 @@ onUnmounted(() => {
 })
 
 const handleChallengeUpdate = (updatedChallenge: Challenge) => {
+    if (!updatedChallenge) {
+        return // Exit the function if the challenge is not valid
+    }
     if (challengesLocal.value) {
         const index = challengesLocal.value.findIndex((c) => c.id === updatedChallenge.id)
         if (index !== -1) {
@@ -392,8 +395,6 @@ const animateChallenge = (challenge: Challenge) => {
  * @param goal
  */
 const animateGoal = (goal: Goal) => {
-    console.log('im in animated goal')
-
     if (goal.id != null) {
         animatedGoals.value.push(goal.id)
     } // Ensure no duplication
@@ -407,8 +408,6 @@ const animateGoal = (goal: Goal) => {
  * @param isGoal
  */
 const recalculateAndAnimate = (isGoal: boolean) => {
-    console.log('im in recalculate and animate')
-
     if (!isGoal && iconRef.value && containerRef.value && targetRef.value) {
         animateIcon(isGoal)
     } else if (isGoal && containerRef.value && goalIconRef.value) {
@@ -436,7 +435,6 @@ const saveAnimatedStateChallenge = (challenge: Challenge) => {
  * @param goal
  */
 const saveAnimatedStateGoal = (goal: Goal) => {
-    console.log('Saving animated state for:', goal.id)
     if (goal.id != null) {
         animatedGoals.value.push(goal.id)
     }
@@ -448,7 +446,6 @@ const saveAnimatedStateGoal = (goal: Goal) => {
  * @param isGoal
  */
 const animateIcon = (isGoal: boolean) => {
-    console.log('im in animate icon')
     const icon = iconRef.value
     const container = containerRef.value
     const target = targetRef.value

@@ -107,7 +107,6 @@ onMounted(async () => {
         currentStreak.value = userStore.streak?.streak
         deadline.value = userStore.streak?.firstDue
     }
-    console.log('Streak:', currentStreak.value)
     if (typeof window !== 'undefined') {
         window.addEventListener('resize', handleWindowSizeChange)
     }
@@ -130,8 +129,6 @@ const display = () => {
     userStore.getUserStreak()
     currentStreak.value = userStore.streak?.streak
     deadline.value = userStore.streak?.firstDue
-    console.log('Streak:', currentStreak.value)
-    console.log('Deadline:', deadline.value)
 }
 
 const hide = () => {
