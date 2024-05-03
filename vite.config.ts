@@ -15,10 +15,6 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5173,
-    https: {
-      key: './src/keystore/privkey.pem',
-      cert: './src/keystore/fullchain.pem'
-    }
+    host: '0.0.0.0'
   }
 })
