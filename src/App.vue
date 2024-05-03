@@ -36,7 +36,8 @@ const showSti = computed(() => {
         route.path == '/forgotPassword' ||
         route.path.startsWith('/konfigurasjon') ||
         route.path == '/hjem' ||
-        route.path == '/profil'
+        route.path == '/profil' ||
+        route.path.startsWith('/loggin')
     )
 })
 
@@ -142,11 +143,11 @@ const helpMessages = computed(() => {
 </script>
 
 <template>
+    <HelpComponent v-if="showHelp" :speech="helpMessages" />
     <div
         class="min-h-screen bg-left-bottom bg-phone md:bg-pc bg-no-repeat"
         :style="backgroundImageStyle"
     >
-        <HelpComponent v-if="showHelp" :speech="helpMessages" />
         <NavBarComponent v-if="showNavBar" />
 
         <main class="mb-10">

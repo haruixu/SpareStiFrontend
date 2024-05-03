@@ -95,14 +95,14 @@ import SpareComponent from '@/components/SpareComponent.vue'
 
 const userConfigStore = useUserConfigStore()
 
-const options = ref(userConfigStore.challengeTypeConfigs)
+const options = ref(userConfigStore.challengeConfig.challengeTypeConfigs)
 const amounts = ref(options.value.map(() => ''))
 
 const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
 const onButtonClick = () => {
     options.value.forEach((option, index) => {
-        userConfigStore.challengeTypeConfigs[index].specificAmount =
+        userConfigStore.challengeConfig.challengeTypeConfigs[index].specificAmount =
             parseFloat(amounts.value[index]) || 0
     })
     router.push({ name: 'configurations5' })

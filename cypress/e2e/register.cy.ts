@@ -5,8 +5,8 @@ describe('Register', () => {
     })
 
     function fullInput() {
-        cy.get('input[name="firstname"]').type('firstname')
-        cy.get('input[name="lastname"]').type('lastname')
+        cy.get('input[name="firstName"]').type('firstName')
+        cy.get('input[name="lastName"]').type('lastName')
         cy.get('input[name="email"]').type('email@test.work')
         cy.get('input[name="username"]').type('username')
         cy.get('input[name="password"]').type('Password123!')

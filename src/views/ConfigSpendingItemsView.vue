@@ -122,7 +122,14 @@ const onButtonClick = () => {
             generalAmount: 0
         }))
 
-    userConfigStore.challengeTypeConfigs = [...predefinedChallengeTypes, ...customChallengeTypes]
+    for (const challengeType of predefinedChallengeTypes.concat(customChallengeTypes)) {
+        userConfigStore.addChallengeTypeConfig(
+            challengeType.type,
+            challengeType.specificAmount,
+            challengeType.generalAmount
+        )
+    }
+
     router.push({ name: 'configurations4' })
 }
 </script>
