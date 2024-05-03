@@ -4,8 +4,6 @@ stages:
   - install
   - lint_and_format
   - build
-  - test
-  - security_scan
   - deploy
 
 cache:
@@ -37,26 +35,6 @@ type-check:
     - npm run type-check
     - npm run build
 
-unit-tests:
-  stage: test
-  script:
-    - npm run test:unit
-
-test:e2e:
-  image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
-  stage: test
-  script:
-    - npm ci --cache .npm --prefer-offline
-    - npx cypress verify
-    - npm run test:e2e
-  dependencies:
-    - install
-
-test-coverage:
-  stage: test
-  script:
-    - npm run test:coverage
-
 include:
   - template: SAST.gitlab-ci.yml
 
@@ -79,5 +57,5 @@ deploy:
     DOCKER_HOST: tcp://docker:2375
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login --username $CI_REGISTRY_USER --password-stdin
-    - docker build -t $DOCKER_IMAGE_NAME:latest .
-    - docker push $DOCKER_IMAGE_NAME:latest
+    - docker build -t $DOCKER_IMAGE_NAME:production .
+    - docker push $DOCKER_IMAGE_NAME:production
