@@ -47,14 +47,16 @@
                     ]"
                     class="w-60"
                 ></SpareComponent>
-                <p class="text-xs">Trykk på meg for hjelp ❗️</p>
+                <p class="text-xs animate-bounce">Trykk på meg for hjelp ❗️</p>
             </div>
-            <p class="mb-4 md:mb-10">Husk at du kan endre dette senere!</p>
-            <ContinueButtonComponent
-                :disabled="selectedOption === null"
-                class="px-10 py-3 text-2xl self-end"
-                @click="onButtonClick"
-            ></ContinueButtonComponent>
+            <div class="flex flex-col">
+                <p>Husk at du kan endre dette senere!</p>
+                <ContinueButtonComponent
+                    :disabled="selectedOption === null"
+                    class="px-10 py-3 text-2xl"
+                    @click="onButtonClick"
+                />
+            </div>
         </div>
     </div>
 </template>

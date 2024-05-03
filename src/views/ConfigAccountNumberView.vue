@@ -49,12 +49,14 @@
                 ></SpareComponent>
                 <p class="text-xs animate-bounce">Trykk på meg for hjelp ❗️</p>
             </div>
-            <p class="mt-10">Husk at du kan endre dette senere!</p>
-            <ContinueButtonComponent
-                @click="onButtonClick"
-                :disabled="!isFormValid"
-                class="px-10 py-3 text-2xl font-bold mb-4 mr-2"
-            ></ContinueButtonComponent>
+            <div class="flex flex-col">
+                <p>Husk at du kan endre dette senere!</p>
+                <ContinueButtonComponent
+                    :disabled="!isFormValid"
+                    class="px-10 py-3 text-2xl"
+                    @click="onButtonClick"
+                />
+            </div>
         </div>
     </div>
 </template>
