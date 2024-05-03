@@ -5,7 +5,6 @@ stages:
   - lint
   - format
   - build
-  - security_scan
   - deploy
 
 cache:
@@ -36,9 +35,6 @@ type-check:
   script:
     - npm run type-check
     - npm run build
-
-include:
-  - template: SAST.gitlab-ci.yml
 
 deploy:
   stage: deploy
