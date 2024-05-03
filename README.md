@@ -6,8 +6,7 @@
 <h1 align="center">
             Sparesti frontend   
 </h1>
-
-
+Sparesti is an application that is tailored towards making saving money easy and fun! It was developed in the course IDATT2106 at NTNU. This repository serves as the graphical interface of the application.
 
 ## 🚀Getting started
 
@@ -46,7 +45,7 @@ cd idatt2106_2024_02_frontend
 make run
 ```
 
-The application is now running on localhost
+The application is now running on localhost on port [5173](http://localhost:5173).
 
 NOTE: if you don't have make installed, use the following command instead:
 
