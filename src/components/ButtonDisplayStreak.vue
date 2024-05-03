@@ -1,4 +1,5 @@
 <template>
+    <p class="mt-2 font-bold">Streak</p>
     <div class="flex flex-col items-center relative">
         <button
             @mouseover="display"
@@ -8,7 +9,7 @@
             <img
                 src="@/assets/pengesekkStreak.png"
                 alt="streak"
-                class="mx-auto w-6 h-6 md:w-12 md:h-12"
+                class="mx-auto w-10 h-10 md:w-12 md:h-12"
             />
         </button>
 
@@ -17,16 +18,20 @@
             class="w-[30vh] h-[20vh] md:w-auto md:h-auto group z-50 bg-opacity-50 overflow-hidden absolute right-[-4rem] top-14 md:top-20 flex flex-col justify-evenly text-wrap"
         >
             <div
-                class="flex flex-col justify-evenly w-full h-full py-2 px-4 md:py-0 bg-white rounded-2xl border-4 border-green-300"
+                class="flex flex-col justify-evenly w-full h-full py-2 px-4 md:py-0 bg-white rounded-2xl border-2 border-slate-200"
             >
                 <span class="text-xs md:text-2xl font-bold text-black"
                     >{{ currentStreak
-                    }}{{ currentStreak === 1 ? ' utfordring fullført' : ' utfordringer fullført' }}
+                    }}{{
+                        currentStreak === 1 ? ' utfordring fullført' : ' utfordringer fullført🚀'
+                    }}
                 </span>
                 <p class="text-black text-xs md:text-1xl md:font-bold my-2">
                     {{
                         currentStreak! > 0
-                            ? 'Bra jobba du har fullført ' + currentStreak + ' utfordringer på rad!'
+                            ? 'Bra jobba du har fullført ' +
+                              currentStreak +
+                              ' utfordringer på rad! Din neste utfordring utløper om:'
                             : 'Du har ikke fullført en utfordring det siste. Fullfør en nå for å starte en streak!'
                     }}
                 </p>
@@ -125,6 +130,8 @@ const display = () => {
     userStore.getUserStreak()
     currentStreak.value = userStore.streak?.streak
     deadline.value = userStore.streak?.firstDue
+    console.log('Streak:', currentStreak.value)
+    console.log('Deadline:', deadline.value)
 }
 
 const hide = () => {

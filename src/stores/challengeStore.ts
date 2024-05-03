@@ -1,12 +1,13 @@
-// store/challengeStore.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { Challenge } from '@/types/challenge'
 
 export const useChallengeStore = defineStore('challenge', () => {
+    // Reactive state to hold the list of challenges
     const challenges = ref<Challenge[]>([])
 
+    // Function to fetch challenges for the current user
     const getUserChallenges = async () => {
         try {
             const response = await authInterceptor('/challenges')
@@ -22,7 +23,7 @@ export const useChallengeStore = defineStore('challenge', () => {
         }
     }
 
-    // Assuming 'challenges' is a reactive state in your store that holds the list of challenges
+    // Function to edit a user challenge
     const editUserChallenge = async (challenge: Challenge) => {
         try {
             const response = await authInterceptor.put(`/challenges/${challenge.id}`, challenge)
@@ -43,6 +44,8 @@ export const useChallengeStore = defineStore('challenge', () => {
             return null
         }
     }
+
+    // Function to mark a user challenge as completed
     const completeUserChallenge = async (challenge: Challenge) => {
         try {
             const response = await authInterceptor.put(
@@ -68,6 +71,7 @@ export const useChallengeStore = defineStore('challenge', () => {
         }
     }
 
+    // Return reactive state and functions to be used by components
     return {
         challenges,
         getUserChallenges,

@@ -80,6 +80,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 import type { AxiosResponse } from 'axios'
+import { useChallengeStore } from '@/stores/challengeStore'
 
 interface Challenge {
     title: string
@@ -94,6 +95,8 @@ interface Challenge {
 
 const showModal = ref(true)
 const generatedChallenges = reactive<Challenge[]>([])
+const emit = defineEmits(['update-challenges'])
+const challengeStore = useChallengeStore()
 
 async function fetchGeneratedChallenges() {
     try {
@@ -122,7 +125,7 @@ onMounted(() => {
     localStorage.setItem('lastModalShow', Date.now().toString())
 })
 
-function acceptChallenge(challenge: Challenge) {
+async function acceptChallenge(challenge: Challenge) {
     if (!challenge) {
         console.error('No challenge data provided to acceptChallenge function.')
         return
@@ -136,7 +139,7 @@ function acceptChallenge(challenge: Challenge) {
         due: challenge.dueFull,
         type: challenge.type
     }
-    authInterceptor
+    await authInterceptor
         .post('/challenges', postData)
         .then((response: AxiosResponse) => {
             challenge.isAccepted = true
@@ -144,6 +147,9 @@ function acceptChallenge(challenge: Challenge) {
         .catch((error) => {
             console.error('Failed to save challenge:', error)
         })
+    await challengeStore.getUserChallenges()
+    const challenges = challengeStore.challenges
+    emit('update-challenges', challenges)
 }
 
 const closeModal = () => {

@@ -4,13 +4,20 @@ import { ref } from 'vue'
 import authInterceptor from '@/services/authInterceptor'
 
 export const useGoalStore = defineStore('goal', () => {
+    // Reactive state to hold the list of goals
     const goals = ref<Goal[]>([])
+
+    // Reactive state to hold the priority goal
     const priorityGoal = ref<Goal | null>(null)
+
+    // Function to fetch goals for the current user
     const getUserGoals = async () => {
         try {
             const response = await authInterceptor('/goals')
             if (response.data && response.data.content) {
-                goals.value = response.data.content
+                goals.value = response.data.content // Update goals state with fetched data
+
+                // Iterate through goals to find the priority goal
                 for (const goal of goals.value) {
                     if (goal.priority === 1) {
                         priorityGoal.value = goal
@@ -30,7 +37,7 @@ export const useGoalStore = defineStore('goal', () => {
         }
     }
 
-    // Assuming 'challenges' is a reactive state in your store that holds the list of challenges
+    // Function to edit a user goal
     const editUserGoal = async (goal: Goal) => {
         if (!goal || goal.id === null) {
             console.error('Invalid goal or goal ID.')
@@ -51,6 +58,8 @@ export const useGoalStore = defineStore('goal', () => {
             console.error('Error updating goal:', error)
         }
     }
+
+    // Return reactive states and functions to be used by components
     return {
         goals,
         priorityGoal,
