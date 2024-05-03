@@ -22,11 +22,11 @@ unit:
 	npm run test:unit
 
 format:
-    npm run format-test
+	npm run format-test
 
 e2e:
 	npm run test:e2e
 test:
-    make unit
-    make e2e
-    make format
+	make unit
+	make e2e
+	make format
