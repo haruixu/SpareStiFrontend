@@ -93,8 +93,6 @@ const incrementSaved = async (challenge: Challenge) => {
 
     const updatedChallenge = (await challengeStore.editUserChallenge(challenge)) as Challenge
 
-    console.log('updated challenge in child: ', updatedChallenge)
-
     // Emit an event to inform the parent component of the update
     emit('update-challenge', updatedChallenge)
 }
@@ -120,9 +118,6 @@ onMounted(() => {
     } else {
         console.error('Challenge id is undefined')
     }
-
-    console.log(props.challenge.completedOn)
-    console.log(props.challenge.completion)
     isMounted.value = true
 })
 </script>

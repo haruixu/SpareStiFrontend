@@ -81,7 +81,6 @@ const openModal = () => {
     if (state.avatars.includes(state.selectedPublicImg) || state.avatars.includes(img)) {
         // Remove the public asset from the list if it's already selected
         state.avatars = state.avatars.filter((avatar) => avatar !== state.selectedPublicImg)
-        console.log(state.avatars, 'state.avatars')
     }
     // Clear
     console.log(state.avatars)

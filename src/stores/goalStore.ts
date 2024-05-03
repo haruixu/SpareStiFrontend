@@ -26,7 +26,6 @@ export const useGoalStore = defineStore('goal', () => {
                         priorityGoal.value = null
                     }
                 }
-                console.log(response.data.content)
             } else {
                 goals.value = []
                 console.error('No goal content found:', response.data)
