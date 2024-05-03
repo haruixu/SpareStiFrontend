@@ -85,10 +85,6 @@ const challengeStore = useChallengeStore()
 const challengeImageUrl = ref('/src/assets/star.png') // Default or placeholder image
 const props = defineProps<{ challenge: Challenge }>()
 
-interface Props {
-    challenge: Challenge
-}
-
 const emit = defineEmits(['update-challenge', 'complete-challenge'])
 
 // Increment saved amount
