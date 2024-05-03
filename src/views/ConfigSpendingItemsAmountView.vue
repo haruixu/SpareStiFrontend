@@ -107,6 +107,7 @@ const amounts = ref(options.value.map(() => ''))
 
 const isAllAmountsFilled = computed(() => amounts.value.every((amount) => amount.trim() !== ''))
 
+// Save the amounts to the user config store and navigate to the next page
 const onButtonClick = () => {
     options.value.forEach((option, index) => {
         userConfigStore.challengeConfig.challengeTypeConfigs[index].specificAmount =
@@ -115,6 +116,7 @@ const onButtonClick = () => {
     router.push({ name: 'configurations5' })
 }
 
+// Filter the input to only allow numbers and commas
 const filterAmount = (index: number, event: Event) => {
     const input = event.target as HTMLInputElement
     let filteredValue = input.value.replace(/[^\d,]/g, '')
@@ -122,9 +124,11 @@ const filterAmount = (index: number, event: Event) => {
     amounts.value[index] = filteredValue
 }
 
+// Split the options into two boxes
 const firstBoxOptions = computed(() => options.value.slice(0, 6))
 const secondBoxOptions = computed(() => (options.value.length > 6 ? options.value.slice(6) : []))
 
+// Show the second box if there are more than 6 options
 const showFirstBox = computed(() => options.value.length > 0)
 const showSecondBox = computed(() => options.value.length > 6)
 </script>

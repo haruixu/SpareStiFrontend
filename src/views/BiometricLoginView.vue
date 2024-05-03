@@ -6,11 +6,13 @@ import { useUserStore } from '@/stores/userStore'
 const route = useRoute()
 const username = route.params.username as string
 
+// Function to remove bio credential from local storage
 const removeBioCredential = () => {
     localStorage.removeItem('spareStiUsername')
     router.push({ name: 'login' })
 }
 
+// Function to login with biometric
 const bioLogin = () => {
     useUserStore().bioLogin(username)
 }
