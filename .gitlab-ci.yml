@@ -6,6 +6,7 @@ stages:
   - build
   - test
   - security_scan
+  - deploy
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -63,3 +64,20 @@ sast:
   stage: security_scan
   script:
     - echo "Running SAST..."
+
+deploy:
+  stage: deploy
+  image: docker:latest
+  tags:
+    - dind
+  services:
+    - name: docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_USER/idatt2106_2024_02_frontend-app
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login --username $CI_REGISTRY_USER --password-stdin
+    - docker build -t $DOCKER_IMAGE_NAME:latest .
+    - docker push $DOCKER_IMAGE_NAME:latest

@@ -1,35 +1,12 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen text-center">
-        <h1 class="mb-3 text-2xl font-bold sm:text-4xl mt-0 md:mt-7">
-            Hva bruker du mye penger på?
-        </h1>
-        <p class="text-sm mb-8 md:mb-10">
-            Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i "Annet ..."
-            feltet
-        </p>
-        <div
-            class="md:absolute fixed bottom-3 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4"
-        >
-            <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">
-                Trykk på meg for hjelp ❗️
-            </p>
-            <SpareComponent
-                :speech="[
-                    'Her kan du velge hva du bruker mye penger på, slik at vi kan hjelpe deg med å spare penger! 💸',
-                    'Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i \'Annet ...\' feltet',
-                    'Du må minst velge en kategori!',
-                    'Du kan redigere dette senere!'
-                ]"
-                :png-size="10"
-                :direction="'right'"
-                :imageDirection="'right'"
-            ></SpareComponent>
-        </div>
-        <div class="flex flex-wrap justify-center gap-8 mb-8">
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center gap-5">
+        <h1 class="text-2xl font-bold sm:text-4xl">Hva bruker du mye penger på?</h1>
+
+        <div class="flex flex-wrap justify-center gap-8">
             <div
-                class="flex flex-col items-center justify-center bg-white rounded-lg sm:p-8 shadow-lg sm:w-full md:w-[45%]"
+                class="flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 gap-8"
             >
-                <div
+                <button
                     v-for="buttonText in [
                         'Kaffe',
                         'Snus',
@@ -39,51 +16,59 @@
                         'Klær'
                     ]"
                     :key="buttonText"
-                    class="w-full my-4"
+                    :class="[
+                        'w-64 h-11 rounded-md text-xl font-bold',
+                        selectedOptions.includes(buttonText)
+                            ? 'border-2 border-[var(--green)]'
+                            : 'border-2 border-gray-300'
+                    ]"
+                    style="background: transparent"
+                    @click="toggleOption(buttonText)"
                 >
-                    <button
-                        :class="[
-                            'w-full md:w-64 h-11 rounded-md text-xl font-bold',
-                            selectedOptions.includes(buttonText)
-                                ? 'border-2 border-[var(--green)]'
-                                : 'border-2 border-gray-300'
-                        ]"
-                        @click="toggleOption(buttonText)"
-                        style="background: transparent"
-                    >
-                        {{ buttonText }}
-                    </button>
-                </div>
+                    {{ buttonText }}
+                </button>
             </div>
             <div
-                class="flex flex-col items-center justify-center bg-white rounded-lg sm:p-8 shadow-lg sm:w-full md:w-[45%]"
+                class="flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 gap-8"
             >
-                <div
+                <input
                     v-for="(option, index) in customOptions"
                     :key="`custom-${index}`"
-                    class="w-full my-4"
-                >
-                    <input
-                        v-model="customOptions[index]"
-                        :class="[
-                            'w-full md:w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2',
-                            customOptions[index].trim() !== ''
-                                ? 'border-[var(--green)]'
-                                : 'border-gray-300'
-                        ]"
-                        type="text"
-                        :placeholder="'Annet ' + ' ...'"
-                    />
-                </div>
+                    v-model="customOptions[index]"
+                    :class="[
+                        'w-64 h-11 px-3 rounded-md text-xl focus:outline-none transition-colors border-2',
+                        customOptions[index].trim() !== ''
+                            ? 'border-[var(--green)]'
+                            : 'border-gray-300'
+                    ]"
+                    :placeholder="'Annet ' + ' ...'"
+                    type="text"
+                />
             </div>
         </div>
-        <p class="mb-1">Husk at du kan endre dette senere!</p>
-        <div class="w-full text-right">
-            <ContinueButtonComponent
-                @click="onButtonClick"
-                :disabled="!isFormValid"
-                class="md:px-10 md:py-3 px-7 py-2 text-2xl font-bold md:mt-12 mt-4 mr-4 sm:mb-12 sm:mt-10"
-            ></ContinueButtonComponent>
+        <div class="flex flex-row flex-wrap justify-center gap-x-52 gap-y-5">
+            <div class="flex flex-col">
+                <SpareComponent
+                    :direction="'right'"
+                    :imageDirection="'right'"
+                    :png-size="10"
+                    :speech="[
+                        'Her kan du velge hva du bruker mye penger på, slik at vi kan hjelpe deg med å spare penger! 💸',
+                        'Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i \'Annet ...\' feltet',
+                        'Du må minst velge en kategori!'
+                    ]"
+                    class="w-60"
+                ></SpareComponent>
+                <p class="text-xs animate-bounce">Trykk på meg for hjelp ❗️</p>
+            </div>
+            <div class="flex flex-col">
+                <p>Husk at du kan endre dette senere!</p>
+                <ContinueButtonComponent
+                    :disabled="!isFormValid"
+                    class="px-10 py-3 text-2xl"
+                    @click="onButtonClick"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -99,6 +84,7 @@ const userConfigStore = useUserConfigStore()
 const selectedOptions = ref<string[]>([])
 const customOptions = ref(['', '', '', '', '', ''])
 
+// Toggles the option in the selectedOptions array
 const toggleOption = (option: string) => {
     const index = selectedOptions.value.indexOf(option)
     if (index === -1) {
@@ -108,12 +94,20 @@ const toggleOption = (option: string) => {
     }
 }
 
+// Check if the form is valid
 const isFormValid = computed(() => {
     const predefinedSelected = selectedOptions.value.length > 0
     const customFilled = customOptions.value.some((option) => option.trim() !== '')
-    return predefinedSelected || customFilled
+    const allOptions = [
+        ...selectedOptions.value,
+        ...customOptions.value.filter((option) => option.trim() !== '')
+    ]
+    const uniqueOptions = new Set(allOptions)
+    const hasDuplicates = uniqueOptions.size < allOptions.length
+    return (predefinedSelected || customFilled) && !hasDuplicates
 })
 
+// Save the selected options to the store and navigate to the next page
 const onButtonClick = () => {
     if (!isFormValid.value) {
         console.error('Form is not valid')

@@ -1,26 +1,10 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-8 md:mb-16 mt-2 text-2xl font-bold sm:text-4xl">
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center gap-5">
+        <h1 class="text-2xl font-bold sm:text-4xl">
             Hvor store vaneedringer er du villig til å gjøre?
         </h1>
-        <div
-            class="absolute bottom-4 md:bottom-40 left-2 w-28 h-28 md:w-40 md:h-40 lg:w-52 lg:h-52 ml-4"
-        >
-            <p class="md:text-sm text-xs font-bold mb-3 animate-bounce invisible sm:visible">
-                Trykk på meg for hjelp ❗️
-            </p>
-            <SpareComponent
-                :speech="[
-                    'Her kan du velge hvor mye innsats du er villig til å legge inn for å endre vanene dine! 📚',
-                    'Hvis du er usikker, velg det alternativet som passer best. Du kan endre dette senere!'
-                ]"
-                :png-size="10"
-                :direction="'right'"
-                :imageDirection="'right'"
-            ></SpareComponent>
-        </div>
-        <div class="grid grid-cols-1 gap-8 mb-2 sm:gap-10 sm:mb-12 md:grid-cols-3">
-            <div
+        <div class="grid grid-cols-1 gap-8 sm:gap-14 md:grid-cols-3">
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'litt',
                     'border-gray-300 border-2': selectedOption !== 'litt'
@@ -29,9 +13,9 @@
                 @click="selectOption('litt')"
             >
                 <img src="@/assets/litt.png" alt="Thumbs down emoji" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-md sm:text-lg font-bold">Litt</p>
-            </div>
-            <div
+                <span class="mt-2 text-md sm:text-lg font-bold">Litt</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'passe',
                     'border-gray-300 border-2': selectedOption !== 'passe'
@@ -40,9 +24,9 @@
                 @click="selectOption('passe')"
             >
                 <img src="@/assets/passe.png" alt="A little bit emoji" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-md sm:text-lg font-bold">Passe</p>
-            </div>
-            <div
+                <span class="mt-2 text-md sm:text-lg font-bold">Passe</span>
+            </button>
+            <button
                 :class="{
                     'border-[var(--green)] border-4': selectedOption === 'store',
                     'border-gray-300 border-2': selectedOption !== 'store'
@@ -51,15 +35,31 @@
                 @click="selectOption('store')"
             >
                 <img src="@/assets/store.png" alt="Thumbs up emoji" class="h-12 sm:h-1/3" />
-                <p class="mt-2 text-md sm:text-lg font-bold">Store</p>
+                <span class="mt-2 text-md sm:text-lg font-bold">Store</span>
+            </button>
+        </div>
+        <div class="flex flex-row flex-wrap justify-center gap-x-52 gap-y-5">
+            <div class="flex flex-col">
+                <SpareComponent
+                    :direction="'right'"
+                    :imageDirection="'right'"
+                    :png-size="10"
+                    :speech="[
+                        'Her kan du velge hvor mye innsats du er villig til å legge inn for å endre vanene dine! 📚'
+                    ]"
+                    class="w-60"
+                ></SpareComponent>
+                <p class="text-xs animate-bounce">Trykk på meg for hjelp ❗️</p>
+            </div>
+            <div class="flex flex-col">
+                <p>Husk at du kan endre dette senere!</p>
+                <ContinueButtonComponent
+                    :disabled="selectedOption === null"
+                    class="px-10 py-3 text-2xl"
+                    @click="onButtonClick"
+                />
             </div>
         </div>
-        <p class="mb-4 md:mb-10">Husk at du kan endre dette senere!</p>
-        <ContinueButtonComponent
-            :disabled="selectedOption === null"
-            @click="onButtonClick"
-            class="md:px-10 px-8 md:py-3 py-2 text-2xl self-end"
-        ></ContinueButtonComponent>
     </div>
 </template>
 
@@ -73,6 +73,7 @@ import SpareComponent from '@/components/SpareComponent.vue'
 const selectedOption = ref<string | null>(null)
 const userConfigStore = useUserConfigStore()
 
+// Set motivation value based on selected option
 const selectOption = (option: string) => {
     selectedOption.value = option
     let motivationValue = ''
@@ -92,6 +93,7 @@ const selectOption = (option: string) => {
     userConfigStore.setMotivation(motivationValue)
 }
 
+// Navigates to the next configuration view if an option is selected
 const onButtonClick = () => {
     if (selectedOption.value) {
         router.push({ name: 'configurations2' })

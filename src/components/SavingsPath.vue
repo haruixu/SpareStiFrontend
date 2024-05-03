@@ -119,6 +119,12 @@
                 alt="Finish Line"
             />
         </div>
+
+        <div v-if="showCompletedText" class="flex flex-row justify-center items-center mt-4 gap-3">
+            <span>Gratulerer! Du har fullført en utfordring!</span>
+            <button class="primary" @click="showCompletedText = false">Skjul</button>
+        </div>
+
         <!-- Goal -->
         <div
             v-if="goalLocal"
@@ -214,6 +220,8 @@ let goalLocal: Goal | null | undefined = reactive({
 const isMounted = ref<boolean>(false)
 const componentKey = ref<number>(0)
 
+const showCompletedText = ref(false)
+
 //Initialisation:
 
 onMounted(async () => {
@@ -268,6 +276,9 @@ onUnmounted(() => {
 
 // Function to handle challenge updates
 const handleChallengeUpdate = (updatedChallenge: Challenge) => {
+    if (!updatedChallenge) {
+        return // Exit the function if the challenge is not valid
+    }
     if (challengesLocal.value) {
         const index = challengesLocal.value.findIndex((c) => c.id === updatedChallenge.id)
         if (index !== -1) {
@@ -351,6 +362,7 @@ const animateChallenge = (challenge: Challenge) => {
         challenge.completion! >= 100 &&
         !animatedChallenges.value.includes(challenge.id as number)
     ) {
+        showCompletedText.value = true
         if (challenge.id != null) {
             animatedChallenges.value.push(challenge.id)
         } // Ensure no duplication

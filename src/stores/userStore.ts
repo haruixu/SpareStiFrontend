@@ -120,9 +120,10 @@ export const useUserStore = defineStore('user', () => {
     }
 
     // Method to register biometric data
-    const bioRegister = async () => {
+    const bioRegister = async (): Promise<boolean | null> => {
         // Send biometric registration request to the server
-        authInterceptor
+        let response = null
+        await authInterceptor
             .post('/auth/bioRegistration')
             .then((response) => {
                 initialCheckStatus(response)
@@ -182,10 +183,13 @@ export const useUserStore = defineStore('user', () => {
             })
             .then(() => {
                 localStorage.setItem('spareStiUsername', user.value.username)
+                response = true
             })
             .catch((error) => {
                 console.error(error)
+                response = false
             })
+        return response
     }
 
     // Method to login using biometric data
@@ -287,7 +291,6 @@ export const useUserStore = defineStore('user', () => {
             // Ensure the response is indeed an image
             if (imageResponse.data.type.startsWith('image/')) {
                 profilePicture.value = URL.createObjectURL(imageResponse.data)
-                console.log('Profile picture retrieved:', profilePicture.value)
             }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response && error.response.status === 400) {

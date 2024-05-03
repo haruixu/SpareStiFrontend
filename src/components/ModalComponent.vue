@@ -3,7 +3,9 @@
         v-if="isModalOpen"
         class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50"
     >
-        <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full text-center">
+        <div
+            class="bg-white p-6 rounded-lg shadow-lg w-auto max-w-full max-h-full text-center overflow-auto"
+        >
             <h2 class="title font-bold mb-4">{{ title }}</h2>
             <p class="message mb-4" v-html="message"></p>
 

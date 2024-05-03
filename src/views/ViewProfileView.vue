@@ -10,6 +10,7 @@ import router from '@/router'
 import SpareComponent from '@/components/SpareComponent.vue'
 import { useUserStore } from '@/stores/userStore'
 import ModalEditAvatar from '@/components/ModalEditAvatar.vue'
+import CardChallenge from '@/components/CardChallenge.vue'
 
 const profile = ref<Profile>()
 const completedGoals = ref<Goal[]>([])
@@ -20,6 +21,7 @@ const profilePicture = ref<string>()
 const userStore = useUserStore()
 const refreshTrigger = ref(0)
 
+// Function to update the user
 const updateUser = async () => {
     authInterceptor('/profile')
         .then((response) => {
@@ -30,6 +32,7 @@ const updateUser = async () => {
         })
 }
 
+// Get user details and completed goals and challenges
 onMounted(async () => {
     await updateUser()
 
@@ -54,11 +57,13 @@ onMounted(async () => {
     openSpare()
 })
 
+// Function to update biometrics
 const updateBiometrics = async () => {
     await useUserStore().bioRegister()
     await updateUser()
 }
 
+// Function to update the profile picture
 const updateProfilePicture = async () => {
     await updateUser()
     await userStore.getProfilePicture()
@@ -66,10 +71,12 @@ const updateProfilePicture = async () => {
     refreshSpareComponent()
 }
 
+// Function to refresh spare component
 const refreshSpareComponent = () => {
     refreshTrigger.value++
 }
 
+// Function to open the spare component and show the welcome message
 const openSpare = () => {
     speech.value = [
         `Velkommen, ${profile.value?.firstName} ${profile.value?.lastName}! 🤠`,
@@ -180,10 +187,10 @@ const openSpare = () => {
                     />
                 </div>
                 <CardTemplate class="p-4 flex flex-row flex-wrap justify-center gap-2 mb-4 mt-2">
-                    <CardGoal
+                    <CardChallenge
                         v-for="challenge in completedChallenges"
                         :key="challenge.id"
-                        :goal-instance="challenge"
+                        :challenge-instance="challenge"
                     />
                 </CardTemplate>
             </div>

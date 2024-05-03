@@ -1,3 +1,4 @@
+// Represents the goal object
 export interface Goal {
     id?: number
     title: string

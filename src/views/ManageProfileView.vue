@@ -7,6 +7,7 @@ import router from '@/router'
 import ToolTip from '@/components/ToolTip.vue'
 import InteractiveSpare from '@/components/InteractiveSpare.vue'
 
+// Profile object
 const profile = ref<Profile>({
     id: 0,
     firstName: '',
@@ -37,6 +38,7 @@ const accountNumberRegex = /^\d{11}$/
 
 const MAX_DIGITS = 11
 
+// Restrict the input to numbers only
 function restrictToNumbers(event: InputEvent, type: string) {
     const inputValue = (event.target as HTMLInputElement)?.value
     if (inputValue !== undefined) {
@@ -50,6 +52,7 @@ function restrictToNumbers(event: InputEvent, type: string) {
     }
 }
 
+// Apply formatting to the account number
 const isFirstNameValid = computed(
     () => nameRegex.test(profile.value.firstName) && profile.value.firstName
 )
@@ -65,6 +68,7 @@ const isSavingAccountValid = computed(() =>
     accountNumberRegex.test(profile.value.savingAccount.accNumber?.toString() || '')
 )
 
+// Check if the form is invalid
 const isFormInvalid = computed(
     () =>
         [
@@ -75,10 +79,13 @@ const isFormInvalid = computed(
             isSavingAccountValid
         ].some((v) => !v.value) ||
         (updatePassword.value
-            ? profile.value.password !== confirmPassword.value || profile.value.password === ''
+            ? profile.value.password !== confirmPassword.value ||
+              profile.value.password === '' ||
+              !isPasswordValid.value
             : false)
 )
 
+// When the component is mounted, fetch the profile
 onMounted(async () => {
     await authInterceptor('/profile')
         .then((response) => {
@@ -89,12 +96,14 @@ onMounted(async () => {
         })
 })
 
+// Save the changes to the profile
 const saveChanges = async () => {
     if (isFormInvalid.value) {
         errorMessage.value = 'Vennligst fyll ut alle feltene riktig'
         return
     }
 
+    // Remove password if it is not to be updated
     if (!updatePassword.value) {
         delete profile.value.password
     }

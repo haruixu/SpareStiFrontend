@@ -10,7 +10,7 @@
         >
             <a
                 @click="isModalOpen = true"
-                class="hover:bg-transparent hover:p-0 hover:scale-105 z-20"
+                class="hover:bg-transparent hover:p-0 hover:scale-105 z-20 flex justify-center"
             >
                 <img
                     v-if="profilePicture && isMounted"
@@ -21,7 +21,7 @@
                 <img
                     v-else
                     alt="Spare"
-                    class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer ml-14 md:ml-10"
+                    class="md:h-5/6 md:w-5/6 w-2/3 h-2/3 cursor-pointer"
                     src="@/assets/spare.png"
                 />
             </a>
@@ -31,8 +31,8 @@
         <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
             <InteractiveSpare
                 :speech="speech"
-                :png-size="pngSize!"
-                direction="left"
+                :png-size="12"
+                direction="right"
                 @emit:close="isModalOpen = false"
             />
 
