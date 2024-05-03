@@ -19,7 +19,7 @@
                         class="w-full"
                     />
                     <button
-                        class="absolute right-0 top-1 bg-transparent hover:bg-transparent"
+                        class="absolute right-0 top-1 bg-transparent hover:bg-transparent mr-3 mt-1"
                         @click="toggleShowPassword"
                     >
                         {{ showPassword ? '🔓' : '🔒' }}

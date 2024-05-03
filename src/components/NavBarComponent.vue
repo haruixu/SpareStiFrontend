@@ -88,6 +88,7 @@ const toggleMenu = () => {
     hamburgerOpen.value = !hamburgerOpen.value
 }
 
+// Update window width and check if hamburger menu should be displayed
 const updateWindowWidth = () => {
     windowWidth.value = window.innerWidth
     if (windowWidth.value < 1150) {
@@ -98,6 +99,7 @@ const updateWindowWidth = () => {
     }
 }
 
+// Listen for window resize events
 onMounted(() => {
     if (typeof window !== 'undefined') {
         window.addEventListener('resize', updateWindowWidth)
@@ -114,3 +116,10 @@ const closeModal = () => {
     isModalOpen.value = false
 }
 </script>
+
+<style scoped>
+a {
+    text-decoration: none;
+    color: black;
+}
+</style>
