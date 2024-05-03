@@ -24,8 +24,8 @@
         <ModalComponent v-if="isModalOpen" @close="isModalOpen = false">
             <InteractiveSpare
                 :speech="speech"
-                :png-size="pngSize!"
-                direction="left"
+                :png-size="12"
+                direction="right"
                 @emit:close="isModalOpen = false"
             />
 
