@@ -329,6 +329,7 @@ const allChallengesCompleted = () => {
     } // If all challenges are completed, return true
 }
 
+
 // Reactive references for DOM elements
 const iconRef = ref<HTMLElement | null>(null)
 const goalIconRef = ref<HTMLElement | null>(null)
