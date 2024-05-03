@@ -2,8 +2,10 @@ image: node:20-slim
 
 stages:
   - install
-  - lint_and_format
+  - lint
+  - format
   - build
+  - security_scan
   - deploy
 
 cache:
@@ -19,15 +21,15 @@ install:
     paths:
       - node_modules/
 
-format-code:
-  stage: lint_and_format
-  script:
-    - npm run format-test
-
-lint-code:
-  stage: lint_and_format
+lint:
+  stage: lint
   script:
     - npm run lint
+
+format:
+  stage: format
+  script:
+    - npm run format-test
 
 type-check:
   stage: build
@@ -38,18 +40,13 @@ type-check:
 include:
   - template: SAST.gitlab-ci.yml
 
-sast:
-  stage: security_scan
-  script:
-    - echo "Running SAST..."
-
 deploy:
   stage: deploy
   image: docker:latest
   tags:
     - dind
   services:
-    - name: docker:dind
+    - docker:dind
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_IMAGE_NAME: $CI_REGISTRY_USER/idatt2106_2024_02_frontend-app
