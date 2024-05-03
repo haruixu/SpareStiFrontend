@@ -27,6 +27,7 @@ const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
 
+// Reset password
 const submitReset = async () => {
     isSendingEmail.value = true
 
@@ -46,6 +47,7 @@ const submitReset = async () => {
     isSendingEmail.value = false
 }
 
+// Close modal and reset values
 const closeModal = () => {
     isModalOpen.value = false
     isSendingEmail.value = false
@@ -54,6 +56,7 @@ const closeModal = () => {
     successMessage.value = null
 }
 
+// Watch for error messages
 watch(
     () => userStore.errorMessage,
     (newValue: string) => {

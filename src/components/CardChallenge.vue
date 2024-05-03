@@ -12,7 +12,10 @@ const props = defineProps({
 })
 
 const challengeInstance = props.challengeInstance
+
+// Slice the date to remove the time and format it
 const displayDate = computed(() => challengeInstance.due?.slice(0, 16).split('T').join(' '))
+// Check if the challenge is completed
 const isCompleted = computed(() => challengeInstance.completedOn != null)
 
 const handleCardClick = () => {

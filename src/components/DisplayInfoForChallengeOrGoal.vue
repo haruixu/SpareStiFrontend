@@ -60,6 +60,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
+// Challenge or goal data
 const description = ref<string>(
     props.isChallenge ? props.challenge!.description : props.goal!.description
 )
@@ -72,6 +73,7 @@ const deadline = ref<string>(props.isChallenge ? props.challenge!.due : props.go
 
 const displayInfoCard = ref(false)
 
+// Display the info card
 const display = () => {
     displayInfoCard.value = !displayInfoCard.value
 }
@@ -81,6 +83,8 @@ const screenSize = ref<number>(window.innerWidth)
 onUnmounted(() => {
     window.removeEventListener('resize', handleWindowSizeChange)
 })
+
+// Update the screen size
 const handleWindowSizeChange = () => {
     screenSize.value = window.innerWidth
 }

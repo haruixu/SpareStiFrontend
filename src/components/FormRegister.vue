@@ -43,6 +43,7 @@ const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
 
+// Validate password on input
 const validatePassword = () => {
     const messages = []
     const lengthValid = password.value.length >= 8 && password.value.length <= 30
@@ -76,6 +77,7 @@ const validatePassword = () => {
 
 watch(password, validatePassword)
 
+// Watch for error messages
 watch(
     () => userStore.errorMessage,
     (newValue: string) => {

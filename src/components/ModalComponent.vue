@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
 
 defineProps({
     title: String,
@@ -35,9 +34,5 @@ defineProps({
         default: false,
         required: false
     }
-})
-
-onMounted(() => {
-    console.log('ModalComponent mounted')
 })
 </script>

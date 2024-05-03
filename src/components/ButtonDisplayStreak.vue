@@ -101,13 +101,14 @@ import { Countdown } from 'vue3-flip-countdown'
 const userStore = useUserStore()
 const currentStreak = ref<number>()
 const deadline = ref<string>()
+
+// Fetch user streak on component mount
 onMounted(async () => {
     userStore.getUserStreak()
     if (userStore.streak) {
         currentStreak.value = userStore.streak?.streak
         deadline.value = userStore.streak?.firstDue
     }
-    console.log('Streak:', currentStreak.value)
     if (typeof window !== 'undefined') {
         window.addEventListener('resize', handleWindowSizeChange)
     }
@@ -119,21 +120,23 @@ const screenSize = ref<number>(window.innerWidth)
 onUnmounted(() => {
     window.removeEventListener('resize', handleWindowSizeChange)
 })
+
+// Update screenSize on window resize
 const handleWindowSizeChange = () => {
     screenSize.value = window.innerWidth
 }
 
 const displayStreakCard = ref(false)
 
+// Display streak card on mouseover
 const display = () => {
     displayStreakCard.value = true
     userStore.getUserStreak()
     currentStreak.value = userStore.streak?.streak
     deadline.value = userStore.streak?.firstDue
-    console.log('Streak:', currentStreak.value)
-    console.log('Deadline:', deadline.value)
 }
 
+// Hide streak card on mouseleave
 const hide = () => {
     displayStreakCard.value = false
 }

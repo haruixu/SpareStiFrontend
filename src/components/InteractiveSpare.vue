@@ -44,6 +44,7 @@ const currentSpeech = computed(() => speech.value[currentSpeechIndex.value])
 
 const emit = defineEmits(['emit:close'])
 
+// Next speech bubble
 const nextSpeech = () => {
     if (currentSpeechIndex.value < speech.value.length - 1) {
         currentSpeechIndex.value++
@@ -52,6 +53,7 @@ const nextSpeech = () => {
     }
 }
 
+// Image class
 const imageClass = computed(() => {
     return [
         'transform',
@@ -59,6 +61,7 @@ const imageClass = computed(() => {
     ]
 })
 
+// Speech bubble direction
 const bubbleDirection = computed(() => {
     return props.direction === 'right' ? 'btm-left-in' : 'btm-right-in'
 })

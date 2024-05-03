@@ -57,6 +57,7 @@ const fileInput = ref<HTMLElement | null>(null)
 
 const emit = defineEmits(['update-profile-picture'])
 
+// Open the modal and fetch the profile picture
 const openModal = () => {
     state.avatars = [
         '/avatar1.png',
@@ -77,10 +78,8 @@ const openModal = () => {
     if (state.avatars.includes(state.selectedPublicImg) || state.avatars.includes(img)) {
         // Remove the public asset from the list if it's already selected
         state.avatars = state.avatars.filter((avatar) => avatar !== state.selectedPublicImg)
-        console.log(state.avatars, 'state.avatars')
     }
     // Clear
-    console.log(state.avatars)
     localStorage.removeItem('profilePicture')
     state.selectedPublicImg = ''
 
@@ -99,6 +98,7 @@ const closeModal = () => {
     state.newFile = null // Clear the new file reference
 }
 
+// Cycle through the avatars
 const cycleArray = (direction: string) => {
     if (direction === 'prev') {
         state.currentAvatarIndex =
@@ -108,6 +108,7 @@ const cycleArray = (direction: string) => {
     }
 }
 
+// Save the selected avatar
 const saveAvatar = async () => {
     if (currentAvatar.value.startsWith('blob:')) {
         // If there's a new file selected, upload it
@@ -134,6 +135,7 @@ const openFileExplorer = () => {
 }
 
 const currentAvatar = computed(() => state.avatars[state.currentAvatarIndex])
+// Get the next and previous avatars
 const nextAvatar = computed(
     () => state.avatars[(state.currentAvatarIndex + 1) % state.avatars.length]
 )

@@ -96,8 +96,6 @@ const incrementSaved = async (challenge: Challenge) => {
 
     const updatedChallenge = (await challengeStore.editUserChallenge(challenge)) as Challenge
 
-    console.log('updated challenge in child: ', updatedChallenge)
-
     // Emit an event to inform the parent component of the update
     emit('update-challenge', updatedChallenge)
 }
@@ -106,6 +104,7 @@ const editChallenge = (challenge: Challenge) => {
     router.push(`/spareutfordringer/rediger/${challenge.id}`)
 }
 
+// Fetch the challenge icon
 const getChallengeIcon = async (challengeId: number) => {
     try {
         const imageResponse = await authInterceptor.get(`/challenges/picture?id=${challengeId}`, {
@@ -117,6 +116,7 @@ const getChallengeIcon = async (challengeId: number) => {
     }
 }
 
+// Fetch the challenge icon on component mount
 onMounted(() => {
     if (props.challenge?.id) {
         getChallengeIcon(props.challenge.id)

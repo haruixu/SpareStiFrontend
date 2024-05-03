@@ -266,6 +266,7 @@ onUnmounted(() => {
     }
 })
 
+// Function to handle challenge updates
 const handleChallengeUpdate = (updatedChallenge: Challenge) => {
     if (challengesLocal.value) {
         const index = challengesLocal.value.findIndex((c) => c.id === updatedChallenge.id)
@@ -310,18 +311,12 @@ const incrementGoalSaved = async (challenge: Challenge) => {
     }
 }
 
-/**
- * Navigates to the spareutfordringer page
- */
 const addSpareUtfordring = () => {
     router.push('/spareutfordringer').catch((error) => {
         console.error('Routing error:', error)
     })
 }
 
-/**
- * Checks if all challenges are completed
- */
 const allChallengesCompleted = () => {
     // Assuming challenges.value is an array of challenge objects
     if (challengesLocal.value) {
@@ -334,7 +329,6 @@ const allChallengesCompleted = () => {
     } // If all challenges are completed, return true
 }
 
-//-----------Animation for goal and challenge completion-----------------//
 
 // Reactive references for DOM elements
 const iconRef = ref<HTMLElement | null>(null)
@@ -346,9 +340,6 @@ const targetRef = ref<HTMLElement | null>(null)
 const animatedChallenges: Ref<number[]> = ref([])
 const animatedGoals: Ref<number[]> = ref([])
 
-/**
- * Loads the states for animated goals and challenges
- */
 const loadAnimatedStates = () => {
     const animated = localStorage.getItem('animatedChallenges')
     const animatedG = localStorage.getItem('animatedGoals')
@@ -356,12 +347,6 @@ const loadAnimatedStates = () => {
     animatedGoals.value = animatedG ? JSON.parse(animatedG) : []
 }
 
-/**
- * Saves the animated state for challenge
- * triggers the confetti method
- * triggers the recalculation of dom positioning
- * @param challenge
- */
 const animateChallenge = (challenge: Challenge) => {
     if (
         challenge.completion! >= 100 &&
@@ -376,15 +361,7 @@ const animateChallenge = (challenge: Challenge) => {
     }
 }
 
-/**
- * Saves the animated state for goal
- * triggers the confetti method
- * triggers the recalculation of dom positioning
- * @param goal
- */
 const animateGoal = (goal: Goal) => {
-    console.log('im in animated goal')
-
     if (goal.id != null) {
         animatedGoals.value.push(goal.id)
     } // Ensure no duplication
@@ -393,13 +370,8 @@ const animateGoal = (goal: Goal) => {
     recalculateAndAnimate(true)
 }
 
-/**
- * Recalculates the position of the dom elements
- * @param isGoal
- */
+// Function to recalculate and animate the icon
 const recalculateAndAnimate = (isGoal: boolean) => {
-    console.log('im in recalculate and animate')
-
     if (!isGoal && iconRef.value && containerRef.value && targetRef.value) {
         animateIcon(isGoal)
     } else if (isGoal && containerRef.value && goalIconRef.value) {
@@ -411,10 +383,7 @@ const recalculateAndAnimate = (isGoal: boolean) => {
     }
 }
 
-/**
- * Saves the animated state for challenge
- * @param challenge
- */
+// Function to save the animated state of a challenge
 const saveAnimatedStateChallenge = (challenge: Challenge) => {
     if (challenge.id != null) {
         animatedChallenges.value.push(challenge.id)
@@ -422,24 +391,16 @@ const saveAnimatedStateChallenge = (challenge: Challenge) => {
     localStorage.setItem('animatedChallenges', JSON.stringify(animatedChallenges.value))
 }
 
-/**
- * Saves the animated state for goal
- * @param goal
- */
+// Function to save the animated state of a goal
 const saveAnimatedStateGoal = (goal: Goal) => {
-    console.log('Saving animated state for:', goal.id)
     if (goal.id != null) {
         animatedGoals.value.push(goal.id)
     }
     localStorage.setItem('animatedGoals', JSON.stringify(animatedGoals.value))
 }
 
-/**
- * animates the icon images
- * @param isGoal
- */
+// Function to animate the icon
 const animateIcon = (isGoal: boolean) => {
-    console.log('im in animate icon')
     const icon = iconRef.value
     const container = containerRef.value
     const target = targetRef.value
@@ -591,9 +552,7 @@ const animateIcon = (isGoal: boolean) => {
             })
     }
 }
-/**
- * Triggers confeti animation
- */
+
 const triggerConfetti = () => {
     confetti({
         particleCount: 400,
@@ -616,6 +575,7 @@ const getGoalIcon = async (goalId: number) => {
     }
 }
 
+// Fetch the goal icon on component mount
 onMounted(() => {
     if (props.goal?.id) {
         getGoalIcon(props.goal.id)
@@ -636,10 +596,7 @@ const editGoal = (goal: Goal) => {
     router.push(`/sparemaal/rediger/${goal.id}`)
 }
 
-/**
- * Sorts the challenges by completion status and due date
-
- */
+// Sort challenges by due date and completion status
 const sortChallenges = () => {
     if (challengesLocal.value) {
         challengesLocal.value.sort((a, b) => {
@@ -668,17 +625,11 @@ const isAtFirstUncompleted = ref(false)
 const firstUncompletedRef: Ref<HTMLElement | undefined> = ref()
 const screenSize = ref<number>(window.innerWidth)
 
-/**
- * Handles the window size change event
- */
 const handleWindowSizeChange = () => {
     screenSize.value = window.innerWidth
 }
 
-/**
- * Scrolls to the first uncompleted challenge
-
- */
+// Function to scroll to the first uncompleted challenge
 const scrollToFirstUncompleted = () => {
     if (challengesLocal.value) {
         let found = false
@@ -700,12 +651,7 @@ const scrollToFirstUncompleted = () => {
     }
 }
 
-/**
- * Assigns the reference to the element
- * @param el
- * @param challenge
- * @param index
- */
+// Function to assign a reference to an element
 const assignRef = (
     el: Element | ComponentPublicInstance | null,
     challenge: Challenge,
