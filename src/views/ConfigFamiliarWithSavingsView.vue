@@ -1,18 +1,19 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">
+        <h1 class="mb-8 md:mb-16 text-2xl font-bold sm:text-4xl">
             Hvor kjent er du med sparing fra før?
         </h1>
         <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+          <p class="text-sm font-bold mb-3 animate-bounce">Trykk på meg for hjelp ❗️</p>
             <SpareComponent
                 :speech="[
-                    'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡'
+                    'Her kan du fylle inn hvor kjent du er med sparing fra før, slik at vi kan hjelpe deg på best mulig måte! 💡',
+                    'Hvis du er usikker, velg det alternativet som passer best. Du kan endre dette senere!'
                 ]"
                 :png-size="10"
                 :direction="'right'"
                 :imageDirection="'right'"
             ></SpareComponent>
-            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
         </div>
         <div class="grid grid-cols-1 gap-8 mb-16 sm:gap-14 sm:mb-20 md:grid-cols-3">
             <div
@@ -49,6 +50,7 @@
                 <p class="mt-2 text-lg font-bold">Godt kjent</p>
             </div>
         </div>
+      <p class="mb-8 md:mb-12">Husk at du kan endre dette senere!</p>
         <ContinueButtonComponent
             :disabled="selectedOption === null"
             @click="onButtonClick"

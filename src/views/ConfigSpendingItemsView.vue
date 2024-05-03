@@ -1,18 +1,20 @@
 <template>
     <div class="flex flex-col items-center justify-center min-h-screen text-center">
-        <h1 class="mb-8 text-2xl font-bold sm:mb-16 sm:text-4xl">Hva bruker du mye penger på?</h1>
+        <h1 class="mb-3 text-2xl font-bold sm:text-4xl mt-0 md:mt-7">Hva bruker du mye penger på?</h1>
+        <p class="text-sm mb-8 md:mb-10">Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i "Annet ..." feltet</p>
         <div class="absolute bottom-0 md:bottom-40 left-0 w-40 h-40 md:w-52 md:h-52 ml-4">
+          <p class="text-sm font-bold mb-3 animate-bounce">Trykk på meg for hjelp ❗️</p>
             <SpareComponent
                 :speech="[
                     'Her kan du velge hva du bruker mye penger på, slik at vi kan hjelpe deg med å spare penger! 💸',
                     'Hvis du ikke finner noe som passer, kan du skrive inn egne kategorier i \'Annet ...\' feltet',
-                    'Du må minst velge en kategori!'
+                    'Du må minst velge en kategori!',
+                    'Du kan redigere dette senere!'
                 ]"
                 :png-size="10"
                 :direction="'right'"
                 :imageDirection="'right'"
             ></SpareComponent>
-            <p class="text-xs absolute left-0 md:ml-3 ml-1 mt-2">Trykk på meg for hjelp ❗️</p>
         </div>
         <div class="flex flex-wrap justify-center gap-8 mb-8">
             <div
@@ -66,6 +68,7 @@
                 </div>
             </div>
         </div>
+      <p class="mb-1">Husk at du kan endre dette senere!</p>
         <div class="w-full text-right">
             <ContinueButtonComponent
                 @click="onButtonClick"
