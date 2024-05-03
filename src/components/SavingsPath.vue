@@ -250,6 +250,9 @@ onUnmounted(() => {
 })
 
 const handleChallengeUpdate = (updatedChallenge: Challenge) => {
+    if (!updatedChallenge) {
+      return; // Exit the function if the challenge is not valid
+    }
     if (challengesLocal.value) {
         const index = challengesLocal.value.findIndex((c) => c.id === updatedChallenge.id)
         if (index !== -1) {
