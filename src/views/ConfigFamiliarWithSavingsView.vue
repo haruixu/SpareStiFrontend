@@ -7,7 +7,7 @@
                     'border-[var(--green)] border-4': selectedOption === 'litt',
                     'border-gray-300 border-2': selectedOption !== 'litt'
                 }"
-                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-32 h-32 p-2 sm:w-60 sm:h-60 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('litt')"
             >
                 <img src="@/assets/nose.png" alt="Pig nose" class="h-12 sm:h-1/3" />
@@ -18,7 +18,7 @@
                     'border-[var(--green)] border-4': selectedOption === 'noe',
                     'border-gray-300 border-2': selectedOption !== 'noe'
                 }"
-                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-32 h-32 p-2 sm:w-60 sm:h-60 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('noe')"
             >
                 <img src="@/assets/head.png" alt="Pig face" class="h-12 sm:h-1/3" />
@@ -29,7 +29,7 @@
                     'border-[var(--green)] border-4': selectedOption === 'godt',
                     'border-gray-300 border-2': selectedOption !== 'godt'
                 }"
-                class="flex flex-col items-center justify-center w-40 h-40 p-2 sm:w-64 sm:h-64 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
+                class="flex flex-col items-center justify-center w-32 h-32 p-2 sm:w-60 sm:h-60 transition-colors rounded-lg cursor-pointer hover:border-[var(--green)]"
                 @click="selectOption('godt')"
             >
                 <img src="@/assets/pig.png" alt="Whole pig" class="h-12 sm:h-1/3" />
@@ -49,6 +49,7 @@
                 ></SpareComponent>
                 <p class="text-xs">Trykk på meg for hjelp ❗️</p>
             </div>
+            <p class="mb-4 md:mb-10">Husk at du kan endre dette senere!</p>
             <ContinueButtonComponent
                 :disabled="selectedOption === null"
                 class="px-10 py-3 text-2xl self-end"

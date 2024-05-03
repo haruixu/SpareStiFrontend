@@ -38,6 +38,7 @@
                 ></SpareComponent>
                 <p class="text-xs">Trykk på meg for hjelp ❗️</p>
             </div>
+            <p class="mt-10">Husk at du kan endre dette senere!</p>
             <ContinueButtonComponent
                 :disabled="!isAllAmountsFilled"
                 class="px-10 py-3 text-2xl self-end"

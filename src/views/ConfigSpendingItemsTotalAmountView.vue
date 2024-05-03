@@ -38,6 +38,7 @@
                 ></SpareComponent>
                 <p class="text-xs">Trykk på meg for hjelp ❗️</p>
             </div>
+            <p class="mt-10">Husk at du kan endre dette senere!</p>
             <ContinueButtonComponent
                 :disabled="!isAllAmountsFilled"
                 class="px-10 py-3 text-2xl self-end"
@@ -77,9 +78,4 @@ const filterAmount = (index: number, event: Event) => {
     amounts.value[index] = filteredValue
 }
 
-const firstBoxOptions = computed(() => options.value.slice(0, 6))
-const secondBoxOptions = computed(() => (options.value.length > 6 ? options.value.slice(6) : []))
-
-const showFirstBox = computed(() => options.value.length > 0)
-const showSecondBox = computed(() => options.value.length > 6)
 </script>

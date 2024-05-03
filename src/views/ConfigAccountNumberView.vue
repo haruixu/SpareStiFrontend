@@ -47,8 +47,9 @@
                     ]"
                     class="w-60"
                 ></SpareComponent>
-                <p class="text-xs">Trykk på meg for hjelp ❗️</p>
+                <p class="text-xs animate-bounce">Trykk på meg for hjelp ❗️</p>
             </div>
+            <p class="mt-10">Husk at du kan endre dette senere!</p>
             <ContinueButtonComponent
                 @click="onButtonClick"
                 :disabled="!isFormValid"

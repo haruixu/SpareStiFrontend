@@ -61,6 +61,7 @@
                 ></SpareComponent>
                 <p class="text-xs">Trykk på meg for hjelp ❗️</p>
             </div>
+            <p class="mb-1">Husk at du kan endre dette senere!</p>
             <ContinueButtonComponent
                 :disabled="!isFormValid"
                 class="px-10 py-3 text-2xl self-end"
