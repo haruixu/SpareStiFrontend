@@ -99,6 +99,7 @@ const userConfigStore = useUserConfigStore()
 const selectedOptions = ref<string[]>([])
 const customOptions = ref(['', '', '', '', '', ''])
 
+// Toggles the option in the selectedOptions array
 const toggleOption = (option: string) => {
     const index = selectedOptions.value.indexOf(option)
     if (index === -1) {
@@ -108,12 +109,14 @@ const toggleOption = (option: string) => {
     }
 }
 
+// Check if the form is valid
 const isFormValid = computed(() => {
     const predefinedSelected = selectedOptions.value.length > 0
     const customFilled = customOptions.value.some((option) => option.trim() !== '')
     return predefinedSelected || customFilled
 })
 
+// Save the selected options to the store and navigate to the next page
 const onButtonClick = () => {
     if (!isFormValid.value) {
         console.error('Form is not valid')

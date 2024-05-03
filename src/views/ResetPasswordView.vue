@@ -87,14 +87,16 @@ const canResetPassword = computed(() => {
     return isPasswordValid.value && newPassword.value === confirm.value && confirm.value !== ''
 })
 
+// Function to reset password
 const resetPassword = async () => {
-    isModalOpen.value = true
+    isModalOpen.value = true // Open modal
 
+  // Send request to backend to reset password
     try {
         await axios.post('http://localhost:8080/forgotPassword/resetPassword', {
-            resetID: resetID.value,
-            userID: userID.value,
-            newPassword: newPassword.value
+            resetID: resetID.value, // Reset ID
+            userID: userID.value, // User ID
+            newPassword: newPassword.value // New password
         })
     } catch (error) {
         const err = error as Error
@@ -102,10 +104,12 @@ const resetPassword = async () => {
     }
 }
 
+// Function to toggle show password
 const toggleShowPassword = () => {
-    showPassword.value = !showPassword.value
+    showPassword.value = !showPassword.value // show password
 }
 
+// Function to go to login page
 const goToLogin = () => {
     isModalOpen.value = false
     router.push('/logginn')

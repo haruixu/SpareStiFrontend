@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/userStore'
 import ModalComponent from '@/components/ModalComponent.vue'
 import axios from 'axios'
 
+// Constants for logging in
 const username = ref<string>('')
 const password = ref<string>('')
 const showPassword = ref<boolean>(false)
@@ -12,24 +13,30 @@ const isModalOpen = ref<boolean>(false)
 const resetEmail = ref<string>('')
 const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/
 
+// Store for user data
 const userStore = useUserStore()
 
+// Computed properties for form validation
 const isEmailValid = computed(() => emailRegex.test(resetEmail.value))
 const isSendingEmail = ref(false)
 const successMessage = ref<string | null>(null)
 const modalErrorMessage = ref<string | null>(null)
 
+// Function to submit form
 const submitForm = () => {
     userStore.login(username.value, password.value)
 }
 
+// Function to toggle show password
 const toggleShowPassword = () => {
     showPassword.value = !showPassword.value
 }
 
+// Function to submit reset email
 const submitReset = async () => {
     isSendingEmail.value = true
 
+  // Send request to backend to reset password
     await axios
         .post('http://localhost:8080/forgotPassword/changePasswordRequest', {
             email: resetEmail.value
@@ -46,6 +53,7 @@ const submitReset = async () => {
     isSendingEmail.value = false
 }
 
+// Function to close modal and reset values
 const closeModal = () => {
     isModalOpen.value = false
     isSendingEmail.value = false
@@ -54,6 +62,7 @@ const closeModal = () => {
     successMessage.value = null
 }
 
+// Watch for error message from store
 watch(
     () => userStore.errorMessage,
     (newValue: string) => {
