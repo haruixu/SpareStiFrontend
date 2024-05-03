@@ -99,56 +99,74 @@ onMounted(() => {
 
             <h3 class="font-bold">Hvor store vaneedringer er du villig til å gjøre?</h3>
             <div v-if="configuration" class="flex flex-row gap-5">
-                <CardTemplate
-                    :class="{ 'border-2 border-lime-400': configuration.motivation === 'VERY_LOW' }"
-                    class="cursor-pointer p-4 border-2"
-                    @click="configuration.motivation = 'VERY_LOW'"
-                >
-                    <p class="font-bold">Litt</p>
-                </CardTemplate>
-                <CardTemplate
-                    :class="{ 'border-2 border-lime-400': configuration.motivation === 'MEDIUM' }"
-                    class="cursor-pointer p-4 border-2"
-                    @click="configuration.motivation = 'MEDIUM'"
-                >
-                    <p class="font-bold">Passe</p>
-                </CardTemplate>
-                <CardTemplate
-                    :class="{
-                        'border-2 border-lime-400': configuration.motivation === 'VERY_HIGH'
-                    }"
-                    class="cursor-pointer p-4 border-2"
-                    @click="configuration.motivation = 'VERY_HIGH'"
-                >
-                    <p class="font-bold">Store</p>
-                </CardTemplate>
+                <button @click="configuration.motivation = 'VERY_LOW'">
+                    <CardTemplate
+                        :class="{
+                            'border-2 border-lime-400': configuration.motivation === 'VERY_LOW'
+                        }"
+                        class="cursor-pointer p-4 border-2"
+                        @click="configuration.motivation = 'VERY_LOW'"
+                    >
+                        <p class="font-bold">Litt</p>
+                    </CardTemplate>
+                </button>
+                <button @click="configuration.motivation = 'MEDIUM'">
+                    <CardTemplate
+                        :class="{
+                            'border-2 border-lime-400': configuration.motivation === 'MEDIUM'
+                        }"
+                        class="cursor-pointer p-4 border-2"
+                    >
+                        <p class="font-bold">Passe</p>
+                    </CardTemplate>
+                </button>
+
+                <button @click="configuration.motivation = 'VERY_HIGH'">
+                    <CardTemplate
+                        :class="{
+                            'border-2 border-lime-400': configuration.motivation === 'VERY_HIGH'
+                        }"
+                        class="cursor-pointer p-4 border-2"
+                    >
+                        <p class="font-bold">Store</p>
+                    </CardTemplate>
+                </button>
             </div>
 
             <h3 class="font-bold">Hvor kjent er du med sparing fra før av?</h3>
             <div v-if="configuration" class="flex flex-row gap-5">
-                <CardTemplate
-                    :class="{ 'border-2 border-lime-400': configuration.experience === 'VERY_LOW' }"
-                    class="cursor-pointer p-4 border-2"
-                    @click="configuration.experience = 'VERY_LOW'"
-                >
-                    <p class="font-bold">Litt kjent</p>
-                </CardTemplate>
-                <CardTemplate
-                    :class="{ 'border-2 border-lime-400': configuration.experience === 'MEDIUM' }"
-                    class="cursor-pointer p-4 border-2"
-                    @click="configuration.experience = 'MEDIUM'"
-                >
-                    <p class="font-bold">Noe kjent</p>
-                </CardTemplate>
-                <CardTemplate
-                    :class="{
-                        'border-2 border-lime-400': configuration.experience === 'VERY_HIGH'
-                    }"
-                    class="cursor-pointer p-4 border-2"
-                    @click="configuration.experience = 'VERY_HIGH'"
-                >
-                    <p class="font-bold">Godt kjent</p>
-                </CardTemplate>
+                <button @click="configuration.experience = 'VERY_LOW'">
+                    <CardTemplate
+                        :class="{
+                            'border-2 border-lime-400': configuration.experience === 'VERY_LOW'
+                        }"
+                        class="cursor-pointer p-4 border-2"
+                    >
+                        <p class="font-bold">Litt kjent</p>
+                    </CardTemplate>
+                </button>
+
+                <button @click="configuration.experience = 'MEDIUM'">
+                    <CardTemplate
+                        :class="{
+                            'border-2 border-lime-400': configuration.experience === 'MEDIUM'
+                        }"
+                        class="cursor-pointer p-4 border-2"
+                    >
+                        <p class="font-bold">Noe kjent</p>
+                    </CardTemplate>
+                </button>
+
+                <button @click="configuration.experience = 'VERY_HIGH'">
+                    <CardTemplate
+                        :class="{
+                            'border-2 border-lime-400': configuration.experience === 'VERY_HIGH'
+                        }"
+                        class="cursor-pointer p-4 border-2"
+                    >
+                        <p class="font-bold">Godt kjent</p>
+                    </CardTemplate>
+                </button>
             </div>
 
             <h3 class="font-bold my-0">Hva bruker du mye penger på?</h3>
