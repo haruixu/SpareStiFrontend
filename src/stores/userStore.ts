@@ -108,8 +108,9 @@ export const useUserStore = defineStore('user', () => {
             })
     }
 
-    const bioRegister = async () => {
-        authInterceptor
+    const bioRegister = async (): Promise<boolean | null> => {
+        let response = null
+        await authInterceptor
             .post('/auth/bioRegistration')
             .then((response) => {
                 initialCheckStatus(response)
@@ -164,10 +165,13 @@ export const useUserStore = defineStore('user', () => {
             })
             .then(() => {
                 localStorage.setItem('spareStiUsername', user.value.username)
+                response = true
             })
             .catch((error) => {
                 console.error(error)
+                response = false
             })
+        return response
     }
 
     const bioLogin = (username: string) => {

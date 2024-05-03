@@ -10,17 +10,27 @@
             <button @click="bioRegister">Legg til nå!</button>
             <button @click="router.push({ name: 'configurations1' })">Jeg gjør det senere</button>
         </div>
+        <p v-if="bioError" class="text-red-500">Noe gikk galt, prøv igjen senere</p>
     </div>
 </template>
+
 <script setup lang="ts">
 import { useUserStore } from '@/stores/userStore'
 import router from '@/router'
+import { ref } from 'vue'
 
 const userStore = useUserStore()
 
+const bioError = ref<boolean>(false)
+
 const bioRegister = async () => {
-    await userStore.bioRegister()
-    await router.push({ name: 'configurations1' })
+    const result = await userStore.bioRegister()
+
+    if (result === true) {
+        await router.push({ name: 'configurations1' })
+    } else if (result === false) {
+        bioError.value = true
+    }
 }
 </script>
 
